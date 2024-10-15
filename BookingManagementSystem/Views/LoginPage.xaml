@@ -1,0 +1,70 @@
+﻿<Page
+    x:Class="BookingManagementSystem.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Background>
+        <ImageBrush ImageSource="/Assets/homescreen.jpg" Stretch="Fill"/>
+    </Page.Background>
+
+    <Grid x:Name="ContentArea" Width="600" Height="400" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="1" Grid.Row="1"
+                    Padding="40 0 40 30">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                <Image Width="30" Height="30" Source="/Assets/three-body-a.png"/>
+                <TextBlock Text="Arrival - Explore Your Journey"
+                           VerticalAlignment="Center"
+                           Padding="10 0 0 0" 
+                           FontWeight="SemiBold"
+                           Foreground="DimGray"
+                           FontFamily="SegoeUI"                           
+                           FontSize="18"/>
+            </StackPanel>            
+            <TextBlock Padding="0 10 0 0" Text="Sign in" Style="{ThemeResource TitleTextBlockStyle}"></TextBlock>
+            <TextBox Name="txtUsername" 
+                     Margin="0 20 0 0" 
+                     Padding="10"
+                     Height="40"
+                     PlaceholderText="Email, phone, or Skype" 
+                     Background="{ThemeResource AcrylicInAppFillColorBaseBrush}"
+                     BorderThickness="0"/>
+            <PasswordBox Name="passworBoxWithRevealmode" 
+                         Margin="0 10 0 0" 
+                         Padding="10"
+                         Height="40"
+                         PasswordRevealMode="Hidden" 
+                         PlaceholderText="Password"              
+                         Background="{ThemeResource AcrylicInAppFillColorBaseBrush}"
+                         AutomationProperties.Name="Password box"
+                         BorderThickness="0"/>
+            <Grid Margin="0 10 0 0">
+                <CheckBox Name="chkRememberMe" 
+                          Content="Remember me"></CheckBox>
+                <CheckBox Name="revealModeCheckBox" 
+                          Content="Show password" 
+                          IsChecked="False"
+                          HorizontalAlignment="Right"
+                          Checked="RevealModeCheckbox_Changed" 
+                          Unchecked="RevealModeCheckbox_Changed"/>
+            </Grid>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="0 8 0 0" TextWrapping="WrapWholeWords">
+                    <Span xml:space="preserve"><Run>No account? </Run><Hyperlink NavigateUri="https://learn.microsoft.com/en-us/windows/apps/winui/">Create one!</Hyperlink></Span>
+                </TextBlock>
+                <Button Name="btnSignIn" Click="btnSignIn_Click" Width="100" Height="40" HorizontalAlignment="Right" Content="Sign in" Background="#121212" Foreground="White" FontWeight="SemiBold"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

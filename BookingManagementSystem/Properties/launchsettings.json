@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "BookingManagementSystem (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "BookingManagementSystem (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
