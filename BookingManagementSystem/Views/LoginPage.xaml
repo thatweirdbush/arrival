@@ -10,7 +10,7 @@
     </Page.Background>
 
     <Grid>
-        <Grid x:Name="ContentArea" Width="600" Height="400" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
+        <Grid x:Name="ContentArea" Width="600" Height="450" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="8*"/>
@@ -56,7 +56,10 @@
                 </Grid>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Margin="0 8 0 0" TextWrapping="WrapWholeWords">
-                <Span xml:space="preserve"><Run>No account? </Run><Hyperlink NavigateUri="https://learn.microsoft.com/en-us/windows/apps/winui/">Create one!</Hyperlink></Span>
+                        <Span xml:space="preserve"><Run>No account? </Run><Hyperlink NavigateUri="https://learn.microsoft.com/en-us/windows/apps/winui/">Create one!</Hyperlink></Span>
+                    </TextBlock>
+                    <TextBlock Margin="0 8 0 0" TextWrapping="WrapWholeWords">
+                        <Hyperlink NavigateUri="https://learn.microsoft.com/en-us/windows/apps/winui/">Can't access your account?</Hyperlink>
                     </TextBlock>
                     <Button Name="btnSignIn" Click="btnSignIn_Click" Width="100" Height="40" HorizontalAlignment="Right" Content="Sign in" Background="#121212" Foreground="White" FontWeight="SemiBold"/>
                 </StackPanel>
