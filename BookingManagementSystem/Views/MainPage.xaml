@@ -12,7 +12,8 @@
 
     <ScrollView ContentOrientation="None" ZoomMode="Disabled" IsTabStop="True"
                 HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto"
-                VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto">
+                VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto"
+                 Margin="{StaticResource NavigationViewPageContentMargin}">
         <Grid x:Name="ContentArea">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="9*"/>

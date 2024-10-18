@@ -127,7 +127,7 @@
     <value>Hotels &amp; Apartments</value>
   </data>
   <data name="Shell_Login.Content" xml:space="preserve">
-    <value>Home</value>
+    <value>Signin</value>
   </data>
   <data name="Shell_Quiz.Content" xml:space="preserve">
     <value>Details</value>

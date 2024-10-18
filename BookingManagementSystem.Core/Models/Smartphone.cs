@@ -40,3 +40,21 @@ public class Smartphone : INotifyPropertyChanged
         return $"{Name} by {Manufacturer}, starts from ${Price}";
     }
 }
+
+// Filtered destination class
+public class FilteredDestination
+{
+    // Define XAML Image's Path Declaration
+    public static string MS_APPX = "ms-appx:///Assets/filtered-destinations/";
+    private string _imagePath;
+
+    public string Name
+    {
+        get; set;
+    }
+    public string ImagePath
+    {
+        get => $"{MS_APPX}{_imagePath}";
+        set => _imagePath = value;
+    }
+}

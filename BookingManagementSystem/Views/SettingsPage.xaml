@@ -10,9 +10,10 @@
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Page.Resources>
-    <Grid>
+    <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
         <StackPanel
             x:Name="ContentArea">
+            <TextBlock x:Name="Settings_Header" Text="Settings" Style="{ThemeResource TitleTextBlockStyle}" Margin="0 10 0 26"/>
             <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                 <TextBlock x:Uid="Settings_Theme" />

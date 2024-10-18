@@ -15,6 +15,23 @@
     <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="Assets\arrival-bio-white.png" />
+    <Content Remove="Assets\filtered-destinations\amazing-pools.jpg" />
+    <Content Remove="Assets\filtered-destinations\amazing-views.jpg" />
+    <Content Remove="Assets\filtered-destinations\beach.jpg" />
+    <Content Remove="Assets\filtered-destinations\countryside.jpg" />
+    <Content Remove="Assets\filtered-destinations\farm.jpg" />
+    <Content Remove="Assets\filtered-destinations\islands.jpg" />
+    <Content Remove="Assets\filtered-destinations\lakefront.jpg" />
+    <Content Remove="Assets\filtered-destinations\luxe.jpg" />
+    <Content Remove="Assets\filtered-destinations\mansions.jpg" />
+    <Content Remove="Assets\filtered-destinations\national-parks.jpg" />
+    <Content Remove="Assets\filtered-destinations\room.jpg" />
+    <Content Remove="Assets\filtered-destinations\tiny-homes.jpg" />
+    <Content Remove="Assets\filtered-destinations\top-cities.jpg" />
+    <Content Remove="Assets\filtered-destinations\treehouses.jpg" />
+    <Content Remove="Assets\filtered-destinations\trending.jpg" />
+    <Content Remove="Assets\filtered-destinations\tropical.jpg" />
     <Content Remove="Assets\homescreen.jpg" />
     <Content Remove="Assets\quote-images\dont-let-yesterday.png" />
     <Content Remove="Assets\quote-images\either-you-run-the-day.png" />
@@ -36,6 +53,9 @@
     <Content Remove="Assets\smartphone-images\s24-ultra.png" />
     <Content Remove="Assets\smartphone-images\vivo-x100-pro.png" />
     <Content Remove="Assets\smartphone-images\xiaomi-14-ultra.png" />
+    <Content Remove="Assets\symbol-icons\filter-icon.png" />
+    <Content Remove="Assets\symbol-icons\search-icon-white.png" />
+    <Content Remove="Assets\three-body-a-white.png" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\BadgeLogo.scale-100.png" />
@@ -93,6 +113,7 @@
     <None Remove="Assets\Wide310x150Logo.scale-150.png" />
     <None Remove="Assets\Wide310x150Logo.scale-200.png" />
     <None Remove="Assets\Wide310x150Logo.scale-400.png" />
+    <None Remove="Views\HomePage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -119,6 +140,57 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Assets\arrival-bio-white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\amazing-pools.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\amazing-views.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\beach.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\countryside.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\farm.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\islands.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\lakefront.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\luxe.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\mansions.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\national-parks.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\room.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\tiny-homes.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\top-cities.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\treehouses.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\trending.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\filtered-destinations\tropical.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Assets\homecreen.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -190,6 +262,18 @@
     <None Update="Assets\smartphone-images\xiaomi-14-ultra.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Assets\symbol-icons\filter-icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\symbol-icons\search-icon-white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\three-body-a-white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Page Update="Views\HomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">

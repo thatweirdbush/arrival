@@ -24,12 +24,26 @@
                        TextWrapping="NoWrap"
                        Style="{StaticResource CaptionTextBlockStyle}"
                        Margin="28,0,0,0"/>
+            <Button Background="Transparent" BorderThickness="0" Margin="0 0 140 0" HorizontalAlignment="Right" HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <PersonPicture DisplayName="{Binding}" Width="26" Height="26"/>
+                    <TextBlock Text="Sign In" VerticalAlignment="Center" FontSize="14" Margin="10 0"/>
+                </StackPanel>
+                <Button.Flyout>
+                    <MenuFlyout Placement="Bottom">
+                        <MenuFlyoutItem Text="Dashboard" Icon="Home"/>
+                        <MenuFlyoutItem Text="Logout" Icon="Back"/>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem Text="Setting" Icon="Setting"/>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
         </Grid>
         <NavigationView
-            x:Name="NavigationViewControl" PaneDisplayMode="LeftCompact"
+            x:Name="NavigationViewControl" PaneDisplayMode="LeftCompact" IsTitleBarAutoPaddingEnabled="False"
             Canvas.ZIndex="0"
-            PaneTitle="Menu"
             IsBackButtonVisible="Visible"
+            AlwaysShowHeader="False"
             IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
             IsSettingsVisible="True"
@@ -37,6 +51,11 @@
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
             Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
             <NavigationView.MenuItems>
+                <NavigationViewItem x:Uid="Shell_Home" Content="Home" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.HomeViewModel">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Emoji"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Login" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.LoginViewModel">
                     <NavigationViewItem.Icon>
                         <SymbolIcon Symbol="Home"/>
@@ -47,13 +66,16 @@
                         <SymbolIcon Symbol="CellPhone"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <!--<NavigationViewItem x:Uid="Shell_Quiz" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.QuizViewModel">
-                    <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="GoToStart"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>-->
+
             </NavigationView.MenuItems>
-            <NavigationView.HeaderTemplate>
+            <NavigationView.PaneHeader>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Image Source="/Assets/Square44x44Logo.targetsize-48.png" Width="30" Height="30" Stretch="Fill"/>
+                    <Image Source="/Assets/arrival-bio-resize-75.png" Height="30" Margin="6 0 0 0" Stretch="Fill"/>
+                </StackPanel>
+            </NavigationView.PaneHeader>
+
+            <!--<NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
                         <TextBlock
@@ -61,8 +83,8 @@
                             Style="{ThemeResource TitleTextBlockStyle}" />
                     </Grid>
                 </DataTemplate>
-            </NavigationView.HeaderTemplate>
-            <i:Interaction.Behaviors>
+            </NavigationView.HeaderTemplate>-->
+            <!--<i:Interaction.Behaviors>
                 <behaviors:NavigationViewHeaderBehavior
                     DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
                     <behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
@@ -75,8 +97,10 @@
                         </DataTemplate>
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                 </behaviors:NavigationViewHeaderBehavior>
-            </i:Interaction.Behaviors>
-            <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
+            </i:Interaction.Behaviors>-->
+            
+            <!--<Grid Margin="{StaticResource NavigationViewPageContentMargin}">-->
+            <Grid>
                 <Frame x:Name="NavigationFrame" />
             </Grid>
 
@@ -86,12 +110,12 @@
                                 QueryIcon="Find"
                                 SuggestionChosen="MenuAutoSuggestBox_SuggestionChosen"
                                 AutomationProperties.Name="Menu AutoSuggestBox" />
-                
+
             </NavigationView.AutoSuggestBox>
             <NavigationView.PaneFooter>
-                <StackPanel x:Name="FooterStackPanel" Orientation="Vertical" Visibility="Collapsed">
-                    <NavigationViewItem Icon="Download" AutomationProperties.Name="download" />
-                    <NavigationViewItem Icon="Favorite" AutomationProperties.Name="favorite" />
+                <StackPanel x:Name="FooterStackPanel" Orientation="Vertical" Visibility="Visible">
+                    <NavigationViewItem Icon="Favorite" AutomationProperties.Name="Favorite" />
+                    <NavigationViewItem Icon="Contact" AutomationProperties.Name="Account"/>
                 </StackPanel>
             </NavigationView.PaneFooter>
         </NavigationView>

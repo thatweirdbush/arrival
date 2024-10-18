@@ -75,8 +75,7 @@ public partial class App : Application
             // Views and ViewModels
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
-            services.AddTransient<QuizViewModel>();
-            services.AddTransient<QuizPage>();
+            services.AddTransient<HomeViewModel>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<LoginPage>();
             services.AddTransient<MainViewModel>();

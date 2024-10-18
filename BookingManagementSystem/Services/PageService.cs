@@ -16,7 +16,7 @@ public class PageService : IPageService
     {
         Configure<LoginViewModel, LoginPage>();
         Configure<MainViewModel, MainPage>();
-        Configure<QuizViewModel, QuizPage>();
+        Configure<HomeViewModel, HomePage>();
         Configure<SettingsViewModel, SettingsPage>();
     }
 
