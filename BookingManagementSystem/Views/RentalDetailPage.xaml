@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="BookingManagementSystem.Views.RentalDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BookingManagementSystem.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helper="using:BookingManagementSystem.Helpers"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
+    </Page.Resources>
+
+    <!--<VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        -->
+    <!--641 is the default CompactModeThresholdWidth in NavigationView -->
+    <!--
+                        <AdaptiveTrigger MinWindowWidth="641" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="propertiesGroup1.(RelativePanel.RightOf)" Value="itemHero" />
+                        <Setter Target="propertiesGroup1.(RelativePanel.Below)" Value="title" />
+                        <Setter Target="propertiesGroup2.(RelativePanel.RightOf)" Value="propertiesGroup1" />
+                        <Setter Target="propertiesGroup2.(RelativePanel.Below)" Value="title" />
+                        <Setter Target="propertiesGroup1.Width" Value="200" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>-->
+
+    <ScrollView ContentOrientation="None" ZoomMode="Disabled" IsTabStop="True"
+                HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto"
+                VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto"
+                Margin="{StaticResource NavigationViewPageContentMargin}">
+        <Grid x:Name="ContentArea">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="itemHero">
+                <ScrollView ContentOrientation="None" ZoomMode="Enabled" IsTabStop="True"
+                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                         HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto"
+                         VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto" Padding="0 0 0 00">
+                    <Image x:Name="imgSmartphone" AutomationProperties.Name="cliff" Stretch="Uniform" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind ViewModel.Item.ImagePath, Mode=OneWay}"
+                        ToolTipService.ToolTip="You can scroll, pan and zoom an image in this panel. Try it out!"/>
+                </ScrollView>
+            </Grid>
+
+            <Grid Grid.Column="1" Grid.RowSpan="1" Background="WhiteSmoke" Padding="28" Margin="0 0 0 10">
+                <StackPanel>
+                    <TextBlock FontSize="38" FontWeight="Bold" Text="{x:Bind ViewModel.Item.Name, Mode=OneWay}" TextWrapping="Wrap"/>
+                    <TextBlock FontSize="26" Margin="0 6 0 0" FontWeight="SemiBold" Text="{x:Bind ViewModel.Item.Manufacturer, Mode=OneWay}"/>
+                    <TextBlock FontSize="32" Margin="0 26 0 0" FontWeight="ExtraBlack" FontFamily="Arial" Text="{x:Bind ViewModel.Item.Price, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}"/>
+                    <TextBlock FontSize="16" Margin="0 26 0 0" FontWeight="Normal" TextWrapping="Wrap">Lorem ipsum dolor sit amet, adipiscing elit. Duis eu sed eros facilisis. Fusce purus mana, iaculis et purus.</TextBlock>
+                    <TextBlock FontSize="14" Margin="0 10 0 0" FontWeight="Normal" TextWrapping="Wrap">Proin sit amet libero sed lorem congue at dui. Libendum nec non metus.</TextBlock>
+                    <TextBlock FontSize="14" Margin="0 10 0 0" FontWeight="Normal" TextWrapping="Wrap">* Phasellus in est euismod pharetra.</TextBlock>
+                </StackPanel>
+                <RepeatButton Grid.Row="1" x:Name="btnBuySmartphone" 
+                      HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                      Background="#121212"
+                      Content="Next one"
+                      Foreground="WhiteSmoke"
+                      FontWeight="SemiBold"
+                      Padding="15" Width="150" 
+                      Delay="500" Interval="100" 
+                      ToolTipService.ToolTip="Get a new smartphone. Hold for Burst Mode">
+                </RepeatButton>
+            </Grid>
+
+            <Grid Grid.Row="1" Background="WhiteSmoke" Margin="0 0 10 0" Padding="28 28 28 0">
+                <StackPanel>
+                    <TextBlock FontSize="26" FontWeight="Bold" Padding="0 0 0 6">What's new</TextBlock>
+                    <InfoBar x:Name="infSmartphone" IsOpen="True" Severity="Warning" 
+                      IsIconVisible="True" IsClosable="True" Title="News">
+                        <InfoBar.ActionButton>
+                            <Button Content="Next" ToolTipService.ToolTip="Get next smartphone"/>
+                        </InfoBar.ActionButton>
+                    </InfoBar>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1" Grid.Column="1" Background="WhiteSmoke" Padding="28">
+                <StackPanel VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <TextBlock FontSize="26" FontWeight="Bold" Padding="0 0 0 10">Rating</TextBlock>
+                    <RatingControl AutomationProperties.Name="Simple RatingControl" 
+                       IsClearEnabled="True" IsReadOnly="False" 
+                       Caption="312 ratings" PlaceholderValue="4"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </ScrollView>
+</Page>

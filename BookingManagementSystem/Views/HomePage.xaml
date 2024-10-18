@@ -8,63 +8,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:BookingManagementSystem.Core.Models"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
-
-        <!-- The data template bound to this GridView"s ItemTemplate property is based on which one you
-select from the options on the right. The currently selected DataTemplate is: -->
-
-        <!-- ImageTextTemplate: -->
-        <DataTemplate x:Key = "ImageTextTemplate" x:DataType = "models:Smartphone">
-            <Grid AutomationProperties.Name="{x:Bind Name}" Width = "417" Height="380" Margin="4">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="12*"/>
-                    <RowDefinition Height="8*"/>
-                </Grid.RowDefinitions>
-                <Grid Background="LightGray">
-                    <Image Source = "{x:Bind ImagePath}" Stretch = "Uniform"/>
-                    <Border x:Name="BorderVipMember" CornerRadius="18" Width="82" Height="36" Background="WhiteSmoke" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
-                        <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Image Width="18" Height="18" Source="/Assets/three-body-a.png"/>
-                            <TextBlock Text = "Elite" FontWeight="Bold" Foreground="Black " HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-                    <Button x:Name="btnFavourite" Click="btnFavourite_Click" CornerRadius="48" Width="48" Height="48" Background="Transparent" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10">
-                        <Image x:Name="imgFavourite" Width="20" Height="20" Source="{x:Bind FavouriteImagePath, Mode=OneWay}" Margin="0 2 0 0"/>
-                    </Button>
-                </Grid>
-                <Grid Grid.Row="1" Background="White" Padding="18">
-                    <StackPanel Spacing="4">
-                        <TextBlock Text = "{x:Bind Name}" Style = "{ThemeResource SubtitleTextBlockStyle}"/>
-                        <TextBlock Text = "Ho Chi Minh City, Vietnam" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray"/>
-                        <StackPanel Orientation = "Horizontal" Spacing="8" VerticalAlignment="Center">
-                            <Border CornerRadius="4.5 4.5 4.5 0" Background="#00308F" Width="48" Height="24">
-                                <StackPanel Orientation="Horizontal" Spacing="3" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Image Width="12" Height="12" Source="/Assets/symbol-icons/white-star-icon.png" Stretch="Fill" Margin="0 0 0 3"/>
-                                    <TextBlock Text="4.9" Foreground="WhiteSmoke" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Border>
-                            <TextBlock Text = "Excellent" Style = "{ThemeResource BodyTextBlockStyle}" VerticalAlignment="Center"/>
-                            <TextBlock Text = "•" Style = "{ThemeResource BodyTextBlockStyle}" FontSize="9" VerticalAlignment="Center" Margin="-2 0 -2 0"/>
-                            <TextBlock Text = "136" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" VerticalAlignment="Center"/>
-                            <TextBlock Text = "reviews" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" VerticalAlignment="Center" Margin="-4 0 0 0"/>
-                        </StackPanel>
-                    </StackPanel>
-                    <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Spacing="8">
-                        <!--<StackPanel x:Name="MoreInfo_StackPanel" Orientation="Horizontal" Spacing="3" HorizontalAlignment="Right" VerticalAlignment="Center">
-                            --><!--<TextBlock Text = "2" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <TextBlock Text = "nights" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Center"/>--><!--
-                            <TextBlock Text = "{x:Bind Price, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style = "{ThemeResource DetailSubTitleStyle}" TextDecorations="Strikethrough" Foreground="#D2042D" FontSize="16"/>
-                        </StackPanel>-->
-                        <TextBlock Text = "{x:Bind Price, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style = "{ThemeResource ListTitleStyle}" HorizontalAlignment="Right" FontSize="20"/>
-                    </StackPanel>
-                </Grid>
-            </Grid>
-        </DataTemplate>
-
         <DataTemplate x:Key="ImageTemplate" x:DataType="models:FilteredDestination">
             <ItemContainer HorizontalAlignment="Left" Width="200" Height="140" AutomationProperties.Name="{x:Bind Name}">
                 <Image Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind ImagePath}" Margin="4" AutomationProperties.AccessibilityView="Raw"/>
@@ -209,7 +159,7 @@ select from the options on the right. The currently selected DataTemplate is: --
                         <ItemsRepeater
                                ItemsSource="{x:Bind ViewModel.FilteredDestinations, Mode=OneWay}"
                                Layout="{StaticResource HorizonalStackLayout}"
-                               ItemTemplate="{StaticResource FilteredDestinationItemTemplate}" />                        
+                               ItemTemplate="{StaticResource FilteredDestinationItemTemplate}" />
                     </StackPanel>
                 </Grid>
             </ScrollViewer>
@@ -257,25 +207,86 @@ select from the options on the right. The currently selected DataTemplate is: --
                         <TextBlock Text="Display total before taxes" FontWeight="SemiBold" VerticalAlignment="Center"/>
                         <ToggleSwitch x:Name="ToggleSwitchDisplayTax" OffContent="{x:Null}" OnContent="{x:Null}" MinWidth="0"/>
                     </StackPanel>
-                </Button>                
+                </Button>
             </StackPanel>
         </Grid>
+
         <Grid x:Name="Content" Grid.Row="2" Background="{StaticResource AcrylicInAppFillColorBaseBrush}">
-            <GridView
+            <controls:AdaptiveGridView
+                animations:Connected.ListItemElementName="itemThumbnail"
+                animations:Connected.ListItemKey="animationKeyContentGrid"
+                DesiredWidth="380"
+                ItemHeight="380"                
                 x:Name="ContentGridView"
                 ItemsSource="{x:Bind ViewModel.Smartphones}"
-                ItemTemplate="{StaticResource ImageTextTemplate}"
+                ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
                 IsItemClickEnabled="True"
                 CanDragItems="True"
                 AllowDrop="True"
                 CanReorderItems="True"
                 SelectionMode="Extended"
-                SelectionChanged="ContentGridView_SelectionChanged"
-                ItemClick="ContentGridView_ItemClick"
                 FlowDirection="LeftToRight"
-                Padding="30"/>
-            <!-- ContentGridView_SelectionChanged and ContentGridView_ItemClick are functions defined in the code-behind
-to handle the events of when a selection changes on the GridView and when an item is clicked. -->
+                StretchContentForSingleRow="False"
+                Padding="30">
+                <!--ItemClick="ContentGridView_ItemClick"
+                SelectionChanged="ContentGridView_SelectionChanged"-->
+
+                <controls:AdaptiveGridView.ItemTemplate>
+                    <!-- The data template bound to this AdaptiveGridView"s ItemTemplate property is based on which one you
+                    select from the options on the right. The currently selected DataTemplate is: -->
+                    <!-- ImageTextTemplate: -->
+                    <DataTemplate x:DataType = "models:Smartphone">
+                        <Grid x:Name="itemThumbnail" AutomationProperties.Name="{x:Bind Name}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="12*"/>
+                                <RowDefinition Height="8*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Background="LightGray">
+                                <Image x:Name="ItemThumbnailImage" Source = "{x:Bind ImagePath}" Stretch = "Uniform"/>
+                                <Border x:Name="BorderVipMember" CornerRadius="18" Width="82" Height="36" Background="WhiteSmoke" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
+                                    <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Image Width="18" Height="18" Source="/Assets/three-body-a.png"/>
+                                        <TextBlock Text = "Elite" FontWeight="Bold" Foreground="Black " HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <Button x:Name="btnFavourite" Click="btnFavourite_Click" CornerRadius="48" Width="48" Height="48" Background="Transparent" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10">
+                                    <Image x:Name="imgFavourite" Width="20" Height="20" Source="{x:Bind FavouriteImagePath, Mode=OneWay}" Margin="0 2 0 0"/>
+                                </Button>
+                            </Grid>
+                            <Grid Grid.Row="1" Background="White" Padding="18">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text = "{x:Bind Name}" Style = "{ThemeResource SubtitleTextBlockStyle}"/>
+                                    <TextBlock Text = "Ho Chi Minh City, Vietnam" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray"/>
+                                    <StackPanel Orientation = "Horizontal" Spacing="8" VerticalAlignment="Center">
+                                        <Border CornerRadius="4.5 4.5 4.5 0" Background="#00308F" Width="48" Height="24">
+                                            <StackPanel Orientation="Horizontal" Spacing="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Image Width="12" Height="12" Source="/Assets/symbol-icons/white-star-icon.png" Stretch="Fill" Margin="0 0 0 3"/>
+                                                <TextBlock Text="4.9" Foreground="WhiteSmoke" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <TextBlock Text = "Excellent" Style = "{ThemeResource BodyTextBlockStyle}" VerticalAlignment="Center"/>
+                                        <TextBlock Text = "•" Style = "{ThemeResource BodyTextBlockStyle}" FontSize="9" VerticalAlignment="Center" Margin="-2 0 -2 0"/>
+                                        <TextBlock Text = "136" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" VerticalAlignment="Center"/>
+                                        <TextBlock Text = "reviews" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" VerticalAlignment="Center" Margin="-4 0 0 0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Spacing="8">
+                                    <!--<StackPanel x:Name="MoreInfo_StackPanel" Orientation="Horizontal" Spacing="3" HorizontalAlignment="Right" VerticalAlignment="Center">-->
+                                    <!--<TextBlock Text = "2" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    <TextBlock Text = "nights" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Center"/>-->
+                                    <!--
+                                    <TextBlock Text = "{x:Bind Price, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style = "{ThemeResource DetailSubTitleStyle}" TextDecorations="Strikethrough" Foreground="#D2042D" FontSize="16"/>
+                                </StackPanel>-->
+                                    <TextBlock Text = "{x:Bind Price, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style = "{ThemeResource ListTitleStyle}" HorizontalAlignment="Right" FontSize="20"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </controls:AdaptiveGridView.ItemTemplate>
+
+                <!-- ContentGridView_SelectionChanged and ContentGridView_ItemClick are functions defined in the code-behind
+                to handle the events of when a selection changes on the GridView and when an item is clicked. -->
+            </controls:AdaptiveGridView>
         </Grid>
     </Grid>
 </Page>

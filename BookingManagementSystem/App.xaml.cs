@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.UI.Xaml;
-
-using BookingManagementSystem.Activation;
+﻿using BookingManagementSystem.Activation;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Services;
@@ -12,6 +8,10 @@ using BookingManagementSystem.Notifications;
 using BookingManagementSystem.Services;
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.Views;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.UI.Xaml;
 
 namespace BookingManagementSystem;
 
@@ -73,9 +73,16 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<ContentGridDetailViewModel>();
+            services.AddTransient<ContentGridDetailPage>();
+            services.AddTransient<ContentGridViewModel>();
+            services.AddTransient<RentalDetailPage>();
+            services.AddTransient<RentalDetailViewModel>();
+            services.AddTransient<ContentGridPage>();
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
             services.AddTransient<HomeViewModel>();
+            services.AddTransient<HomePage>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<LoginPage>();
             services.AddTransient<MainViewModel>();
