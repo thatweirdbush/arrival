@@ -72,25 +72,25 @@
                     </ui:Effects.Shadow>
 
                     <StackPanel Orientation="Horizontal" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
-                        <Button x:Name="btnSearchDestinationWrapper" Click="btnSearchDestinationWrapper_Click" Background="Transparent" CornerRadius="28 30 30 28" Width="240" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="28 0 0 0">
+                        <Button x:Name="btnSearchDestinationWrapper" Click="btnSearchDestinationWrapper_Click" Background="Transparent" CornerRadius="24" Width="240" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="28 0 0 0">
                             <StackPanel>
                                 <TextBlock Text="Where" FontWeight="SemiBold" Margin="10 0 0 0" FontSize="12.5"/>
                                 <TextBox x:Name="TextBoxSearchDestination" PlaceholderText="Search destinations" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" MinHeight="0" MinWidth="180" CornerRadius="12" PlaceholderForeground="Gray" Margin="0 0 0 -5"/>
                             </StackPanel>
                         </Button>
-                        <Button x:Name="btnCheckInCalendarWrapper" Click="btnCheckInCalendarWrapper_Click" Background="Transparent" CornerRadius="30" Width="150" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="16 0 0 0">
+                        <Button x:Name="btnCheckInCalendarWrapper" Click="btnCheckInCalendarWrapper_Click" Background="Transparent" CornerRadius="24" Width="150" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="16 0 0 0">
                             <StackPanel>
                                 <TextBlock Text="Check in" FontWeight="SemiBold" FontSize="12.5" Margin="7 0 0 0"/>
                                 <CalendarDatePicker x:Name="CheckInCalendar" PlaceholderText="Dates" DateFormat = "‎{month.full}‎ ‎{day.integer}‎" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" Height="28" Width="130" CornerRadius="12" Foreground="Gray" Margin="-5 0 0 -5"/>
                             </StackPanel>
                         </Button>
-                        <Button x:Name="btnCheckOutCalendarWrapper" Click="btnCheckOutCalendarWrapper_Click" Background="Transparent" CornerRadius="30" Width="150" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="16 0 0 0">
+                        <Button x:Name="btnCheckOutCalendarWrapper" Click="btnCheckOutCalendarWrapper_Click" Background="Transparent" CornerRadius="24" Width="150" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="16 0 0 0">
                             <StackPanel>
                                 <TextBlock Text="Check out" FontWeight="SemiBold" FontSize="12.5" Margin="7 0 0 0"/>
                                 <CalendarDatePicker x:Name="CheckOutCalendar" PlaceholderText="Dates" DateFormat = "‎{month.full}‎ ‎{day.integer}‎" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" Height="28" Width="130" CornerRadius="12" Foreground="Gray" Margin="-5 0 0 -5"/>
                             </StackPanel>
                         </Button>
-                        <Button x:Name="btnAddGuestsWrapper"  Background="Transparent" CornerRadius="30" Width="222" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="28 0 0 0">
+                        <Button x:Name="btnAddGuestsWrapper" Background="Transparent" CornerRadius="24" Width="222" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="28 0 0 0">
                             <Button.Flyout>
                                 <Flyout Placement="Bottom">
                                     <Grid x:Name="AddGuestsGrid">
@@ -129,7 +129,7 @@
                                     <TextBlock Text="Who" FontWeight="SemiBold" FontSize="12.5" Margin="0 0 0 0"/>
                                     <TextBlock Text="Add guests" FontWeight="Normal" Foreground="Gray" Padding="0 4 0 3"/>
                                 </StackPanel>
-                                <Button CornerRadius="20" Width="96" Margin="80 0 0 0" VerticalAlignment="Stretch" BorderThickness="0" Background="Black">
+                                <Button CornerRadius="20" Width="96" Margin="84 0 0 0" VerticalAlignment="Stretch" BorderThickness="0" Background="Black">
                                     <StackPanel Orientation="Horizontal" Spacing="4">
                                         <Image Source="/Assets/symbol-icons/search-icon-white.png" Width="18" Height="18"/>
                                         <TextBlock Text="Search" FontWeight="SemiBold" Foreground="GhostWhite"/>
@@ -243,7 +243,11 @@
                                 <RowDefinition Height="8*"/>
                             </Grid.RowDefinitions>
                             <Grid Background="LightGray">
-                                <Image x:Name="ItemThumbnailImage" Source = "{x:Bind ImagePath}" Stretch = "Uniform"/>
+                                <FlipView>
+                                    <Image Source = "{x:Bind ImagePath}" Stretch = "Uniform"/>
+                                    <Image Source = "{x:Bind ImagePath}" Stretch = "Uniform"/>
+                                    <Image Source = "{x:Bind ImagePath}" Stretch = "Uniform"/>
+                                </FlipView>
                                 <Border x:Name="BorderVipMember" CornerRadius="18" Width="82" Height="36" Background="WhiteSmoke" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
                                     <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Image Width="18" Height="18" Source="/Assets/three-body-a.png"/>

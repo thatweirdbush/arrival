@@ -45,15 +45,37 @@
                 <RowDefinition Height="3*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            
             <Grid x:Name="itemHero">
-                <ScrollView ContentOrientation="None" ZoomMode="Enabled" IsTabStop="True"
+                <FlipView x:Name="Gallery" Padding="0 0 0 24">
+                    <ScrollView ContentOrientation="None" ZoomMode="Enabled" IsTabStop="True"
                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                         HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Auto"
-                         VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto" Padding="0 0 0 00">
-                    <Image x:Name="imgSmartphone" AutomationProperties.Name="cliff" Stretch="Uniform" 
+                         HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Hidden"
+                         VerticalScrollMode="Auto" VerticalScrollBarVisibility="Hidden">
+                        <Image AutomationProperties.Name="cliff" Stretch="Uniform" 
                         HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind ViewModel.Item.ImagePath, Mode=OneWay}"
                         ToolTipService.ToolTip="You can scroll, pan and zoom an image in this panel. Try it out!"/>
-                </ScrollView>
+                    </ScrollView>
+                    <ScrollView ContentOrientation="None" ZoomMode="Enabled" IsTabStop="True"
+                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                         HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Hidden"
+                         VerticalScrollMode="Auto" VerticalScrollBarVisibility="Hidden">
+                        <Image AutomationProperties.Name="cliff" Stretch="Uniform" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind ViewModel.Item.ImagePath, Mode=OneWay}"
+                        ToolTipService.ToolTip="You can scroll, pan and zoom an image in this panel. Try it out!"/>
+                    </ScrollView>
+                    <ScrollView ContentOrientation="None" ZoomMode="Enabled" IsTabStop="True"
+                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                         HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Hidden"
+                         VerticalScrollMode="Auto" VerticalScrollBarVisibility="Hidden">
+                        <Image AutomationProperties.Name="cliff" Stretch="Uniform" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind ViewModel.Item.ImagePath, Mode=OneWay}"
+                        ToolTipService.ToolTip="You can scroll, pan and zoom an image in this panel. Try it out!"/>
+                    </ScrollView>
+                </FlipView>
+                <PipsPager x:Name="FlipViewPipsPager" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                           NumberOfPages="3" PreviousButtonVisibility="Visible" NextButtonVisibility="Visible"
+                           SelectedPageIndex="{x:Bind Path=Gallery.SelectedIndex, Mode=TwoWay}" />
             </Grid>
 
             <Grid Grid.Column="1" Grid.RowSpan="1" Background="WhiteSmoke" Padding="28" Margin="0 0 0 10">
