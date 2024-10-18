@@ -44,7 +44,7 @@ public sealed partial class RentalDetailPage : Page
 
         // Always show the Smartphone even if the InfoBar is closed
         infSmartphone.IsOpen = true;
-        infSmartphone.Message = ViewModel.Item.ToString();
+        infSmartphone.Message = ViewModel.Item?.ToString() ?? "No item available";
     }
 
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

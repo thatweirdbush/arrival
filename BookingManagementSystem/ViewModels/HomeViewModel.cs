@@ -381,7 +381,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     {
         _navigationService = navigationService;
     }
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
     {
         //Source.Clear();
 

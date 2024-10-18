@@ -1,0 +1,17 @@
+﻿<Page
+    x:Class="BookingManagementSystem.Views.MapPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:models="using:BookingManagementSystem.Core.Models"
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled">
+
+    <Grid x:Name="ContentArea">
+        <MapControl x:Name="MainMap" ZoomLevel="7" InteractiveControlsVisible="True"
+                    MapServiceToken="352f0vVlENdpT0cartYn1Hi87HGCWqtpZIt49tcyHSkYVkuMEq53JQQJ99AJACYeBjFx5reYAAAgAZMP3AqG"/>
+    </Grid>
+</Page>

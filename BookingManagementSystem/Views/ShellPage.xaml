@@ -66,10 +66,9 @@
                         <SymbolIcon Symbol="CellPhone"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-
-                <NavigationViewItem x:Uid="Shell_ContentGrid" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.ContentGridViewModel">
+                <NavigationViewItem x:Uid="Shell_Map" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.MapViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xf0e2;"/>
+                        <SymbolIcon Symbol="Map"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>

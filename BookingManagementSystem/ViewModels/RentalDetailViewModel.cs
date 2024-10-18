@@ -19,9 +19,9 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     {
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
     {
-        if (parameter is int ID)
+        if (parameter is int)
         {
             //var data = await _sampleDataService.GetContentGridDataAsync();
             //Item = data.First(i => i.OrderID == orderID);

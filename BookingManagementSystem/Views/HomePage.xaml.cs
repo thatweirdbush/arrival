@@ -32,26 +32,6 @@ public sealed partial class HomePage : Page
         InitializeComponent();
     }
 
-    private void ContentGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-
-    }
-
-    private void ContentGridView_ItemClick(object sender, ItemClickEventArgs e)
-    {
-
-    }
-
-    private void scroller_SizeChanged(object sender, SizeChangedEventArgs e)
-    {
-
-    }
-
-    private void scroller_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
-    {
-
-    }
-
     private void btnToggleSwitchWrapper_Click(object sender, RoutedEventArgs e)
     {
         // Toggle the switch
@@ -78,11 +58,9 @@ public sealed partial class HomePage : Page
 
     private void btnFavourite_Click(object sender, RoutedEventArgs e)
     {
-        //// Toggle the favourite button
-        //// Change the image source to the filled heart icon
-        var smartphone = (sender as FrameworkElement).DataContext as Smartphone;
-
-        if (smartphone != null)
+        // Toggle the favourite button
+        // Change the image source to the filled heart icon
+        if ((sender as FrameworkElement).DataContext is Smartphone smartphone)
         {
             smartphone.IsFavourite = !smartphone.IsFavourite;
         }

@@ -18,8 +18,7 @@ public class PageService : IPageService
         Configure<MainViewModel, MainPage>();
         Configure<HomeViewModel, HomePage>();
         Configure<SettingsViewModel, SettingsPage>();
-        Configure<ContentGridViewModel, ContentGridPage>();
-        Configure<ContentGridDetailViewModel, ContentGridDetailPage>();
+        Configure<MapViewModel, MapPage>();
         Configure<RentalDetailViewModel, RentalDetailPage>();
     }
 
