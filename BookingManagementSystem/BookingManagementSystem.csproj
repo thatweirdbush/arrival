@@ -114,6 +114,7 @@
     <None Remove="Assets\Wide310x150Logo.scale-200.png" />
     <None Remove="Assets\Wide310x150Logo.scale-400.png" />
     <None Remove="Views\HomePage.xaml" />
+    <None Remove="Views\SignupPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -271,6 +272,9 @@
     <None Update="Assets\three-body-a-white.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\SignupPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

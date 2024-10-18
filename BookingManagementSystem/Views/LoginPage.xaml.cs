@@ -6,6 +6,7 @@ using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.DataProtection;
 using Windows.Storage;
 using BookingManagementSystem.ViewModels;
+using Microsoft.UI.Xaml.Documents;
 
 namespace BookingManagementSystem.Views;
 
@@ -145,5 +146,10 @@ public sealed partial class LoginPage : Page
             contentDialog.Content = "Login failed! Incorrect username or password.";
             await contentDialog.ShowAsync();
         }
+    }
+
+    private void Hyperlink_Signup_Click(Hyperlink sender, HyperlinkClickEventArgs e)
+    {
+        Frame.Navigate(typeof(SignupPage));
     }
 }
