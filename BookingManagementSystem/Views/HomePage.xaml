@@ -76,34 +76,41 @@ select from the options on the right. The currently selected DataTemplate is: --
                 <Image Source="/Assets/arrival-bio-white.png" Height="36" Margin="12 0 0 0" Stretch="Fill"/>
             </StackPanel>
             <Grid Grid.Column="0" Grid.ColumnSpan="2" Margin="0 56 0 0">
-                <Border x:Name="ShadowTarget"/>
-                <Border CornerRadius="28" Background="LightGray" Width="760" Height="60">
+                <!--A designated sibling element to sit behind all elements which you'd like to have casing shadows-->
+                <Border x:Name="ShadowTarget" CornerRadius="28" Width="760" Height="60"/>
+                <!--Another sibling element that set up background acrylic effect for parent element-->
+                <Border CornerRadius="28" Width="760" Height="60">
+                    <Border.Background>
+                        <ImageBrush ImageSource="/Assets/homescreen.jpg" Stretch="UniformToFill"/>
+                    </Border.Background>
+                </Border>
+                <Border CornerRadius="28" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}" Width="760" Height="60">
                     <ui:Effects.Shadow>
                         <ui:AttachedDropShadow CastTo="{x:Bind ShadowTarget}"
                                        CornerRadius="32"
                                        Offset="4,4" />
                     </ui:Effects.Shadow>
 
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="btnSearchDestinationWrapper" Click="btnSearchDestinationWrapper_Click" Background="LightGray" CornerRadius="28 30 30 28" Width="240" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="28 0 0 0">
+                    <StackPanel Orientation="Horizontal" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
+                        <Button x:Name="btnSearchDestinationWrapper" Click="btnSearchDestinationWrapper_Click" Background="Transparent" CornerRadius="28 30 30 28" Width="240" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="28 0 0 0">
                             <StackPanel>
                                 <TextBlock Text="Where" FontWeight="SemiBold" Margin="10 0 0 0" FontSize="12.5"/>
                                 <TextBox x:Name="TextBoxSearchDestination" PlaceholderText="Search destinations" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" MinHeight="0" MinWidth="180" CornerRadius="12" PlaceholderForeground="Gray" Margin="0 0 0 -5"/>
                             </StackPanel>
                         </Button>
-                        <Button x:Name="btnCheckInCalendarWrapper" Click="btnCheckInCalendarWrapper_Click" Background="LightGray" CornerRadius="30" Width="150" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="16 0 0 0">
+                        <Button x:Name="btnCheckInCalendarWrapper" Click="btnCheckInCalendarWrapper_Click" Background="Transparent" CornerRadius="30" Width="150" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="16 0 0 0">
                             <StackPanel>
                                 <TextBlock Text="Check in" FontWeight="SemiBold" FontSize="12.5" Margin="7 0 0 0"/>
                                 <CalendarDatePicker x:Name="CheckInCalendar" PlaceholderText="Dates" DateFormat = "‎{month.full}‎ ‎{day.integer}‎" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" Height="28" Width="130" CornerRadius="12" Foreground="Gray" Margin="-5 0 0 -5"/>
                             </StackPanel>
                         </Button>
-                        <Button x:Name="btnCheckOutCalendarWrapper" Click="btnCheckOutCalendarWrapper_Click" Background="LightGray" CornerRadius="30" Width="150" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="16 0 0 0">
+                        <Button x:Name="btnCheckOutCalendarWrapper" Click="btnCheckOutCalendarWrapper_Click" Background="Transparent" CornerRadius="30" Width="150" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="16 0 0 0">
                             <StackPanel>
                                 <TextBlock Text="Check out" FontWeight="SemiBold" FontSize="12.5" Margin="7 0 0 0"/>
                                 <CalendarDatePicker x:Name="CheckOutCalendar" PlaceholderText="Dates" DateFormat = "‎{month.full}‎ ‎{day.integer}‎" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" Height="28" Width="130" CornerRadius="12" Foreground="Gray" Margin="-5 0 0 -5"/>
                             </StackPanel>
                         </Button>
-                        <Button x:Name="btnAddGuestsWrapper"  Background="LightGray" CornerRadius="30" Width="222" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="28 0 0 0">
+                        <Button x:Name="btnAddGuestsWrapper"  Background="Transparent" CornerRadius="30" Width="222" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="28 0 0 0">
                             <Button.Flyout>
                                 <Flyout Placement="Bottom">
                                     <Grid x:Name="AddGuestsGrid">
