@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -74,5 +74,17 @@ public sealed partial class HomePage : Page
     {
         // Focus on TextBox
         TextBoxSearchDestination.Focus(FocusState.Programmatic);
+    }
+
+    private void btnFavourite_Click(object sender, RoutedEventArgs e)
+    {
+        //// Toggle the favourite button
+        //// Change the image source to the filled heart icon
+        var smartphone = (sender as FrameworkElement).DataContext as Smartphone;
+
+        if (smartphone != null)
+        {
+            smartphone.IsFavourite = !smartphone.IsFavourite;
+        }
     }
 }

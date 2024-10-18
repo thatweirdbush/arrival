@@ -35,6 +35,13 @@ public class Smartphone : INotifyPropertyChanged
         get => $"{MS_APPX}{_imagePath}";
         set => _imagePath = value;
     }
+
+    public bool IsFavourite
+    {
+        get; set;
+    }
+    public string FavouriteImagePath => IsFavourite ? "/Assets/symbol-icons/favorite-checked.png" : "/Assets/symbol-icons/favorite.png";
+
     public override string ToString()
     {
         return $"{Name} by {Manufacturer}, starts from ${Price}";

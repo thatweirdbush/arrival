@@ -53,8 +53,11 @@
     <Content Remove="Assets\smartphone-images\s24-ultra.png" />
     <Content Remove="Assets\smartphone-images\vivo-x100-pro.png" />
     <Content Remove="Assets\smartphone-images\xiaomi-14-ultra.png" />
+    <Content Remove="Assets\symbol-icons\favorite-checked.png" />
+    <Content Remove="Assets\symbol-icons\favorite.png" />
     <Content Remove="Assets\symbol-icons\filter-icon.png" />
     <Content Remove="Assets\symbol-icons\search-icon-white.png" />
+    <Content Remove="Assets\symbol-icons\white-star-icon.png" />
     <Content Remove="Assets\three-body-a-white.png" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +141,21 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookingManagementSystem.Core\BookingManagementSystem.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\symbol-icons\favorite-checked.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\symbol-icons\favorite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\symbol-icons\white-star-icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
