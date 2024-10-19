@@ -3,38 +3,18 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BookingManagementSystem.Views"
+    xmlns:helper="using:BookingManagementSystem.Helpers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:BookingManagementSystem.Core.Models"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    NavigationCacheMode="Enabled">
 
     <Page.Resources>
-        <!-- The data template bound to this GridView"s ItemTemplate property is based on which one you
-select from the options on the right. The currently selected DataTemplate is: -->
-
-        <!-- ImageTextTemplate: -->
-        <DataTemplate x:Key = "ImageTextTemplate" x:DataType = "models:Smartphone">
-            <Grid AutomationProperties.Name = "{x:Bind Name}" Width = "415" Height="280">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width = "2*"/>
-                    <ColumnDefinition Width = "*"/>
-                </Grid.ColumnDefinitions>
-                <Image Source = "{x:Bind ImagePath}" Stretch = "Uniform" VerticalAlignment = "Top"/>
-                <StackPanel Grid.Column = "1" Padding="0 24 12 0">
-                    <TextBlock Text = "{x:Bind Name}" Style = "{ThemeResource SubtitleTextBlockStyle}" Margin = "0,0,0,8"/>
-                    <StackPanel Orientation = "Horizontal">
-                        <TextBlock Text = "{x:Bind Manufacturer}" Style = "{ThemeResource BodyStrongTextBlockStyle}"/>
-                    </StackPanel>
-                    <StackPanel Orientation = "Horizontal">
-                        <TextBlock Text = "$" Style = "{ThemeResource SubheaderTextBlockStyle}"/>
-                        <TextBlock Text = "{x:Bind Price}" Style = "{ThemeResource SubheaderTextBlockStyle}"/>
-                    </StackPanel>
-                </StackPanel>
-            </Grid>
-        </DataTemplate>
-
+        <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
         <DataTemplate x:Key="ImageTemplate" x:DataType="models:FilteredDestination">
             <ItemContainer HorizontalAlignment="Left" Width="200" Height="140" AutomationProperties.Name="{x:Bind Name}">
                 <Image Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind ImagePath}" Margin="4" AutomationProperties.AccessibilityView="Raw"/>
@@ -54,10 +34,9 @@ select from the options on the right. The currently selected DataTemplate is: --
                 </StackPanel>
             </Button>
         </DataTemplate>
-
     </Page.Resources>
 
-    <Grid>
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="78"/>
@@ -76,34 +55,55 @@ select from the options on the right. The currently selected DataTemplate is: --
                 <Image Source="/Assets/arrival-bio-white.png" Height="36" Margin="12 0 0 0" Stretch="Fill"/>
             </StackPanel>
             <Grid Grid.Column="0" Grid.ColumnSpan="2" Margin="0 56 0 0">
-                <Border x:Name="ShadowTarget"/>
-                <Border CornerRadius="28" Background="LightGray" Width="760" Height="60">
+                <!--A designated sibling element to sit behind all elements which you'd like to have casing shadows-->
+                <Border x:Name="ShadowTarget" CornerRadius="28" Width="760" Height="60"/>
+                <!--Another sibling element that set up background acrylic effect for parent element-->
+                <Border CornerRadius="28" Width="760" Height="60">
+                    <Border.Background>
+                        <ImageBrush ImageSource="/Assets/homescreen.jpg" Stretch="UniformToFill"/>
+                    </Border.Background>
+                </Border>
+                <Border CornerRadius="28" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}" Width="760" Height="60">
                     <ui:Effects.Shadow>
                         <ui:AttachedDropShadow CastTo="{x:Bind ShadowTarget}"
                                        CornerRadius="32"
                                        Offset="4,4" />
                     </ui:Effects.Shadow>
 
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="btnSearchDestinationWrapper" Click="btnSearchDestinationWrapper_Click" Background="LightGray" CornerRadius="28 30 30 28" Width="240" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="28 0 0 0">
+                    <StackPanel Orientation="Horizontal" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
+                        <Button x:Name="btnSearchDestinationWrapper" Click="btnSearchDestinationWrapper_Click" Background="Transparent" CornerRadius="24" Width="240" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="28 0 0 0">
                             <StackPanel>
                                 <TextBlock Text="Where" FontWeight="SemiBold" Margin="10 0 0 0" FontSize="12.5"/>
-                                <TextBox x:Name="TextBoxSearchDestination" PlaceholderText="Search destinations" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" MinHeight="0" MinWidth="180" CornerRadius="12" PlaceholderForeground="Gray" Margin="0 0 0 -5"/>
+                                <AutoSuggestBox x:Name="DestinationAutoSuggestBox" 
+                                                PlaceholderText="Search destinations" 
+                                                BorderThickness="0" Background="Transparent" 
+                                                MinHeight="0" MinWidth="200" CornerRadius="12" 
+                                                Foreground="Gray" Margin="0 0 0 -9"
+                                                TextChanged="DestinationAutoSuggestBox_TextChanged"
+                                                SuggestionChosen="DestinationAutoSuggestBox_SuggestionChosen"
+                                                AutomationProperties.Name="Destination AutoSuggestBox">
+                                    <AutoSuggestBox.Resources>
+                                        <Style TargetType="FlyoutPresenter">
+                                            <Setter Property="MinWidth" Value="500"/>
+                                            <Setter Property="MaxWidth" Value="1000"/>
+                                        </Style>
+                                    </AutoSuggestBox.Resources>
+                                </AutoSuggestBox>
                             </StackPanel>
                         </Button>
-                        <Button x:Name="btnCheckInCalendarWrapper" Click="btnCheckInCalendarWrapper_Click" Background="LightGray" CornerRadius="30" Width="150" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="16 0 0 0">
+                        <Button x:Name="btnCheckInCalendarWrapper" Click="btnCheckInCalendarWrapper_Click" Background="Transparent" CornerRadius="24" Width="150" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="16 0 0 0">
                             <StackPanel>
                                 <TextBlock Text="Check in" FontWeight="SemiBold" FontSize="12.5" Margin="7 0 0 0"/>
-                                <CalendarDatePicker x:Name="CheckInCalendar" PlaceholderText="Dates" DateFormat = "‎{month.full}‎ ‎{day.integer}‎" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" Height="28" Width="130" CornerRadius="12" Foreground="Gray" Margin="-5 0 0 -5"/>
+                                <CalendarDatePicker x:Name="CheckInCalendar" PlaceholderText="Dates" DateFormat="‎{month.full}‎ ‎{day.integer}‎" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" Height="28" CornerRadius="12 12 16 16" Foreground="Gray" Margin="-5 0 0 -5"/>
                             </StackPanel>
                         </Button>
-                        <Button x:Name="btnCheckOutCalendarWrapper" Click="btnCheckOutCalendarWrapper_Click" Background="LightGray" CornerRadius="30" Width="150" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="16 0 0 0">
+                        <Button x:Name="btnCheckOutCalendarWrapper" Click="btnCheckOutCalendarWrapper_Click" Background="Transparent" CornerRadius="24" Width="150" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="16 0 0 0">
                             <StackPanel>
                                 <TextBlock Text="Check out" FontWeight="SemiBold" FontSize="12.5" Margin="7 0 0 0"/>
-                                <CalendarDatePicker x:Name="CheckOutCalendar" PlaceholderText="Dates" DateFormat = "‎{month.full}‎ ‎{day.integer}‎" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" Height="28" Width="130" CornerRadius="12" Foreground="Gray" Margin="-5 0 0 -5"/>
+                                <CalendarDatePicker x:Name="CheckOutCalendar" PlaceholderText="Dates" DateFormat="‎{month.full}‎ ‎{day.integer}‎" BorderThickness="0" Background="Transparent" Height="28" CornerRadius="12 12 16 16" Foreground="Gray" Margin="-5 0 0 -5"/>
                             </StackPanel>
                         </Button>
-                        <Button x:Name="btnAddGuestsWrapper"  Background="LightGray" CornerRadius="30" Width="222" VerticalAlignment="Stretch" BorderThickness="0" HorizontalContentAlignment="Left" Padding="28 0 0 0">
+                        <Button x:Name="btnAddGuestsWrapper" Background="Transparent" CornerRadius="24" Width="222" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="28 0 0 0">
                             <Button.Flyout>
                                 <Flyout Placement="Bottom">
                                     <Grid x:Name="AddGuestsGrid">
@@ -138,15 +138,39 @@ select from the options on the right. The currently selected DataTemplate is: --
                             </Button.Flyout>
 
                             <Grid>
-                                <StackPanel>
-                                    <TextBlock Text="Who" FontWeight="SemiBold" FontSize="12.5" Margin="0 0 0 0"/>
+                                <StackPanel Margin="0 3 0 0">
+                                    <TextBlock Text="Who" FontWeight="SemiBold" FontSize="12.5" Margin="0 0 0 1"/>
                                     <TextBlock Text="Add guests" FontWeight="Normal" Foreground="Gray" Padding="0 4 0 3"/>
                                 </StackPanel>
-                                <Button CornerRadius="20" Width="96" Margin="80 0 0 0" VerticalAlignment="Stretch" BorderThickness="0" Background="Black">
-                                    <StackPanel Orientation="Horizontal" Spacing="4">
-                                        <Image Source="/Assets/symbol-icons/search-icon-white.png" Width="18" Height="18"/>
-                                        <TextBlock Text="Search" FontWeight="SemiBold" Foreground="GhostWhite"/>
-                                    </StackPanel>
+                                <Button x:Name="btnSearch">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Grid>
+                                                <Button x:Name="btnSearch" CornerRadius="20" Width="96" Height="44" Margin="84 0 0 0" VerticalAlignment="Stretch" BorderThickness="0" Background="{ThemeResource SystemControlBackgroundChromeBlackHighBrush}">
+                                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                                        <Image x:Name="imgSearch" Source="/Assets/symbol-icons/search-icon-white.png" Width="18" Height="18"/>
+                                                        <TextBlock x:Name="txtSearch" Text="Search" FontWeight="SemiBold" Foreground="GhostWhite"/>
+                                                    </StackPanel>
+                                                </Button>
+                                                <VisualStateManager.VisualStateGroups>
+                                                    <VisualStateGroup>
+                                                        <VisualState x:Name="PointerOver">
+                                                            <VisualState.Setters>
+                                                                <Setter Target="txtSearch.Foreground" Value="Black"/>
+                                                                <Setter Target="imgSearch.Source" Value="/Assets/symbol-icons/search-icon.png"/>
+                                                            </VisualState.Setters>
+                                                        </VisualState>
+                                                        <VisualState x:Name="Normal">
+                                                            <VisualState.Setters>
+                                                                <Setter Target="txtSearch.Foreground" Value="GhostWhite"/>
+                                                                <Setter Target="imgSearch.Source" Value="/Assets/symbol-icons/search-icon-white.png"/>
+                                                            </VisualState.Setters>
+                                                        </VisualState>
+                                                    </VisualStateGroup>
+                                                </VisualStateManager.VisualStateGroups>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Button.Template>
                                 </Button>
                             </Grid>
                         </Button>
@@ -164,16 +188,14 @@ select from the options on the right. The currently selected DataTemplate is: --
                     HorizontalScrollBarVisibility="Hidden"
                     VerticalScrollBarVisibility="Hidden"
                     HorizontalScrollMode="Enabled"
-                    SizeChanged="scroller_SizeChanged"
                     VerticalScrollMode="Disabled"
-                    ViewChanging="scroller_ViewChanging"
                     Padding="0 0 28 0">
                 <Grid x:Name="ContentGrid" Margin="36,0,36,0">
                     <StackPanel Orientation="Horizontal" Spacing="12" Grid.Column="1">
                         <ItemsRepeater
                                ItemsSource="{x:Bind ViewModel.FilteredDestinations, Mode=OneWay}"
                                Layout="{StaticResource HorizonalStackLayout}"
-                               ItemTemplate="{StaticResource FilteredDestinationItemTemplate}" />                        
+                               ItemTemplate="{StaticResource FilteredDestinationItemTemplate}" />
                     </StackPanel>
                 </Grid>
             </ScrollViewer>
@@ -212,38 +234,93 @@ select from the options on the right. The currently selected DataTemplate is: --
                         </Flyout>
                     </Button.Flyout>
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <!--<SymbolIcon Symbol="Filter"/>-->
                         <Image Source="/Assets/symbol-icons/filter-icon.png" Width="18" Height="18"/>
                         <TextBlock Text="Filters" FontWeight="SemiBold"/>
                     </StackPanel>
                 </Button>
                 <Button x:Name="btnToggleSwitchWrapper" Click="btnToggleSwitchWrapper_Click" Padding="14 3 10 3" CornerRadius="12">
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <!--<SymbolIcon Symbol="Filter"/>-->
                         <TextBlock Text="Display total before taxes" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                        <!--<Image Source="/Assets/symbol-icons/filter-icon.png" Width="18" Height="18"/>-->
                         <ToggleSwitch x:Name="ToggleSwitchDisplayTax" OffContent="{x:Null}" OnContent="{x:Null}" MinWidth="0"/>
                     </StackPanel>
-                </Button>                
+                </Button>
             </StackPanel>
         </Grid>
-        <Grid x:Name="Content" Grid.Row="2" Background="{StaticResource AcrylicInAppFillColorBaseBrush}">
-            <!-- The GridView used for this sample is shown below, with all of the necessary added properties. -->
-            <GridView
+
+        <Grid x:Name="Content" Grid.Row="2" Background="Transparent">
+            <controls:AdaptiveGridView
+                animations:Connected.ListItemElementName="itemThumbnail"
+                animations:Connected.ListItemKey="animationKeyContentGrid"
+                DesiredWidth="380"
+                ItemHeight="380"                
                 x:Name="ContentGridView"
                 ItemsSource="{x:Bind ViewModel.Smartphones}"
-                ItemTemplate="{StaticResource ImageTextTemplate}"
+                ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
                 IsItemClickEnabled="True"
                 CanDragItems="True"
                 AllowDrop="True"
                 CanReorderItems="True"
                 SelectionMode="Extended"
-                SelectionChanged="ContentGridView_SelectionChanged"
-                ItemClick="ContentGridView_ItemClick"
                 FlowDirection="LeftToRight"
-                Padding="30"/>
-            <!-- ContentGridView_SelectionChanged and ContentGridView_ItemClick are functions defined in the code-behind
-to handle the events of when a selection changes on the GridView and when an item is clicked. -->
+                StretchContentForSingleRow="False"
+                Padding="30">
+                <controls:AdaptiveGridView.ItemTemplate>
+                    <!-- The data template bound to this AdaptiveGridView"s ItemTemplate property is based on which one you
+                    select from the options on the right. The currently selected DataTemplate is: -->
+                    <!-- ImageTextTemplate: -->
+                    <DataTemplate x:DataType = "models:Smartphone">
+                        <Grid x:Name="itemThumbnail" AutomationProperties.Name="{x:Bind Name}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="12*"/>
+                                <RowDefinition Height="8*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Background="LightGray">
+                                <FlipView>
+                                    <Image Source = "{x:Bind ImagePath}" Stretch = "Uniform"/>
+                                    <Image Source = "{x:Bind ImagePath}" Stretch = "Uniform"/>
+                                    <Image Source = "{x:Bind ImagePath}" Stretch = "Uniform"/>
+                                </FlipView>
+                                <Border x:Name="BorderVipMember" CornerRadius="18" Width="82" Height="36" Background="WhiteSmoke" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
+                                    <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Image Width="18" Height="18" Source="/Assets/three-body-a.png"/>
+                                        <TextBlock Text = "Elite" FontWeight="Bold" Foreground="Black " HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                                <Button x:Name="btnFavourite" Click="btnFavourite_Click" CornerRadius="48" Width="48" Height="48" Background="Transparent" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10">
+                                    <Image x:Name="imgFavourite" Width="20" Height="20" Source="{x:Bind FavouriteImagePath, Mode=OneWay}" Margin="0 2 0 0"/>
+                                </Button>
+                            </Grid>
+                            <Grid Grid.Row="1" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}" Padding="18">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text = "{x:Bind Name}" Style = "{ThemeResource SubtitleTextBlockStyle}"/>
+                                    <TextBlock Text = "Ho Chi Minh City, Vietnam" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray"/>
+                                    <StackPanel Orientation = "Horizontal" Spacing="8" VerticalAlignment="Center">
+                                        <Border CornerRadius="4.5 4.5 4.5 0" Background="#00308F" Width="48" Height="24">
+                                            <StackPanel Orientation="Horizontal" Spacing="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Image Width="12" Height="12" Source="/Assets/symbol-icons/white-star-icon.png" Stretch="Fill" Margin="0 0 0 3"/>
+                                                <TextBlock Text="4.9" Foreground="WhiteSmoke" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <TextBlock Text = "Excellent" Style = "{ThemeResource BodyTextBlockStyle}" VerticalAlignment="Center"/>
+                                        <TextBlock Text = "•" Style = "{ThemeResource BodyTextBlockStyle}" FontSize="9" VerticalAlignment="Center" Margin="-2 0 -2 0"/>
+                                        <TextBlock Text = "136" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" VerticalAlignment="Center"/>
+                                        <TextBlock Text = "reviews" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" VerticalAlignment="Center" Margin="-4 0 0 0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Spacing="8">
+                                    <!--<StackPanel x:Name="MoreInfo_StackPanel" Orientation="Horizontal" Spacing="3" HorizontalAlignment="Right" VerticalAlignment="Center">-->
+                                    <!--<TextBlock Text = "2" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    <TextBlock Text = "nights" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Center"/>-->
+                                    <!--
+                                    <TextBlock Text = "{x:Bind Price, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style = "{ThemeResource DetailSubTitleStyle}" TextDecorations="Strikethrough" Foreground="#D2042D" FontSize="16"/>
+                                </StackPanel>-->
+                                    <TextBlock Text = "{x:Bind Price, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style = "{ThemeResource ListTitleStyle}" HorizontalAlignment="Right" FontSize="20"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </controls:AdaptiveGridView.ItemTemplate>
+            </controls:AdaptiveGridView>
         </Grid>
     </Grid>
 </Page>

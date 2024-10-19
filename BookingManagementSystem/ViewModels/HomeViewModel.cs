@@ -5,11 +5,16 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.Core.Services;
+using CommunityToolkit.Mvvm.Input;
 
 namespace BookingManagementSystem.ViewModels;
 
-public partial class HomeViewModel : ObservableRecipient
+public partial class HomeViewModel : ObservableRecipient, INavigationAware
 {
+    private readonly INavigationService _navigationService;
+
     // Filtered destination data
     private ObservableCollection<FilteredDestination> _filteredDestinations
     {
@@ -91,6 +96,13 @@ public partial class HomeViewModel : ObservableRecipient
     } = new()
     {
         new Smartphone(){
+            Id = 0,
+            Name = "iPhone 16 Pro Max",
+            Manufacturer = "Apple",
+            Price = 2099,
+            ImagePath = "iphone-16-pro-max.png"
+        },
+        new Smartphone(){
             Id = 1,
             Name = "iPhone 15 Pro Max",
             Manufacturer = "Apple",
@@ -168,11 +180,11 @@ public partial class HomeViewModel : ObservableRecipient
             ImagePath = "oppo-find-x7-ultra.png"
         },
         new Smartphone(){
-            Id = 6,
-            Name = "Find X7 Ultra",
-            Manufacturer = "OPPO",
-            Price = 1699,
-            ImagePath = "oppo-find-x7-ultra.png"
+            Id = 1,
+            Name = "iPhone 15 Pro Max",
+            Manufacturer = "Apple",
+            Price = 2999,
+            ImagePath = "iphone-15-pro-max-titanium.png"
         },
         new Smartphone(){
             Id = 6,
@@ -189,11 +201,11 @@ public partial class HomeViewModel : ObservableRecipient
             ImagePath = "oppo-find-x7-ultra.png"
         },
         new Smartphone(){
-            Id = 6,
-            Name = "Find X7 Ultra",
-            Manufacturer = "OPPO",
-            Price = 1699,
-            ImagePath = "oppo-find-x7-ultra.png"
+            Id = 1,
+            Name = "iPhone 15 Pro Max",
+            Manufacturer = "Apple",
+            Price = 2999,
+            ImagePath = "iphone-15-pro-max-titanium.png"
         },
         new Smartphone(){
             Id = 6,
@@ -203,11 +215,11 @@ public partial class HomeViewModel : ObservableRecipient
             ImagePath = "oppo-find-x7-ultra.png"
         },
         new Smartphone(){
-            Id = 6,
-            Name = "Find X7 Ultra",
-            Manufacturer = "OPPO",
-            Price = 1699,
-            ImagePath = "oppo-find-x7-ultra.png"
+            Id = 1,
+            Name = "iPhone 15 Pro Max",
+            Manufacturer = "Apple",
+            Price = 2999,
+            ImagePath = "iphone-15-pro-max-titanium.png"
         },
         new Smartphone(){
             Id = 6,
@@ -365,7 +377,33 @@ public partial class HomeViewModel : ObservableRecipient
         return SelectedSmartphone;
     }
 
-    public HomeViewModel()
+    public HomeViewModel(INavigationService navigationService)
     {
+        _navigationService = navigationService;
+    }
+    public void OnNavigatedTo(object parameter)
+    {
+        //Source.Clear();
+
+        //// TODO: Replace with real data.
+        //var data = await _sampleDataService.GetContentGridDataAsync();
+        //foreach (var item in data)
+        //{
+        //    Source.Add(item);
+        //}
+    }
+
+    public void OnNavigatedFrom()
+    {
+    }
+
+    [RelayCommand]
+    private void OnItemClick(Smartphone? clickedItem)
+    {
+        if (clickedItem != null)
+        {
+            _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
+            _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, clickedItem.Id);
+        }
     }
 }

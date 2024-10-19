@@ -53,20 +53,29 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Uid="Shell_Home" Content="Home" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.HomeViewModel">
                     <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Emoji"/>
+                        <SymbolIcon Symbol="Home"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Login" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.LoginViewModel">
                     <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Home"/>
+                        <SymbolIcon Symbol="Contact"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Main" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.MainViewModel">
                     <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="CellPhone"/>
+                        <SymbolIcon Symbol="Shop"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-
+                <NavigationViewItem x:Uid="Shell_Map" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.MapViewModel">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="World"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_Host" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.HostViewModel">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Street"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.PaneHeader>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
