@@ -73,6 +73,8 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<HostViewModel>();
+            services.AddTransient<HostPage>();
             services.AddTransient<MapViewModel>();
             services.AddTransient<MapPage>();
             services.AddTransient<RentalDetailPage>();
