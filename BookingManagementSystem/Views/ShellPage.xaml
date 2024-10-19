@@ -24,17 +24,17 @@
                        TextWrapping="NoWrap"
                        Style="{StaticResource CaptionTextBlockStyle}"
                        Margin="28,0,0,0"/>
-            <Button Background="Transparent" BorderThickness="0" Margin="0 0 140 0" HorizontalAlignment="Right" HorizontalContentAlignment="Left">
+            <Button x:Name="btnUser" Background="Transparent" BorderThickness="0" Margin="0 0 140 0" HorizontalAlignment="Right" HorizontalContentAlignment="Left">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <PersonPicture DisplayName="{Binding}" Width="26" Height="26"/>
-                    <TextBlock Text="Sign In" VerticalAlignment="Center" FontSize="14" Margin="10 0"/>
+                    <PersonPicture DisplayName="{x:Bind username, Mode=OneWay}" Width="26" Height="26"/>
+                    <TextBlock x:Name="txtUsername" Text="Sign In" VerticalAlignment="Center" FontSize="14" Margin="10 0"/>
                 </StackPanel>
                 <Button.Flyout>
-                    <MenuFlyout Placement="Bottom">
-                        <MenuFlyoutItem Text="Dashboard" Icon="Home"/>
-                        <MenuFlyoutItem Text="Logout" Icon="Back"/>
+                    <MenuFlyout x:Name="UserFlyout" Placement="Bottom">
+                        <MenuFlyoutItem x:Name="HostMenuItem" Text="Host Dashboard" Icon="Home" Click="UserMenuFlyoutItem_Click" Tag="host"/>
+                        <MenuFlyoutItem x:Name="SignInMenuItem" Text="Sign in" Icon="Forward" Click="UserMenuFlyoutItem_Click" Tag="signin"/>
                         <MenuFlyoutSeparator/>
-                        <MenuFlyoutItem Text="Setting" Icon="Setting"/>
+                        <MenuFlyoutItem x:Name="SettingMenuItem" Text="Setting" Icon="Setting" Click="UserMenuFlyoutItem_Click" Tag="setting"/>
                     </MenuFlyout>
                 </Button.Flyout>
             </Button>
@@ -51,17 +51,12 @@
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
             Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
             <NavigationView.MenuItems>
-                <NavigationViewItem x:Uid="Shell_Home" Content="Home" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.HomeViewModel">
+                <NavigationViewItem x:Uid="Shell_Home" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.HomeViewModel">
                     <NavigationViewItem.Icon>
                         <SymbolIcon Symbol="Home"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_Login" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.LoginViewModel">
-                    <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Contact"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_Main" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.MainViewModel">
+                <NavigationViewItem x:Uid="Shell_RentalDetails" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.MainViewModel">
                     <NavigationViewItem.Icon>
                         <SymbolIcon Symbol="Shop"/>
                     </NavigationViewItem.Icon>
@@ -123,8 +118,7 @@
             </NavigationView.AutoSuggestBox>
             <NavigationView.PaneFooter>
                 <StackPanel x:Name="FooterStackPanel" Orientation="Vertical" Visibility="Visible">
-                    <NavigationViewItem Icon="Favorite" AutomationProperties.Name="Favorite" />
-                    <NavigationViewItem Icon="Contact" AutomationProperties.Name="Account"/>
+                    <NavigationViewItem Icon="Favorite" Content="Favorite" AutomationProperties.Name="Favorite" />
                 </StackPanel>
             </NavigationView.PaneFooter>
         </NavigationView>

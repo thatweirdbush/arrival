@@ -123,14 +123,8 @@
   <data name="AppDescription" xml:space="preserve">
     <value>Booking Management System</value>
   </data>
-  <data name="Shell_Main.Content" xml:space="preserve">
-    <value>Hotels &amp; Apartments</value>
-  </data>
-  <data name="Shell_Login.Content" xml:space="preserve">
-    <value>Sign In</value>
-  </data>
-  <data name="Shell_Quiz.Content" xml:space="preserve">
-    <value>Details</value>
+  <data name="Shell_Home.Content" xml:space="preserve">
+    <value>Home - Hotels &amp; Apartments</value>
   </data>
   <data name="Settings_Personalization.Text" xml:space="preserve">
     <value>Personalization</value>
@@ -177,9 +171,12 @@
     <value>Select an item from the list.</value>
   </data>
   <data name="Shell_Map.Content" xml:space="preserve">
-    <value>Maps</value>
+    <value>Map Services</value>
   </data>
   <data name="Shell_Host.Content" xml:space="preserve">
-    <value>Host</value>
+    <value>Host Dashboard</value>
+  </data>
+  <data name="Shell_RentalDetails.Content" xml:space="preserve">
+    <value>Rental Details</value>
   </data>
 </root>

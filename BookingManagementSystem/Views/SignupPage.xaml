@@ -46,9 +46,18 @@
                  Background="{ThemeResource AcrylicInAppFillColorBaseBrush}"
                  AutomationProperties.Name="Password box"
                  BorderThickness="0"/>
+                <PasswordBox Name="confirmPassworBoxWithRevealmode" 
+                 Margin="0 10 0 0" 
+                 Padding="10"
+                 Height="40"
+                 PasswordRevealMode="Hidden" 
+                 PlaceholderText="Confirm password"              
+                 Background="{ThemeResource AcrylicInAppFillColorBaseBrush}"
+                 AutomationProperties.Name="Password box"
+                 BorderThickness="0"/>
                 <Grid Margin="0 10 0 0">
                     <TextBlock Margin="0 8 0 0" TextWrapping="WrapWholeWords">
-                        <Hyperlink Click="Hyperlink_Login_Click">I have account?</Hyperlink>
+                        <Hyperlink Click="Hyperlink_Login_Click">I have an account!</Hyperlink>
                     </TextBlock>
                     <CheckBox Name="revealModeCheckBox" 
                       Content="Show password" 
@@ -57,7 +66,7 @@
                       Checked="RevealModeCheckbox_Changed" 
                       Unchecked="RevealModeCheckbox_Changed"/>
                 </Grid>
-                <StackPanel Orientation="Vertical" Margin="0 30 0 0">
+                <StackPanel Orientation="Vertical" Margin="0 12 0 0">
                     <Button Name="btnSignUp" Click="btnSignUp_Click" Width="100" Height="40" HorizontalAlignment="Right" Content="Sign up" Background="#121212" Foreground="White" FontWeight="SemiBold"/>
                 </StackPanel>
             </StackPanel>

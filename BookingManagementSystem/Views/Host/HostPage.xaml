@@ -13,7 +13,7 @@
 		</Grid.RowDefinitions>
 		<SelectorBar x:Name="SelectorBar" SelectionChanged="SelectorBar2_SelectionChanged"
 					 HorizontalAlignment="Center" VerticalAlignment="Stretch">
-			<SelectorBarItem x:Name="SelectorBarItemPage1" Text="Today" FontWeight="Semibold" Foreground="Gray"/>
+			<SelectorBarItem x:Name="SelectorBarItemPage1" Text="Today" FontWeight="Semibold" Foreground="Gray" IsSelected="True"/>
 			<SelectorBarItem x:Name="SelectorBarItemPage2" Text="Calendar" FontWeight="Semibold" Foreground="Gray"/>
 			<SelectorBarItem x:Name="SelectorBarItemPage3" Text="Listings" FontWeight="Semibold" Foreground="Gray"/>
 			<SelectorBarItem x:Name="SelectorBarItemPage4" Text="Messages" FontWeight="Semibold" Foreground="Gray"/>

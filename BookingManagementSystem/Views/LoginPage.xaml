@@ -61,7 +61,7 @@
                     <TextBlock Margin="0 8 0 0" TextWrapping="WrapWholeWords">
                         <Hyperlink Click="Hyperlink_Signup_Click">Can't access your account?</Hyperlink>
                     </TextBlock>
-                    <Button Name="btnSignIn" Click="btnSignIn_Click" Width="100" Height="40" HorizontalAlignment="Right" Content="Sign in" Background="#121212" Foreground="White" FontWeight="SemiBold"/>
+                    <Button Name="btnSignIn" Click="btnSignIn_Click" Margin="0 0 0 0" Width="100" Height="40" HorizontalAlignment="Right" Content="Sign in" Background="#121212" Foreground="White" FontWeight="SemiBold"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
