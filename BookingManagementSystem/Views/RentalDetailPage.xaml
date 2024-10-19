@@ -7,7 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helper="using:BookingManagementSystem.Helpers"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Background="Transparent">
     <Page.Resources>
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
     </Page.Resources>
@@ -35,7 +36,8 @@
     <ScrollView ContentOrientation="None" ZoomMode="Disabled" IsTabStop="True"
                 HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto"
                 VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto"
-                Margin="{StaticResource NavigationViewPageContentMargin}">
+                Margin="{StaticResource NavigationViewPageContentMargin}"
+                Background="Transparent">
         <Grid x:Name="ContentArea">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
@@ -47,7 +49,7 @@
             </Grid.RowDefinitions>
             
             <Grid x:Name="itemHero">
-                <FlipView x:Name="Gallery" Padding="0 0 0 24">
+                <FlipView x:Name="Gallery" Padding="0 0 0 24" Background="Transparent">
                     <ScrollView ContentOrientation="None" ZoomMode="Enabled" IsTabStop="True"
                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                          HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Hidden"
@@ -78,7 +80,7 @@
                            SelectedPageIndex="{x:Bind Path=Gallery.SelectedIndex, Mode=TwoWay}" />
             </Grid>
 
-            <Grid Grid.Column="1" Grid.RowSpan="1" Background="WhiteSmoke" Padding="28" Margin="0 0 0 10">
+            <Grid Grid.Column="1" Grid.RowSpan="1" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}" Padding="28" Margin="0 0 0 10">
                 <StackPanel>
                     <TextBlock FontSize="38" FontWeight="Bold" Text="{x:Bind ViewModel.Item.Name, Mode=OneWay}" TextWrapping="Wrap"/>
                     <TextBlock FontSize="26" Margin="0 6 0 0" FontWeight="SemiBold" Text="{x:Bind ViewModel.Item.Manufacturer, Mode=OneWay}"/>
@@ -89,9 +91,9 @@
                 </StackPanel>
                 <RepeatButton Grid.Row="1" x:Name="btnBuySmartphone" 
                       HorizontalAlignment="Center" VerticalAlignment="Bottom"
-                      Background="#121212"
+                      Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                       Content="Next one"
-                      Foreground="WhiteSmoke"
+                      Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
                       FontWeight="SemiBold"
                       Padding="15" Width="150" 
                       Delay="500" Interval="100" 
@@ -99,7 +101,7 @@
                 </RepeatButton>
             </Grid>
 
-            <Grid Grid.Row="1" Background="WhiteSmoke" Margin="0 0 10 0" Padding="28 28 28 0">
+            <Grid Grid.Row="1" Margin="0 0 10 0" Padding="28 28 28 0" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}">
                 <StackPanel>
                     <TextBlock FontSize="26" FontWeight="Bold" Padding="0 0 0 6">What's new</TextBlock>
                     <InfoBar x:Name="infSmartphone" IsOpen="True" Severity="Warning" 
@@ -111,7 +113,7 @@
                 </StackPanel>
             </Grid>
 
-            <Grid Grid.Row="1" Grid.Column="1" Background="WhiteSmoke" Padding="28">
+            <Grid Grid.Row="1" Grid.Column="1" Padding="28" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}">
                 <StackPanel VerticalAlignment="Top" HorizontalAlignment="Stretch">
                     <TextBlock FontSize="26" FontWeight="Bold" Padding="0 0 0 10">Rating</TextBlock>
                     <RatingControl AutomationProperties.Name="Simple RatingControl" 

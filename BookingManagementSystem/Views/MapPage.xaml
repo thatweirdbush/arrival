@@ -12,6 +12,6 @@
 
     <Grid x:Name="ContentArea">
         <MapControl x:Name="MainMap" ZoomLevel="7" InteractiveControlsVisible="True"
-                    MapServiceToken="352f0vVlENdpT0cartYn1Hi87HGCWqtpZIt49tcyHSkYVkuMEq53JQQJ99AJACYeBjFx5reYAAAgAZMP3AqG"/>
+                    MapServiceToken="2nuFEi0eKk7LYqZyP3CnciPsaR8TQDyfOYIY0Ai8bFZ1oCFjqGM6JQQJ99AJACYeBjFx5reYAAAgAZMPA7sY"/>
     </Grid>
 </Page>

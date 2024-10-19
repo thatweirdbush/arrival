@@ -57,6 +57,7 @@
     <Content Remove="Assets\symbol-icons\favorite.png" />
     <Content Remove="Assets\symbol-icons\filter-icon.png" />
     <Content Remove="Assets\symbol-icons\search-icon-white.png" />
+    <Content Remove="Assets\symbol-icons\search-icon.png" />
     <Content Remove="Assets\symbol-icons\white-star-icon.png" />
     <Content Remove="Assets\three-body-a-white.png" />
   </ItemGroup>
@@ -302,6 +303,16 @@
 
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Host\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\symbol-icons\search-icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">

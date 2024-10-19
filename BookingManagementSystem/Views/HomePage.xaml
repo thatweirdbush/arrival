@@ -11,7 +11,6 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     NavigationCacheMode="Enabled">
 
     <Page.Resources>
@@ -37,7 +36,7 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid>
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="78"/>
@@ -72,14 +71,14 @@
                     </ui:Effects.Shadow>
 
                     <StackPanel Orientation="Horizontal" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
-                        <Button x:Name="btnSearchDestinationWrapper" Click="btnSearchDestinationWrapper_Click" Background="Transparent" CornerRadius="24" Width="240" BorderThickness="0" HorizontalContentAlignment="Left" Padding="28 0 0 0">
+                        <Button x:Name="btnSearchDestinationWrapper" Click="btnSearchDestinationWrapper_Click" Background="Transparent" CornerRadius="24" Width="240" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="28 0 0 0">
                             <StackPanel>
                                 <TextBlock Text="Where" FontWeight="SemiBold" Margin="10 0 0 0" FontSize="12.5"/>
                                 <AutoSuggestBox x:Name="DestinationAutoSuggestBox" 
                                                 PlaceholderText="Search destinations" 
                                                 BorderThickness="0" Background="Transparent" 
                                                 MinHeight="0" MinWidth="200" CornerRadius="12" 
-                                                Foreground="Gray" Margin="0 0 0 -5"
+                                                Foreground="Gray" Margin="0 0 0 -9"
                                                 TextChanged="DestinationAutoSuggestBox_TextChanged"
                                                 SuggestionChosen="DestinationAutoSuggestBox_SuggestionChosen"
                                                 AutomationProperties.Name="Destination AutoSuggestBox">
@@ -92,19 +91,19 @@
                                 </AutoSuggestBox>
                             </StackPanel>
                         </Button>
-                        <Button x:Name="btnCheckInCalendarWrapper" Click="btnCheckInCalendarWrapper_Click" Background="Transparent" CornerRadius="24" Width="150" BorderThickness="0" HorizontalContentAlignment="Left" Padding="16 0 0 0">
+                        <Button x:Name="btnCheckInCalendarWrapper" Click="btnCheckInCalendarWrapper_Click" Background="Transparent" CornerRadius="24" Width="150" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="16 0 0 0">
                             <StackPanel>
                                 <TextBlock Text="Check in" FontWeight="SemiBold" FontSize="12.5" Margin="7 0 0 0"/>
-                                <CalendarDatePicker x:Name="CheckInCalendar" PlaceholderText="Dates" DateFormat="‎{month.full}‎ ‎{day.integer}‎" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" Height="28" CornerRadius="12" Foreground="Gray" Margin="-5 0 0 -5"/>
+                                <CalendarDatePicker x:Name="CheckInCalendar" PlaceholderText="Dates" DateFormat="‎{month.full}‎ ‎{day.integer}‎" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" Height="28" CornerRadius="12 12 16 16" Foreground="Gray" Margin="-5 0 0 -5"/>
                             </StackPanel>
                         </Button>
-                        <Button x:Name="btnCheckOutCalendarWrapper" Click="btnCheckOutCalendarWrapper_Click" Background="Transparent" CornerRadius="24" Width="150" BorderThickness="0" HorizontalContentAlignment="Left" Padding="16 0 0 0">
+                        <Button x:Name="btnCheckOutCalendarWrapper" Click="btnCheckOutCalendarWrapper_Click" Background="Transparent" CornerRadius="24" Width="150" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="16 0 0 0">
                             <StackPanel>
                                 <TextBlock Text="Check out" FontWeight="SemiBold" FontSize="12.5" Margin="7 0 0 0"/>
-                                <CalendarDatePicker x:Name="CheckOutCalendar" PlaceholderText="Dates" DateFormat="‎{month.full}‎ ‎{day.integer}‎" BorderThickness="0" Background="Transparent" Height="28" CornerRadius="12" Foreground="Gray" Margin="-5 0 0 -5"/>
+                                <CalendarDatePicker x:Name="CheckOutCalendar" PlaceholderText="Dates" DateFormat="‎{month.full}‎ ‎{day.integer}‎" BorderThickness="0" Background="Transparent" Height="28" CornerRadius="12 12 16 16" Foreground="Gray" Margin="-5 0 0 -5"/>
                             </StackPanel>
                         </Button>
-                        <Button x:Name="btnAddGuestsWrapper" Background="Transparent" CornerRadius="24" Width="222" BorderThickness="0" HorizontalContentAlignment="Left" Padding="28 0 0 0">
+                        <Button x:Name="btnAddGuestsWrapper" Background="Transparent" CornerRadius="24" Width="222" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="28 0 0 0">
                             <Button.Flyout>
                                 <Flyout Placement="Bottom">
                                     <Grid x:Name="AddGuestsGrid">
@@ -143,11 +142,35 @@
                                     <TextBlock Text="Who" FontWeight="SemiBold" FontSize="12.5" Margin="0 0 0 1"/>
                                     <TextBlock Text="Add guests" FontWeight="Normal" Foreground="Gray" Padding="0 4 0 3"/>
                                 </StackPanel>
-                                <Button CornerRadius="20" Width="96" Margin="84 0 0 0" VerticalAlignment="Stretch" BorderThickness="0" Background="Black">
-                                    <StackPanel Orientation="Horizontal" Spacing="4">
-                                        <Image Source="/Assets/symbol-icons/search-icon-white.png" Width="18" Height="18"/>
-                                        <TextBlock Text="Search" FontWeight="SemiBold" Foreground="GhostWhite"/>
-                                    </StackPanel>
+                                <Button x:Name="btnSearch">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Grid>
+                                                <Button x:Name="btnSearch" CornerRadius="20" Width="96" Height="44" Margin="84 0 0 0" VerticalAlignment="Stretch" BorderThickness="0" Background="{ThemeResource SystemControlBackgroundChromeBlackHighBrush}">
+                                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                                        <Image x:Name="imgSearch" Source="/Assets/symbol-icons/search-icon-white.png" Width="18" Height="18"/>
+                                                        <TextBlock x:Name="txtSearch" Text="Search" FontWeight="SemiBold" Foreground="GhostWhite"/>
+                                                    </StackPanel>
+                                                </Button>
+                                                <VisualStateManager.VisualStateGroups>
+                                                    <VisualStateGroup>
+                                                        <VisualState x:Name="PointerOver">
+                                                            <VisualState.Setters>
+                                                                <Setter Target="txtSearch.Foreground" Value="Black"/>
+                                                                <Setter Target="imgSearch.Source" Value="/Assets/symbol-icons/search-icon.png"/>
+                                                            </VisualState.Setters>
+                                                        </VisualState>
+                                                        <VisualState x:Name="Normal">
+                                                            <VisualState.Setters>
+                                                                <Setter Target="txtSearch.Foreground" Value="GhostWhite"/>
+                                                                <Setter Target="imgSearch.Source" Value="/Assets/symbol-icons/search-icon-white.png"/>
+                                                            </VisualState.Setters>
+                                                        </VisualState>
+                                                    </VisualStateGroup>
+                                                </VisualStateManager.VisualStateGroups>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Button.Template>
                                 </Button>
                             </Grid>
                         </Button>
@@ -224,7 +247,7 @@
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="Content" Grid.Row="2" Background="{StaticResource AcrylicInAppFillColorBaseBrush}">
+        <Grid x:Name="Content" Grid.Row="2" Background="Transparent">
             <controls:AdaptiveGridView
                 animations:Connected.ListItemElementName="itemThumbnail"
                 animations:Connected.ListItemKey="animationKeyContentGrid"
@@ -267,7 +290,7 @@
                                     <Image x:Name="imgFavourite" Width="20" Height="20" Source="{x:Bind FavouriteImagePath, Mode=OneWay}" Margin="0 2 0 0"/>
                                 </Button>
                             </Grid>
-                            <Grid Grid.Row="1" Background="White" Padding="18">
+                            <Grid Grid.Row="1" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}" Padding="18">
                                 <StackPanel Spacing="4">
                                     <TextBlock Text = "{x:Bind Name}" Style = "{ThemeResource SubtitleTextBlockStyle}"/>
                                     <TextBlock Text = "Ho Chi Minh City, Vietnam" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray"/>
