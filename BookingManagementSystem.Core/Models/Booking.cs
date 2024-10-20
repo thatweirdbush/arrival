@@ -6,12 +6,20 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 
 namespace BookingManagementSystem.Core.Models;
+
+public enum BookingStatus
+{
+    Pending,
+    Confirmed,
+    Canceled
+}
+
 public class Booking : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
     public override string ToString() => $"Id: {Id}, PropertyId: {PropertyId}, UserId: {UserId}, " +
         $"CheckInDate: {CheckInDate}, CheckOutDate: {CheckOutDate}, TotalPrice: {TotalPrice}, " +
-        $"Status: {BookingStatus}, CreatedAt: {CreatedAt}, UpdatedAt: {UpdatedAt}";
+        $"Status: {Status}, CreatedAt: {CreatedAt}, UpdatedAt: {UpdatedAt}";
     public int Id
     {
         get; set;
@@ -47,14 +55,14 @@ public class Booking : INotifyPropertyChanged
     {
         get; set;
     }
-    public string BookingStatus
+    public BookingStatus Status
     {
         get; set;
-    } // E.g., Pending, Confirmed, Canceled
+    } = BookingStatus.Pending; // E.g., Pending, Confirmed, Canceled. Default is Pending
     public DateTime CreatedAt
     {
         get; set;
-    }
+    } = DateTime.Now;
     public DateTime UpdatedAt
     {
         get; set;

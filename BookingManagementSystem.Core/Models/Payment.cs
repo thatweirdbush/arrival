@@ -11,7 +11,7 @@ public class Payment : INotifyPropertyChanged
     public event PropertyChangedEventHandler PropertyChanged;
     public override string ToString() => $"Payment Id: {Id}, User Id: {UserId}," +
         $" Booking Id: {BookingId}, Amount: {Amount}, Payment Date: {PaymentDate}," +
-        $" Payment Method: {PaymentMethod}, Payment Status: {PaymentStatus}";
+        $" Payment Method: {PaymentMethod}, Payment Status: {Status}";
     public int Id
     {
         get; set;
@@ -36,7 +36,7 @@ public class Payment : INotifyPropertyChanged
     {
         get; set;
     } // E.g., Credit Card, Debit Card, PayPal
-    public string PaymentStatus
+    public string Status
     {
         get; set;
     } // E.g., Pending, Paid, Failed

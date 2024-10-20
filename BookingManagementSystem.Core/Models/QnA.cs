@@ -41,10 +41,10 @@ public class QnA
     public DateTime CreatedAt
     {
         get; set;
-    }
+    } = DateTime.Now;
     public QnAStatus Status
     {
         get; set;
-    } // 0: Pending, 1: Approved, 2: Rejected, 3: Answered
+    } = QnAStatus.Pending; // 0: Pending, 1: Approved, 2: Rejected, 3: Answered
     public bool IsAnswered => Status == QnAStatus.Answered;
 }

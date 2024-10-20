@@ -66,6 +66,12 @@ public enum PropertyRatingStatus
 }
 public class Property : INotifyPropertyChanged
 {
+    // Define XAML Image's Path Declaration
+    public static string MS_APPX = "ms-appx:///Assets/property-images/";
+
+    // Private field for ImagePath
+    private ICollection<string> _imagePaths;
+
     public event PropertyChangedEventHandler PropertyChanged;
     public override string ToString() => $"{Name} ({Location}), {Description}, " +
         $"Capacity: {Capacity}, Price: {PricePerNight:C}, Is Available: {IsAvailable}, " +
@@ -86,6 +92,12 @@ public class Property : INotifyPropertyChanged
     {
         get; set;
     }
+    public ICollection<string> ImagePaths
+    {
+        // Concatenate MS_APPX with each image path
+        get => _imagePaths.Select(ip => $"{MS_APPX}{ip}").ToList();
+        set => _imagePaths = value;
+    }
     public string Location
     {
         get; set;
@@ -101,12 +113,12 @@ public class Property : INotifyPropertyChanged
     public bool IsFavourite
     {
         get; set;
-    }
-    public List<Amenity> Amenities
+    } = false;
+    public ICollection<Amenity> Amenities
     {
         get; set;
     } // E.g., WiFi, Pool, Parking
-    public List<PropertyPolicy> HouseRules
+    public ICollection<PropertyPolicy> Policies
     {
         get; set;
     } // E.g., No smoking, No pets, No parties
@@ -114,11 +126,11 @@ public class Property : INotifyPropertyChanged
     public bool IsAvailable
     {
         get; set;
-    }
+    } = true;
     public DateTime CreatedAt
     {
         get; set;
-    }
+    } = DateTime.Now;
     public DateTime UpdatedAt
     {
         get; set;
@@ -127,11 +139,11 @@ public class Property : INotifyPropertyChanged
     public double Latitude
     {
         get; set;
-    }
+    } = 0.0;
     public double Longitude
     {
         get; set;
-    }
+    } = 0.0;
     public bool IsPriority
     {
         get; set;

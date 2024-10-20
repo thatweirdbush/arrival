@@ -81,18 +81,18 @@ public class User : INotifyPropertyChanged
     {
         get; set;
     }
-    public string Role
+    public Role Role
     {
         get; set;
-    } // E.g., Guest, Host, Admin
-    public List<Language> Languages
+    } = Role.Guest; // E.g., Guest, Host, Admin
+    public ICollection<Language> Languages
     {
         get; set;
     } // Languages can be spoken by the user
     public DateTime CreatedAt
     {
         get; set;
-    }
+    } = DateTime.Now;
     public DateTime UpdatedAt
     {
         get; set;
@@ -101,7 +101,7 @@ public class User : INotifyPropertyChanged
     private bool _isEliteHost
     {
         get; set;
-    }
+    } = false;
     public bool IsEliteHost => _isEliteHost;
     public string Username
     {

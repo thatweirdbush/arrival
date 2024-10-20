@@ -31,5 +31,5 @@ public class Notification : INotifyPropertyChanged
     public bool IsRead
     {
         get; set;
-    }
+    } = false;
 }
