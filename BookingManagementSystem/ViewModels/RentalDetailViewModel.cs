@@ -16,6 +16,7 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
 
     [ObservableProperty]
     private Property? item;
+    public IEnumerable<Review> Reviews { get; set; } = Enumerable.Empty<Review>();
 
     public RentalDetailViewModel(IDao dao)
     {
@@ -29,6 +30,10 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
             var data = await _dao.GetPropertyListDataAsync();
             Item = data.First(i => i.Id == Id);
         }
+
+        // Load Review data
+        var reviews = await _dao.GetReviewListDataAsync();
+        Reviews = reviews;
     }
 
     public void OnNavigatedFrom()
