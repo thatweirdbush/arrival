@@ -12,29 +12,23 @@ namespace BookingManagementSystem.ViewModels;
 
 public partial class RentalDetailViewModel : ObservableRecipient, INavigationAware
 {
-    [ObservableProperty]
-    private Smartphone? item;
+    private readonly IDao _dao;
 
-    public RentalDetailViewModel()
+    [ObservableProperty]
+    private Property? item;
+
+    public RentalDetailViewModel(IDao dao)
     {
+        _dao = dao;
     }
 
-    public void OnNavigatedTo(object parameter)
+    public async void OnNavigatedTo(object parameter)
     {
-        if (parameter is int)
+        if (parameter is int Id)
         {
-            //var data = await _sampleDataService.GetContentGridDataAsync();
-            //Item = data.First(i => i.OrderID == orderID);
-            Item = new Smartphone()
-            {
-                Id = 0,
-                Name = "iPhone 16 Pro Max",
-                Manufacturer = "Apple",
-                Price = 2099,
-                ImagePath = "iphone-16-pro-max.png"
-            };
+            var data = await _dao.GetPropertyListDataAsync();
+            Item = data.First(i => i.Id == Id);
         }
-
     }
 
     public void OnNavigatedFrom()

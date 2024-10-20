@@ -16,6 +16,9 @@ public class MockDao : IDao
     private static List<Review> _allReviews;
     private static List<User> _allUsers;
 
+    private static List<Smartphone> _allSmartphones;
+    private static List<DestinationTypeSymbol> _allDestinationTypeSymbols;
+
     public MockDao()
     {
     }
@@ -222,11 +225,25 @@ public class MockDao : IDao
             new()
             {
                 Id = 1,
-                Name = "Property 1",
+                Name = "Cozy room in Montmartre",
                 Type = PropertyType.Hotel,
-                Description = "Property 1 Description",
-                ImagePaths = new List<string> { "property1-1.jpg", "property1-2.jpg", "property1-3.jpg" },
-                Location = "Location 1",
+                Description = "At the foot of the Montmartre hill, you will find everything in this historic neighborhood.\r\nAt 200m, at the top of the steps, you will find a unique view of Montmartre.\r\n\r\nAccess by line 12 Lamarck Station\r\nOr line 4 Station Château Rouge\r\n\r\nThe space\r\nA bedroom, like a cocoon\r\nIn a very pleasant and bright apartment, located at the foot of the Montmartre hill.\r\nThe kitchen and the bathroom are shared spaces.\r\n\r\nGuest access\r\nElevator\r\n\r\nOther things to note\r\nI can only accept people who have reviews/history on Air bnb",
+                ImagePaths = new List<string>
+                {
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-0.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-1.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-2.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-3.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-4.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-5.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-6.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-7.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                },                    
+                Location = "Paris, France",
                 Capacity = 2,
                 PricePerNight = 99.9M,
                 IsFavourite = true,
@@ -240,8 +257,22 @@ public class MockDao : IDao
                 Id = 2,
                 Name = "Property 2",
                 Type = PropertyType.Hotel,
-                Description = "Property 2 Description",
-                ImagePaths = new List<string> { "property2-1.jpg", "property2-2.jpg", "property2-3.jpg" },
+                Description = "At the foot of the Montmartre hill, you will find everything in this historic neighborhood.\r\nAt 200m, at the top of the steps, you will find a unique view of Montmartre.\r\n\r\nAccess by line 12 Lamarck Station\r\nOr line 4 Station Château Rouge\r\n\r\nThe space\r\nA bedroom, like a cocoon\r\nIn a very pleasant and bright apartment, located at the foot of the Montmartre hill.\r\nThe kitchen and the bathroom are shared spaces.\r\n\r\nGuest access\r\nElevator\r\n\r\nOther things to note\r\nI can only accept people who have reviews/history on Air bnb",
+                ImagePaths = new List<string>
+                {
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-1.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-0.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-2.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-3.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-4.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-5.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-6.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-7.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                },  
                 Location = "Location 2",
                 Capacity = 4,
                 PricePerNight = 199.9M,
@@ -256,8 +287,22 @@ public class MockDao : IDao
                 Id = 3,
                 Name = "Property 3",
                 Type = PropertyType.Hotel,
-                Description = "Property 3 Description",
-                ImagePaths = new List<string> { "property3-1.jpg", "property3-2.jpg", "property3-3.jpg" },
+                Description = "At the foot of the Montmartre hill, you will find everything in this historic neighborhood.\r\nAt 200m, at the top of the steps, you will find a unique view of Montmartre.\r\n\r\nAccess by line 12 Lamarck Station\r\nOr line 4 Station Château Rouge\r\n\r\nThe space\r\nA bedroom, like a cocoon\r\nIn a very pleasant and bright apartment, located at the foot of the Montmartre hill.\r\nThe kitchen and the bathroom are shared spaces.\r\n\r\nGuest access\r\nElevator\r\n\r\nOther things to note\r\nI can only accept people who have reviews/history on Air bnb",
+                ImagePaths = new List<string>
+                {
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-2.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-0.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-1.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-3.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-4.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-5.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-6.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-7.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                },
                 Location = "Location 3",
                 Capacity = 6,
                 PricePerNight = 299.9M,
@@ -271,8 +316,22 @@ public class MockDao : IDao
                 Id = 4,
                 Name = "Property 4",
                 Type = PropertyType.Hotel,
-                Description = "Property 4 Description",
-                ImagePaths = new List<string> { "property4-1.jpg", "property4-2.jpg", "property4-3.jpg" },
+                Description = "At the foot of the Montmartre hill, you will find everything in this historic neighborhood.\r\nAt 200m, at the top of the steps, you will find a unique view of Montmartre.\r\n\r\nAccess by line 12 Lamarck Station\r\nOr line 4 Station Château Rouge\r\n\r\nThe space\r\nA bedroom, like a cocoon\r\nIn a very pleasant and bright apartment, located at the foot of the Montmartre hill.\r\nThe kitchen and the bathroom are shared spaces.\r\n\r\nGuest access\r\nElevator\r\n\r\nOther things to note\r\nI can only accept people who have reviews/history on Air bnb",
+                ImagePaths = new List<string>
+                {
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-3.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-0.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-1.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-2.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-4.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-5.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-6.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-7.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                },
                 Location = "Location 4",
                 Capacity = 8,
                 PricePerNight = 399.9M,
@@ -287,8 +346,22 @@ public class MockDao : IDao
                 Id = 5,
                 Name = "Property 5",
                 Type = PropertyType.Hotel,
-                Description = "Property 5 Description",
-                ImagePaths = new List<string> { "property5-1.jpg", "property5-2.jpg", "property5-3.jpg" },
+                Description = "At the foot of the Montmartre hill, you will find everything in this historic neighborhood.\r\nAt 200m, at the top of the steps, you will find a unique view of Montmartre.\r\n\r\nAccess by line 12 Lamarck Station\r\nOr line 4 Station Château Rouge\r\n\r\nThe space\r\nA bedroom, like a cocoon\r\nIn a very pleasant and bright apartment, located at the foot of the Montmartre hill.\r\nThe kitchen and the bathroom are shared spaces.\r\n\r\nGuest access\r\nElevator\r\n\r\nOther things to note\r\nI can only accept people who have reviews/history on Air bnb",
+                ImagePaths = new List<string>
+                {
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-4.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-0.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-1.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-2.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-3.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-5.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-6.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-7.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                },
                 Location = "Location 5",
                 Capacity = 10,
                 PricePerNight = 499.9M,
@@ -296,6 +369,296 @@ public class MockDao : IDao
                 IsAvailable = true,
                 Latitude = 37.6062,
                 Longitude = -50.3321
+            },
+            new()
+            {
+                Id = 6,
+                Name = "Property 6",
+                Type = PropertyType.Hotel,
+                Description = "At the foot of the Montmartre hill, you will find everything in this historic neighborhood.\r\nAt 200m, at the top of the steps, you will find a unique view of Montmartre.\r\n\r\nAccess by line 12 Lamarck Station\r\nOr line 4 Station Château Rouge\r\n\r\nThe space\r\nA bedroom, like a cocoon\r\nIn a very pleasant and bright apartment, located at the foot of the Montmartre hill.\r\nThe kitchen and the bathroom are shared spaces.\r\n\r\nGuest access\r\nElevator\r\n\r\nOther things to note\r\nI can only accept people who have reviews/history on Air bnb",
+                ImagePaths = new List<string>
+                {
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-5.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-0.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-1.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-2.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-3.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-4.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-6.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-7.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                },
+                Location = "Location 6",
+                Capacity = 12,
+                PricePerNight = 599.9M,
+                IsFavourite = true,
+                IsAvailable = true,
+                Latitude = 57.6062,
+                Longitude = -42.3321
+            },
+            new()
+            {
+                Id = 7,
+                Name = "Property 7",
+                Type = PropertyType.Hotel,
+                Description = "At the foot of the Montmartre hill, you will find everything in this historic neighborhood.\r\nAt 200m, at the top of the steps, you will find a unique view of Montmartre.\r\n\r\nAccess by line 12 Lamarck Station\r\nOr line 4 Station Château Rouge\r\n\r\nThe space\r\nA bedroom, like a cocoon\r\nIn a very pleasant and bright apartment, located at the foot of the Montmartre hill.\r\nThe kitchen and the bathroom are shared spaces.\r\n\r\nGuest access\r\nElevator\r\n\r\nOther things to note\r\nI can only accept people who have reviews/history on Air bnb",
+                ImagePaths = new List<string>
+                {
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-6.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-0.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-1.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-2.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-3.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-4.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-5.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-7.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                },
+                Location = "Location 7",
+                Capacity = 14,
+                PricePerNight = 699.9M,
+                IsFavourite = false,
+                IsAvailable = true,
+                Latitude = 77.6062,
+                Longitude = -32.3321
+            },
+            new()
+            {
+                Id = 8,
+                Name = "Property 8",
+                Type = PropertyType.Hotel,
+                Description = "At the foot of the Montmartre hill, you will find everything in this historic neighborhood.\r\nAt 200m, at the top of the steps, you will find a unique view of Montmartre.\r\n\r\nAccess by line 12 Lamarck Station\r\nOr line 4 Station Château Rouge\r\n\r\nThe space\r\nA bedroom, like a cocoon\r\nIn a very pleasant and bright apartment, located at the foot of the Montmartre hill.\r\nThe kitchen and the bathroom are shared spaces.\r\n\r\nGuest access\r\nElevator\r\n\r\nOther things to note\r\nI can only accept people who have reviews/history on Air bnb",
+                ImagePaths = new List<string>
+                {
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-7.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-0.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-1.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-2.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-3.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-4.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-5.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-6.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                },
+                Location = "Location 8",
+                Capacity = 16,
+                PricePerNight = 799.9M,
+                IsFavourite = true,
+                IsAvailable = true,
+                Latitude = 87.6062,
+                Longitude = -12.3321
+            },
+            new()
+            {
+                Id = 9,
+                Name = "Property 9",
+                Type = PropertyType.Hotel,
+                Description = "At the foot of the Montmartre hill, you will find everything in this historic neighborhood.\r\nAt 200m, at the top of the steps, you will find a unique view of Montmartre.\r\n\r\nAccess by line 12 Lamarck Station\r\nOr line 4 Station Château Rouge\r\n\r\nThe space\r\nA bedroom, like a cocoon\r\nIn a very pleasant and bright apartment, located at the foot of the Montmartre hill.\r\nThe kitchen and the bathroom are shared spaces.\r\n\r\nGuest access\r\nElevator\r\n\r\nOther things to note\r\nI can only accept people who have reviews/history on Air bnb",
+                ImagePaths = new List<string>
+                {
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-0.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-1.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-2.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-3.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-4.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-5.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-6.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-7.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                },
+                Location = "Location 9",
+                Capacity = 18,
+                PricePerNight = 899.9M,
+                IsFavourite = false,
+                IsAvailable = true,
+                Latitude = 97.6062,
+                Longitude = -22.3321
+            },
+            new()
+            {
+                Id = 10,
+                Name = "Property 10",
+                Type = PropertyType.Hotel,
+                Description = "At the foot of the Montmartre hill, you will find everything in this historic neighborhood.\r\nAt 200m, at the top of the steps, you will find a unique view of Montmartre.\r\n\r\nAccess by line 12 Lamarck Station\r\nOr line 4 Station Château Rouge\r\n\r\nThe space\r\nA bedroom, like a cocoon\r\nIn a very pleasant and bright apartment, located at the foot of the Montmartre hill.\r\nThe kitchen and the bathroom are shared spaces.\r\n\r\nGuest access\r\nElevator\r\n\r\nOther things to note\r\nI can only accept people who have reviews/history on Air bnb",
+                ImagePaths = new List<string>
+                {
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-0.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-1.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-2.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-3.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-4.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-5.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-6.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-7.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                },
+                Location = "Location 10",
+                Capacity = 20,
+                PricePerNight = 999.9M,
+                IsFavourite = true,
+                IsAvailable = true,
+                Latitude = 107.6062,
+                Longitude = -32.3321
+            },
+            new()
+            {
+                Id = 11,
+                Name = "Property 11",
+                Type = PropertyType.Hotel,
+                Description = "At the foot of the Montmartre hill, you will find everything in this historic neighborhood.\r\nAt 200m, at the top of the steps, you will find a unique view of Montmartre.\r\n\r\nAccess by line 12 Lamarck Station\r\nOr line 4 Station Château Rouge\r\n\r\nThe space\r\nA bedroom, like a cocoon\r\nIn a very pleasant and bright apartment, located at the foot of the Montmartre hill.\r\nThe kitchen and the bathroom are shared spaces.\r\n\r\nGuest access\r\nElevator\r\n\r\nOther things to note\r\nI can only accept people who have reviews/history on Air bnb",
+                ImagePaths = new List<string>
+                {
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-0.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-1.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-2.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-3.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-4.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-5.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-6.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-7.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                },
+                Location = "Location 11",
+                Capacity = 22,
+                PricePerNight = 1099.9M,
+                IsFavourite = false,
+                IsAvailable = true,
+                Latitude = 117.6062,
+                Longitude = -42.3321
+            },
+            new()
+            {
+                Id = 12,
+                Name = "Property 12",
+                Type = PropertyType.Hotel,
+                Description = "At the foot of the Montmartre hill, you will find everything in this historic neighborhood.\r\nAt 200m, at the top of the steps, you will find a unique view of Montmartre.\r\n\r\nAccess by line 12 Lamarck Station\r\nOr line 4 Station Château Rouge\r\n\r\nThe space\r\nA bedroom, like a cocoon\r\nIn a very pleasant and bright apartment, located at the foot of the Montmartre hill.\r\nThe kitchen and the bathroom are shared spaces.\r\n\r\nGuest access\r\nElevator\r\n\r\nOther things to note\r\nI can only accept people who have reviews/history on Air bnb",
+                ImagePaths = new List<string>
+                {
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-0.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-1.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-2.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-3.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-4.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-5.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-6.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-7.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg"
+                },
+                Location = "Location 12",
+                Capacity = 24,
+                PricePerNight = 1199.9M,
+                IsFavourite = true,
+                IsAvailable = true,
+                Latitude = 127.6062,
+                Longitude = -52.3321
+            },
+            new()
+            {
+                Id = 13,
+                Name = "Property 13",
+                Type = PropertyType.Hotel,
+                Description = "At the foot of the Montmartre hill, you will find everything in this historic neighborhood.\r\nAt 200m, at the top of the steps, you will find a unique view of Montmartre.\r\n\r\nAccess by line 12 Lamarck Station\r\nOr line 4 Station Château Rouge\r\n\r\nThe space\r\nA bedroom, like a cocoon\r\nIn a very pleasant and bright apartment, located at the foot of the Montmartre hill.\r\nThe kitchen and the bathroom are shared spaces.\r\n\r\nGuest access\r\nElevator\r\n\r\nOther things to note\r\nI can only accept people who have reviews/history on Air bnb",
+                ImagePaths = new List<string>
+                {
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-0.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-1.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-2.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-3.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-4.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-5.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-6.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-7.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                },
+                Location = "Location 13",
+                Capacity = 26,
+                PricePerNight = 1299.9M,
+                IsFavourite = false,
+                IsAvailable = true,
+                Latitude = 137.6062,
+                Longitude = -62.3321
+            },
+            new()
+            {
+                Id = 14,
+                Name = "Property 14",
+                Type = PropertyType.Hotel,
+                Description = "At the foot of the Montmartre hill, you will find everything in this historic neighborhood.\r\nAt 200m, at the top of the steps, you will find a unique view of Montmartre.\r\n\r\nAccess by line 12 Lamarck Station\r\nOr line 4 Station Château Rouge\r\n\r\nThe space\r\nA bedroom, like a cocoon\r\nIn a very pleasant and bright apartment, located at the foot of the Montmartre hill.\r\nThe kitchen and the bathroom are shared spaces.\r\n\r\nGuest access\r\nElevator\r\n\r\nOther things to note\r\nI can only accept people who have reviews/history on Air bnb",
+                ImagePaths = new List<string>
+                {
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-1.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-0.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-2.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-3.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-4.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-5.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-6.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-7.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                },
+                Location = "Location 14",
+                Capacity = 28,
+                PricePerNight = 1399.9M,
+                IsFavourite = true,
+                IsAvailable = true,
+                Latitude = 147.6062,
+                Longitude = -72.3321
+            },
+            new()
+            {
+                Id = 15,
+                Name = "Property 15",
+                Type = PropertyType.Hotel,
+                Description = "At the foot of the Montmartre hill, you will find everything in this historic neighborhood.\r\nAt 200m, at the top of the steps, you will find a unique view of Montmartre.\r\n\r\nAccess by line 12 Lamarck Station\r\nOr line 4 Station Château Rouge\r\n\r\nThe space\r\nA bedroom, like a cocoon\r\nIn a very pleasant and bright apartment, located at the foot of the Montmartre hill.\r\nThe kitchen and the bathroom are shared spaces.\r\n\r\nGuest access\r\nElevator\r\n\r\nOther things to note\r\nI can only accept people who have reviews/history on Air bnb",
+                ImagePaths = new List<string>
+                {
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-2.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-0.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-1.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-3.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-4.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-5.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-6.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-7.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
+                    "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                },
+                Location = "Location 15",
+                Capacity = 30,
+                PricePerNight = 1499.9M,
+                IsFavourite = false,
+                IsAvailable = true,
+                Latitude = 157.6062,
+                Longitude = -82.3321
             }
         };
     }
@@ -361,50 +724,50 @@ public class MockDao : IDao
     {
         return new List<QnA>
         {
-            new() { Id = 1, 
-                    Question = "Question 1", 
-                    Answer = "Answer 1", 
-                    PropertyId = 1, 
-                    CustomerId = 1, 
-                    HostId = 2, 
-                    CreatedAt = DateTime.Now, 
-                    Status = QnAStatus.Answered 
+            new() { Id = 1,
+                    Question = "Question 1",
+                    Answer = "Answer 1",
+                    PropertyId = 1,
+                    CustomerId = 1,
+                    HostId = 2,
+                    CreatedAt = DateTime.Now,
+                    Status = QnAStatus.Answered
             },
-            new() { Id = 2, 
-                    Question = "Question 2", 
-                    Answer = "Answer 2", 
-                    PropertyId = 2, 
-                    CustomerId = 2, 
-                    HostId = 3, 
-                    CreatedAt = DateTime.Now, 
-                    Status = QnAStatus.Answered 
+            new() { Id = 2,
+                    Question = "Question 2",
+                    Answer = "Answer 2",
+                    PropertyId = 2,
+                    CustomerId = 2,
+                    HostId = 3,
+                    CreatedAt = DateTime.Now,
+                    Status = QnAStatus.Answered
             },
-            new() { Id = 3, 
-                    Question = "Question 3", 
-                    Answer = "Answer 3", 
-                    PropertyId = 3, 
-                    CustomerId = 3, 
-                    HostId = 4, 
-                    CreatedAt = DateTime.Now, 
-                    Status = QnAStatus.Answered 
+            new() { Id = 3,
+                    Question = "Question 3",
+                    Answer = "Answer 3",
+                    PropertyId = 3,
+                    CustomerId = 3,
+                    HostId = 4,
+                    CreatedAt = DateTime.Now,
+                    Status = QnAStatus.Answered
             },
-            new() { Id = 4, 
-                    Question = "Question 4", 
-                    Answer = "Answer 4", 
-                    PropertyId = 4, 
-                    CustomerId = 4, 
-                    HostId = 5, 
-                    CreatedAt = DateTime.Now, 
-                    Status = QnAStatus.Answered 
+            new() { Id = 4,
+                    Question = "Question 4",
+                    Answer = "Answer 4",
+                    PropertyId = 4,
+                    CustomerId = 4,
+                    HostId = 5,
+                    CreatedAt = DateTime.Now,
+                    Status = QnAStatus.Answered
             },
-            new() { Id = 5, 
-                    Question = "Question 5", 
-                    Answer = "Answer 5", 
-                    PropertyId = 5, 
-                    CustomerId = 5, 
-                    HostId = 1, 
-                    CreatedAt = DateTime.Now, 
-                    Status = QnAStatus.Answered 
+            new() { Id = 5,
+                    Question = "Question 5",
+                    Answer = "Answer 5",
+                    PropertyId = 5,
+                    CustomerId = 5,
+                    HostId = 1,
+                    CreatedAt = DateTime.Now,
+                    Status = QnAStatus.Answered
             }
         };
     }
@@ -413,40 +776,40 @@ public class MockDao : IDao
     {
         return new List<Review>
         {
-            new() { Id = 1, 
-                    PropertyId = 1, 
-                    UserId = 1, 
-                    Rating = 5, 
-                    Comment = "Excellent property", 
-                    CreatedAt = DateTime.Now 
+            new() { Id = 1,
+                    PropertyId = 1,
+                    UserId = 1,
+                    Rating = 5,
+                    Comment = "Excellent property",
+                    CreatedAt = DateTime.Now
             },
-            new() { Id = 2, 
-                    PropertyId = 2, 
-                    UserId = 2, 
-                    Rating = 4, 
-                    Comment = "Great property", 
-                    CreatedAt = DateTime.Now 
+            new() { Id = 2,
+                    PropertyId = 2,
+                    UserId = 2,
+                    Rating = 4,
+                    Comment = "Great property",
+                    CreatedAt = DateTime.Now
             },
-            new() { Id = 3, 
-                    PropertyId = 3, 
-                    UserId = 3, 
-                    Rating = 3, 
-                    Comment = "Good property", 
-                    CreatedAt = DateTime.Now 
+            new() { Id = 3,
+                    PropertyId = 3,
+                    UserId = 3,
+                    Rating = 3,
+                    Comment = "Good property",
+                    CreatedAt = DateTime.Now
             },
-            new() { Id = 4, 
-                    PropertyId = 4, 
-                    UserId = 4, 
-                    Rating = 2, 
-                    Comment = "Average property", 
-                    CreatedAt = DateTime.Now 
+            new() { Id = 4,
+                    PropertyId = 4,
+                    UserId = 4,
+                    Rating = 2,
+                    Comment = "Average property",
+                    CreatedAt = DateTime.Now
             },
-            new() { Id = 5, 
-                    PropertyId = 5, 
-                    UserId = 5, 
-                    Rating = 1, 
-                    Comment = "Poor property", 
-                    CreatedAt = DateTime.Now 
+            new() { Id = 5,
+                    PropertyId = 5,
+                    UserId = 5,
+                    Rating = 1,
+                    Comment = "Poor property",
+                    CreatedAt = DateTime.Now
             }
         };
     }
@@ -466,125 +829,469 @@ public class MockDao : IDao
                     Role = Role.Host,
                     CreatedAt = DateTime.Now,
                     Username = "johndoe",
-                    Password = "password" 
+                    Password = "password"
             },
-            new() { Id = 2, 
-                    FirstName = "Jane", 
-                    LastName = "Smith", 
-                    ShortBio = "My name is Jane Smith", 
+            new() { Id = 2,
+                    FirstName = "Jane",
+                    LastName = "Smith",
+                    ShortBio = "My name is Jane Smith",
                     Email = "janesmith@gmail.com",
-                    Phone = "234-567-8901", 
-                    Address = "234 Main St", 
+                    Phone = "234-567-8901",
+                    Address = "234 Main St",
                     GovernmentId = "2345678901",
-                    Role = Role.Guest, 
-                    CreatedAt = DateTime.Now, 
-                    Username = "janesmith", 
-                    Password = "password" 
+                    Role = Role.Guest,
+                    CreatedAt = DateTime.Now,
+                    Username = "janesmith",
+                    Password = "password"
                 },
-            new() { Id = 3, 
-                    FirstName = "Alice", 
-                    LastName = "Johnson", 
-                    ShortBio = "My name is Alice Johnson", 
+            new() { Id = 3,
+                    FirstName = "Alice",
+                    LastName = "Johnson",
+                    ShortBio = "My name is Alice Johnson",
                     Email = "alicejs@gmail.com",
-                    Phone = "345-678-9012", 
-                    Address = "345 Main St", 
+                    Phone = "345-678-9012",
+                    Address = "345 Main St",
                     GovernmentId = "3456789012",
-                    Role = Role.Host, 
-                    CreatedAt = DateTime.Now, 
-                    Username = "alicejohnson", 
-                    Password = "password" 
+                    Role = Role.Host,
+                    CreatedAt = DateTime.Now,
+                    Username = "alicejohnson",
+                    Password = "password"
                 },
-            new() { Id = 4, 
-                    FirstName = "Bob", 
-                    LastName = "Brown", 
-                    ShortBio = "My name is Bob Brown", 
+            new() { Id = 4,
+                    FirstName = "Bob",
+                    LastName = "Brown",
+                    ShortBio = "My name is Bob Brown",
                     Email = "bobbrown@gmail.com",
-                    Phone = "456-789-0123", 
-                    Address = "456 Main St", 
+                    Phone = "456-789-0123",
+                    Address = "456 Main St",
                     GovernmentId = "4567890123",
-                    Role = Role.Guest, 
-                    CreatedAt = DateTime.Now, 
-                    Username = "bobbrown", 
-                    Password = "password" 
+                    Role = Role.Guest,
+                    CreatedAt = DateTime.Now,
+                    Username = "bobbrown",
+                    Password = "password"
                 },
-            new() { Id = 5, 
-                    FirstName = "Eve", 
-                    LastName = "White", 
-                    ShortBio = "My name is Eve White", 
+            new() { Id = 5,
+                    FirstName = "Eve",
+                    LastName = "White",
+                    ShortBio = "My name is Eve White",
                     Email = "evewhite@gmail.com",
-                    Phone = "567-890-1234", 
-                    Address = "567 Main St", 
+                    Phone = "567-890-1234",
+                    Address = "567 Main St",
                     GovernmentId = "5678901234",
-                    Role = Role.Host, 
-                    CreatedAt = DateTime.Now, 
-                    Username = "evewhite", 
-                    Password = "password" 
+                    Role = Role.Host,
+                    CreatedAt = DateTime.Now,
+                    Username = "evewhite",
+                    Password = "password"
                 },
-            new() { Id = 6, 
-                    FirstName = "Admin", 
-                    LastName = "Admin", 
-                    ShortBio = "My name is Admin", 
+            new() { Id = 6,
+                    FirstName = "Admin",
+                    LastName = "Admin",
+                    ShortBio = "My name is Admin",
                     Email = "admin@gmail.com",
-                    Phone = "678-901-2345", 
-                    Address = "678 Main St", 
+                    Phone = "678-901-2345",
+                    Address = "678 Main St",
                     GovernmentId = "6789012345",
-                    Role = Role.Admin, 
-                    CreatedAt = DateTime.Now, 
-                    Username = "admin", 
-                    Password = "password" 
+                    Role = Role.Admin,
+                    CreatedAt = DateTime.Now,
+                    Username = "admin",
+                    Password = "password"
                 },
-            new() { Id = 7, 
-                    FirstName = "Host", 
-                    LastName = "Host", 
-                    ShortBio = "My name is Host", 
+            new() { Id = 7,
+                    FirstName = "Host",
+                    LastName = "Host",
+                    ShortBio = "My name is Host",
                     Email = "host@gmail.com",
-                    Phone = "789-012-3456", 
-                    Address = "789 Main St", 
+                    Phone = "789-012-3456",
+                    Address = "789 Main St",
                     GovernmentId = "7890123456",
-                    Role = Role.Host, 
-                    CreatedAt = DateTime.Now, 
-                    Username = "host", 
-                    Password = "password" 
+                    Role = Role.Host,
+                    CreatedAt = DateTime.Now,
+                    Username = "host",
+                    Password = "password"
                 },
-            new() { Id = 8, 
-                    FirstName = "Guest", 
-                    LastName = "Guest", 
-                    ShortBio = "My name is Guest", 
+            new() { Id = 8,
+                    FirstName = "Guest",
+                    LastName = "Guest",
+                    ShortBio = "My name is Guest",
                     Email = "guest@gmail.com",
-                    Phone = "890-123-4567", 
-                    Address = "890 Main St", 
+                    Phone = "890-123-4567",
+                    Address = "890 Main St",
                     GovernmentId = "8901234567",
-                    Role = Role.Guest, 
-                    CreatedAt = DateTime.Now, 
-                    Username = "guest", 
-                    Password = "password" 
+                    Role = Role.Guest,
+                    CreatedAt = DateTime.Now,
+                    Username = "guest",
+                    Password = "password"
                 },
-            new() { Id = 9, 
-                    FirstName = "Elite", 
-                    LastName = "Host", 
-                    ShortBio = "My name is Elite Host", 
+            new() { Id = 9,
+                    FirstName = "Elite",
+                    LastName = "Host",
+                    ShortBio = "My name is Elite Host",
                     Email = "elite@gmail.com",
-                    Phone = "901-234-5678", 
-                    Address = "901 Main St", 
+                    Phone = "901-234-5678",
+                    Address = "901 Main St",
                     GovernmentId = "9012345678",
-                    Role = Role.Host, 
-                    CreatedAt = DateTime.Now, 
-                    Username = "elitehost", 
-                    Password = "password" 
+                    Role = Role.Host,
+                    CreatedAt = DateTime.Now,
+                    Username = "elitehost",
+                    Password = "password"
                 },
-            new() { Id = 10, 
-                    FirstName = "Elite Two", 
-                    LastName = "Host", 
-                    ShortBio = "My name is Elite Host", 
+            new() { Id = 10,
+                    FirstName = "Elite Two",
+                    LastName = "Host",
+                    ShortBio = "My name is Elite Host",
                     Email = "elite2@gmail.com",
-                    Phone = "012-345-6789", 
-                    Address = "012 Main St", 
+                    Phone = "012-345-6789",
+                    Address = "012 Main St",
                     GovernmentId = "0123456789",
-                    Role = Role.Host, 
-                    CreatedAt = DateTime.Now, 
-                    Username = "elitehost2", 
-                    Password = "password" 
+                    Role = Role.Host,
+                    CreatedAt = DateTime.Now,
+                    Username = "elitehost2",
+                    Password = "password"
                 }
+        };
+    }
+
+    private static List<Smartphone> AllSmartphones()
+    {
+        return new List<Smartphone>
+        {
+            new Smartphone(){
+            Id = 0,
+            Name = "iPhone 16 Pro Max",
+            Manufacturer = "Apple",
+            Price = 2099,
+            ImagePath = "iphone-16-pro-max.png"
+            },
+            new Smartphone(){
+                Id = 1,
+                Name = "iPhone 15 Pro Max",
+                Manufacturer = "Apple",
+                Price = 2999,
+                ImagePath = "iphone-15-pro-max-titanium.png"
+            },
+            new Smartphone(){
+                Id = 2,
+                Name = "Galaxy S24 Ultra",
+                Manufacturer = "Samsung",
+                Price = 1999,
+                ImagePath = "s24-ultra.png"
+            },
+            new Smartphone(){
+                Id = 3,
+                Name = "Xiaomi 14 Ultra",
+                Manufacturer = "Xiaomi",
+                Price = 1499,
+                ImagePath = "xiaomi-14-ultra.png"
+            },
+            new Smartphone(){
+                Id = 4,
+                Name = "Pixel 9 Pro",
+                Manufacturer = "Google",
+                Price = 1799,
+                ImagePath = "pixel-9-pro.png"
+            },
+            new Smartphone(){
+                Id = 5,
+                Name = "OnePlus 12",
+                Manufacturer = "OnePlus",
+                Price = 1599,
+                ImagePath = "oneplus-12.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 7,
+                Name = "X100 Pro",
+                Manufacturer = "Vivo",
+                Price = 1799,
+                ImagePath = "vivo-x100-pro.png"
+            },
+            new Smartphone(){
+                Id = 8,
+                Name = "iPhone 14",
+                Manufacturer = "Apple",
+                Price = 1499,
+                ImagePath = "iphone-14-pink.png"
+            },
+            new Smartphone(){
+                Id = 9,
+                Name = "iPhone 16 Plus",
+                Manufacturer = "Apple",
+                Price = 1299,
+                ImagePath = "iphone-16-plus.png"
+            },
+            new Smartphone(){
+                Id = 10,
+                Name = "iPhone 16 Pro Max",
+                Manufacturer = "Apple",
+                Price = 2099,
+                ImagePath = "iphone-16-pro-max.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 1,
+                Name = "iPhone 15 Pro Max",
+                Manufacturer = "Apple",
+                Price = 2999,
+                ImagePath = "iphone-15-pro-max-titanium.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 1,
+                Name = "iPhone 15 Pro Max",
+                Manufacturer = "Apple",
+                Price = 2999,
+                ImagePath = "iphone-15-pro-max-titanium.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 1,
+                Name = "iPhone 15 Pro Max",
+                Manufacturer = "Apple",
+                Price = 2999,
+                ImagePath = "iphone-15-pro-max-titanium.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            },
+            new Smartphone(){
+                Id = 6,
+                Name = "Find X7 Ultra",
+                Manufacturer = "OPPO",
+                Price = 1699,
+                ImagePath = "oppo-find-x7-ultra.png"
+            }
+        };
+    }
+
+    private static List<DestinationTypeSymbol> AllDestinationTypeSymbols()
+    {
+        return new List<DestinationTypeSymbol>
+        {
+            new(){
+            Name = "Amazing Pools",
+            ImagePath = "amazing-pools.jpg"
+            },
+            new(){
+                Name = "Amazing Views",
+                ImagePath = "amazing-views.jpg"
+            },
+            new(){
+                Name = "Beach",
+                ImagePath = "beach.jpg"
+            },
+            new(){
+                Name = "Countryside",
+                ImagePath = "countryside.jpg"
+            },
+            new(){
+                Name = "Farm",
+                ImagePath = "farm.jpg"
+            },
+            new(){
+                Name = "Islands",
+                ImagePath = "islands.jpg"
+            },
+            new(){
+                Name = "Lakefront",
+                ImagePath = "lakefront.jpg"
+            },
+            new(){
+                Name = "Luxe",
+                ImagePath = "luxe.jpg"
+            },
+            new(){
+                Name = "Mansions",
+                ImagePath = "mansions.jpg"
+            },
+            new(){
+                Name = "National Parks",
+                ImagePath = "national-parks.jpg"
+            },
+            new(){
+                Name = "Room",
+                ImagePath = "room.jpg"
+            },
+            new(){
+                Name = "Tiny Homes",
+                ImagePath = "tiny-homes.jpg"
+            },
+            new(){
+                Name = "Treehouses",
+                ImagePath = "treehouses.jpg"
+            },
+            new(){
+                Name = "Top Cities",
+                ImagePath = "top-cities.jpg"
+            },
+            new(){
+                Name = "Trending",
+                ImagePath = "trending.jpg"
+            },
+            new(){
+                Name = "Tropical",
+                ImagePath = "tropical.jpg"
+            }
         };
     }
 
@@ -666,5 +1373,21 @@ public class MockDao : IDao
 
         await Task.CompletedTask;
         return _allUsers;
+    }
+
+    public async Task<IEnumerable<DestinationTypeSymbol>> GetDestinationTypeSymbolDataAsync()
+    {
+        _allDestinationTypeSymbols ??= AllDestinationTypeSymbols();
+
+        await Task.CompletedTask;
+        return _allDestinationTypeSymbols;
+    }
+
+    public async Task<IEnumerable<Smartphone>> GetSmartphoneListDataAsync()
+    {
+        _allSmartphones ??= AllSmartphones();
+
+        await Task.CompletedTask;
+        return _allSmartphones;
     }
 }

@@ -12,7 +12,7 @@ public class NumberToCurencyConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        var number = (int)value;
+        var number = (decimal)value;
         CultureInfo culture = new("en-US");
         return number.ToString("C", culture);
     }

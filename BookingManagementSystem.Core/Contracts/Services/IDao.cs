@@ -13,4 +13,6 @@ public interface IDao
     Task<IEnumerable<QnA>> GetQnAListDataAsync();
     Task<IEnumerable<Review>> GetReviewListDataAsync();
     Task<IEnumerable<User>> GetUserListDataAsync();
+    Task<IEnumerable<DestinationTypeSymbol>> GetDestinationTypeSymbolDataAsync();
+    Task<IEnumerable<Smartphone>> GetSmartphoneListDataAsync();
 }

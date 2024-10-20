@@ -33,6 +33,18 @@
     <Content Remove="Assets\filtered-destinations\trending.jpg" />
     <Content Remove="Assets\filtered-destinations\tropical.jpg" />
     <Content Remove="Assets\homescreen.jpg" />
+    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-0.jpg" />
+    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-1.jpg" />
+    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-10.jpg" />
+    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-11.jpg" />
+    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-2.jpg" />
+    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-3.jpg" />
+    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-4.jpg" />
+    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-5.jpg" />
+    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-6.jpg" />
+    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-7.jpg" />
+    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-8.jpg" />
+    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-9.jpg" />
     <Content Remove="Assets\quote-images\dont-let-yesterday.png" />
     <Content Remove="Assets\quote-images\either-you-run-the-day.png" />
     <Content Remove="Assets\quote-images\if-you-believe-something.png" />
@@ -311,6 +323,45 @@
 
   <ItemGroup>
     <Folder Include="Views\Host\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-0.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-10.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-11.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-5.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-6.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-7.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-8.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-9.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
