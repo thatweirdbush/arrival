@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.Contracts.Services;
 using CommunityToolkit.WinUI.UI.Animations;
+using Windows.Devices.Geolocation;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -45,6 +46,30 @@ public sealed partial class RentalDetailPage : Page
         // Always show the Smartphone even if the InfoBar is closed
         infSmartphone.IsOpen = true;
         infSmartphone.Message = ViewModel.Item?.ToString() ?? "No item available";
+
+        // Set up initial map location
+        BasicGeoposition centerPosition = new BasicGeoposition { Latitude = ViewModel.Item.Latitude, Longitude = ViewModel.Item.Longitude };
+        Geopoint centerPoint = new Geopoint(centerPosition);
+
+        MainMap.Center = centerPoint;
+
+        var myLandmarks = new List<MapElement>();
+        BasicGeoposition position = new BasicGeoposition { Latitude = ViewModel.Item.Latitude, Longitude = ViewModel.Item.Longitude };
+        Geopoint point = new Geopoint(position);
+
+        var icon = new MapIcon
+        {
+            Location = point,
+        };
+
+        myLandmarks.Add(icon);
+
+        var LandmarksLayer = new MapElementsLayer
+        {
+            MapElements = myLandmarks
+        };
+
+        MainMap.Layers.Add(LandmarksLayer);
     }
 
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

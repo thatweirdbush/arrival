@@ -38,11 +38,11 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <!--1278 is the app's default Render Width -->
-                        <AdaptiveTrigger MinWindowWidth="1300"/>
+                        <!--1428 is the app's default Render Width -->
+                        <AdaptiveTrigger MinWindowWidth="1440"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="itemHero.MaxHeight" Value="700"/>
+                        <Setter Target="itemHero.MaxHeight" Value="800"/>
                         <Setter Target="RightGrid.MaxHeight" Value="800"/>
                         <Setter Target="LineRatingReview.X2" Value="280"/>
                     </VisualState.Setters>
@@ -50,7 +50,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <ScrollView ZoomMode="Disabled" IsTabStop="True"
+        <ScrollView ZoomMode="Disabled" IsTabStop="True" ContentOrientation="Vertical"
                 HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden"
                 VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto"
                 Background="Transparent">
@@ -126,24 +126,43 @@
                     </Grid>
                 </Grid>
 
-                <Grid Grid.Row="1" Margin="0 6 6 0" Padding="28 28 28 0" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}">
-                    <StackPanel>
-                        <TextBlock FontSize="26" FontWeight="Bold" Padding="0 0 0 6">What's new</TextBlock>
-                        <InfoBar x:Name="infSmartphone" IsOpen="True" Severity="Warning" 
-                      IsIconVisible="True" IsClosable="True" Title="News">
-                            <InfoBar.ActionButton>
-                                <Button Content="Next" ToolTipService.ToolTip="Get next smartphone"/>
-                            </InfoBar.ActionButton>
-                        </InfoBar>
+                <Grid Grid.Row="1" Margin="0 6 6 24" Padding="28 28 28 0" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="What this place offers" FontSize="26" FontWeight="Bold"/>
+                        <Grid x:Name="AmenityGrid">
+                            <controls:AdaptiveGridView
+                                DesiredWidth="240"
+                                ItemHeight="60"                
+                                x:Name="AmenityGridView"
+                                ItemsSource="{x:Bind ViewModel.DestinationTypeSymbols}"
+                                IsItemClickEnabled="True"
+                                FlowDirection="LeftToRight"
+                                StretchContentForSingleRow="False">
+                                <controls:AdaptiveGridView.ItemTemplate>
+                                    <DataTemplate x:DataType = "models:DestinationTypeSymbol">
+                                        <StackPanel Orientation="Horizontal" Spacing="12">
+                                            <Image Stretch="UniformToFill" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind ImagePath}" Margin="4"/>
+                                            <TextBlock Text="{x:Bind Name}" VerticalAlignment="Center" FontSize="16" FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </controls:AdaptiveGridView.ItemTemplate>
+                            </controls:AdaptiveGridView>
+                        </Grid>
+                        <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Where you’ll be" FontSize="26" FontWeight="Bold" Margin="0 10 0 0"/>
+                        <MapControl x:Name="MainMap" ZoomLevel="12" InteractiveControlsVisible="True" 
+                                    Width="Auto" Height="400"
+                                    MapServiceToken="2nuFEi0eKk7LYqZyP3CnciPsaR8TQDyfOYIY0Ai8bFZ1oCFjqGM6JQQJ99AJACYeBjFx5reYAAAgAZMPA7sY"/>
                     </StackPanel>
                 </Grid>
 
-                <Grid Grid.Row="1" Grid.Column="1" Margin="0 6 0 0" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}">
+                <Grid Grid.Row="1" Grid.Column="1" Margin="0 6 0 24" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <StackPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Spacing="10" Padding="28 28 28 20">
+                    <StackPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Spacing="12" Padding="28 28 28 20">
                         <TextBlock Text="Rating" FontSize="26" FontWeight="Bold"/>
                         <RatingControl AutomationProperties.Name="Simple RatingControl" 
                                        IsClearEnabled="True" IsReadOnly="False" 
@@ -151,13 +170,21 @@
                         <Line x:Name="LineRatingReview" Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
                         <TextBlock Text="Reviews" FontSize="26" FontWeight="Bold" Padding="0 10 0 0"/>
                     </StackPanel>
-                    <ScrollView MaxHeight="400" Grid.Row="1">
+                    <ScrollView MaxHeight="400" Grid.Row="1" VerticalAlignment="Top">
                         <Grid Padding="28 0 28 28">
                             <ItemsRepeater ItemsSource="{x:Bind ViewModel.Reviews, Mode=OneWay}"
                                            Layout="{StaticResource VerticalStackLayout}"
                                            ItemTemplate="{StaticResource ReviewItemTemplate}" />
                         </Grid>
                     </ScrollView>
+                    <StackPanel Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" Spacing="12" Padding="28 28 28 20">
+                        <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
+                        <InfoBar x:Name="infSmartphone" IsOpen="True" Severity="Warning" IsIconVisible="True" IsClosable="True" Title="News">
+                            <InfoBar.ActionButton>
+                                <Button Content="Next" ToolTipService.ToolTip="Get next smartphone"/>
+                            </InfoBar.ActionButton>
+                        </InfoBar>
+                    </StackPanel>
                 </Grid>
             </Grid>
         </ScrollView>

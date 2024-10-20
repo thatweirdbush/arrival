@@ -17,6 +17,7 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     [ObservableProperty]
     private Property? item;
     public IEnumerable<Review> Reviews { get; set; } = Enumerable.Empty<Review>();
+    public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = Enumerable.Empty<DestinationTypeSymbol>();
 
     public RentalDetailViewModel(IDao dao)
     {
@@ -34,6 +35,10 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
         // Load Review data
         var reviews = await _dao.GetReviewListDataAsync();
         Reviews = reviews;
+
+        // Load DestinationTypeSymbols data
+        var destinationTypeSymbols = await _dao.GetDestinationTypeSymbolDataAsync();
+        DestinationTypeSymbols = destinationTypeSymbols;
     }
 
     public void OnNavigatedFrom()

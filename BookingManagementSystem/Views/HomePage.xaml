@@ -274,7 +274,7 @@
                                 <RowDefinition Height="12*"/>
                                 <RowDefinition Height="8*"/>
                             </Grid.RowDefinitions>
-                            <Grid Background="LightGray">
+                            <Grid>
                                 <FlipView ItemsSource="{x:Bind ImagePaths, Mode=OneWay}">
                                     <FlipView.ItemTemplate>
                                         <DataTemplate x:DataType="x:String">
