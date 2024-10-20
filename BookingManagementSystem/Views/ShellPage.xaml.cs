@@ -150,6 +150,14 @@ public partial class ShellPage : Page
         {
             SignOutUser();
         }
+        else if (clickedItem.Tag.ToString() == "host")
+        {
+            NavigationFrame.Navigate(typeof(HostPage));
+        }
+        else if (clickedItem.Tag.ToString() == "setting")
+        {
+            NavigationFrame.Navigate(typeof(SettingsPage));
+        }
     }
 
     private void SignInUser()

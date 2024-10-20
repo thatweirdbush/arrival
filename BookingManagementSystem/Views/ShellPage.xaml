@@ -31,10 +31,10 @@
                 </StackPanel>
                 <Button.Flyout>
                     <MenuFlyout x:Name="UserFlyout" Placement="Bottom">
-                        <MenuFlyoutItem x:Name="HostMenuItem" Text="Host Dashboard" Icon="Home" Click="UserMenuFlyoutItem_Click" Tag="host"/>
-                        <MenuFlyoutItem x:Name="SignInMenuItem" Text="Sign in" Icon="Forward" Click="UserMenuFlyoutItem_Click" Tag="signin"/>
+                        <MenuFlyoutItem x:Name="HostMenuItem" Text="Host Dashboard" Icon="Home" Click="UserMenuFlyoutItem_Click" Tag="host" Width="180" Height="40"/>
+                        <MenuFlyoutItem x:Name="SignInMenuItem" Text="Sign in" Icon="Forward" Click="UserMenuFlyoutItem_Click" Tag="signin" Width="180" Height="40"/>
                         <MenuFlyoutSeparator/>
-                        <MenuFlyoutItem x:Name="SettingMenuItem" Text="Setting" Icon="Setting" Click="UserMenuFlyoutItem_Click" Tag="setting"/>
+                        <MenuFlyoutItem x:Name="SettingMenuItem" Text="Setting" Icon="Setting" Click="UserMenuFlyoutItem_Click" Tag="setting" Width="180" Height="40"/>
                     </MenuFlyout>
                 </Button.Flyout>
             </Button>

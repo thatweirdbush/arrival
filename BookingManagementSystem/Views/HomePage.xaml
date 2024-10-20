@@ -21,7 +21,7 @@
             </ItemContainer>
         </DataTemplate>
 
-        <StackLayout x:Name="HorizonalStackLayout" Orientation="Horizontal" Spacing="24"/>
+        <StackLayout x:Name="HorizonalStackLayout" Orientation="Horizontal" Spacing="22"/>
         <DataTemplate x:Key="FilteredDestinationItemTemplate" x:DataType="models:FilteredDestination">
             <Button Name="btnFilteredDestination" 
                         HorizontalAlignment="Stretch" VerticalAlignment="Center" 
@@ -189,7 +189,7 @@
                     VerticalScrollBarVisibility="Hidden"
                     HorizontalScrollMode="Enabled"
                     VerticalScrollMode="Disabled"
-                    Padding="0 0 28 0">
+                    Padding="0 0 24 0">
                 <Grid x:Name="ContentGrid" Margin="36,0,36,0">
                     <StackPanel Orientation="Horizontal" Spacing="12" Grid.Column="1">
                         <ItemsRepeater
