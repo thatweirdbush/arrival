@@ -135,7 +135,6 @@
                                 ItemHeight="60"                
                                 x:Name="AmenityGridView"
                                 ItemsSource="{x:Bind ViewModel.DestinationTypeSymbols}"
-                                IsItemClickEnabled="True"
                                 FlowDirection="LeftToRight"
                                 StretchContentForSingleRow="False">
                                 <controls:AdaptiveGridView.ItemTemplate>
@@ -149,18 +148,34 @@
                             </controls:AdaptiveGridView>
                         </Grid>
                         <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Your stay schedule" FontSize="26" FontWeight="Bold" Margin="0 10 0 0"/>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <CalendarView x:Name="CalendarView" SelectionMode="Single" IsGroupLabelVisible="True" IsOutOfScopeEnabled="True" Language="en" CalendarIdentifier="GregorianCalendar" Background="Transparent" CalendarItemForeground="Gray" BorderThickness="0" HorizontalAlignment="Stretch" Margin="0 0 18 0"/>
+                            <HyperlinkButton x:Name="btnClearDates" Grid.Row="1" Content="Clear dates" FontWeight="SemiBold" Click="btnClearDates_Click" HorizontalAlignment="Right"/>
+                        </Grid>
+                        <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
                         <TextBlock Text="Where you’ll be" FontSize="26" FontWeight="Bold" Margin="0 10 0 0"/>
                         <MapControl x:Name="MainMap" ZoomLevel="12" InteractiveControlsVisible="True" 
                                     Width="Auto" Height="400"
                                     MapServiceToken="2nuFEi0eKk7LYqZyP3CnciPsaR8TQDyfOYIY0Ai8bFZ1oCFjqGM6JQQJ99AJACYeBjFx5reYAAAgAZMPA7sY"/>
+
+                        <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center" Margin="0 18 0 0"/>
+                        <TextBlock Text="Things to know" FontSize="26" FontWeight="Bold" Margin="0 10 0 0"/>
+                        <TextBlock Text="House rules" FontSize="18" FontWeight="Bold" Margin="0 10 0 0"/>
+
                     </StackPanel>
                 </Grid>
 
                 <Grid Grid.Row="1" Grid.Column="1" Margin="0 6 0 24" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel VerticalAlignment="Top" HorizontalAlignment="Stretch" Spacing="12" Padding="28 28 28 20">
                         <TextBlock Text="Rating" FontSize="26" FontWeight="Bold"/>

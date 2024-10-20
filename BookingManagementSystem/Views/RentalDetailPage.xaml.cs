@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -84,5 +84,10 @@ public sealed partial class RentalDetailPage : Page
                 navigationService.SetListDataItemForNextConnectedAnimation(ViewModel.Item);
             }
         }
+    }
+
+    private void btnClearDates_Click(object sender, RoutedEventArgs e)
+    {
+        CalendarView.SelectedDates.Clear();
     }
 }

@@ -278,7 +278,7 @@ public class MockDao : IDao
                 PricePerNight = 199.9M,
                 IsFavourite = false,
                 IsAvailable = true,
-                Latitude = 147.6062,
+                Latitude = 17.6062,
                 Longitude = -22.3321,
                 IsPriority = true
             },
@@ -483,7 +483,7 @@ public class MockDao : IDao
                 PricePerNight = 899.9M,
                 IsFavourite = false,
                 IsAvailable = true,
-                Latitude = 97.6062,
+                Latitude = 30.6062,
                 Longitude = -22.3321
             },
             new()
@@ -512,8 +512,8 @@ public class MockDao : IDao
                 PricePerNight = 999.9M,
                 IsFavourite = true,
                 IsAvailable = true,
-                Latitude = 107.6062,
-                Longitude = -32.3321
+                Latitude = 72.6062,
+                Longitude = 32.3321
             },
             new()
             {
@@ -541,7 +541,7 @@ public class MockDao : IDao
                 PricePerNight = 1099.9M,
                 IsFavourite = false,
                 IsAvailable = true,
-                Latitude = 117.6062,
+                Latitude = 17.6062,
                 Longitude = -42.3321
             },
             new()
@@ -570,8 +570,8 @@ public class MockDao : IDao
                 PricePerNight = 1199.9M,
                 IsFavourite = true,
                 IsAvailable = true,
-                Latitude = 127.6062,
-                Longitude = -52.3321
+                Latitude = 0.6062,
+                Longitude = -2.3321
             },
             new()
             {
@@ -599,8 +599,8 @@ public class MockDao : IDao
                 PricePerNight = 1299.9M,
                 IsFavourite = false,
                 IsAvailable = true,
-                Latitude = 137.6062,
-                Longitude = -62.3321
+                Latitude = 50.6062,
+                Longitude = 42.3321
             },
             new()
             {
@@ -628,7 +628,7 @@ public class MockDao : IDao
                 PricePerNight = 1399.9M,
                 IsFavourite = true,
                 IsAvailable = true,
-                Latitude = 147.6062,
+                Latitude = 6.6062,
                 Longitude = -72.3321
             },
             new()
@@ -657,7 +657,7 @@ public class MockDao : IDao
                 PricePerNight = 1499.9M,
                 IsFavourite = false,
                 IsAvailable = true,
-                Latitude = 157.6062,
+                Latitude = 57.6062,
                 Longitude = -82.3321
             }
         };

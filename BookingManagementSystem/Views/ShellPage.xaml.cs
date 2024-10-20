@@ -163,7 +163,7 @@ public partial class ShellPage : Page
     private void SignInUser()
     {
         isSignedIn = true;
-        NavigationFrame.Navigate(typeof(SignupPage));
+        NavigationFrame.Navigate(typeof(LoginPage));
         UpdateUserMenu();
     }
 
