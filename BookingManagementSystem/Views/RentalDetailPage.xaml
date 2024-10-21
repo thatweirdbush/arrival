@@ -10,7 +10,9 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:models="using:BookingManagementSystem.Core.Models"
     mc:Ignorable="d"
-    Background="Transparent">
+    Background="Transparent"
+    NavigationCacheMode="Enabled"
+    CacheMode="BitmapCache">
     <Page.Resources>
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
         <StackLayout x:Name="VerticalStackLayout" Orientation="Vertical" Spacing="36"/>
@@ -50,7 +52,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <ScrollView ZoomMode="Disabled" IsTabStop="True" ContentOrientation="Vertical"
+        <ScrollView x:Name="ContentScrollViewer" ZoomMode="Disabled" IsTabStop="True" ContentOrientation="Vertical"
                 HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden"
                 VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto"
                 Background="Transparent">
@@ -73,8 +75,12 @@
                                      HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Hidden"
                                      VerticalScrollMode="Auto" VerticalScrollBarVisibility="Hidden">
                                     <Image AutomationProperties.Name="cliff" Stretch="Uniform" 
-                                    HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind}"
-                                    ToolTipService.ToolTip="You can scroll, pan and zoom an image in this panel. Try it out!"/>
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    ToolTipService.ToolTip="You can scroll, pan and zoom an image in this panel. Try it out!">
+                                        <Image.Source>
+                                            <BitmapImage UriSource="{x:Bind}" DecodePixelWidth="1280"/>
+                                        </Image.Source>
+                                    </Image>
                                 </ScrollView>
                             </DataTemplate>
                         </FlipView.ItemTemplate>
@@ -132,7 +138,7 @@
                         <Grid x:Name="AmenityGrid">
                             <controls:AdaptiveGridView
                                 DesiredWidth="240"
-                                ItemHeight="60"                
+                                ItemHeight="60" Padding="0"               
                                 x:Name="AmenityGridView"
                                 ItemsSource="{x:Bind ViewModel.DestinationTypeSymbols}"
                                 FlowDirection="LeftToRight"
@@ -147,27 +153,38 @@
                                 </controls:AdaptiveGridView.ItemTemplate>
                             </controls:AdaptiveGridView>
                         </Grid>
-                        <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
-                        <TextBlock Text="Your stay schedule" FontSize="26" FontWeight="Bold" Margin="0 10 0 0"/>
-
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <CalendarView x:Name="CalendarView" SelectionMode="Single" IsGroupLabelVisible="True" IsOutOfScopeEnabled="True" Language="en" CalendarIdentifier="GregorianCalendar" Background="Transparent" CalendarItemForeground="Gray" BorderThickness="0" HorizontalAlignment="Stretch" Margin="0 0 18 0"/>
-                            <HyperlinkButton x:Name="btnClearDates" Grid.Row="1" Content="Clear dates" FontWeight="SemiBold" Click="btnClearDates_Click" HorizontalAlignment="Right"/>
+                            <StackPanel Spacing="18">
+                                <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Your stay schedule" FontSize="26" FontWeight="Bold"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Spacing="4">
+                                <CalendarView x:Name="CalendarView" SelectionMode="Single" IsGroupLabelVisible="True" IsOutOfScopeEnabled="True" Language="en" CalendarIdentifier="GregorianCalendar" Background="Transparent" CalendarItemForeground="Gray" BorderThickness="0" HorizontalAlignment="Stretch"/>
+                                <HyperlinkButton x:Name="btnClearDates" Content="Clear dates" FontWeight="SemiBold" Click="btnClearDates_Click" HorizontalAlignment="Right"/>
+                            </StackPanel>
                         </Grid>
-                        <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
-                        <TextBlock Text="Where you’ll be" FontSize="26" FontWeight="Bold" Margin="0 10 0 0"/>
-                        <MapControl x:Name="MainMap" ZoomLevel="12" InteractiveControlsVisible="True" 
-                                    Width="Auto" Height="400"
+                        <Grid>
+                            <StackPanel Spacing="18">
+                                <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Where you’ll be" FontSize="26" FontWeight="Bold"/>
+                                <MapControl x:Name="MainMap" ZoomLevel="12" InteractiveControlsVisible="True" 
+                                    Width="Auto" MinHeight="460"
                                     MapServiceToken="2nuFEi0eKk7LYqZyP3CnciPsaR8TQDyfOYIY0Ai8bFZ1oCFjqGM6JQQJ99AJACYeBjFx5reYAAAgAZMPA7sY"/>
-
-                        <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center" Margin="0 18 0 0"/>
-                        <TextBlock Text="Things to know" FontSize="26" FontWeight="Bold" Margin="0 10 0 0"/>
-                        <TextBlock Text="House rules" FontSize="18" FontWeight="Bold" Margin="0 10 0 0"/>
-
+                            </StackPanel>
+                        </Grid>
+                        <Grid>
+                            <StackPanel Spacing="18">
+                                <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center" Margin="0 18 0 0"/>
+                                <TextBlock Text="Things to know" FontSize="26" FontWeight="Bold"/>
+                                <TextBlock Text="House rules" FontSize="18" FontWeight="Bold"/>
+                                
+                                
+                            </StackPanel>
+                        </Grid>
                     </StackPanel>
                 </Grid>
 

@@ -11,7 +11,8 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
     mc:Ignorable="d"
-    NavigationCacheMode="Enabled">
+    NavigationCacheMode="Required"
+    CacheMode="BitmapCache">
 
     <Page.Resources>
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
@@ -44,7 +45,11 @@
         </Grid.RowDefinitions>
         <Grid x:Name="Header">
             <Grid.Background>
-                <ImageBrush ImageSource="/Assets/homescreen.jpg" Stretch="UniformToFill" Opacity=".85"/>
+                <ImageBrush Stretch="UniformToFill" Opacity=".85">
+                    <ImageBrush.ImageSource>
+                        <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="1280"/>
+                    </ImageBrush.ImageSource>
+                </ImageBrush>
             </Grid.Background>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -278,7 +283,11 @@
                                 <FlipView ItemsSource="{x:Bind ImagePaths, Mode=OneWay}">
                                     <FlipView.ItemTemplate>
                                         <DataTemplate x:DataType="x:String">
-                                            <Image Source="{x:Bind}" Stretch = "UniformToFill" VerticalAlignment="Center"/>
+                                            <Image Stretch = "UniformToFill" VerticalAlignment="Center">
+                                                <Image.Source>
+                                                    <BitmapImage UriSource="{x:Bind}" DecodePixelWidth="540"/>
+                                                </Image.Source>
+                                            </Image>
                                         </DataTemplate>
                                     </FlipView.ItemTemplate>
                                 </FlipView>

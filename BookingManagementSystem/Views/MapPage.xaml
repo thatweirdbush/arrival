@@ -8,7 +8,8 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:models="using:BookingManagementSystem.Core.Models"
     mc:Ignorable="d"
-    NavigationCacheMode="Enabled">
+    NavigationCacheMode="Enabled"
+    CacheMode="BitmapCache">
 
     <Grid x:Name="ContentArea">
         <MapControl x:Name="MainMap" ZoomLevel="7" InteractiveControlsVisible="True"

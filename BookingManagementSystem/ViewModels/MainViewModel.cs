@@ -4,10 +4,11 @@ using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Services;
+using BookingManagementSystem.Contracts.ViewModels;
 
 namespace BookingManagementSystem.ViewModels;
 
-public partial class MainViewModel : ObservableRecipient
+public partial class MainViewModel : ObservableRecipient, INavigationAware
 {
     private readonly INavigationService _navigationService;
     private readonly IDao _dao;
