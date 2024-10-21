@@ -43,7 +43,7 @@ public sealed partial class RentalDetailPage : Page
         base.OnNavigatedTo(e);
 
         // Scroll to top when navigating to this page
-        //ContentScrollViewer.set(null, 0, null);
+        ContentScrollView.ScrollTo(0, 0);
 
         this.RegisterElementForConnectedAnimation("animationKeyContentGrid", itemHero);
 

@@ -23,8 +23,8 @@ public sealed partial class HostPage : Page
     private void SelectorBar2_SelectionChanged
                  (SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
     {
-        SelectorBarItem selectedItem = sender.SelectedItem;
-        int currentSelectedIndex = sender.Items.IndexOf(selectedItem);
+        var selectedItem = sender.SelectedItem;
+        var currentSelectedIndex = sender.Items.IndexOf(selectedItem);
         System.Type pageType;
 
         switch (currentSelectedIndex)

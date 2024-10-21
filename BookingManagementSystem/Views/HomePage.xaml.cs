@@ -90,9 +90,9 @@ public sealed partial class HomePage : Page
     {
         // Toggle the favourite button
         // Change the image source to the filled heart icon
-        if ((sender as FrameworkElement).DataContext is Smartphone smartphone)
+        if ((sender as FrameworkElement).DataContext is Property property)
         {
-            smartphone.IsFavourite = !smartphone.IsFavourite;
+            property.IsFavourite = !property.IsFavourite;
         }
     }
 

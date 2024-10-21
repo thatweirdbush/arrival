@@ -27,8 +27,10 @@ public partial class ShellPage : Page
     // List of MenuItems
     private List<string> MenuItems { get; } = new()
     {
-        "Home",
-        "Smartphones"
+        "Home - Hotels & Apartments",
+        "Rental Details",
+        "Map Services",
+        "Host Dashboard"
     };
 
     public ShellPage(ShellViewModel viewModel)
@@ -163,6 +165,7 @@ public partial class ShellPage : Page
     private void SignInUser()
     {
         isSignedIn = true;
+        username = "John Doe";
         NavigationFrame.Navigate(typeof(LoginPage));
         UpdateUserMenu();
     }
@@ -170,6 +173,7 @@ public partial class ShellPage : Page
     private void SignOutUser()
     {
         isSignedIn = false;
+        username = "Sign In";
         NavigationFrame.Navigate(typeof(HomePage));
         UpdateUserMenu();
     }

@@ -26,11 +26,11 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
-                    <RatingControl IsClearEnabled="False" IsReadOnly="True" Value="{x:Bind Rating}" Margin="0 4 0 0"/>
+                    <RatingControl IsClearEnabled="False" IsReadOnly="True" Value="{x:Bind Rating, Mode=OneWay}" Margin="0 4 0 0"/>
                     <TextBlock Text="·" Style="{ThemeResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
-                    <TextBlock Text="{x:Bind CreatedAt.ToLongDateString()}" Style="{ThemeResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{x:Bind CreatedAt.ToLongDateString(), Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
                 </StackPanel>
-                <TextBlock Text="{x:Bind Comment}" TextWrapping="Wrap" Style="{ThemeResource BodyTextStyle}"/>
+                <TextBlock Text="{x:Bind Comment, Mode=OneWay}" TextWrapping="Wrap" Style="{ThemeResource BodyTextStyle}"/>
             </StackPanel>
         </DataTemplate>
     </Page.Resources>
@@ -52,7 +52,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <ScrollView x:Name="ContentScrollViewer" ZoomMode="Disabled" IsTabStop="True" ContentOrientation="Vertical"
+        <ScrollView x:Name="ContentScrollView" ZoomMode="Disabled" IsTabStop="True" ContentOrientation="Vertical"
                 HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden"
                 VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto"
                 Background="Transparent">
@@ -87,7 +87,7 @@
                     </FlipView>
                     <Grid Background="{ThemeResource AcrylicInAppFillColorBaseBrush}" MaxWidth="100" CornerRadius="6" VerticalAlignment="Bottom" Margin="8">
                         <PipsPager x:Name="FlipViewPipsPager" HorizontalAlignment="Center" VerticalAlignment="Center"
-                           NumberOfPages="{x:Bind ViewModel.Item.ImagePaths.Count}" PreviousButtonVisibility="Visible" NextButtonVisibility="Visible"
+                           NumberOfPages="{x:Bind ViewModel.Item.ImagePaths.Count, Mode=OneWay}" PreviousButtonVisibility="Visible" NextButtonVisibility="Visible"
                            SelectedPageIndex="{x:Bind Path=Gallery.SelectedIndex, Mode=TwoWay}" />
                     </Grid>
                 </Grid>
@@ -112,7 +112,7 @@
                             </StackPanel>
 
                             <Grid Grid.Row="1" Margin="0 12 0 0">
-                                <TextBlock Text="{x:Bind ViewModel.Item.Description}" Style="{ThemeResource BodyTextStyle}" TextWrapping="Wrap"/>
+                                <TextBlock Text="{x:Bind ViewModel.Item.Description, Mode=OneWay}" Style="{ThemeResource BodyTextStyle}" TextWrapping="Wrap"/>
                             </Grid>
                         </Grid>
                     </ScrollView>

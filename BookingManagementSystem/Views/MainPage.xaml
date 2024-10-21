@@ -8,7 +8,9 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:models="using:BookingManagementSystem.Core.Models"
     mc:Ignorable="d"
-    Background="Transparent">
+    Background="Transparent"
+    NavigationCacheMode="Enabled"
+    CacheMode="BitmapCache">
     <Page.Resources>
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
         <StackLayout x:Name="VerticalStackLayout" Orientation="Vertical" Spacing="36"/>

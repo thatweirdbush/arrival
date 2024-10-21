@@ -33,6 +33,23 @@
     <Content Remove="Assets\filtered-destinations\trending.jpg" />
     <Content Remove="Assets\filtered-destinations\tropical.jpg" />
     <Content Remove="Assets\homescreen.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-0.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-1.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-10.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-11.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-12.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-13.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-14.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-15.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-16.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-2.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-3.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-4.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-5.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-6.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-7.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-8.jpg" />
+    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-9.jpg" />
     <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-0.jpg" />
     <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-1.jpg" />
     <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-10.jpg" />
@@ -45,6 +62,24 @@
     <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-7.jpg" />
     <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-8.jpg" />
     <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-9.jpg" />
+    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-0.jpg" />
+    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-1.jpg" />
+    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-10.jpg" />
+    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-2.jpg" />
+    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-3.jpg" />
+    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-4.jpg" />
+    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-5.jpg" />
+    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-6.jpg" />
+    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-7.jpg" />
+    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-8.jpg" />
+    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-9.jpg" />
+    <Content Remove="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-0.jpg" />
+    <Content Remove="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-1.jpg" />
+    <Content Remove="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-2.jpg" />
+    <Content Remove="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-3.jpg" />
+    <Content Remove="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-4.jpg" />
+    <Content Remove="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-5.jpg" />
+    <Content Remove="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-6.jpg" />
     <Content Remove="Assets\quote-images\dont-let-yesterday.png" />
     <Content Remove="Assets\quote-images\either-you-run-the-day.png" />
     <Content Remove="Assets\quote-images\if-you-believe-something.png" />
@@ -65,9 +100,9 @@
     <Content Remove="Assets\smartphone-images\s24-ultra.png" />
     <Content Remove="Assets\smartphone-images\vivo-x100-pro.png" />
     <Content Remove="Assets\smartphone-images\xiaomi-14-ultra.png" />
-    <Content Remove="Assets\symbol-icons\favorite-checked.png" />
-    <Content Remove="Assets\symbol-icons\favorite.png" />
+    <Content Remove="Assets\symbol-icons\favourite.png" />
     <Content Remove="Assets\symbol-icons\filter-icon.png" />
+    <Content Remove="Assets\symbol-icons\not-favourite.png" />
     <Content Remove="Assets\symbol-icons\search-icon-white.png" />
     <Content Remove="Assets\symbol-icons\search-icon.png" />
     <Content Remove="Assets\symbol-icons\white-star-icon.png" />
@@ -160,10 +195,61 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Assets\symbol-icons\favorite-checked.png">
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-0.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\symbol-icons\favorite.png">
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-10.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-11.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-12.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-13.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-14.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-15.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-16.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-5.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-6.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-7.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-8.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-9.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\symbol-icons\favourite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\symbol-icons\not-favourite.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -323,6 +409,66 @@
 
   <ItemGroup>
     <Folder Include="Views\Host\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-0.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-10.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-5.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-6.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-7.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-8.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-9.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-0.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-5.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-6.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
