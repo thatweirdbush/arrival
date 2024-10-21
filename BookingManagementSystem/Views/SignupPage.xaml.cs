@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Documents;
 using System.Collections.ObjectModel;
 using BookingManagementSystem.ViewModels;
+using BookingManagementSystem.Helpers;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -50,8 +51,34 @@ public sealed partial class SignupPage : Page
         Frame.Navigate(typeof(LoginPage)); 
     }
 
-    private void btnSignUp_Click(object sender, RoutedEventArgs e)
+    private async void btnSignUp_Click(object sender, RoutedEventArgs e)
     {
-        
+        // Default ContentDialog
+        ContentDialog contentDialog = new ContentDialog
+        {
+            XamlRoot = Content.XamlRoot,
+            Title = "Result",
+            Content = "Signed up successfully!",
+            CloseButtonText = "Ok"
+        };
+        // Get username & password
+        var username = txtUsername.Text;
+        var password = passworBoxWithRevealmode.Password;
+        var confirmPassword = confirmPassworBoxWithRevealmode.Password;
+
+        if (ValidationAccount.IsValidUsername(username) && ValidationAccount.IsValidPassword(password) && ValidationAccount.IsPasswordMatch(password, confirmPassword))
+        {
+            var result = await contentDialog.ShowAsync();
+            if (result == ContentDialogResult.None)
+            {
+                // Navigate to MainPage
+                Frame.Navigate(typeof(LoginPage));
+            }
+        }
+        else
+        {
+            contentDialog.Content = "Sign up failed! Invalid username or password.";
+            await contentDialog.ShowAsync();
+        }
     }
 }
