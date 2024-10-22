@@ -7,18 +7,37 @@
     xmlns:models="using:BookingManagementSystem.Core.Models"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    CacheMode="BitmapCache">
 
-    <Grid x:Name="ContentArea">
-        <ScrollView x:Name="MainScrollView">
-            <StackPanel Spacing="24" HorizontalAlignment="Stretch" Margin="{StaticResource NavigationViewPageContentMargin}">
+    <ScrollView x:Name="MainScrollView">
+        <Grid x:Name="MaintGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="240"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="PageHeader">
+                <Grid.Background>
+                    <ImageBrush Stretch="UniformToFill">
+                        <ImageBrush.ImageSource>
+                            <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="1280"/>
+                        </ImageBrush.ImageSource>
+                    </ImageBrush>
+                </Grid.Background>
+                <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Image Width="60" Height="60" Source="/Assets/three-body-a-white.png"/>
+                    <Image Source="/Assets/arrival-bio-white.png" Height="60" Margin="16" Stretch="Fill"/>
+                </StackPanel>
+            </Grid>
+            <StackPanel Grid.Row="1" Spacing="24" HorizontalAlignment="Stretch" Margin="260 36 260 100">
                 <Grid x:Name="HeaderContent">
-                    <StackPanel Spacing="12" HorizontalAlignment="Left">
+                    <StackPanel Spacing="18" HorizontalAlignment="Left">
                         <TextBlock Text="Common questions" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
-                        <TextBlock Text="From local laws to property protections, get answers to top hosting questions." Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" MaxWidth="600"/>
+                        <TextBlock Text="From local laws to property protections, get answers to top hosting questions." Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                        <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" Margin="0 0 0 0"/>
                     </StackPanel>
                 </Grid>
-                <StackPanel x:Name="MainContent" Spacing="28" Padding="0 0 0 40">
+                <StackPanel x:Name="MainContent" Spacing="28">
                     <StackPanel.Resources>
                         <StackLayout x:Name="VerticalStackLayout" Orientation="Vertical" Spacing="0"/>
                         <DataTemplate x:Key="FAQItemTemplate" x:DataType="models:FAQ">
@@ -90,6 +109,6 @@
                     </Grid>
                 </StackPanel>
             </StackPanel>
-        </ScrollView>
-    </Grid>
+        </Grid>
+    </ScrollView>
 </Page>
