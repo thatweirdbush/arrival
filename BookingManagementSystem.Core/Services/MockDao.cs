@@ -244,7 +244,7 @@ public class MockDao : IDao
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
-                },                    
+                },
                 Location = "Paris, France",
                 Capacity = 2,
                 PricePerNight = 99.9M,
@@ -273,7 +273,7 @@ public class MockDao : IDao
                     "hidden-bamboo-bali/hidden-bamboo-bali-8.jpg",
                     "hidden-bamboo-bali/hidden-bamboo-bali-9.jpg",
                     "hidden-bamboo-bali/hidden-bamboo-bali-10.jpg"
-                },  
+                },
                 Location = "Tampaksiring, Indonesia",
                 Capacity = 4,
                 PricePerNight = 199.9M,
@@ -1499,3 +1499,4 @@ public class MockDao : IDao
         await Task.CompletedTask;
         return _allVouchers;
     }
+}
