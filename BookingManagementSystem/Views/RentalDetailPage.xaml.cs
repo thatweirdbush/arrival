@@ -105,4 +105,16 @@ public sealed partial class RentalDetailPage : Page
             property.IsFavourite = !property.IsFavourite;
         }
     }
+
+    private void btnReport_Click(object sender, RoutedEventArgs e)
+    {
+        // Show the successful dialog
+        _ = new ContentDialog
+        {
+            XamlRoot = this.XamlRoot,
+            Title = "Report Result",
+            Content = "Thank you for reporting this item. We will review this and inform you as soon as possible!",
+            CloseButtonText = "Ok"
+        }.ShowAsync();
+    }
 }

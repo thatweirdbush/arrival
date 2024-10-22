@@ -127,7 +127,7 @@
                     </Grid.RowDefinitions>
                     <ScrollView x:Name="MainInfoScrollView" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                         <Grid x:Name="MainInfoGrid">
-                            <Grid VerticalAlignment="Top" HorizontalAlignment="Right" Margin="28 28 28 0" Canvas.ZIndex="1">
+                            <Grid VerticalAlignment="Top" HorizontalAlignment="Right" Margin="28 36 28 0" Canvas.ZIndex="1">
                                 <Button x:Name="btnFavourite" Click="btnFavourite_Click" Background="Transparent" DataContext="{x:Bind ViewModel.Item, Mode=TwoWay}" CornerRadius="8" BorderThickness="0" VerticalAlignment="Center">
                                     <Button.ContentTemplate>
                                         <DataTemplate x:DataType="models:Property">
@@ -142,7 +142,7 @@
                                 </Button>
                             </Grid>
                             <StackPanel x:Name="MainInfoContent" Spacing="26" Padding="28">
-                                <TextBlock x:Name="txtPropertyName" Padding="0 0 480 0" FontSize="38" FontWeight="Bold" Text="{x:Bind ViewModel.Item.Name, Mode=OneWay}" TextWrapping="Wrap"/>
+                                <TextBlock x:Name="txtPropertyName" Padding="0 0 88 0" FontSize="38" FontWeight="Bold" Text="{x:Bind ViewModel.Item.Name, Mode=OneWay}" TextWrapping="Wrap"/>
                                 <TextBlock x:Name="txtPropertyLocation" FontSize="26" Margin="0 -12 0 0" FontWeight="SemiBold" Text="{x:Bind ViewModel.Item.Location, Mode=OneWay}"/>
                                 <TextBlock x:Name="txtPricePerNight" FontSize="32" FontWeight="ExtraBlack" FontFamily="Arial" Text="{x:Bind ViewModel.Item.PricePerNight, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}"/>
                                 <TextBlock x:Name="txtAboutThisPlace" Text="About this place" Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
@@ -243,8 +243,20 @@
 
                 <Grid x:Name="RightSubMainContentGrid" Grid.Row="1" Grid.Column="1" Margin="0 6 0 24" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}">
                     <StackPanel Spacing="12" Padding="28">
-                        <StackPanel x:Name="RatingContent" Spacing="12" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-                            <TextBlock Text="Rating" FontSize="26" FontWeight="Bold"/>
+                        <StackPanel x:Name="RatingAndReportContent" Spacing="12" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                            <Grid>
+                                <TextBlock Text="Rating" FontSize="26" FontWeight="Bold"/>
+                                <Grid VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 2 0 0">
+                                    <Button x:Name="btnReport" Click="btnReport_Click" CornerRadius="8" BorderThickness="0">
+                                        <StackPanel x:Name="FavouriteActionPanel" Orientation="Horizontal" Spacing="4">
+                                            <Image x:Name="imgReport" Source="/Assets/symbol-icons/flag-gray-icon.png" VerticalAlignment="Center" Width="16" Height="16"/>
+                                            <TextBlock VerticalAlignment="Center" FontWeight="SemiBold" Foreground="Gray">
+                                                <Underline>Report</Underline>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </Grid>
                             <RatingControl AutomationProperties.Name="Simple RatingControl" 
                                        IsClearEnabled="True" IsReadOnly="False" 
                                        Caption="312 ratings" PlaceholderValue="4"/>

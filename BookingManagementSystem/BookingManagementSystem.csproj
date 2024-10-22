@@ -102,6 +102,7 @@
     <Content Remove="Assets\smartphone-images\xiaomi-14-ultra.png" />
     <Content Remove="Assets\symbol-icons\favourite.png" />
     <Content Remove="Assets\symbol-icons\filter-icon.png" />
+    <Content Remove="Assets\symbol-icons\flag-gray-icon.png" />
     <Content Remove="Assets\symbol-icons\not-favourite.png" />
     <Content Remove="Assets\symbol-icons\search-icon-white.png" />
     <Content Remove="Assets\symbol-icons\search-icon.png" />
@@ -247,6 +248,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Assets\symbol-icons\favourite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\symbol-icons\flag-gray-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Assets\symbol-icons\not-favourite.png">
