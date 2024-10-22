@@ -13,23 +13,23 @@
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<SelectorBar x:Name="SelectorBar" SelectionChanged="SelectorBar2_SelectionChanged"
+		<SelectorBar x:Name="SelectorBar" SelectionChanged="SelectorBar_SelectionChanged"
 					 HorizontalAlignment="Center" VerticalAlignment="Stretch">
 			<SelectorBarItem x:Name="SelectorBarItemPage1" Text="Today" FontWeight="Semibold" Foreground="Gray" IsSelected="True"/>
 			<SelectorBarItem x:Name="SelectorBarItemPage2" Text="Calendar" FontWeight="Semibold" Foreground="Gray"/>
 			<SelectorBarItem x:Name="SelectorBarItemPage3" Text="Listings" FontWeight="Semibold" Foreground="Gray"/>
 			<SelectorBarItem x:Name="SelectorBarItemPage4" Text="Messages" FontWeight="Semibold" Foreground="Gray"/>
-			<SelectorBarItem>
+            <SelectorBarItem x:Name="SelectorBarItemPage5">
                 <Button Content="Menu" FontWeight="Semibold" Background="Transparent" Foreground="Gray" BorderThickness="0" Margin="0 4 0 0">
 					<Button.Flyout>
-						<MenuFlyout Placement="Bottom">
-							<MenuFlyoutItem Text="Get Elite Access" FontWeight="Semibold" Width="200" Height="48"/>
+						<MenuFlyout x:Name="MenuFlyoutButton" Placement="Bottom">
+                            <MenuFlyoutItem Text="Get Elite Access" FontWeight="Semibold" Click="MenuFlyoutItem_Click" Tag="elite" Width="200" Height="48"/>
 							<MenuFlyoutSeparator/>
-                            <MenuFlyoutItem Text="Reservations" FontWeight="Semibold" Width="200" Height="48"/>
-                            <MenuFlyoutItem Text="Earnings" FontWeight="Semibold" Width="200" Height="48"/>
-                            <MenuFlyoutItem Text="Vouchers" FontWeight="Semibold" Width="200" Height="48"/>
+                            <MenuFlyoutItem Text="Reservations" FontWeight="Semibold" Click="MenuFlyoutItem_Click" Tag="reservations" Width="200" Height="48"/>
+                            <MenuFlyoutItem Text="Earnings" FontWeight="Semibold" Click="MenuFlyoutItem_Click" Tag="earnings" Width="200" Height="48"/>
+                            <MenuFlyoutItem Text="Vouchers" FontWeight="Semibold" Click="MenuFlyoutItem_Click" Tag="vouchers" Width="200" Height="48"/>
 							<MenuFlyoutSeparator/>
-                            <MenuFlyoutItem Text="Guidebooks" FontWeight="Semibold" Width="200" Height="48"/>
+                            <MenuFlyoutItem Text="Guidebooks" FontWeight="Semibold" Click="MenuFlyoutItem_Click" Tag="guidebooks" Width="200" Height="48"/>
 						</MenuFlyout>
 					</Button.Flyout>
 				</Button>

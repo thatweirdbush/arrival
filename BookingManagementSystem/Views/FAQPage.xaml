@@ -4,31 +4,92 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    NavigationCacheMode="Enabled"
-    CacheMode="BitmapCache">
+    xmlns:models="using:BookingManagementSystem.Core.Models"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    mc:Ignorable="d">
 
-	<Grid x:Name="ContentArea" Margin="{StaticResource NavigationViewPageContentMargin}">
-		<ScrollView x:Name="MainScrollView">
-			<StackPanel Spacing="40">
-				<Grid x:Name="HeaderGrid">
-					<StackPanel Spacing="12">
-						<TextBlock Text="Common questions" FontSize="36" FontWeight="Bold" H/>
-						<TextBlock Text="From local laws to property protections, get answers to top hosting questions." FontSize="18" FontWeight="Semibold" TextWrapping="Wrap"/>
-					</StackPanel>
-				</Grid>
-				<StackPanel>
-					<TextBlock Text="Q: How do I book a reservation?" FontSize="18" FontWeight="Semibold" Margin="0 0 0 8"/>
-					<TextBlock Text="A: To book a reservation, simply click on the 'Book Now' button on the listing page and follow the instructions to complete the booking process." Margin="0 0 0 16"/>
-					<TextBlock Text="Q: How do I cancel a reservation?" FontSize="18" FontWeight="Semibold" Margin="0 0 0 8"/>
-					<TextBlock Text="A: To cancel a reservation, go to your 'Reservations' page, select the reservation you wish to cancel, and click on the 'Cancel Reservation' button." Margin="0 0 0 16"/>
-					<TextBlock Text="Q: How do I contact the host?" FontSize="18" FontWeight="Semibold" Margin="0 0 0 8"/>
-					<TextBlock Text="A: To contact the host, go to the listing page and click on the 'Contact Host' button. You can send a message to the host through the messaging system." Margin="0 0 0 16"/>
-					<TextBlock Text="Q: How do I leave a review?" FontSize="18" FontWeight="Semibold" Margin="0 0 0 8"/>
-					<TextBlock Text="A: To leave a review, go to your 'Reservations' page, select the reservation you wish to review, and click on the 'Leave Review' button. You can rate your experience and leave a written review." Margin="0 0 0 16"/>
-					<TextBlock Text="Q: How do I report an issue?" FontSize="18" FontWeight="Semibold" Margin="0 0 0 8"/>
-				</StackPanel>
-			</StackPanel>
-		</ScrollView>
-	</Grid>
+    <Grid x:Name="ContentArea">
+        <ScrollView x:Name="MainScrollView">
+            <StackPanel Spacing="24" HorizontalAlignment="Stretch" Margin="{StaticResource NavigationViewPageContentMargin}">
+                <Grid x:Name="HeaderContent">
+                    <StackPanel Spacing="12" HorizontalAlignment="Left">
+                        <TextBlock Text="Common questions" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
+                        <TextBlock Text="From local laws to property protections, get answers to top hosting questions." Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" MaxWidth="600"/>
+                    </StackPanel>
+                </Grid>
+                <StackPanel x:Name="MainContent" Spacing="28" Padding="0 0 0 40">
+                    <StackPanel.Resources>
+                        <StackLayout x:Name="VerticalStackLayout" Orientation="Vertical" Spacing="0"/>
+                        <DataTemplate x:Key="FAQItemTemplate" x:DataType="models:FAQ">
+                            <Grid x:Name="itemThumbnail">
+                                <Expander IsExpanded="False" ExpandDirection="Down" VerticalAlignment="Top"
+                                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                                          Content="{x:Bind Answer}">
+                                    <Expander.Header>
+                                        <TextBlock  Text="{x:Bind Question}" Style="{ThemeResource ListTitleStyle}"/>
+                                    </Expander.Header>
+                                </Expander>
+                            </Grid>
+                        </DataTemplate>
+                    </StackPanel.Resources>
+
+                    <Grid x:Name="GeneralFAQsGrid">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="General" Style="{ThemeResource TitleTextBlockStyle}"/>
+                            <ItemsRepeater x:Name="GeneralFAQItemsRepeater" ItemsSource="{x:Bind ViewModel.GeneralFAQs}"
+                                   Layout="{StaticResource VerticalStackLayout}"
+                                   ItemTemplate="{StaticResource FAQItemTemplate}">
+                            </ItemsRepeater>
+                        </StackPanel>
+                    </Grid>
+                    <Grid x:Name="BookingFAQsGrid">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Booking info and requests" Style="{ThemeResource TitleTextBlockStyle}"/>
+                            <ItemsRepeater x:Name="BookingFAQItemsRepeater" ItemsSource="{x:Bind ViewModel.BookingFAQs}"
+                                   Layout="{StaticResource VerticalStackLayout}"
+                                   ItemTemplate="{StaticResource FAQItemTemplate}">
+                            </ItemsRepeater>
+                        </StackPanel>
+                    </Grid>
+                    <Grid x:Name="PaymentFAQsGrid">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Payment" Style="{ThemeResource TitleTextBlockStyle}"/>
+                            <ItemsRepeater x:Name="PaymentFAQItemsRepeater" ItemsSource="{x:Bind ViewModel.PaymentFAQs}"
+                                   Layout="{StaticResource VerticalStackLayout}"
+                                   ItemTemplate="{StaticResource FAQItemTemplate}">
+                            </ItemsRepeater>
+                        </StackPanel>
+                    </Grid>
+                    <Grid x:Name="PricingFAQsGrid">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Pricing" Style="{ThemeResource TitleTextBlockStyle}"/>
+                            <ItemsRepeater x:Name="PricingFAQItemsRepeater" ItemsSource="{x:Bind ViewModel.PricingFAQs}"
+                                   Layout="{StaticResource VerticalStackLayout}"
+                                   ItemTemplate="{StaticResource FAQItemTemplate}">
+                            </ItemsRepeater>
+                        </StackPanel>
+                    </Grid>
+                    <Grid x:Name="CancellationFAQsGrid">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Cancellations and modifications" Style="{ThemeResource TitleTextBlockStyle}"/>
+                            <ItemsRepeater x:Name="CancellationFAQItemsRepeater" ItemsSource="{x:Bind ViewModel.CancellationsFAQs}"
+                                   Layout="{StaticResource VerticalStackLayout}"
+                                   ItemTemplate="{StaticResource FAQItemTemplate}">
+                            </ItemsRepeater>
+                        </StackPanel>
+                    </Grid>
+                    <Grid x:Name="PropertyPoliciesFAQsGrid">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Property policies" Style="{ThemeResource TitleTextBlockStyle}"/>
+                            <ItemsRepeater x:Name="PropertyPoliciesFAQItemsRepeater" ItemsSource="{x:Bind ViewModel.PropertyPoliciesFAQs}"
+                                   Layout="{StaticResource VerticalStackLayout}"
+                                   ItemTemplate="{StaticResource FAQItemTemplate}">
+                            </ItemsRepeater>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </ScrollView>
+    </Grid>
 </Page>

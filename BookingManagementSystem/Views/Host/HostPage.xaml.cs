@@ -19,8 +19,9 @@ public sealed partial class HostPage : Page
     }
 
     int previousSelectedIndex = 0;
+    int previousSelectedMenuItemIndex = 0;
 
-    private void SelectorBar2_SelectionChanged
+    private void SelectorBar_SelectionChanged
                  (SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
     {
         var selectedItem = sender.SelectedItem;
@@ -59,5 +60,51 @@ public sealed partial class HostPage : Page
         });
 
         previousSelectedIndex = currentSelectedIndex;
+    }
+
+    private void MenuFlyoutItem_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var clickedItem = sender as MenuFlyoutItem;
+        if (clickedItem == null || clickedItem.Tag == null)
+        {
+            return;
+        }
+
+        var currentSelectedIndex = MenuFlyoutButton.Items.IndexOf(clickedItem);
+        var pageType = typeof(FAQPage);
+
+        if (clickedItem.Tag.ToString() == "elite")
+        {
+            pageType = typeof(FAQPage);
+        }
+        else if (clickedItem.Tag.ToString() == "reservations")
+        {
+            pageType = typeof(FAQPage);
+        }
+        else if (clickedItem.Tag.ToString() == "earnings")
+        {
+            pageType = typeof(FAQPage);
+        }
+        else if (clickedItem.Tag.ToString() == "vouchers")
+        {
+            pageType = typeof(FAQPage);
+        }
+        else if (clickedItem.Tag.ToString() == "guidebooks")
+        {
+            pageType = typeof(FAQPage);
+        }
+
+        var slideNavigationTransitionEffect =
+                currentSelectedIndex - previousSelectedMenuItemIndex > 0 ?
+                    SlideNavigationTransitionEffect.FromRight :
+                    SlideNavigationTransitionEffect.FromLeft;
+
+        ContentFrame.Navigate(pageType, null, new SlideNavigationTransitionInfo()
+        {
+            Effect = slideNavigationTransitionEffect
+        });
+
+        previousSelectedMenuItemIndex = currentSelectedIndex;
+        SelectorBar.SelectedItem = SelectorBarItemPage5;
     }
 }

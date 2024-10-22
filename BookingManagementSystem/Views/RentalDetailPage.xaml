@@ -171,12 +171,13 @@
                         <StackPanel Spacing="12">
                             <TextBlock Text="What this place offers" FontSize="26" FontWeight="Bold"/>
                             <controls:AdaptiveGridView
-                            DesiredWidth="240"
-                            ItemHeight="60" Padding="0"               
-                            x:Name="AmenityGridView"
-                            ItemsSource="{x:Bind ViewModel.DestinationTypeSymbols}"
-                            FlowDirection="LeftToRight"
-                            StretchContentForSingleRow="False">
+                                DesiredWidth="240"
+                                ItemHeight="60" Padding="0"               
+                                x:Name="AmenityGridView"
+                                ItemsSource="{x:Bind ViewModel.DestinationTypeSymbols}"
+                                FlowDirection="LeftToRight"
+                                StretchContentForSingleRow="False"
+                                ItemContainerStyle="{ThemeResource GridViewItemRevealStyle}">
                                 <controls:AdaptiveGridView.ItemTemplate>
                                     <DataTemplate x:DataType = "models:DestinationTypeSymbol">
                                         <StackPanel Orientation="Horizontal" Spacing="12">
@@ -218,18 +219,18 @@
                                     <TextBlock Text="Things to know" FontSize="26" FontWeight="Bold"/>
                                     <controls:AdaptiveGridView
                                         DesiredWidth="240"
-                                        ItemHeight="60" Padding="0"               
+                                        ItemHeight="80" Padding="0"               
                                         x:Name="PropertyPoliciesGridView"
-                                        ItemsSource="{x:Bind ViewModel.PropertyPolicies, Mode=OneWay}"
+                                        ItemsSource="{x:Bind ViewModel.PropertyPolicies, Mode=OneWay}" ItemContainerStyle="{ThemeResource GridViewItemRevealStyle}"
                                         FlowDirection="LeftToRight"
                                         StretchContentForSingleRow="False">
                                         <controls:AdaptiveGridView.ItemTemplate>
                                             <DataTemplate x:DataType = "models:PropertyPolicy">
-                                                <StackPanel Orientation="Horizontal" Spacing="12">
-                                                    <PersonPicture DisplayName="{x:Bind Name, Mode=OneWay}" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <StackPanel Orientation="Horizontal" Spacing="12" Padding="12">
+                                                    <PersonPicture DisplayName="{x:Bind Name, Mode=OneWay}" Width="40" Height="40"/>
                                                     <StackPanel Spacing="4" VerticalAlignment="Center">
-                                                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" VerticalAlignment="Center" FontSize="16" FontWeight="SemiBold"/>
-                                                        <TextBlock Text="{x:Bind Description, Mode=OneWay}" VerticalAlignment="Center" FontSize="12" FontWeight="Normal"/>
+                                                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                                        <TextBlock Text="{x:Bind Description, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap"/>
                                                     </StackPanel>
                                                 </StackPanel>
                                             </DataTemplate>

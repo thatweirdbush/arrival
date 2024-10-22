@@ -20,8 +20,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     // Filtered destination data
     public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = Enumerable.Empty<DestinationTypeSymbol>();
 
-    // List of smartphones for the AdaptiveGridView
-    public IEnumerable<Smartphone> Smartphones { get; set; } = Enumerable.Empty<Smartphone>();
+    // List of items for the AdaptiveGridView
     public IEnumerable<Property> Properties { get; set; } = Enumerable.Empty<Property>();
 
     public HomeViewModel(INavigationService navigationService, IDao dao)
