@@ -179,4 +179,7 @@
   <data name="Shell_RentalDetails.Content" xml:space="preserve">
     <value>Rental Details</value>
   </data>
+  <data name="Shell_FAQ.Content" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
 </root>

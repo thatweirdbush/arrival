@@ -1,0 +1,34 @@
+﻿<Page
+    x:Class="BookingManagementSystem.Views.FAQPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled"
+    CacheMode="BitmapCache">
+
+	<Grid x:Name="ContentArea" Margin="{StaticResource NavigationViewPageContentMargin}">
+		<ScrollView x:Name="MainScrollView">
+			<StackPanel Spacing="40">
+				<Grid x:Name="HeaderGrid">
+					<StackPanel Spacing="12">
+						<TextBlock Text="Common questions" FontSize="36" FontWeight="Bold" H/>
+						<TextBlock Text="From local laws to property protections, get answers to top hosting questions." FontSize="18" FontWeight="Semibold" TextWrapping="Wrap"/>
+					</StackPanel>
+				</Grid>
+				<StackPanel>
+					<TextBlock Text="Q: How do I book a reservation?" FontSize="18" FontWeight="Semibold" Margin="0 0 0 8"/>
+					<TextBlock Text="A: To book a reservation, simply click on the 'Book Now' button on the listing page and follow the instructions to complete the booking process." Margin="0 0 0 16"/>
+					<TextBlock Text="Q: How do I cancel a reservation?" FontSize="18" FontWeight="Semibold" Margin="0 0 0 8"/>
+					<TextBlock Text="A: To cancel a reservation, go to your 'Reservations' page, select the reservation you wish to cancel, and click on the 'Cancel Reservation' button." Margin="0 0 0 16"/>
+					<TextBlock Text="Q: How do I contact the host?" FontSize="18" FontWeight="Semibold" Margin="0 0 0 8"/>
+					<TextBlock Text="A: To contact the host, go to the listing page and click on the 'Contact Host' button. You can send a message to the host through the messaging system." Margin="0 0 0 16"/>
+					<TextBlock Text="Q: How do I leave a review?" FontSize="18" FontWeight="Semibold" Margin="0 0 0 8"/>
+					<TextBlock Text="A: To leave a review, go to your 'Reservations' page, select the reservation you wish to review, and click on the 'Leave Review' button. You can rate your experience and leave a written review." Margin="0 0 0 16"/>
+					<TextBlock Text="Q: How do I report an issue?" FontSize="18" FontWeight="Semibold" Margin="0 0 0 8"/>
+				</StackPanel>
+			</StackPanel>
+		</ScrollView>
+	</Grid>
+</Page>

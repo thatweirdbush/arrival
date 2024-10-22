@@ -36,10 +36,6 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         var destinationTypeSymbols = await _dao.GetDestinationTypeSymbolDataAsync();
         DestinationTypeSymbols = destinationTypeSymbols;
 
-        //// Load Smartphones data
-        //var smartphones = await _dao.GetSmartphoneListDataAsync();
-        //Smartphones = smartphones;
-
         // Load Properties data
         var properties = await _dao.GetPropertyListDataAsync();
         Properties = properties;
