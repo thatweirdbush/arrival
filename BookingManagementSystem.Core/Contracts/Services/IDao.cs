@@ -15,4 +15,6 @@ public interface IDao
     Task<IEnumerable<User>> GetUserListDataAsync();
     Task<IEnumerable<DestinationTypeSymbol>> GetDestinationTypeSymbolDataAsync();
     Task<IEnumerable<Smartphone>> GetSmartphoneListDataAsync();
+    Task<IEnumerable<BadReport>> GetBadReportListDataAsync();
+    Task<IEnumerable<Voucher>> GetVoucherListDataAsync();
 }

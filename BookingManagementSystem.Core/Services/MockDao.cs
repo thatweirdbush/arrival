@@ -15,6 +15,8 @@ public class MockDao : IDao
     private static List<QnA> _allQnAs;
     private static List<Review> _allReviews;
     private static List<User> _allUsers;
+    private static List<BadReport> _allBadReports;
+    private static List<Voucher> _allVouchers;
 
     private static List<Smartphone> _allSmartphones;
     private static List<DestinationTypeSymbol> _allDestinationTypeSymbols;
@@ -1308,6 +1310,84 @@ public class MockDao : IDao
         };
     }
 
+    private static List<BadReport> AllBadReports()
+    {
+        return new List<BadReport>
+        {
+            new() { Id = 1,
+                    UserId = 1,
+                    ReportReason = "Reason 1",
+                    Description = "Description 1",
+                    Status = ReportStatus.Approved,
+                    EntityType= EntityType.Property
+            },
+            new() { Id = 2,
+                    UserId = 2,
+                    ReportReason = "Reason 2",
+                    Description = "Description 2",
+                    Status = ReportStatus.Approved,
+                    EntityType= EntityType.User
+            },
+            new() { Id = 3,
+                    UserId = 3,
+                    ReportReason = "Reason 3",
+                    Description = "Description 3",
+                    Status = ReportStatus.Pending,
+                    EntityType= EntityType.Property
+            },
+            new() { Id = 4,
+                    UserId = 4,
+                    ReportReason = "Reason 4",
+                    Description = "Description 4",
+                    Status = ReportStatus.Rejected,
+                    EntityType= EntityType.User
+            },
+            new() { Id = 5,
+                    UserId = 5,
+                    ReportReason = "Reason 5",
+                    Description = "Description 5",
+                    Status = ReportStatus.Pending,
+                    EntityType= EntityType.Review
+            }
+        };
+    }
+
+    private static List<Voucher> AllVouchers()
+    {
+        return new List<Voucher>
+        {
+            new() { Id = 1,
+                    Code = "Voucher 1",
+                    DiscountPercentage = 10,
+                    ValidUntil = DateTime.Now.AddDays(30),
+                    IsUsed = true
+            },
+            new() { Id = 2,
+                    Code = "Voucher 2",
+                    DiscountPercentage = 20,
+                    ValidUntil = DateTime.Now.AddDays(60),
+                    IsUsed = false
+            },
+            new() { Id = 3,
+                    Code = "Voucher 3",
+                    DiscountPercentage = 30,
+                    ValidUntil = DateTime.Now.AddDays(90),
+                    IsUsed = false
+            },
+            new() { Id = 4,
+                    Code = "Voucher 4",
+                    DiscountPercentage = 40,
+                    ValidUntil = DateTime.Now.AddDays(120),
+                    IsUsed = false
+            },
+            new() { Id = 5,
+                    Code = "Voucher 5",
+                    DiscountPercentage = 50,
+                    ValidUntil = DateTime.Now.AddDays(150),
+                    IsUsed = true
+            }
+        };
+    }
     public async Task<IEnumerable<Amenity>> GetAmenityListDataAsync()
     {
         _allAmenities ??= AllAmenities();
@@ -1403,4 +1483,19 @@ public class MockDao : IDao
         await Task.CompletedTask;
         return _allSmartphones;
     }
-}
+
+    public async Task<IEnumerable<BadReport>> GetBadReportListDataAsync()
+    {
+        _allBadReports ??= AllBadReports();
+
+        await Task.CompletedTask;
+        return _allBadReports;
+    }
+
+    public async Task<IEnumerable<Voucher>> GetVoucherListDataAsync()
+    {
+        _allVouchers ??= AllVouchers();
+
+        await Task.CompletedTask;
+        return _allVouchers;
+    }
