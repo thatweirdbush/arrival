@@ -16,6 +16,7 @@ using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.Contracts.Services;
 using CommunityToolkit.WinUI.UI.Animations;
 using Windows.Devices.Geolocation;
+using BookingManagementSystem.Core.Models;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -93,5 +94,15 @@ public sealed partial class RentalDetailPage : Page
     private void btnClearDates_Click(object sender, RoutedEventArgs e)
     {
         CalendarView.SelectedDates.Clear();
+    }
+
+    private void btnFavourite_Click(object sender, RoutedEventArgs e)
+    {
+        // Toggle the favourite button
+        // Change the image source to the filled heart icon
+        if ((sender as FrameworkElement).DataContext is Property property)
+        {
+            property.IsFavourite = !property.IsFavourite;
+        }
     }
 }

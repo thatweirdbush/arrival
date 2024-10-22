@@ -15,10 +15,18 @@ public class IsFavouriteToImagePathConverter : IValueConverter
         if (value is bool isFavourite)
         {
             var imagePath = isFavourite ? "/Assets/symbol-icons/favourite.png" : "/Assets/symbol-icons/not-favourite.png";
-            return new BitmapImage(new Uri("ms-appx://" + imagePath));
+            //return new BitmapImage(new Uri("ms-appx://" + imagePath));
+            var bitmapImage = new BitmapImage(new Uri("ms-appx://" + imagePath))
+            {
+                DecodePixelHeight = 20
+            };
+            return bitmapImage;
         }
 
-        return new BitmapImage(new Uri("ms-appx:///Assets/symbol-icons/favourite.png"));
+        return new BitmapImage(new Uri("ms-appx:///Assets/symbol-icons/favourite.png"))
+        {
+            DecodePixelHeight = 20
+        };
     }
     public object ConvertBack(object value, Type targetType, object parameter, string language)
     {
