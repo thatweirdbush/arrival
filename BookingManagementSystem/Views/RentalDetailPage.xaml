@@ -142,17 +142,17 @@
                                 </Button>
                             </Grid>
                             <StackPanel x:Name="MainInfoContent" Spacing="26" Padding="28">
-                                <TextBlock x:Name="txtPropertyName" Padding="0 0 88 0" FontSize="38" FontWeight="Bold" Text="{x:Bind ViewModel.Item.Name, Mode=OneWay}" TextWrapping="Wrap"/>
-                                <TextBlock x:Name="txtPropertyLocation" FontSize="26" Margin="0 -12 0 0" FontWeight="SemiBold" Text="{x:Bind ViewModel.Item.Location, Mode=OneWay}"/>
-                                <TextBlock x:Name="txtPricePerNight" FontSize="32" FontWeight="ExtraBlack" FontFamily="Arial" Text="{x:Bind ViewModel.Item.PricePerNight, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}"/>
-                                <TextBlock x:Name="txtAboutThisPlace" Text="About this place" Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap"/>
-                                <TextBlock x:Name="txtDescription" Text="{x:Bind ViewModel.Item.Description, Mode=OneWay}" Margin="0 -12 0 0" Style="{ThemeResource BodyTextStyle}" TextWrapping="Wrap"/>
+                                <TextBlock x:Name="txtPropertyName" Padding="0 0 88 0" FontSize="38" FontWeight="Bold" Text="{x:Bind ViewModel.Item.Name, Mode=OneWay}" IsTextSelectionEnabled="True" TextWrapping="Wrap"/>
+                                <TextBlock x:Name="txtPropertyLocation" FontSize="26" Margin="0 -12 0 0" FontWeight="SemiBold" Text="{x:Bind ViewModel.Item.Location, Mode=OneWay}" IsTextSelectionEnabled="True"/>
+                                <TextBlock x:Name="txtPricePerNight" FontSize="32" FontWeight="ExtraBlack" FontFamily="Arial" Text="{x:Bind ViewModel.Item.PricePerNight, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}" IsTextSelectionEnabled="True"/>
+                                <TextBlock x:Name="txtAboutThisPlace" Text="About this place" Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap" IsTextSelectionEnabled="True"/>
+                                <TextBlock x:Name="txtDescription" Text="{x:Bind ViewModel.Item.Description, Mode=OneWay}" IsTextSelectionEnabled="True" Margin="0 -12 0 0" Style="{ThemeResource BodyTextStyle}" TextWrapping="Wrap"/>
                             </StackPanel>
                         </Grid>
                     </ScrollView>
 
                     <Grid x:Name="MainInfoActionsGrid" Grid.Row="1" Padding="24 18 24 18">
-                        <RepeatButton x:Name="btnBuySmartphone" 
+                        <Button x:Name="btnBookNow" 
                                   Content="Book now"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                   Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
@@ -160,9 +160,7 @@
                                   Style="{ThemeResource DefaultRepeatButtonStyle}"
                                   FontWeight="SemiBold"
                                   Padding="18"
-                                  Delay="500" Interval="100" 
-                                  ToolTipService.ToolTip="Place your reservation now">
-                        </RepeatButton>
+                                  ToolTipService.ToolTip="Place your reservation now"/>
                     </Grid>
                 </Grid>
 
@@ -283,9 +281,27 @@
                                            ItemTemplate="{StaticResource QnAItemTemplate}"/>
                                 </Grid>
                             </ScrollView>
+                            <Grid>
+                                <StackPanel Spacing="12" Margin="0 8 0 0">
+                                    <Line x:Name="LinQnA" Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Ask a question" Style="{ThemeResource TitleTextBlockStyle}" Padding="0 10 0 0"/>
+                                    <TextBlock Text="Your question" Style="{ThemeResource BaseTextBlockStyle}" Margin="0 -6 0 0"/>
+                                    <TextBox PlaceholderText="e.g. do you offer room service?" Height="80"/>
+                                    <Button 
+                                        x:Name="btnSubmitQustion"
+                                        Content="Submit"
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                        Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
+                                        Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                                        Style="{ThemeResource DefaultRepeatButtonStyle}"
+                                        FontWeight="SemiBold"
+                                        Padding="18"
+                                        ToolTipService.ToolTip="Place your reservation now"/>
+                                </StackPanel>
+                            </Grid>
                         </StackPanel>
 
-                        <StackPanel x:Name="InfoBarContent" VerticalAlignment="Top" HorizontalAlignment="Stretch" Spacing="12">
+                        <StackPanel x:Name="InfoBarContent" VerticalAlignment="Top" HorizontalAlignment="Stretch" Spacing="12" Margin="0 8 0 0">
                             <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
                             <InfoBar x:Name="infSmartphone" IsOpen="True" Severity="Warning" IsIconVisible="True" IsClosable="True" Title="News">
                                 <InfoBar.ActionButton>
