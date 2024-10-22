@@ -29,7 +29,7 @@
                     <Image Source="/Assets/arrival-bio-white.png" Height="60" Margin="16" Stretch="Fill"/>
                 </StackPanel>
             </Grid>
-            <StackPanel Grid.Row="1" Spacing="24" HorizontalAlignment="Stretch" Margin="260 36 260 100">
+            <StackPanel Grid.Row="1" Spacing="24" HorizontalAlignment="Stretch" Margin="{StaticResource BlogViewContentMargin}">
                 <Grid x:Name="HeaderContent">
                     <StackPanel Spacing="18" HorizontalAlignment="Left">
                         <TextBlock Text="Common questions" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
