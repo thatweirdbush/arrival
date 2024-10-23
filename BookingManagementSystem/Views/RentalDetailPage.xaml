@@ -247,7 +247,7 @@
                             <Grid>
                                 <TextBlock Text="Rating" FontSize="26" FontWeight="Bold"/>
                                 <Grid VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 2 0 0">
-                                    <Button x:Name="btnReport" Click="btnReport_Click" CornerRadius="8" BorderThickness="0">
+                                    <Button x:Name="btnReport" Click="btnReport_Click" CornerRadius="8" BorderThickness="0" Background="Transparent">
                                         <StackPanel x:Name="FavouriteActionPanel" Orientation="Horizontal" Spacing="4">
                                             <Image x:Name="imgReport" Source="/Assets/symbol-icons/flag-gray-icon.png" VerticalAlignment="Center" Width="16" Height="16"/>
                                             <TextBlock VerticalAlignment="Center" FontWeight="SemiBold" Foreground="Gray">

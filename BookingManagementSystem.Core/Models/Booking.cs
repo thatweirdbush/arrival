@@ -63,7 +63,7 @@ public class Booking : INotifyPropertyChanged
     {
         get; set;
     } = DateTime.Now;
-    public DateTime UpdatedAt
+    public DateTime? UpdatedAt
     {
         get; set;
     }

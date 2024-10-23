@@ -21,6 +21,7 @@
     <Content Remove="Assets\arrival-bio-resize-75.png" />
     <Content Remove="Assets\arrival-bio-white.png" />
     <Content Remove="Assets\arrival-bio.png" />
+    <Content Remove="Assets\destination-type-symbol-icons\all-icon.png" />
     <Content Remove="Assets\destination-type-symbol-icons\amazing-pools.jpg" />
     <Content Remove="Assets\destination-type-symbol-icons\amazing-views.jpg" />
     <Content Remove="Assets\destination-type-symbol-icons\beach.jpg" />
@@ -446,6 +447,12 @@
   <ItemGroup>
     <Folder Include="Views\Host\" />
     <Folder Include="Views\Payment\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\destination-type-symbol-icons\all-icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

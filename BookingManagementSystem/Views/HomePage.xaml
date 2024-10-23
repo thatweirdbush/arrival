@@ -25,14 +25,21 @@
 
         <StackLayout x:Name="HorizonalStackLayout" Orientation="Horizontal" Spacing="22"/>
         <DataTemplate x:Key="DestinationTypeSymbolItemTemplate" x:DataType="models:DestinationTypeSymbol">
-            <Button Name="btnFilteredDestination" 
-                        HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                        Background="Transparent"
-                        BorderThickness="0"
-                        DataContext="{x:Bind}">
+            <Button Name="btnFilterDestination"
+                    HorizontalAlignment="Stretch" 
+                    VerticalAlignment="Center" 
+                    Background="Transparent"
+                    BorderThickness="0"
+                    DataContext="{x:Bind}" 
+                    Tag="{x:Bind DestinationType}"
+                    Click="btnFilterDestination_Click">
                 <StackPanel Spacing="6">
-                    <Image Source="{x:Bind ImagePath}" Width="28" Height="28"/>
-                    <TextBlock Text="{x:Bind Name}" TextWrapping="WrapWholeWords" FontFamily="Aptos" FontWeight="SemiBold"/>
+                    <Image Width="28" Height="28">
+                        <Image.Source>
+                            <BitmapImage UriSource="{x:Bind ImagePath}" DecodePixelHeight="28"/>
+                        </Image.Source>
+                    </Image>
+                    <TextBlock Text="{x:Bind Name}" TextWrapping="WrapWholeWords" FontFamily="Aptos" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="-2 0 0 0"/>
                 </StackPanel>
             </Button>
         </DataTemplate>
@@ -57,8 +64,16 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Canvas.ZIndex="1" Margin="0 24 0 0">
-                <Image Width="36" Height="36" Source="/Assets/three-body-a-white.png"/>
-                <Image Source="/Assets/arrival-bio-white.png" Height="36" Margin="12 0 0 0" Stretch="Fill"/>
+                <Image Width="36" Height="36">
+                    <Image.Source>
+                        <BitmapImage UriSource="/Assets/three-body-a-white.png" DecodePixelHeight="36"/>
+                    </Image.Source>
+                </Image>
+                <Image Height="36" Margin="12 0 0 0">
+                    <Image.Source>
+                        <BitmapImage UriSource="/Assets/arrival-bio-white.png" DecodePixelHeight="36"/>
+                    </Image.Source>
+                </Image>
             </StackPanel>
             <Grid Grid.Column="0" Grid.ColumnSpan="2" Margin="0 56 0 0">
                 <!--A designated sibling element to sit behind all elements which you'd like to have casing shadows-->
@@ -294,7 +309,11 @@
                                 </FlipView>
                                 <Border x:Name="BorderVipMember" Visibility="{x:Bind IsPriority, Mode=OneWay}" CornerRadius="18" Width="82" Height="36" Background="WhiteSmoke" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
                                     <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <Image Width="18" Height="18" Source="/Assets/three-body-a.png"/>
+                                        <Image Width="18" Height="18">
+                                            <Image.Source>
+                                                <BitmapImage UriSource="/Assets/three-body-a.png" DecodePixelHeight="18"/>
+                                            </Image.Source>
+                                        </Image>
                                         <TextBlock Text="Elite" FontWeight="Bold" Foreground="Black " HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>

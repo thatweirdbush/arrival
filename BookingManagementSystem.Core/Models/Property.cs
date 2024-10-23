@@ -92,6 +92,12 @@ public class Property : INotifyPropertyChanged
     {
         get; set;
     }
+
+    public ICollection<DestinationType> DestinationTypes
+    {
+        get; set;
+    } = [];
+
     public ICollection<string> ImagePaths
     {
         // Concatenate MS_APPX with each image path
@@ -131,7 +137,7 @@ public class Property : INotifyPropertyChanged
     {
         get; set;
     } = DateTime.Now;
-    public DateTime UpdatedAt
+    public DateTime? UpdatedAt
     {
         get; set;
     }

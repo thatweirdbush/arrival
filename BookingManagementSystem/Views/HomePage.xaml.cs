@@ -88,9 +88,10 @@ public sealed partial class HomePage : Page
 
     private void btnFavourite_Click(object sender, RoutedEventArgs e)
     {
-        // Toggle the favourite button
-        // Change the image source to the filled heart icon
-        if ((sender as FrameworkElement).DataContext is Property property)
+        // Toggle the favourite button  
+        // Change the image source to the filled heart icon  
+        if (sender is FrameworkElement frameworkElement 
+            && frameworkElement.DataContext is Property property)
         {
             property.IsFavourite = !property.IsFavourite;
         }
@@ -143,5 +144,15 @@ public sealed partial class HomePage : Page
     private void DestinationAutoSuggestBox_Drop(object sender, DragEventArgs e)
     {
 
+    }
+
+    private void btnFilterDestination_Click(object sender, RoutedEventArgs e)
+    {
+        // Filter Properties based on DestinationType  
+        if (sender is FrameworkElement frameworkElement 
+            && frameworkElement.DataContext is DestinationTypeSymbol destinationTypeSymbol)
+        {
+            ViewModel.FilterProperties(destinationTypeSymbol);
+        }
     }
 }
