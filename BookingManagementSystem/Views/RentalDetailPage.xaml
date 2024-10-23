@@ -63,22 +63,22 @@
     </Page.Resources>
 
     <Grid x:Name="ContentArea">
-        <VisualStateManager.VisualStateGroups>
+        <!--<VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <!--1428 is the app's default Render Width -->
+                        --><!--1428 is the app's default Render Width--><!-- 
                         <AdaptiveTrigger MinWindowWidth="1440"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="itemHero.MaxHeight" Value="800"/>
-                        <Setter Target="RightGrid.MaxHeight" Value="800"/>
+                        <Setter Target="itemHero.MaxHeight" Value="720"/>
+                        <Setter Target="RightContentGrid.MaxHeight" Value="720"/>
                         <Setter Target="LineRatingReview.X2" Value="280"/>
                         <Setter Target="LineReviewQnA.X2" Value="280"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+        </VisualStateManager.VisualStateGroups>-->
 
         <ScrollView x:Name="ContentScrollView" ZoomMode="Disabled" IsTabStop="True" ContentOrientation="Vertical"
                 HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden"
@@ -158,6 +158,7 @@
                                   Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                   Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
                                   Style="{ThemeResource DefaultRepeatButtonStyle}"
+                                  Click="btnBookNow_Click"
                                   FontWeight="SemiBold"
                                   Padding="18"
                                   ToolTipService.ToolTip="Place your reservation now"/>
@@ -228,7 +229,7 @@
                                                     <PersonPicture DisplayName="{x:Bind Name, Mode=OneWay}" Width="40" Height="40"/>
                                                     <StackPanel Spacing="4" VerticalAlignment="Center">
                                                         <TextBlock Text="{x:Bind Name, Mode=OneWay}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap"/>
-                                                        <TextBlock Text="{x:Bind Description, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap"/>
+                                                        <TextBlock Text="{x:Bind Description, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" MaxWidth="180" Padding="0 0 12 0"/>
                                                     </StackPanel>
                                                 </StackPanel>
                                             </DataTemplate>
@@ -294,6 +295,7 @@
                                         Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                         Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
                                         Style="{ThemeResource DefaultRepeatButtonStyle}"
+                                        Click="btnSubmitQustion_Click"
                                         FontWeight="SemiBold"
                                         Padding="18"
                                         ToolTipService.ToolTip="Place your reservation now"/>

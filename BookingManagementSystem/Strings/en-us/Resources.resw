@@ -182,4 +182,7 @@
   <data name="Shell_FAQ.Content" xml:space="preserve">
     <value>FAQs</value>
   </data>
+  <data name="Shell_Payment.Content" xml:space="preserve">
+    <value>Payment</value>
+  </data>
 </root>

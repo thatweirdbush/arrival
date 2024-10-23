@@ -13,6 +13,7 @@
 	<Nullable>enable</Nullable>
 	<UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="Assets\arrival-bio-white.png" />
@@ -33,6 +34,7 @@
     <Content Remove="Assets\filtered-destinations\trending.jpg" />
     <Content Remove="Assets\filtered-destinations\tropical.jpg" />
     <Content Remove="Assets\homescreen.jpg" />
+    <Content Remove="Assets\momo-logo.png" />
     <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-0.jpg" />
     <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-1.jpg" />
     <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-10.jpg" />
@@ -100,6 +102,7 @@
     <Content Remove="Assets\smartphone-images\s24-ultra.png" />
     <Content Remove="Assets\smartphone-images\vivo-x100-pro.png" />
     <Content Remove="Assets\smartphone-images\xiaomi-14-ultra.png" />
+    <Content Remove="Assets\symbol-icons\credit-card-icon.png" />
     <Content Remove="Assets\symbol-icons\favourite.png" />
     <Content Remove="Assets\symbol-icons\filter-icon.png" />
     <Content Remove="Assets\symbol-icons\flag-gray-icon.png" />
@@ -413,6 +416,19 @@
 
   <ItemGroup>
     <Folder Include="Views\Host\" />
+    <Folder Include="Views\Payment\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\symbol-icons\credit-card-icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\momo-logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

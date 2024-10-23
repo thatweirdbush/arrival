@@ -22,6 +22,7 @@ public class PageService : IPageService
         Configure<RentalDetailViewModel, RentalDetailPage>();
         Configure<HostViewModel, HostPage>();
         Configure<FAQViewModel, FAQPage>();
+        Configure<PaymentViewModel, PaymentPage>();
     }
 
     public Type GetPageType(string key)

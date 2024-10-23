@@ -53,14 +53,14 @@ public sealed partial class RentalDetailPage : Page
         infSmartphone.Message = ViewModel.Item?.ToString() ?? "No item available";
 
         // Set up initial map location
-        BasicGeoposition centerPosition = new BasicGeoposition { Latitude = ViewModel.Item.Latitude, Longitude = ViewModel.Item.Longitude };
-        Geopoint centerPoint = new Geopoint(centerPosition);
+        var centerPosition = new BasicGeoposition { Latitude = ViewModel.Item.Latitude, Longitude = ViewModel.Item.Longitude };
+        var centerPoint = new Geopoint(centerPosition);
 
         MainMap.Center = centerPoint;
 
         var myLandmarks = new List<MapElement>();
-        BasicGeoposition position = new BasicGeoposition { Latitude = ViewModel.Item.Latitude, Longitude = ViewModel.Item.Longitude };
-        Geopoint point = new Geopoint(position);
+        var position = new BasicGeoposition { Latitude = ViewModel.Item.Latitude, Longitude = ViewModel.Item.Longitude };
+        var point = new Geopoint(position);
 
         var icon = new MapIcon
         {
@@ -100,7 +100,8 @@ public sealed partial class RentalDetailPage : Page
     {
         // Toggle the favourite button
         // Change the image source to the filled heart icon
-        if ((sender as FrameworkElement).DataContext is Property property)
+        if (sender is FrameworkElement frameworkElement 
+            && frameworkElement.DataContext is Property property)
         {
             property.IsFavourite = !property.IsFavourite;
         }
@@ -111,10 +112,27 @@ public sealed partial class RentalDetailPage : Page
         // Show the successful dialog
         _ = new ContentDialog
         {
-            XamlRoot = this.XamlRoot,
-            Title = "Report Result",
+            XamlRoot = XamlRoot,
+            Title = "Report result",
             Content = "Thank you for reporting this item. We will review this and inform you as soon as possible!",
             CloseButtonText = "Ok"
         }.ShowAsync();
+    }
+
+    private void btnSubmitQustion_Click(object sender, RoutedEventArgs e)
+    {
+        // Show the successful dialog
+        _ = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = "Question submission result",
+            Content = "Your question has been submitted successfully!",
+            CloseButtonText = "Ok"
+        }.ShowAsync();
+    }
+
+    private void btnBookNow_Click(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(PaymentPage));
     }
 }

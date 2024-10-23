@@ -11,10 +11,10 @@
     CacheMode="BitmapCache">
 
     <ScrollView x:Name="MainScrollView">
-        <Grid x:Name="MaintGrid">
+        <Grid x:Name="MainGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="240"/>
-                <RowDefinition Height="3*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid x:Name="PageHeader">
                 <Grid.Background>
@@ -29,7 +29,7 @@
                     <Image Source="/Assets/arrival-bio-white.png" Height="60" Margin="16" Stretch="Fill"/>
                 </StackPanel>
             </Grid>
-            <StackPanel Grid.Row="1" Spacing="24" HorizontalAlignment="Stretch" Margin="{StaticResource BlogViewContentMargin}">
+            <StackPanel Grid.Row="1" Spacing="24" HorizontalAlignment="Stretch" Margin="{StaticResource BlogViewWideContentMargin}">
                 <Grid x:Name="HeaderContent">
                     <StackPanel Spacing="18" HorizontalAlignment="Left">
                         <TextBlock Text="Common questions" Style="{ThemeResource TitleLargeTextBlockStyle}"/>

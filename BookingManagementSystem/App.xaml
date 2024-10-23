@@ -10,7 +10,8 @@
                 <ResourceDictionary Source="/Styles/Thickness.xaml" />
                 <ResourceDictionary Source="/Styles/TextBlock.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Thickness x:Key="BlogViewContentMargin">260,36,260,100</Thickness>
+            <Thickness x:Key="BlogViewWideContentMargin">260,36,260,100</Thickness>
+            <Thickness x:Key="BlogViewContentMargin">310,36,310,100</Thickness>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

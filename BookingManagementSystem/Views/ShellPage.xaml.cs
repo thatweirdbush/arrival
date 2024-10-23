@@ -110,7 +110,7 @@ public partial class ShellPage : Page
             {
                 var found = splitText.All((key) =>
                 {
-                    return item.ToLower().Contains(key);
+                    return item.Contains(key, StringComparison.CurrentCultureIgnoreCase);
                 });
                 if (found)
                 {
@@ -144,19 +144,19 @@ public partial class ShellPage : Page
     private void UserMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
     {
         var clickedItem = sender as MenuFlyoutItem;
-        if (clickedItem.Tag.ToString() == "signin")
+        if (clickedItem?.Tag?.ToString() == "signin")
         {
             SignInUser();
         }
-        else if (clickedItem.Tag.ToString() == "signout")
+        else if (clickedItem?.Tag?.ToString() == "signout")
         {
             SignOutUser();
         }
-        else if (clickedItem.Tag.ToString() == "host")
+        else if (clickedItem?.Tag?.ToString() == "host")
         {
             NavigationFrame.Navigate(typeof(HostPage));
         }
-        else if (clickedItem.Tag.ToString() == "setting")
+        else if (clickedItem?.Tag?.ToString() == "setting")
         {
             NavigationFrame.Navigate(typeof(SettingsPage));
         }
