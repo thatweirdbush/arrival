@@ -16,7 +16,27 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="Assets\a-drip-dark.png" />
+    <Content Remove="Assets\a-drip-light.png" />
+    <Content Remove="Assets\arrival-bio-resize-75.png" />
     <Content Remove="Assets\arrival-bio-white.png" />
+    <Content Remove="Assets\arrival-bio.png" />
+    <Content Remove="Assets\destination-type-symbol-icons\amazing-pools.jpg" />
+    <Content Remove="Assets\destination-type-symbol-icons\amazing-views.jpg" />
+    <Content Remove="Assets\destination-type-symbol-icons\beach.jpg" />
+    <Content Remove="Assets\destination-type-symbol-icons\countryside.jpg" />
+    <Content Remove="Assets\destination-type-symbol-icons\farm.jpg" />
+    <Content Remove="Assets\destination-type-symbol-icons\islands.jpg" />
+    <Content Remove="Assets\destination-type-symbol-icons\lakefront.jpg" />
+    <Content Remove="Assets\destination-type-symbol-icons\luxe.jpg" />
+    <Content Remove="Assets\destination-type-symbol-icons\mansions.jpg" />
+    <Content Remove="Assets\destination-type-symbol-icons\national-parks.jpg" />
+    <Content Remove="Assets\destination-type-symbol-icons\room.jpg" />
+    <Content Remove="Assets\destination-type-symbol-icons\tiny-homes.jpg" />
+    <Content Remove="Assets\destination-type-symbol-icons\top-cities.jpg" />
+    <Content Remove="Assets\destination-type-symbol-icons\treehouses.jpg" />
+    <Content Remove="Assets\destination-type-symbol-icons\trending.jpg" />
+    <Content Remove="Assets\destination-type-symbol-icons\tropical.jpg" />
     <Content Remove="Assets\filtered-destinations\amazing-pools.jpg" />
     <Content Remove="Assets\filtered-destinations\amazing-views.jpg" />
     <Content Remove="Assets\filtered-destinations\beach.jpg" />
@@ -110,7 +130,10 @@
     <Content Remove="Assets\symbol-icons\search-icon-white.png" />
     <Content Remove="Assets\symbol-icons\search-icon.png" />
     <Content Remove="Assets\symbol-icons\white-star-icon.png" />
+    <Content Remove="Assets\three-body-a-resize-75.png" />
     <Content Remove="Assets\three-body-a-white.png" />
+    <Content Remove="Assets\three-body-a.ico" />
+    <Content Remove="Assets\three-body-a.png" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\BadgeLogo.scale-100.png" />
@@ -399,6 +422,12 @@
     <None Update="Assets\three-body-a-white.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Assets\three-body-a.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\three-body-a.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Page Update="Views\SignupPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -417,6 +446,78 @@
   <ItemGroup>
     <Folder Include="Views\Host\" />
     <Folder Include="Views\Payment\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\destination-type-symbol-icons\amazing-pools.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\destination-type-symbol-icons\amazing-views.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\destination-type-symbol-icons\beach.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\destination-type-symbol-icons\countryside.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\destination-type-symbol-icons\farm.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\destination-type-symbol-icons\islands.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\destination-type-symbol-icons\lakefront.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\destination-type-symbol-icons\luxe.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\destination-type-symbol-icons\mansions.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\destination-type-symbol-icons\national-parks.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\destination-type-symbol-icons\room.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\destination-type-symbol-icons\tiny-homes.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\destination-type-symbol-icons\top-cities.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\destination-type-symbol-icons\treehouses.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\destination-type-symbol-icons\trending.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\destination-type-symbol-icons\tropical.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\a-drip-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\a-drip-light.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\arrival-bio-resize-75.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\arrival-bio.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\three-body-a-resize-75.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

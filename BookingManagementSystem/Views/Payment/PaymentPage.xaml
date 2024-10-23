@@ -184,7 +184,7 @@
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                     Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                     Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
-                                    Style="{ThemeResource DefaultRepeatButtonStyle}"
+                                    Style="{ThemeResource DefaultButtonStyle}"
                                     FontWeight="SemiBold"
                                     Padding="18"
                                     ToolTipService.ToolTip="Confirm the information above and pay for your reservation"/>
@@ -254,7 +254,7 @@
                                     <Button Grid.Column="1" Content="Apply" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                             Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                             Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
-                                            Style="{ThemeResource DefaultRepeatButtonStyle}"
+                                            Style="{ThemeResource DefaultButtonStyle}"
                                             FontWeight="SemiBold"
                                             BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                             Padding="24 12 24 12"                                            

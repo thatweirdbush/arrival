@@ -117,7 +117,7 @@
                                HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
-                               Style="{ThemeResource DefaultRepeatButtonStyle}"
+                               Style="{ThemeResource DefaultButtonStyle}"
                                FontWeight="SemiBold"
                                Padding="18"
                                Delay="500" Interval="100" 

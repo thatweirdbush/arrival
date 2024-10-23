@@ -157,7 +157,7 @@
                                   HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                   Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                   Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
-                                  Style="{ThemeResource DefaultRepeatButtonStyle}"
+                                  Style="{ThemeResource DefaultButtonStyle}"
                                   Click="btnBookNow_Click"
                                   FontWeight="SemiBold"
                                   Padding="18"
@@ -268,7 +268,7 @@
                             <ScrollView MaxHeight="400" VerticalAlignment="Top" Margin="0 0 -28 0">
                                 <ItemsRepeater ItemsSource="{x:Bind ViewModel.Reviews, Mode=OneWay}"
                                            Layout="{StaticResource VerticalStackLayout}"
-                                           ItemTemplate="{StaticResource ReviewItemTemplate}" />
+                                           ItemTemplate="{StaticResource ReviewItemTemplate}"/>
                             </ScrollView>
                         </StackPanel>
 
@@ -294,7 +294,7 @@
                                         HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                         Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                         Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
-                                        Style="{ThemeResource DefaultRepeatButtonStyle}"
+                                        Style="{ThemeResource DefaultButtonStyle}"
                                         Click="btnSubmitQustion_Click"
                                         FontWeight="SemiBold"
                                         Padding="18"

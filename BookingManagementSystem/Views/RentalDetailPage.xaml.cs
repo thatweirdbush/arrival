@@ -42,11 +42,10 @@ public sealed partial class RentalDetailPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
+        this.RegisterElementForConnectedAnimation("animationKeyContentGrid", itemHero);
 
         // Scroll to top when navigating to this page
         ContentScrollView.ScrollTo(0, 0);
-
-        this.RegisterElementForConnectedAnimation("animationKeyContentGrid", itemHero);
 
         // Always show the Smartphone even if the InfoBar is closed
         infSmartphone.IsOpen = true;
