@@ -35,6 +35,10 @@ public class BadReport : INotifyPropertyChanged
     {
         get; set;
     }
+    public int EntityId
+    {
+        get; set;
+    }
     public DateTime ReportDate
     {
         get; set;
@@ -58,7 +62,7 @@ public class BadReport : INotifyPropertyChanged
     public EntityType EntityType
     {
         get; set;
-    }
+    } = EntityType.Property;  // Default entity type is "Property"
 
     // Admin or moderator who handled the report
     public int? HandledByAdminId

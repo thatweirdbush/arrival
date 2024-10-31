@@ -17,6 +17,7 @@ using BookingManagementSystem.Contracts.Services;
 using CommunityToolkit.WinUI.UI.Animations;
 using Windows.Devices.Geolocation;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.Views.Forms;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -99,35 +100,92 @@ public sealed partial class RentalDetailPage : Page
     {
         // Toggle the favourite button
         // Change the image source to the filled heart icon
-        if (sender is FrameworkElement frameworkElement 
+        if (sender is FrameworkElement frameworkElement
             && frameworkElement.DataContext is Property property)
         {
             property.IsFavourite = !property.IsFavourite;
         }
     }
 
-    private void btnReport_Click(object sender, RoutedEventArgs e)
+    private async void btnReport_Click(object sender, RoutedEventArgs e)
     {
-        // Show the successful dialog
-        _ = new ContentDialog
+        // Create an instance of BadReportDialog
+        var reportDialog = new BadReportDialog();
+
+        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
+        reportDialog.XamlRoot = XamlRoot;
+        var result = await reportDialog.ShowAsync();
+
+        // Display the form as a dialog box
+        if (result == ContentDialogResult.Primary)
         {
-            XamlRoot = XamlRoot,
-            Title = "Report result",
-            Content = "Thank you for reporting this item. We will review this and inform you as soon as possible!",
-            CloseButtonText = "Ok"
-        }.ShowAsync();
+            // Get data from BadReportDialog and process the report
+            var reportReason = reportDialog.ReportReason;
+            var description = reportDialog.Description;
+            var entityType = reportDialog.Type;
+
+            // Create a new BadReport object
+            var badReport = new BadReport
+            {
+                UserId = 1,  // Hardcoded user id for now
+                ReportReason = reportReason,
+                Description = description,
+                EntityType = entityType,
+                EntityId = ViewModel.Item?.Id ?? 0,
+            };
+
+            // Show confirmation after sending report
+            _ = new ContentDialog
+            {
+                XamlRoot = XamlRoot,
+                Title = "Report result",
+                Content = $"Thank you for reporting this item.\n" +
+                $"We will review this and inform you as soon as possible!\n\n" +
+                $"Reason: {badReport.ReportReason} \n" +
+                $"Description: {badReport.Description} \n" +
+                $"Entity Type: {badReport.EntityType} \n" +
+                $"Entity Id: {badReport.EntityId} \n" +
+                $"Report Date: {badReport.ReportDate}",
+                CloseButtonText = "Ok"
+            }.ShowAsync();
+        }
     }
 
     private void btnSubmitQustion_Click(object sender, RoutedEventArgs e)
     {
-        // Show the successful dialog
-        _ = new ContentDialog
+        if (string.IsNullOrWhiteSpace(tbAskPropertyQuestion.Text))
         {
-            XamlRoot = XamlRoot,
-            Title = "Question submission result",
-            Content = "Your question has been submitted successfully!",
-            CloseButtonText = "Ok"
-        }.ShowAsync();
+            _ = new ContentDialog
+            {
+                XamlRoot = XamlRoot,
+                Title = "Field is required",
+                Content = "Please enter a question before submitting!",
+                CloseButtonText = "Ok"
+            }.ShowAsync();
+            return;
+        }
+
+        if (ViewModel.Item != null)
+        {
+            // Add the question to the QnA list
+            ViewModel.QnAs.Insert(0, new QnA
+            {
+                Question = tbAskPropertyQuestion.Text,
+                PropertyId = ViewModel.Item.Id,
+            });
+
+            // Show the successful dialog
+            _ = new ContentDialog
+            {
+                XamlRoot = XamlRoot,
+                Title = "Question submission result",
+                Content = "Your question has been submitted successfully!",
+                CloseButtonText = "Ok"
+            }.ShowAsync();
+        }
+
+        // Clear the question text box
+        tbAskPropertyQuestion.Text = "";
     }
 
     private void btnBookNow_Click(object sender, RoutedEventArgs e)

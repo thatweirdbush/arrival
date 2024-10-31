@@ -9,6 +9,7 @@ using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
+using System.Collections.ObjectModel;
 
 namespace BookingManagementSystem.ViewModels;
 
@@ -19,7 +20,7 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     [ObservableProperty]
     private Property? item;
     public IEnumerable<Review> Reviews { get; set; } = Enumerable.Empty<Review>();
-    public IEnumerable<QnA> QnAs { get; set; } = Enumerable.Empty<QnA>();
+    public ObservableCollection<QnA> QnAs { get; set; } = [];
     public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = Enumerable.Empty<DestinationTypeSymbol>();
     public IEnumerable<PropertyPolicy> PropertyPolicies { get; set; } = Enumerable.Empty<PropertyPolicy>();
 
@@ -40,9 +41,17 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
         var reviews = await _dao.GetReviewListDataAsync();
         Reviews = reviews;
 
-        // Load QnAs data
+        // Load QnAs data, DESC order by CreatedAt
         var qnas = await _dao.GetQnAListDataAsync();
-        QnAs = qnas;
+        foreach (var qna in qnas)
+        {
+            QnAs.Add(qna);
+
+            //if (Item != null && qna.PropertyId == Item.Id)
+            //{
+            //    QnAs.Add(qna);
+            //}
+        }
 
         // Load DestinationTypeSymbols data
         var destinationTypeSymbols = await _dao.GetDestinationTypeSymbolDataAsync();

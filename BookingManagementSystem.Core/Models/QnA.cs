@@ -34,7 +34,7 @@ public class QnA
     {
         get; set;
     }
-    public int HostId
+    public int? HostId
     {
         get; set;
     }
