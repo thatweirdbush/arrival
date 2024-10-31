@@ -8,6 +8,7 @@ using BookingManagementSystem.Notifications;
 using BookingManagementSystem.Services;
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.Views;
+using BookingManagementSystem.Views.Administrator;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -74,6 +75,10 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<ReportViewModel>();
+            services.AddTransient<ReportPage>();
+            services.AddTransient<AdministratorViewModel>();
+            services.AddTransient<AdministratorPage>();
             services.AddTransient<PaymentViewModel>();
             services.AddTransient<PaymentPage>();
             services.AddTransient<FAQViewModel>();

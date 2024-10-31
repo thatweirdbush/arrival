@@ -76,11 +76,12 @@
                         <SymbolIcon Symbol="Flag"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <!--<NavigationViewItem x:Uid="Shell_Payment" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.PaymentViewModel">
+
+                <NavigationViewItem x:Uid="Shell_Report" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.ReportViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
                     </NavigationViewItem.Icon>
-                </NavigationViewItem>-->
+                </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.PaneHeader>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -112,7 +113,7 @@
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                 </behaviors:NavigationViewHeaderBehavior>
             </i:Interaction.Behaviors>-->
-            
+
             <!--<Grid Margin="{StaticResource NavigationViewPageContentMargin}">-->
             <Grid>
                 <Frame x:Name="NavigationFrame" />
@@ -126,11 +127,11 @@
                                 AutomationProperties.Name="Menu AutoSuggestBox" />
 
             </NavigationView.AutoSuggestBox>
-            <NavigationView.PaneFooter>
-                <StackPanel x:Name="FooterStackPanel" Orientation="Vertical" Visibility="Visible">
-                    <NavigationViewItem Icon="Favorite" Content="Favorite" AutomationProperties.Name="Favorite" />
-                </StackPanel>
-            </NavigationView.PaneFooter>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem x:Uid="Shell_Message" Icon="Message" AutomationProperties.Name="Messages" />
+                <NavigationViewItem x:Uid="Shell_Favourite" Icon="Favorite" AutomationProperties.Name="Favorites" />
+                <NavigationViewItem x:Uid="Shell_Admin" Icon="GoToStart" AutomationProperties.Name="Administrator" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.AdministratorViewModel" />
+            </NavigationView.FooterMenuItems>
         </NavigationView>
     </Grid>
 </Page>

@@ -1,6 +1,7 @@
 ﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.Views;
+using BookingManagementSystem.Views.Administrator;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -23,6 +24,8 @@ public class PageService : IPageService
         Configure<HostViewModel, HostPage>();
         Configure<FAQViewModel, FAQPage>();
         Configure<PaymentViewModel, PaymentPage>();
+        Configure<AdministratorViewModel, AdministratorPage>();
+        Configure<ReportViewModel, ReportPage>();
     }
 
     public Type GetPageType(string key)

@@ -3,18 +3,18 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 
-namespace BookingManagementSystem.Views;
+namespace BookingManagementSystem.Views.Administrator;
 
-public sealed partial class HostPage : Page
+public sealed partial class AdministratorPage : Page
 {
-    public HostViewModel ViewModel
+    public AdministratorViewModel ViewModel
     {
         get;
     }
 
-    public HostPage()
+    public AdministratorPage()
     {
-        ViewModel = App.GetService<HostViewModel>();
+        ViewModel = App.GetService<AdministratorViewModel>();
         InitializeComponent();
     }
 
@@ -73,9 +73,9 @@ public sealed partial class HostPage : Page
         var currentSelectedIndex = MenuFlyoutButton.Items.IndexOf(clickedItem);
         var pageType = typeof(FAQPage);
 
-        if (clickedItem.Tag.ToString() == "elite")
+        if (clickedItem.Tag.ToString() == "reports")
         {
-            pageType = typeof(FAQPage);
+            pageType = typeof(ReportPage);
         }
         else if (clickedItem.Tag.ToString() == "reservations")
         {

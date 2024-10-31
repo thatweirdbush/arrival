@@ -21,116 +21,6 @@
     <Content Remove="Assets\arrival-bio-resize-75.png" />
     <Content Remove="Assets\arrival-bio-white.png" />
     <Content Remove="Assets\arrival-bio.png" />
-    <Content Remove="Assets\destination-type-symbol-icons\all-icon.png" />
-    <Content Remove="Assets\destination-type-symbol-icons\amazing-pools.jpg" />
-    <Content Remove="Assets\destination-type-symbol-icons\amazing-views.jpg" />
-    <Content Remove="Assets\destination-type-symbol-icons\beach.jpg" />
-    <Content Remove="Assets\destination-type-symbol-icons\countryside.jpg" />
-    <Content Remove="Assets\destination-type-symbol-icons\farm.jpg" />
-    <Content Remove="Assets\destination-type-symbol-icons\islands.jpg" />
-    <Content Remove="Assets\destination-type-symbol-icons\lakefront.jpg" />
-    <Content Remove="Assets\destination-type-symbol-icons\luxe.jpg" />
-    <Content Remove="Assets\destination-type-symbol-icons\mansions.jpg" />
-    <Content Remove="Assets\destination-type-symbol-icons\national-parks.jpg" />
-    <Content Remove="Assets\destination-type-symbol-icons\room.jpg" />
-    <Content Remove="Assets\destination-type-symbol-icons\tiny-homes.jpg" />
-    <Content Remove="Assets\destination-type-symbol-icons\top-cities.jpg" />
-    <Content Remove="Assets\destination-type-symbol-icons\treehouses.jpg" />
-    <Content Remove="Assets\destination-type-symbol-icons\trending.jpg" />
-    <Content Remove="Assets\destination-type-symbol-icons\tropical.jpg" />
-    <Content Remove="Assets\filtered-destinations\amazing-pools.jpg" />
-    <Content Remove="Assets\filtered-destinations\amazing-views.jpg" />
-    <Content Remove="Assets\filtered-destinations\beach.jpg" />
-    <Content Remove="Assets\filtered-destinations\countryside.jpg" />
-    <Content Remove="Assets\filtered-destinations\farm.jpg" />
-    <Content Remove="Assets\filtered-destinations\islands.jpg" />
-    <Content Remove="Assets\filtered-destinations\lakefront.jpg" />
-    <Content Remove="Assets\filtered-destinations\luxe.jpg" />
-    <Content Remove="Assets\filtered-destinations\mansions.jpg" />
-    <Content Remove="Assets\filtered-destinations\national-parks.jpg" />
-    <Content Remove="Assets\filtered-destinations\room.jpg" />
-    <Content Remove="Assets\filtered-destinations\tiny-homes.jpg" />
-    <Content Remove="Assets\filtered-destinations\top-cities.jpg" />
-    <Content Remove="Assets\filtered-destinations\treehouses.jpg" />
-    <Content Remove="Assets\filtered-destinations\trending.jpg" />
-    <Content Remove="Assets\filtered-destinations\tropical.jpg" />
-    <Content Remove="Assets\homescreen.jpg" />
-    <Content Remove="Assets\momo-logo.png" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-0.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-1.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-10.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-11.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-12.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-13.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-14.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-15.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-16.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-2.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-3.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-4.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-5.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-6.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-7.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-8.jpg" />
-    <Content Remove="Assets\property-images\abong-2-a-frame-house-great-view\abong-2-a-frame-house-great-view-9.jpg" />
-    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-0.jpg" />
-    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-1.jpg" />
-    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-10.jpg" />
-    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-11.jpg" />
-    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-2.jpg" />
-    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-3.jpg" />
-    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-4.jpg" />
-    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-5.jpg" />
-    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-6.jpg" />
-    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-7.jpg" />
-    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-8.jpg" />
-    <Content Remove="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-9.jpg" />
-    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-0.jpg" />
-    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-1.jpg" />
-    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-10.jpg" />
-    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-2.jpg" />
-    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-3.jpg" />
-    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-4.jpg" />
-    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-5.jpg" />
-    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-6.jpg" />
-    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-7.jpg" />
-    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-8.jpg" />
-    <Content Remove="Assets\property-images\hidden-bamboo-bali\hidden-bamboo-bali-9.jpg" />
-    <Content Remove="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-0.jpg" />
-    <Content Remove="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-1.jpg" />
-    <Content Remove="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-2.jpg" />
-    <Content Remove="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-3.jpg" />
-    <Content Remove="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-4.jpg" />
-    <Content Remove="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-5.jpg" />
-    <Content Remove="Assets\property-images\nature-stone-house-siquijor\nature-stone-house-siquijor-6.jpg" />
-    <Content Remove="Assets\quote-images\dont-let-yesterday.png" />
-    <Content Remove="Assets\quote-images\either-you-run-the-day.png" />
-    <Content Remove="Assets\quote-images\if-you-believe-something.png" />
-    <Content Remove="Assets\quote-images\never-give-up-on-a-dream.png" />
-    <Content Remove="Assets\quote-images\people-often-say.png" />
-    <Content Remove="Assets\quote-images\success-is-not-final.png" />
-    <Content Remove="Assets\quote-images\the-successful-man.png" />
-    <Content Remove="Assets\quote-images\we-cannot-solve-problems.png" />
-    <Content Remove="Assets\quote-images\we-dont-just-sit-around.png" />
-    <Content Remove="Assets\quote-images\you-cant-be-that-kid.png" />
-    <Content Remove="Assets\smartphone-images\iphone-14-pink.png" />
-    <Content Remove="Assets\smartphone-images\iphone-15-pro-max-titanium.png" />
-    <Content Remove="Assets\smartphone-images\iphone-16-plus.png" />
-    <Content Remove="Assets\smartphone-images\iphone-16-pro-max.png" />
-    <Content Remove="Assets\smartphone-images\oneplus-12.png" />
-    <Content Remove="Assets\smartphone-images\oppo-find-x7-ultra.png" />
-    <Content Remove="Assets\smartphone-images\pixel-9-pro.png" />
-    <Content Remove="Assets\smartphone-images\s24-ultra.png" />
-    <Content Remove="Assets\smartphone-images\vivo-x100-pro.png" />
-    <Content Remove="Assets\smartphone-images\xiaomi-14-ultra.png" />
-    <Content Remove="Assets\symbol-icons\credit-card-icon.png" />
-    <Content Remove="Assets\symbol-icons\favourite.png" />
-    <Content Remove="Assets\symbol-icons\filter-icon.png" />
-    <Content Remove="Assets\symbol-icons\flag-gray-icon.png" />
-    <Content Remove="Assets\symbol-icons\not-favourite.png" />
-    <Content Remove="Assets\symbol-icons\search-icon-white.png" />
-    <Content Remove="Assets\symbol-icons\search-icon.png" />
-    <Content Remove="Assets\symbol-icons\white-star-icon.png" />
     <Content Remove="Assets\three-body-a-resize-75.png" />
     <Content Remove="Assets\three-body-a-white.png" />
     <Content Remove="Assets\three-body-a.ico" />
@@ -355,67 +245,7 @@
     </None>
     <None Update="Assets\homescreen.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\quote-images\dont-let-yesterday.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\quote-images\either-you-run-the-day.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\quote-images\if-you-believe-something.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\quote-images\never-give-up-on-a-dream.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\quote-images\people-often-say.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\quote-images\success-is-not-final.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\quote-images\the-successful-man.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\quote-images\we-cannot-solve-problems.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\quote-images\we-dont-just-sit-around.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\quote-images\you-cant-be-that-kid.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\smartphone-images\iphone-14-pink.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\smartphone-images\iphone-15-pro-max-titanium.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\smartphone-images\iphone-16-plus.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\smartphone-images\iphone-16-pro-max.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\smartphone-images\oneplus-12.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\smartphone-images\oppo-find-x7-ultra.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\smartphone-images\pixel-9-pro.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\smartphone-images\s24-ultra.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\smartphone-images\vivo-x100-pro.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\smartphone-images\xiaomi-14-ultra.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </None>   
     <None Update="Assets\symbol-icons\filter-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -454,6 +284,7 @@
 
   <ItemGroup>
     <Folder Include="Views\Host\" />
+    <Folder Include="Views\Administrator\" />
     <Folder Include="Views\Payment\" />
   </ItemGroup>
 
