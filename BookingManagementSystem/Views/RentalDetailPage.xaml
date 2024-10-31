@@ -257,9 +257,10 @@
                                     </Button>
                                 </Grid>
                             </Grid>
-                            <RatingControl AutomationProperties.Name="Simple RatingControl" 
-                                       IsClearEnabled="True" IsReadOnly="False" 
-                                       Caption="312 ratings" PlaceholderValue="4"/>
+                            <RatingControl x:Name="PropertyRatingControl" 
+                                           IsClearEnabled="True" IsReadOnly="False" 
+                                           Caption="312 ratings" PlaceholderValue="4"
+                                           ValueChanged="PropertyRatingControl_ValueChanged"/>
                         </StackPanel>
 
                         <StackPanel x:Name="ReviewContent" Spacing="12">

@@ -19,7 +19,7 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
 
     [ObservableProperty]
     private Property? item;
-    public IEnumerable<Review> Reviews { get; set; } = Enumerable.Empty<Review>();
+    public ObservableCollection<Review> Reviews { get; set; } = [];
     public ObservableCollection<QnA> QnAs { get; set; } = [];
     public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = Enumerable.Empty<DestinationTypeSymbol>();
     public IEnumerable<PropertyPolicy> PropertyPolicies { get; set; } = Enumerable.Empty<PropertyPolicy>();
@@ -39,7 +39,10 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
 
         // Load Reviews data
         var reviews = await _dao.GetReviewListDataAsync();
-        Reviews = reviews;
+        foreach (var review in reviews)
+        {
+            Reviews.Add(review);
+        }
 
         // Load QnAs data, DESC order by CreatedAt
         var qnas = await _dao.GetQnAListDataAsync();

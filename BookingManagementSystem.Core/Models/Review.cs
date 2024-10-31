@@ -23,7 +23,7 @@ public class Review : INotifyPropertyChanged
     {
         get; set;
     }
-    public int Rating
+    public double Rating
     {
         get; set;
     } // From 1 to 5

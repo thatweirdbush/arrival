@@ -107,6 +107,50 @@ public sealed partial class RentalDetailPage : Page
         }
     }
 
+    private async void PropertyRatingControl_ValueChanged(RatingControl sender, object args)
+    {
+        // Create an instance of ReviewDialog with the current rating value
+        var dialog = new ReviewDialog(PropertyRatingControl.Value);
+
+        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
+        dialog.XamlRoot = XamlRoot;
+
+        // Show the form as a dialog box
+        if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+        {
+            var rating = dialog.RatingValue;
+            var comment = dialog.Comment;
+
+            // Create a new Review object
+            var review = new Review
+            {
+                UserId = 1,  // Hardcoded user id for now
+                Rating = rating,
+                Comment = comment,
+                PropertyId = ViewModel.Item?.Id ?? 0,
+            };
+
+            // Show the successful dialog
+            _ = new ContentDialog
+            {
+                XamlRoot = XamlRoot,
+                Title = "Review submission result",
+                Content = $"Your review has been submitted successfully!\n\n" +
+                $"Rating: {review.Rating} star(s)\n" +
+                $"Comment: {review.Comment}\n" +
+                $"Property Id: {review.PropertyId}\n",
+                CloseButtonText = "Ok"
+            }.ShowAsync();
+
+            // Update real value for the RatingControl
+            PropertyRatingControl.Value = rating;
+
+            // Add the review to the Reviews list
+            ViewModel.Reviews.Insert(0, review);
+        }
+    }
+
+
     private async void btnReport_Click(object sender, RoutedEventArgs e)
     {
         // Create an instance of BadReportDialog
