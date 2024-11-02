@@ -56,11 +56,6 @@
                         <SymbolIcon Symbol="Home"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_RentalDetails" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.MainViewModel">
-                    <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Shop"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Map" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.MapViewModel">
                     <NavigationViewItem.Icon>
                         <SymbolIcon Symbol="World"/>
@@ -76,18 +71,8 @@
                         <SymbolIcon Symbol="Flag"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-
-                <NavigationViewItem x:Uid="Shell_Report" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.ReportViewModel">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_ListingRequest" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.ListingRequestViewModel">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
             </NavigationView.MenuItems>
+            
             <NavigationView.PaneHeader>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Image Source="/Assets/Square44x44Logo.targetsize-48.png" Width="30" Height="30" Stretch="Fill"/>
@@ -133,8 +118,8 @@
 
             </NavigationView.AutoSuggestBox>
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem x:Uid="Shell_Message" Icon="Message" AutomationProperties.Name="Messages" />
-                <NavigationViewItem x:Uid="Shell_Favourite" Icon="Favorite" AutomationProperties.Name="Favorites" />
+                <!--<NavigationViewItem x:Uid="Shell_Message" Icon="Message" AutomationProperties.Name="Messages" />
+                <NavigationViewItem x:Uid="Shell_Favourite" Icon="Favorite" AutomationProperties.Name="Favorites" />-->
                 <NavigationViewItem x:Uid="Shell_Admin" Icon="GoToStart" AutomationProperties.Name="Administrator" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.AdministratorViewModel" />
             </NavigationView.FooterMenuItems>
         </NavigationView>

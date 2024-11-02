@@ -188,16 +188,16 @@
   <data name="Shell_Admin.Content" xml:space="preserve">
     <value>Administrator</value>
   </data>
-  <data name="Shell_Favourite" xml:space="preserve">
+  <data name="Shell_Favourite.Content" xml:space="preserve">
     <value>Favourites</value>
   </data>
-  <data name="Shell_Message" xml:space="preserve">
+  <data name="Shell_Message.Content" xml:space="preserve">
     <value>Messages</value>
   </data>
   <data name="Shell_Report.Content" xml:space="preserve">
-    <value>Report</value>
+    <value>Reports</value>
   </data>
   <data name="Shell_ListingRequest.Content" xml:space="preserve">
-    <value>ListingRequest</value>
+    <value>Listing Requests</value>
   </data>
 </root>
