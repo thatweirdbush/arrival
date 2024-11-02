@@ -36,10 +36,75 @@
                         <TextBlock Text="Manage your customer's priority listing requests" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" HorizontalAlignment="Left"/>
                         <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" Margin="0 0 0 0"/>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        <Button x:Name="btnEditOptions" Content="Edit Options" Height="36" Visibility="Collapsed">
+                            <Button.Flyout>
+                                <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                                    <MenuFlyoutItem x:Name="EditOptionMenuFlyoutItem_AddToPriority" Text="Add to Priority" Icon="Add" Click="btnEditOptions_Click" Tag="priority" Visibility="Collapsed">
+                                        <MenuFlyoutItem.KeyboardAccelerators>
+                                            <KeyboardAccelerator Key="S" Modifiers="Control"/>
+                                        </MenuFlyoutItem.KeyboardAccelerators>
+                                    </MenuFlyoutItem>
+                                    <MenuFlyoutItem Text="Copy" Icon="Copy" Click="btnEditOptions_Click" Tag="copy">
+                                        <MenuFlyoutItem.KeyboardAccelerators>
+                                            <KeyboardAccelerator Key="C" Modifiers="Control"/>
+                                        </MenuFlyoutItem.KeyboardAccelerators>
+                                    </MenuFlyoutItem>
+                                    <MenuFlyoutItem Text="Delete" Icon="Delete" Click="btnEditOptions_Click" Tag="delete">
+                                        <MenuFlyoutItem.KeyboardAccelerators>
+                                            <KeyboardAccelerator Key="Delete" />
+                                        </MenuFlyoutItem.KeyboardAccelerators>
+                                    </MenuFlyoutItem>
+                                    <MenuFlyoutSeparator/>
+                                    <MenuFlyoutItem Text="Rename" Click="btnEditOptions_Click" Tag="rename">
+                                        <MenuFlyoutItem.KeyboardAccelerators>
+                                            <KeyboardAccelerator Key="R" Modifiers="Control"/>
+                                        </MenuFlyoutItem.KeyboardAccelerators>
+                                    </MenuFlyoutItem>
+                                    <MenuFlyoutItem Text="Deselect" Click="btnEditOptions_Click" Tag="deselect">
+                                        <MenuFlyoutItem.KeyboardAccelerators>
+                                            <KeyboardAccelerator Key="D" Modifiers="Control"/>
+                                        </MenuFlyoutItem.KeyboardAccelerators>
+                                    </MenuFlyoutItem>
+                                    <MenuFlyoutItem Text="Select Inverse" Click="btnEditOptions_Click" Tag="invert">
+                                        <MenuFlyoutItem.KeyboardAccelerators>
+                                            <KeyboardAccelerator Key="I" Modifiers="Control"/>
+                                        </MenuFlyoutItem.KeyboardAccelerators>
+                                    </MenuFlyoutItem>
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </Button>
+                        <Button x:Name="btnEditList" Height="36" Click="btnEditList_Click" ToolTipService.ToolTip="Edit priority list">
+                            <StackPanel Orientation="Horizontal" Spacing="4">
+                                <SymbolIcon Symbol="Edit" RenderTransformOrigin="0.5, 0.5">
+                                    <SymbolIcon.RenderTransform>
+                                        <ScaleTransform ScaleX="0.75" ScaleY="0.75" />
+                                    </SymbolIcon.RenderTransform>
+                                </SymbolIcon>
+                                <TextBlock Text="Edit" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnCancelEditingList" Height="36" Click="btnCancelEditingList_Click" ToolTipService.ToolTip="Cancel editing priority list" Visibility="Collapsed">
+                            <StackPanel Orientation="Horizontal" Spacing="4">
+                                <SymbolIcon Symbol="Cancel" RenderTransformOrigin="0.5, 0.5">
+                                    <SymbolIcon.RenderTransform>
+                                        <ScaleTransform ScaleX="0.75" ScaleY="0.75" />
+                                    </SymbolIcon.RenderTransform>
+                                </SymbolIcon>
+                                <TextBlock Text="Cancel" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <ComboBox x:Name="ListingItemStatusComboBox" Height="36" SelectionChanged="ListingItemStatusComboBox_SelectionChanged" SelectedIndex="0" ToolTipService.ToolTip="Select list filtering">
+                            <x:String>Current</x:String>
+                            <x:String>Elites</x:String>
+                            <x:String>Trendings</x:String>
+                            <x:String>Requests</x:String>
+                        </ComboBox>
+                    </StackPanel>
                 </Grid>
                 <StackPanel x:Name="MainContent" Spacing="28">
                     <Grid x:Name="MainContentGrid">
-                        <ListView x:Name="ReportListView" ItemsSource="{x:Bind ViewModel.PriorityProperties}">
+                        <ListView x:Name="PriorityPropertyListView" ItemsSource="{x:Bind ViewModel.PriorityProperties}" SelectionMode="Single">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="models:Property">
                                     <Grid Margin="0,12,0,12" AutomationProperties.Name="{x:Bind Name}">
@@ -47,9 +112,17 @@
                                             <ColumnDefinition Width="Auto" MinWidth="80" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <!--<Image Source="{x:Bind ImagePaths}" Width="180" Height="120"/>-->
-                                        <Image Source="/Assets/homescreen.jpg" Width="180" Height="120"/>
-                                        
+                                        <FlipView ItemsSource="{x:Bind ImagePaths}" Width="180" Height="120">
+                                            <FlipView.ItemTemplate>
+                                                <DataTemplate x:DataType="x:String">
+                                                    <Image Stretch = "UniformToFill" VerticalAlignment="Center">
+                                                        <Image.Source>
+                                                            <BitmapImage UriSource="{x:Bind}" DecodePixelWidth="180"/>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </DataTemplate>
+                                            </FlipView.ItemTemplate>
+                                        </FlipView>
                                         <StackPanel Margin="12,0,0,0" Grid.Column="1" Spacing="8">
                                             <Grid>
                                                 <TextBlock Text="{x:Bind Name}" FontSize="18" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Left"/>

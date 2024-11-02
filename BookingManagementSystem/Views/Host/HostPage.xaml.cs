@@ -31,13 +31,13 @@ public sealed partial class HostPage : Page
         switch (currentSelectedIndex)
         {
             case 0:
-                pageType = typeof(HomePage);
-                break;
-            case 1:
                 pageType = typeof(LoginPage);
                 break;
+            case 1:
+                pageType = typeof(SignupPage);
+                break;
             case 2:
-                pageType = typeof(MainPage);
+                pageType = typeof(FAQPage);
                 break;
             case 3:
                 pageType = typeof(MapPage);

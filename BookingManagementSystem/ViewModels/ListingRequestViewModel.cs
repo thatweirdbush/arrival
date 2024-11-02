@@ -18,16 +18,50 @@ public partial class ListingRequestViewModel : ObservableRecipient
     {
         _navigationService = navigationService;
         _dao = dao;
-        OnNavigatedTo(_dao);
+        GetPriorityPropertyListDataAsync();
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
+    {
+        // Load Priority Property data list
+        GetPriorityPropertyListDataAsync();
+    }
+
+    public void OnNavigatedFrom()
+    {
+    }
+
+    public async void GetPriorityPropertyListDataAsync()
     {
         PriorityProperties.Clear();
 
-        // Load Priority Property data list
         var data = await _dao.GetPropertyListDataAsync();
-        var priorityProperties = data.Where(p => p.DestinationTypes.Equals(DestinationType.Trending));
+        var priorityProperties = data.Where(p => p.IsPriority || p.IsFavourite);
+
+        foreach (var item in priorityProperties)
+        {
+            PriorityProperties.Add(item);
+        }
+    }
+
+    public async void GetRequestedPropertyListDataAsync()
+    {
+        PriorityProperties.Clear();
+
+        var data = await _dao.GetPropertyListDataAsync();
+        var requestProperties = data.Where(p => !p.IsPriority && !p.IsFavourite);
+
+        foreach (var item in requestProperties)
+        {
+            PriorityProperties.Add(item);
+        }
+    }
+
+    public async void GetAllPropertyListDataAsync()
+    {
+        PriorityProperties.Clear();
+
+        var data = await _dao.GetPropertyListDataAsync();
 
         foreach (var item in data)
         {
@@ -35,7 +69,29 @@ public partial class ListingRequestViewModel : ObservableRecipient
         }
     }
 
-    public void OnNavigatedFrom()
+    public async void GetElitePropertyListDataAsync()
     {
+        PriorityProperties.Clear();
+
+        var data = await _dao.GetPropertyListDataAsync();
+        var eliteProperties = data.Where(p => p.IsPriority);
+
+        foreach (var item in eliteProperties)
+        {
+            PriorityProperties.Add(item);
+        }
+    }
+
+    public async void GetTrendingPropertyListDataAsync()
+    {
+        PriorityProperties.Clear();
+
+        var data = await _dao.GetPropertyListDataAsync();
+        var trendingProperties = data.Where(p => p.IsFavourite);
+
+        foreach (var item in trendingProperties)
+        {
+            PriorityProperties.Add(item);
+        }
     }
 }

@@ -40,7 +40,7 @@ public sealed partial class AdministratorPage : Page
                 pageType = typeof(ReportPage);
                 break;
             case 3:
-                pageType = typeof(MapPage);
+                pageType = typeof(FAQPage);
                 break;
             case 4:
                 return;
