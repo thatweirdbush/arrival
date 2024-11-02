@@ -1312,4 +1312,83 @@ public class MockDao : IDao
         await Task.CompletedTask;
         return _allVouchers;
     }
+
+    // Create
+    public async Task AddAmenityAsync(Amenity amenity)
+    {
+        _allAmenities.Add(amenity);
+        await Task.CompletedTask;
+    }
+
+    public async Task AddBookingAsync(Booking booking)
+    {
+        _allBookings.Add(booking);
+        await Task.CompletedTask;
+    }
+
+    public async Task AddFAQAsync(FAQ faq)
+    {
+        _allFAQs.Add(faq);
+        await Task.CompletedTask;
+    }
+
+    public async Task AddNotificationAsync(Notification notification)
+    {
+        _allNotifications.Add(notification);
+        await Task.CompletedTask;
+    }
+
+    public async Task AddPaymentAsync(Payment payment)
+    {
+        _allPayments.Add(payment);
+        await Task.CompletedTask;
+    }
+
+    public async Task AddPropertyAsync(Property property)
+    {
+        _allProperties.Add(property);
+        await Task.CompletedTask;
+    }
+
+    public async Task AddPropertyPolicyAsync(PropertyPolicy propertyPolicy)
+    {
+        _allPropertyPolicies.Add(propertyPolicy);
+        await Task.CompletedTask;
+    }
+
+    public async Task AddQnAAsync(QnA qna)
+    {
+        _allQnAs.Add(qna);
+        await Task.CompletedTask;
+    }
+
+    public async Task AddReviewAsync(Review review)
+    {
+        _allReviews.Add(review);
+        await Task.CompletedTask;
+    }
+
+    public async Task AddUserAsync(User user)
+    {
+        _allUsers.Add(user);
+        await Task.CompletedTask;
+    }
+
+    public async Task AddDestinationTypeSymbolAsync(DestinationTypeSymbol destinationTypeSymbol)
+    {
+        _allDestinationTypeSymbols.Add(destinationTypeSymbol);
+        await Task.CompletedTask;
+    }
+
+    public async Task AddBadReportAsync(BadReport badReport)
+    {
+        _allBadReports.Add(badReport);
+        await Task.CompletedTask;
+    }
+
+    public async Task AddVoucherAsync(Voucher voucher)
+    {
+        _allVouchers.Add(voucher);
+        await Task.CompletedTask;
+    }
 }
