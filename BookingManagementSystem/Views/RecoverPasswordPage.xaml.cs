@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using BookingManagementSystem.Helpers;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -12,26 +11,21 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Documents;
-using System.Collections.ObjectModel;
-using BookingManagementSystem.ViewModels;
-using BookingManagementSystem.Helpers;
-
+using Windows.Foundation;
+using Windows.Foundation.Collections;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace BookingManagementSystem.Views;
-
-
 /// <summary>
 /// An empty page that can be used on its own or navigated to within a Frame.
 /// </summary>
-public sealed partial class SignupPage : Page
+public sealed partial class RecoverPasswordPage : Page
 {
-    public SignupPage()
+    public RecoverPasswordPage()
     {
-        InitializeComponent();
+        this.InitializeComponent();
     }
 
     private void RevealModeCheckbox_Changed(object sender, RoutedEventArgs e)
@@ -46,12 +40,7 @@ public sealed partial class SignupPage : Page
         }
     }
 
-    private void Hyperlink_Login_Click(Hyperlink sender, HyperlinkClickEventArgs e)
-    {
-        Frame.Navigate(typeof(LoginPage)); 
-    }
-
-    private async void btnSignUp_Click(object sender, RoutedEventArgs e)
+    private async void btnRecover_Click(object sender, RoutedEventArgs e)
     {
         // Default ContentDialog
         ContentDialog contentDialog = new ContentDialog
@@ -60,20 +49,16 @@ public sealed partial class SignupPage : Page
             Title = "Result",
             CloseButtonText = "Ok"
         };
-        // Get username & password
-        var username = txtUsername.Text;
+        // Get password
+        
         var password = passworBoxWithRevealmode.Password;
         var confirmPassword = confirmPassworBoxWithRevealmode.Password;
 
         // Validate password
-        var isUserNameValid = ValidationAccount.IsValidUsername(username);
         var isPasswordValid = ValidationAccount.IsValidPassword(password);
         var isPasswordMatch = ValidationAccount.IsPasswordMatch(password, confirmPassword);
-        if (!isUserNameValid)
-        {
-            contentDialog.Content = "Recover failed! Invalid username.";
-        }
-        else if (!isPasswordValid)
+
+        if (!isPasswordValid)
         {
             contentDialog.Content = "Recover failed! Invalid password.";
         }
@@ -83,7 +68,7 @@ public sealed partial class SignupPage : Page
         }
         else
         {
-            contentDialog.Content = "Sign up successfully!";
+            contentDialog.Content = "Recover successfully!";
         }
 
         // Show dialog
@@ -95,4 +80,10 @@ public sealed partial class SignupPage : Page
             Frame.Navigate(typeof(LoginPage));
         }
     }
+
+    private void btnBackLoginPage_Click(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(LoginPage));
+    }
+
 }

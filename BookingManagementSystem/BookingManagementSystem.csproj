@@ -85,6 +85,7 @@
     <None Remove="Views\Forms\BadReportDialog.xaml" />
     <None Remove="Views\Forms\ReviewDialog.xaml" />
     <None Remove="Views\HomePage.xaml" />
+    <None Remove="Views\RecoverPasswordPage.xaml" />
     <None Remove="Views\SignupPage.xaml" />
     <None Remove="Views\RentalDetailPage.xaml" />
   </ItemGroup>
@@ -265,6 +266,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Forms\BadReportDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\RecoverPasswordPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\SignupPage.xaml">

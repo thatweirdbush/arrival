@@ -152,4 +152,9 @@ public sealed partial class LoginPage : Page
     {
         Frame.Navigate(typeof(SignupPage));
     }
+
+    private void Hyperlink_Recover_Click(Hyperlink sender, HyperlinkClickEventArgs e)
+    {
+        Frame.Navigate(typeof(RecoverPasswordPage));
+    }
 }
