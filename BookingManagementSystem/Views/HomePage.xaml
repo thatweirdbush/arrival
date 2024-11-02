@@ -267,8 +267,13 @@
                 </Button>
             </StackPanel>
         </Grid>
-
-        <Grid x:Name="Content" Grid.Row="2" Background="Transparent">
+        <Grid x:Name="EmptyListMessageGrid" Grid.Row="2" Visibility="Collapsed">
+            <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0 0 0 140">
+                <TextBlock Text="No exact matches" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center"/>
+                <TextBlock Text="Try changing or removing some of your filters or adjusting your search area." Style="{ThemeResource DetailSubTitleStyle}"  HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+        <Grid x:Name="ListContentGrid" Grid.Row="2" Background="Transparent">
             <controls:AdaptiveGridView
                 animations:Connected.ListItemElementName="itemThumbnail"
                 animations:Connected.ListItemKey="animationKeyContentGrid"
@@ -289,7 +294,7 @@
                     <!-- The data template bound to this AdaptiveGridView"s ItemTemplate property is based on which one you
                     select from the options on the right. The currently selected DataTemplate is: -->
                     <!-- ImageTextTemplate: -->
-                    <DataTemplate x:DataType = "models:Property">
+                    <DataTemplate x:DataType="models:Property">
                         <Grid x:Name="itemThumbnail" AutomationProperties.Name="{x:Bind Name, Mode=OneWay}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="3*"/>

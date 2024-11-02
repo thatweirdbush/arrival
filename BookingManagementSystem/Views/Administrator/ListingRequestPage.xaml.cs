@@ -70,9 +70,17 @@ public sealed partial class ListingRequestPage : Page
 
         if (clickedItem?.Tag?.ToString() == "priority")
         {
+            // Get selected items from the priority list
             var selectedItems = PriorityPropertyListView.SelectedItems;
             var selectedItemsList = selectedItems.ToList();
 
+            // Check empty selection
+            if (selectedItemsList.Count == 0)
+            {
+                return;
+            }
+
+            // Modify the selected items' properties
             foreach (var item in selectedItemsList)
             {
                 if (item is Property property)
@@ -95,13 +103,17 @@ public sealed partial class ListingRequestPage : Page
         }
         else if (clickedItem?.Tag?.ToString() == "delete")
         {
-            // Get selected filter mode from combobox
-            var selectedValueComboBox = ListingItemStatusComboBox.SelectedItem.ToString();
-
             // Get selected items from the priority list
             var selectedItems = PriorityPropertyListView.SelectedItems;
             var selectedItemsList = selectedItems.ToList();
 
+            // Check empty selection
+            if (selectedItemsList.Count == 0)
+            {
+                return;
+            }
+
+            // Modify the selected items' properties
             foreach (var item in selectedItemsList)
             {
                 if (item is Property property)
@@ -110,6 +122,9 @@ public sealed partial class ListingRequestPage : Page
                     property.IsFavourite = false;
                 }
             }
+            // Get selected filter mode from combobox
+            var selectedValueComboBox = ListingItemStatusComboBox.SelectedItem.ToString();
+
             // Reload the list
             switch (selectedValueComboBox)
             {

@@ -153,6 +153,18 @@ public sealed partial class HomePage : Page
             && frameworkElement.DataContext is DestinationTypeSymbol destinationTypeSymbol)
         {
             ViewModel.FilterProperties(destinationTypeSymbol);
+
+            // Check empty list
+            if (ViewModel.Properties.Count == 0)
+            {
+                ListContentGrid.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+                EmptyListMessageGrid.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+            }
+            else
+            {
+                ListContentGrid.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+                EmptyListMessageGrid.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+            }
         }
     }
 }
