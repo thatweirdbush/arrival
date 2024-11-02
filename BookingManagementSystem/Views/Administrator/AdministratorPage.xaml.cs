@@ -31,13 +31,13 @@ public sealed partial class AdministratorPage : Page
         switch (currentSelectedIndex)
         {
             case 0:
-                pageType = typeof(HomePage);
+                pageType = typeof(ListingRequestPage);
                 break;
             case 1:
-                pageType = typeof(LoginPage);
+                pageType = typeof(ListingRequestPage);
                 break;
             case 2:
-                pageType = typeof(MainPage);
+                pageType = typeof(ReportPage);
                 break;
             case 3:
                 pageType = typeof(MapPage);
@@ -45,7 +45,7 @@ public sealed partial class AdministratorPage : Page
             case 4:
                 return;
             default:
-                pageType = typeof(HostPage);
+                pageType = typeof(ListingRequestPage);
                 break;
         }
 

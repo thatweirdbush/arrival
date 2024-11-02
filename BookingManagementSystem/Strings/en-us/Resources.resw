@@ -197,4 +197,7 @@
   <data name="Shell_Report.Content" xml:space="preserve">
     <value>Report</value>
   </data>
+  <data name="Shell_ListingRequest.Content" xml:space="preserve">
+    <value>ListingRequest</value>
+  </data>
 </root>

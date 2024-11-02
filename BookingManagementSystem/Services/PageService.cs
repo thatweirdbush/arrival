@@ -26,6 +26,7 @@ public class PageService : IPageService
         Configure<PaymentViewModel, PaymentPage>();
         Configure<AdministratorViewModel, AdministratorPage>();
         Configure<ReportViewModel, ReportPage>();
+        Configure<ListingRequestViewModel, ListingRequestPage>();
     }
 
     public Type GetPageType(string key)
