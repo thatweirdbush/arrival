@@ -48,7 +48,12 @@ public sealed partial class SignupPage : Page
 
     private void Hyperlink_Login_Click(Hyperlink sender, HyperlinkClickEventArgs e)
     {
-        Frame.Navigate(typeof(LoginPage)); 
+        Frame.GoBack(); 
+    }
+
+    private void btnBackLoginPage_Click(object sender, RoutedEventArgs e)
+    {
+        Frame.GoBack();
     }
 
     private async void btnSignUp_Click(object sender, RoutedEventArgs e)

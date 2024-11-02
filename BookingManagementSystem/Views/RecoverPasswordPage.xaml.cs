@@ -49,8 +49,9 @@ public sealed partial class RecoverPasswordPage : Page
             Title = "Result",
             CloseButtonText = "Ok"
         };
-        // Get password
-        
+
+        // Get username & password
+        var username = txtUsername.Text;
         var password = passworBoxWithRevealmode.Password;
         var confirmPassword = confirmPassworBoxWithRevealmode.Password;
 
@@ -58,7 +59,11 @@ public sealed partial class RecoverPasswordPage : Page
         var isPasswordValid = ValidationAccount.IsValidPassword(password);
         var isPasswordMatch = ValidationAccount.IsPasswordMatch(password, confirmPassword);
 
-        if (!isPasswordValid)
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            contentDialog.Content = "Recover failed! Username is required.";
+        }
+        else if (!isPasswordValid)
         {
             contentDialog.Content = "Recover failed! Invalid password.";
         }
@@ -75,15 +80,16 @@ public sealed partial class RecoverPasswordPage : Page
         var result = await contentDialog.ShowAsync();
 
         // If successful, navigate to LoginPage
-        if (isPasswordValid && isPasswordMatch && result == ContentDialogResult.None)
+        if (!string.IsNullOrWhiteSpace(username) 
+            && isPasswordValid && isPasswordMatch 
+            && result == ContentDialogResult.None)
         {
-            Frame.Navigate(typeof(LoginPage));
+            _ = Frame.Navigate(typeof(LoginPage));
         }
     }
 
     private void btnBackLoginPage_Click(object sender, RoutedEventArgs e)
     {
-        Frame.Navigate(typeof(LoginPage));
+        Frame.GoBack();
     }
-
 }

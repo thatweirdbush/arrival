@@ -25,6 +25,11 @@
                 <RowDefinition Height="6*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <Grid>
+                <Button Name="btnBackLoginPage" Click="btnBackLoginPage_Click" Background="Transparent" BorderThickness="0" Width="48" Height="48" CornerRadius="80" HorizontalAlignment="Center">
+                    <SymbolIcon Symbol="Back"/>
+                </Button>
+            </Grid>
             <StackPanel Grid.Column="1" Grid.Row="1"
             Padding="40 0 40 30">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">

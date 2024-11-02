@@ -17,7 +17,7 @@ public sealed partial class LoginPage : Page
         get;
     }
 
-    private ApplicationDataContainer localSettings;
+    private readonly ApplicationDataContainer localSettings;
 
     public LoginPage()
     {
@@ -137,8 +137,7 @@ public sealed partial class LoginPage : Page
             var result = await contentDialog.ShowAsync();
             if (result == ContentDialogResult.None)
             {
-                // Navigate to MainPage
-                Frame.Navigate(typeof(MainPage));
+                Frame.Navigate(typeof(HomePage));
             }
         }
         else

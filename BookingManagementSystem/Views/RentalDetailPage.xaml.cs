@@ -52,29 +52,32 @@ public sealed partial class RentalDetailPage : Page
         infSmartphone.IsOpen = true;
         infSmartphone.Message = ViewModel.Item?.ToString() ?? "No item available";
 
-        // Set up initial map location
-        var centerPosition = new BasicGeoposition { Latitude = ViewModel.Item.Latitude, Longitude = ViewModel.Item.Longitude };
-        var centerPoint = new Geopoint(centerPosition);
-
-        MainMap.Center = centerPoint;
-
-        var myLandmarks = new List<MapElement>();
-        var position = new BasicGeoposition { Latitude = ViewModel.Item.Latitude, Longitude = ViewModel.Item.Longitude };
-        var point = new Geopoint(position);
-
-        var icon = new MapIcon
+        if (ViewModel.Item != null)
         {
-            Location = point,
-        };
+            // Set up initial map location
+            var centerPosition = new BasicGeoposition { Latitude = ViewModel.Item.Latitude, Longitude = ViewModel.Item.Longitude };
+            var centerPoint = new Geopoint(centerPosition);
 
-        myLandmarks.Add(icon);
+            MainMap.Center = centerPoint;
 
-        var LandmarksLayer = new MapElementsLayer
-        {
-            MapElements = myLandmarks
-        };
+            var myLandmarks = new List<MapElement>();
+            var position = new BasicGeoposition { Latitude = ViewModel.Item.Latitude, Longitude = ViewModel.Item.Longitude };
+            var point = new Geopoint(position);
 
-        MainMap.Layers.Add(LandmarksLayer);
+            var icon = new MapIcon
+            {
+                Location = point,
+            };
+
+            myLandmarks.Add(icon);
+
+            var LandmarksLayer = new MapElementsLayer
+            {
+                MapElements = myLandmarks
+            };
+
+            MainMap.Layers.Add(LandmarksLayer);
+        }
     }
 
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

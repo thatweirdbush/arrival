@@ -45,18 +45,18 @@
         <DataTemplate x:Key="QnAItemTemplate" x:DataType="models:QnA">
             <StackPanel Spacing="8">
                 <StackPanel Orientation="Horizontal" Spacing="16">
-                    <PersonPicture DisplayName="{x:Bind CustomerId, Mode=OneWay}" Width="40" Height="40"/>
+                    <PersonPicture DisplayName="{x:Bind CustomerId}" Width="40" Height="40"/>
                     <StackPanel Spacing="2" VerticalAlignment="Center">
                         <TextBlock Text="John Doe" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
-                        <TextBlock Text="{x:Bind CreatedAt.ToLongDateString(), Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
+                        <TextBlock Text="{x:Bind CreatedAt.ToLongDateString()}" Style="{ThemeResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>
                 <Grid x:Name="GuestQuestionGrid">
-                    <TextBlock Text="{x:Bind Question, Mode=OneWay}" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                    <TextBlock Text="{x:Bind Question}" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
                 </Grid>
                 <StackPanel Visibility="{x:Bind IsAnswered}" Spacing="6" Padding="12" Margin="0 4 0 0" VerticalAlignment="Center" Background="#46D3D3D3" CornerRadius="4">
-                    <TextBlock Text="{x:Bind CreatedAt.ToLongDateString(), Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="DarkGray"/>
-                    <TextBlock Text="{x:Bind Answer, Mode=OneWay}" TextWrapping="Wrap" Style="{ThemeResource BodyTextBlockStyle}"/>
+                    <TextBlock Text="{x:Bind CreatedAt.ToLongDateString()}" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="DarkGray"/>
+                    <TextBlock Text="{x:Bind Answer}" TextWrapping="Wrap" Style="{ThemeResource BodyTextBlockStyle}"/>
                 </StackPanel>
             </StackPanel>
         </DataTemplate>

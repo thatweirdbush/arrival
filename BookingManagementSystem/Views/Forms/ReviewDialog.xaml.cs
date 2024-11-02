@@ -19,7 +19,7 @@ using System.ComponentModel;
 
 namespace BookingManagementSystem.Views.Forms;
 
-public sealed partial class ReviewDialog : ContentDialog, INotifyPropertyChanged
+public sealed partial class ReviewDialog : ContentDialog
 {
     public double RatingValue
     {
@@ -35,6 +35,4 @@ public sealed partial class ReviewDialog : ContentDialog, INotifyPropertyChanged
         InitializeComponent();
         RatingValue = ratingValue;
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
 }

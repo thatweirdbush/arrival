@@ -23,7 +23,7 @@
                 <TextBox x:Name="DescriptionTextBox" Header="Description" PlaceholderText="Describe the issue..." MinHeight="80"/>
                 <TextBlock x:Name="DescriptionWarning" Foreground="Red" Visibility="Collapsed" Text="* Description is required." FontSize="12"/>
             </StackPanel>
-            <ComboBox x:Name="EntityTypeComboBox" Header="Entity Type" ItemsSource="{x:Bind EntityTypes, Mode=OneWay}" SelectedIndex="0"/>
+            <ComboBox x:Name="EntityTypeComboBox" Header="Entity Type" ItemsSource="{x:Bind EntityTypes}" SelectedIndex="0"/>
         </StackPanel>
     </Grid>
 </ContentDialog>
