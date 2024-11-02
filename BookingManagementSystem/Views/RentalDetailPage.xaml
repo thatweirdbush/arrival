@@ -290,13 +290,13 @@
                                     <TextBlock Text="Your question" Style="{ThemeResource BaseTextBlockStyle}" Margin="0 -6 0 0"/>
                                     <TextBox x:Name="tbAskPropertyQuestion" PlaceholderText="e.g. do you offer room service?" Height="80"/>
                                     <Button 
-                                        x:Name="btnSubmitQustion"
+                                        x:Name="btnSubmitQuestion"
                                         Content="Submit"
                                         HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                         Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                         Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
                                         Style="{ThemeResource DefaultButtonStyle}"
-                                        Click="btnSubmitQustion_Click"
+                                        Click="btnSubmitQuestion_Click"
                                         FontWeight="SemiBold"
                                         Padding="18"
                                         ToolTipService.ToolTip="Place your reservation now"/>

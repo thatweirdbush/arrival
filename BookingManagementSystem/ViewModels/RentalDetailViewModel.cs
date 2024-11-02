@@ -68,4 +68,19 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     public void OnNavigatedFrom()
     {
     }
+
+    public async Task AddReviewAsync(Review review)
+    {
+        await _dao.AddReviewAsync(review);
+    }
+
+    public async Task AddQnAAsync(QnA qna)
+    {
+        await _dao.AddQnAAsync(qna);
+    }
+
+    public async Task AddBadReportAsync(BadReport badReport)
+    {
+        await _dao.AddBadReportAsync(badReport);
+    }
 }

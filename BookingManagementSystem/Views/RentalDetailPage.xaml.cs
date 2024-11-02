@@ -145,6 +145,9 @@ public sealed partial class RentalDetailPage : Page
             // Update real value for the RatingControl
             PropertyRatingControl.Value = rating;
 
+            // Add to database
+            await ViewModel.AddReviewAsync(review);
+
             // Add the review to the Reviews list
             ViewModel.Reviews.Insert(0, review);
         }
@@ -178,6 +181,9 @@ public sealed partial class RentalDetailPage : Page
                 EntityId = ViewModel.Item?.Id ?? 0,
             };
 
+            // Add to database
+            await ViewModel.AddBadReportAsync(badReport);
+
             // Show confirmation after sending report
             _ = new ContentDialog
             {
@@ -195,7 +201,7 @@ public sealed partial class RentalDetailPage : Page
         }
     }
 
-    private void btnSubmitQustion_Click(object sender, RoutedEventArgs e)
+    private async void btnSubmitQuestion_Click(object sender, RoutedEventArgs e)
     {
         if (string.IsNullOrWhiteSpace(tbAskPropertyQuestion.Text))
         {
@@ -211,12 +217,18 @@ public sealed partial class RentalDetailPage : Page
 
         if (ViewModel.Item != null)
         {
-            // Add the question to the QnA list
-            ViewModel.QnAs.Insert(0, new QnA
+            // Create a new QnA object
+            var qna = new QnA
             {
                 Question = tbAskPropertyQuestion.Text,
-                PropertyId = ViewModel.Item.Id,
-            });
+                PropertyId = ViewModel.Item.Id
+            };
+
+            // Add to database
+            await ViewModel.AddQnAAsync(qna);
+
+            // Add the question to the QnA list
+            ViewModel.QnAs.Insert(0, qna);
 
             // Show the successful dialog
             _ = new ContentDialog

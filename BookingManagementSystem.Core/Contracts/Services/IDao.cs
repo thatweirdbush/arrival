@@ -21,7 +21,7 @@ public interface IDao
     // Create
     Task AddAmenityAsync(Amenity amenity);
     Task AddBookingAsync(Booking booking);
-    Task AddFAQAsyce(FAQ faq);
+    Task AddFAQAsync(FAQ faq);
     Task AddNotificationAsync(Notification notification);
     Task AddPaymentAsync(Payment payment);
     Task AddPropertyAsync(Property property);
