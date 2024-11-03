@@ -1,39 +1,52 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.Core.Contracts.Services;
 
 namespace BookingManagementSystem.ViewModels;
 
 public partial class LoginViewModel : ObservableRecipient
 {
 
-    private ObservableCollection<User> _users
-    {
-        get;
-    } = new()
-    {
-        new User()
-        {
-            Username = "admin",
-            Password = "123"
-        }, 
-        new User()
-        {
-            Username = "customer",
-            Password = "123"
-        }
-    };
+    private readonly INavigationService _navigationService;
+    private readonly IDao _dao;
 
-    public ObservableCollection<User> Users => _users;
+    public IEnumerable<User> Users { get; private set; } = Enumerable.Empty<User>();
 
-    // Check if user has correct password for account
-    public bool Login(string username, string password)
+    public User CurrentUser { get; private set; }
+
+    public LoginViewModel(INavigationService navigationService, IDao dao)
     {
-        var user = _users.FirstOrDefault(u => u.Username == username && u.Password == password);
-        return user != null;
+        _navigationService = navigationService;
+        _dao = dao;
+        OnNavigatedTo(_dao);
     }
 
-    public LoginViewModel()
+    public async void OnNavigatedTo(object parameter)
     {
+        // Load user data list
+        var users = await _dao.GetUserListDataAsync();
+        Users = users;
+    }
+
+    public void OnNavigatedFrom()
+    {
+    }
+
+    // Check if user has correct password for account
+    public bool LoginAuthentication(string username, string password)
+    {
+        // Tìm người dùng có username tương ứng
+        var user = Users.FirstOrDefault(u => u.Username.Equals(username));
+
+        // Kiểm tra nếu tìm thấy user và password khớp
+        if (user != null && user.Password.Equals(password))
+        {
+            CurrentUser = user;
+            return true; // Đăng nhập thành công
+        }
+
+        return false; // Đăng nhập thất bại
     }
 }

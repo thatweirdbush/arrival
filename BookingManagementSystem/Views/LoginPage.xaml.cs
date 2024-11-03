@@ -7,6 +7,7 @@ using Windows.Security.Cryptography.DataProtection;
 using Windows.Storage;
 using BookingManagementSystem.ViewModels;
 using Microsoft.UI.Xaml.Documents;
+using BookingManagementSystem.Core.Models;
 
 namespace BookingManagementSystem.Views;
 
@@ -120,7 +121,7 @@ public sealed partial class LoginPage : Page
         var password = passworBoxWithRevealmode.Password;
 
         // Check if the user is valid
-        if (ViewModel.Login(username, password))
+        if (ViewModel.LoginAuthentication(username, password))
         {
             if (chkRememberMe.IsChecked == true)
             {
