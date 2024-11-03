@@ -104,6 +104,7 @@ public partial class App : Application
             services.AddTransient<SignupPage>();
             services.AddTransient<SignupViewModel>();
             services.AddTransient<RecoverPasswordPage>();
+            services.AddTransient<RecoverPasswordViewModel>();
 
 
             // Configuration

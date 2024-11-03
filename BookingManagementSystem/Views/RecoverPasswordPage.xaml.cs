@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using BookingManagementSystem.Helpers;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
@@ -13,19 +14,23 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using Windows.Storage;
+using BookingManagementSystem.ViewModels; 
 
 namespace BookingManagementSystem.Views;
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
+
 public sealed partial class RecoverPasswordPage : Page
 {
+    public RecoverPasswordViewModel ViewModel { get; }
+
+    private readonly ApplicationDataContainer localSettings;
+
     public RecoverPasswordPage()
     {
-        this.InitializeComponent();
+        ViewModel = App.GetService<RecoverPasswordViewModel>();
+        InitializeComponent();
+
+        localSettings = ApplicationData.Current.LocalSettings;
     }
 
     private void RevealModeCheckbox_Changed(object sender, RoutedEventArgs e)
@@ -76,15 +81,23 @@ public sealed partial class RecoverPasswordPage : Page
             contentDialog.Content = "Recover successfully!";
         }
 
-        // Show dialog
-        var result = await contentDialog.ShowAsync();
-
-        // If successful, navigate to LoginPage
-        if (!string.IsNullOrWhiteSpace(username) 
-            && isPasswordValid && isPasswordMatch 
-            && result == ContentDialogResult.None)
+        
+        if (ViewModel.RecoverPasswordAuthentication(username, password))
         {
-            _ = Frame.Navigate(typeof(LoginPage));
+            // Show dialog
+            var result = await contentDialog.ShowAsync();
+            // If successful, navigate to LoginPage
+            if (!string.IsNullOrWhiteSpace(username)
+                && isPasswordValid && isPasswordMatch
+                && result == ContentDialogResult.None)
+            {
+                _ = Frame.Navigate(typeof(LoginPage));
+            }
+        }
+        else
+        {
+            contentDialog.Content = "Recover failed!";
+            await contentDialog.ShowAsync();
         }
     }
 
