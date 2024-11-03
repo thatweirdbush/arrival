@@ -101,6 +101,10 @@ public partial class App : Application
             services.AddTransient<MainPage>();
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
+            services.AddTransient<SignupPage>();
+            services.AddTransient<SignupViewModel>();
+            services.AddTransient<RecoverPasswordPage>();
+
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
