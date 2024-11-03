@@ -1,5 +1,8 @@
 ![Arrival colorful brand banner.](./BookingManagementSystem/Assets/brand-banner-colorful.png)
 
+<div class="row" align="center">
+<a href='https://github.com/thatweirdbush/arrival'><img src='./BookingManagementSystem/Assets/get-it-on-github.png'alt='Get it from GitHub' height=80 /></a>
+</div>
 
 ## Arrival – Hotel & Apartment Booking App
 > A WinUI 3 application for managing hotel and apartment bookings and rentals.
@@ -35,15 +38,15 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
 - [ ] **Search for Rooms/Apartment by Schedule [2h]**  
   - Enables users to search for hotels and apartments by location, travel dates, and number of guests.
 - [x] **Preset Filters [1h] [21120082]**  
-  - Filters based on destination types, including popular spots, beaches, farms, islands, etc.
+  - Filters based on destination types, including Amazing Views, Beach, Farms, Islands, etc.
 - [ ] **Advanced Filters [2h]**  
   - Filters by price, room type, guest capacity, amenities (Wi-Fi, air conditioning, pool), reviews, free cancellation, etc.
 - [ ] **Discount Voucher Management [1h]**  
   - Allows discounts to be applied to the final payment amount.
 - [x] **User Review Management [1h] [21120082]**  
-  - System for customers to review accommodations, helping improve service quality.
+  - Customers can leave a review about rooms/accommodations, helping improve service quality.
 - [x] **Question and FAQ Management [2h] [21120082]**  
-  - System for handling user questions with a FAQ section for common booking, payment, and cancellation inquiries.
+  - Handles user questions about rooms/accommodations and a FAQ section for common booking, payment, and cancellation inquiries.
 - [ ] **Booking History Management [1h]**  
   - Stores users' past booking history.
 - [ ] **Booking Confirmation via Email [2h]**  
@@ -72,8 +75,8 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
  > ### Total Works Need To Be Done: **6h (for 2 members)**
  > ### Total Works Completed: **11h**
  > ### Total By Assignment Per Member:
- > - [21120060] Nguyen Long Giang: **3h**
- > - [21120082] Phan Quoc Huy: **8h**
+ > - **[21120060] Nguyen Long Giang: 3h**
+ > - **[21120082] Phan Quoc Huy: 8h**
 
 
 # Assessment
@@ -89,6 +92,7 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
   - **Reset Password Page:** `Username`, `Password`, `Confirm Password` text boxes
   - **Auto Suggestion Search Box:** `Search Destination` in Home Page, `Navigation Item` in Shell Page
  
+ > [!NOTE]
  > ### Self-Assessment: 20/20 (%)
  
 ## Design Patterns & Architecture
@@ -106,11 +110,16 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
 - **Lifecycle-aware Component**
   - The `INavigationAware` interface defines methods related to navigation. When a ViewModel implements this interface, it provides logic for handling navigation events, such as moving to a page (`OnNavigatedTo`) or leaving a page (`OnNavigatedTo`).
  
+ > [!NOTE]
  > ### Self-Assessment: 20/20 (%)
 
 ## Advanced Topics
 - **Acrylic System Backdrops**
-  - Provide a different background for a Window other than the default white or black (depending on Light or Dark theme). Desktop Acrylic are the current supported backdrops.
+  - Provide a different background for a Window other than the default white or black (depending on Light or Dark theme)
+  - Desktop Acrylic are the current supported backdrops
+- **Dark Theme**
+  - This application supports Light and Dark themes as a personalization option in application settings
+  - We use Light mode by default, but users can choose Dark mode, which changes much of the UI to a dark color
 - **Attached Drop Shadow**
   - Allows many elements to share a common backdrop for casting shadows
   - Applied to `Schedule Search Bar` in Home Page
@@ -130,11 +139,12 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
 - **Adaptive Grid View**
   - This control presents items in a evenly-spaced set of columns to fill the total available display space. It reacts to changes in the layout as well as the content so it can adapt to different form factors automatically.
   - Applied to Home Page & Rental Details Page
-- **FlipView & PipsPager**
+- **Flip View & Pips Pager**
   - `FlipView` allows flipping through a collection of items, one at a time. It's great for displaying images from a gallery, pages of a magazine, or similar items.
   - `PipsPager` allows the user to navigate through a paginated collection and is independent of the content shown.
   - Applied to every image collection views
  
+ > [!NOTE]
  > ### Self-Assessment: 30/30 (%)
 
 ## Teamwork - Git Flow
@@ -144,6 +154,7 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
 ### Git Flow
 ![Git Flow.](./BookingManagementSystem/Assets/Screenshots/Screenshot%20Git%20Flow.png)
  
+ > [!NOTE]
  > ### Self-Assessment: 10/10 (%)
 
 ## Quality Assurance
@@ -151,9 +162,11 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
 ![Source Code Review & Merg Into Main Process.](./BookingManagementSystem/Assets/Screenshots/Screenshot%20Pull%20Requests.png)
 ![Source Code Review & Merg Into Main Process.](./BookingManagementSystem/Assets/Screenshots/Screenshot%20Pull%20Requests%202.png)
  
+ > [!NOTE]
  > ### Self-Assessment: 15/20 (%)
 
-## Total Completion Rate: 95/100 (%)
+> [!IMPORTANT]
+> ### Total Completion Rate: 95/100 (%)
 
 # Meet our contributors
 <a href="https://github.com/thatweirdbush/arrival/graphs/contributors">
