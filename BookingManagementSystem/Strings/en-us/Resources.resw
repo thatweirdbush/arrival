@@ -123,14 +123,8 @@
   <data name="AppDescription" xml:space="preserve">
     <value>Booking Management System</value>
   </data>
-  <data name="Shell_Main.Content" xml:space="preserve">
-    <value>Hotels &amp; Apartments</value>
-  </data>
-  <data name="Shell_Login.Content" xml:space="preserve">
-    <value>Home</value>
-  </data>
-  <data name="Shell_Quiz.Content" xml:space="preserve">
-    <value>Details</value>
+  <data name="Shell_Home.Content" xml:space="preserve">
+    <value>Home - Hotels &amp; Apartments</value>
   </data>
   <data name="Settings_Personalization.Text" xml:space="preserve">
     <value>Personalization</value>
@@ -175,5 +169,35 @@
   </data>
   <data name="Quiz_NoSelection.Text" xml:space="preserve">
     <value>Select an item from the list.</value>
+  </data>
+  <data name="Shell_Map.Content" xml:space="preserve">
+    <value>Map Services</value>
+  </data>
+  <data name="Shell_Host.Content" xml:space="preserve">
+    <value>Host Dashboard</value>
+  </data>
+  <data name="Shell_RentalDetails.Content" xml:space="preserve">
+    <value>Rental Details</value>
+  </data>
+  <data name="Shell_FAQ.Content" xml:space="preserve">
+    <value>FAQs</value>
+  </data>
+  <data name="Shell_Payment.Content" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="Shell_Admin.Content" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="Shell_Favourite.Content" xml:space="preserve">
+    <value>Favourites</value>
+  </data>
+  <data name="Shell_Message.Content" xml:space="preserve">
+    <value>Messages</value>
+  </data>
+  <data name="Shell_Report.Content" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="Shell_ListingRequest.Content" xml:space="preserve">
+    <value>Listing Requests</value>
   </data>
 </root>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="BookingManagementSystem.Views.Forms.BadReportDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BookingManagementSystem.Views.Forms"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Report Issue"
+    PrimaryButtonText="Submit"
+    CloseButtonText="Cancel"
+    DefaultButton="Primary"
+    PrimaryButtonClick="OnPrimaryButtonClick">
+
+    <Grid>
+        <StackPanel Spacing="12">
+            <StackPanel Spacing="6">
+                <TextBox x:Name="ReasonTextBox" Header="Reason" PlaceholderText="Enter the report reason..."/>
+                <TextBlock x:Name="ReasonWarning" Foreground="Red" Visibility="Collapsed" Text="* Reason is required." FontSize="12"/>
+            </StackPanel>
+            <StackPanel Spacing="6">
+                <TextBox x:Name="DescriptionTextBox" Header="Description" PlaceholderText="Describe the issue..." MinHeight="80"/>
+                <TextBlock x:Name="DescriptionWarning" Foreground="Red" Visibility="Collapsed" Text="* Description is required." FontSize="12"/>
+            </StackPanel>
+            <ComboBox x:Name="EntityTypeComboBox" Header="Entity Type" ItemsSource="{x:Bind EntityTypes}" SelectedIndex="0"/>
+        </StackPanel>
+    </Grid>
+</ContentDialog>

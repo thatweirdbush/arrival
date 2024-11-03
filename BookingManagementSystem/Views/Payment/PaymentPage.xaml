@@ -1,0 +1,271 @@
+﻿<Page
+    x:Class="BookingManagementSystem.Views.PaymentPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:BookingManagementSystem.Views"
+    xmlns:helper="using:BookingManagementSystem.Helpers"
+    xmlns:models="using:BookingManagementSystem.Core.Models"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    mc:Ignorable="d"
+    CacheMode="BitmapCache">
+
+    <Grid x:Name="ContentArea">
+        <ScrollView x:Name="ContentScrollView" ZoomMode="Disabled" IsTabStop="True" ContentOrientation="Vertical"
+         HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden"
+         VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto"
+         Background="Transparent">
+            <Grid x:Name="MainGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="240"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid x:Name="PageHeader">
+                    <Grid.Background>
+                        <ImageBrush Stretch="UniformToFill">
+                            <ImageBrush.ImageSource>
+                                <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="1280"/>
+                            </ImageBrush.ImageSource>
+                        </ImageBrush>
+                    </Grid.Background>
+                    <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Image Width="60" Height="60" Source="/Assets/three-body-a-white.png"/>
+                        <Image Source="/Assets/arrival-bio-white.png" Height="60" Margin="16" Stretch="Fill"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="PageBody" Grid.Row="1" Width="900" Margin="24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid x:Name="LeftMainGrid" Margin="0 0 28 0">
+                        <StackPanel Spacing="24">
+                            <Grid x:Name="HeaderContent">
+                                <Button x:Name="btnBackToRentalDetails" 
+                                    Background="Transparent" 
+                                    Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}" 
+                                    CornerRadius="80" Content="&lt;" FontSize="64" 
+                                    BorderThickness="0" Width="40" Height="40" Margin="-12 0 0 0"/>
+                                <TextBlock x:Name="txtConfirmAndPay" Text="Confirm and pay" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
+                            </Grid>
+
+                            <Grid x:Name="YourTripGrid">
+                                <StackPanel Spacing="18">
+                                    <TextBlock Text="Your trip" Style="{ThemeResource TitleTextBlockStyle}"/>
+                                    <StackPanel Spacing="8">
+                                        <TextBlock Text="Dates" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                        <TextBlock Style="{ThemeResource BodyTextStyle}">
+                                    <Run Text="Nov 26"/>
+                                    <Run Text="-"/>
+                                    <Run Text="Dec 1"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Spacing="8">
+                                        <TextBlock Text="Guests" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                        <TextBlock Style="{ThemeResource BodyTextStyle}">
+                                    <Run Text="1"/>
+                                    <Run Text=" guests"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid x:Name="ChooseHowToPayGrid">
+                                <StackPanel Spacing="18">
+                                    <TextBlock Text="Choose how to pay" Style="{ThemeResource TitleTextBlockStyle}"/>
+                                    <StackPanel x:Name="ButtonPaymentTypeGrid">
+                                        <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                                            Background="Transparent" CornerRadius="12 12 0 0" Padding="12">
+                                            <RadioButton x:Name="btnPayNow"
+                                                     HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                                                     VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                     FlowDirection="RightToLeft" Background="Transparent"                                                 >
+                                                <TextBlock Text="Pay $199.90 now" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                            </RadioButton>
+                                        </Button>
+                                        <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                                             Background="Transparent" CornerRadius="0 0 12 12" Padding="12">
+                                            <RadioButton x:Name="btnPayLater"
+                                                     HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                                                     VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                     FlowDirection="RightToLeft" Background="Transparent">
+                                                <StackPanel Spacing="6">
+                                                    <TextBlock Text="Pay part now, part later" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap" FlowDirection="LeftToRight">
+                                                    <Run Text="₫5,719,624 due today, ₫5,719,623 on Nov 17, 2024. No extra fees."/>
+                                                    <Hyperlink NavigateUri="https://www.example.com">
+                                                        <Run Text="More info" FontWeight="SemiBold"/>
+                                                    </Hyperlink>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </RadioButton>
+                                        </Button>
+                                    </StackPanel>
+                                    <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid x:Name="PayWithGrid">
+                                <StackPanel Spacing="18">
+                                    <TextBlock Text="Pay with" Style="{ThemeResource TitleTextBlockStyle}"/>
+                                    <ComboBox HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Padding="12" CornerRadius="12" SelectedIndex="1">
+                                        <StackPanel x:Name="CreditCardPaymentItem" Orientation="Horizontal" Spacing="12" Padding="8">
+                                            <Image Source="/Assets/symbol-icons/credit-card-icon.png" Width="24" Height="24" Stretch="Fill"/>
+                                            <TextBlock Text="Credit or debit card" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" Foreground="DimGray" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <StackPanel x:Name="MomoPaymentItem" Orientation="Horizontal" Spacing="12" Padding="8">
+                                            <Image Source="/Assets/momo-logo.png" Width="24" Height="24" Stretch="Fill"/>
+                                            <TextBlock Text="Momo" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" Foreground="DimGray" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </ComboBox>
+                                    <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid x:Name="CancellationPolicyGrid">
+                                <StackPanel Spacing="18">
+                                    <TextBlock Text="Cancellation policy" Style="{ThemeResource TitleTextBlockStyle}"/>
+                                    <Grid>
+                                        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" FontSize="15">
+                                        <Run Text="Free cancellation before" FontWeight="SemiBold"/>
+                                        <Run Text="Nov 25. " FontWeight="SemiBold"/>
+                                        <Run Text="Cancel before check-in on"/>
+                                        <Run Text="Nov 26"/>
+                                        <Run Text="for a partial refund."/>
+                                        <Hyperlink NavigateUri="https://www.example.com">
+                                            <Run Text="Learn more" FontWeight="SemiBold"/>
+                                        </Hyperlink>
+                                        </TextBlock>
+                                    </Grid>
+                                    <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid x:Name="GroundRulesGrid">
+                                <StackPanel Spacing="18">
+                                    <TextBlock Text="Ground rules" Style="{ThemeResource TitleTextBlockStyle}"/>
+                                    <TextBlock Text="We ask every guest to remember a few simple things about what makes a great guest." VerticalAlignment="Center" TextWrapping="Wrap" FontSize="15"/>
+                                    <StackPanel Spacing="8" Margin="0 -4 0 0">
+                                        <TextBlock Text="•  Follow the house rules" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="15"/>
+                                        <TextBlock Text="•  Treat your Host’s home like your own" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="15"/>
+                                    </StackPanel>
+                                    <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid x:Name="PolicyAgreeGrid">
+                                <TextBlock Style="{ThemeResource CaptionTextBlockStyle}">
+                                    <Run>By selecting the button below, I agree to the</Run>                                    
+                                    <Hyperlink NavigateUri="https://www.example.com">
+                                        <Run Text="Host's House Rules," FontWeight="SemiBold"/>
+                                    </Hyperlink>
+                                    <Hyperlink NavigateUri="https://www.example.com">
+                                        <Run Text="Ground rules for guests," FontWeight="SemiBold"/>
+                                    </Hyperlink>
+                                    <Hyperlink NavigateUri="https://www.example.com">
+                                        <Run Text="Arrival's Rebooking and Refund Policy," FontWeight="SemiBold"/>
+                                    </Hyperlink>                                    
+                                    <Run>and that Arrival can</Run>
+                                    <Hyperlink NavigateUri="https://www.example.com">
+                                        <Run Text="charge my payment method" FontWeight="SemiBold"/>
+                                    </Hyperlink>
+                                    <Run>if I’m responsible for damage.</Run>
+                                </TextBlock>
+                            </Grid>
+
+                            <Grid x:Name="ConfirmAndPayGrid">
+                                <Button x:Name="btnConfirmAndPay" 
+                                    Content="Confirm and pay"
+                                    HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
+                                    Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                                    Style="{ThemeResource DefaultButtonStyle}"
+                                    FontWeight="SemiBold"
+                                    Padding="18"
+                                    ToolTipService.ToolTip="Confirm the information above and pay for your reservation"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="RightMainGrid" Grid.Column="1" Margin="28 0 0 0" Canvas.ZIndex="1">
+                        <Grid x:Name="RentalDetailsGrid" CornerRadius="12" VerticalAlignment="Top" HorizontalAlignment="Stretch" Padding="24" BorderThickness="1" BorderBrush="LightGray">
+                            <StackPanel Spacing="12">
+                                <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Top">
+                                    <Grid Height="110" Width="116" CornerRadius="12">
+                                        <Image Stretch="UniformToFill">
+                                            <Image.Source>
+                                                <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelHeight="110"/>
+                                            </Image.Source>
+                                        </Image>
+                                    </Grid>
+                                    <Grid>
+                                        <StackPanel x:Name="PropertyInfoPanel" Orientation="Vertical" Spacing="8" MaxWidth="280">
+                                            <TextBlock x:Name="txtPropertyName" Text="Whispering Pines Cottages| Cabin | Tandi" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap"/>
+                                            <TextBlock x:Name="txtPropertyType" Text="Entire cottage" Style="{ThemeResource DetailBodyStyle}" TextWrapping="Wrap"/>
+                                            <TextBlock x:Name="txtPropertyRateAndReview" Style="{ThemeResource DetailBodyStyle}" TextWrapping="Wrap">
+                                            <Run FontWeight="SemiBold" Text="4.89"/> (
+                                            <Run Text="232"/> reviews)
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                                <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
+                                <Grid>
+                                    <StackPanel Spacing="12">
+                                        <TextBlock Text="Your total" Style="{ThemeResource TitleTextBlockStyle}"/>
+                                        <Grid>
+                                            <TextBlock Text="5 nights" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
+                                            <TextBlock Text="$199.90" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                        <Grid>
+                                            <TextBlock Text="Taxes" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
+                                            <TextBlock Text="$9.90" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+                                <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
+                                <Grid>
+                                    <TextBlock Text="Voucher" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
+                                    <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                                        <TextBlock Style="{ThemeResource DetailSubTitleStyle}" TextDecorations="Underline" FontWeight="Normal" Foreground="Gray">
+                                            <Run Text="10%"></Run> off
+                                        </TextBlock>
+                                        <TextBlock Text="·" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
+                                        <TextBlock Text="$19.99" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
+                                <Grid>
+                                    <TextBlock Text="Total" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                    <TextBlock Text="$189.81" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox PlaceholderText="Enter Voucher" BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" Margin="0 0 -1 0" Padding="12" CornerRadius="0" Height="43" VerticalAlignment="Top"/>
+                                    <Button Grid.Column="1" Content="Apply" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                            Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
+                                            Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                                            Style="{ThemeResource DefaultButtonStyle}"
+                                            FontWeight="SemiBold"
+                                            BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
+                                            Padding="24 12 24 12"                                            
+                                            CornerRadius="0"
+                                            ToolTipService.ToolTip="Confirm the information above and pay for your reservation"/>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </ScrollView>
+    </Grid>
+</Page>

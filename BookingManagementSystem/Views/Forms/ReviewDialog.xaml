@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="BookingManagementSystem.Views.Forms.ReviewDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BookingManagementSystem.Views.Forms"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Add a Comment"
+    PrimaryButtonText="Submit"
+    CloseButtonText="Cancel"
+    DefaultButton="Primary">
+
+    <Grid>
+        <StackPanel Spacing="8">
+            <StackPanel Spacing="4">
+                <TextBlock Text="Your Rating"/>
+                <RatingControl x:Name="PropertyRatingControl" IsClearEnabled="True" IsReadOnly="False" Value="{x:Bind RatingValue, Mode=TwoWay}"/>
+            </StackPanel>
+            <TextBox x:Name="CommentTextBox" Header="Your Comment" PlaceholderText="Enter your comment..." Text="{x:Bind Comment, Mode=TwoWay}" MinHeight="80"/>
+        </StackPanel>
+    </Grid>
+</ContentDialog>

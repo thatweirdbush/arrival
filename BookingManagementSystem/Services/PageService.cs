@@ -1,10 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-
-using Microsoft.UI.Xaml.Controls;
-
-using BookingManagementSystem.Contracts.Services;
+﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.Views;
+using BookingManagementSystem.Views.Administrator;
+
+using CommunityToolkit.Mvvm.ComponentModel;
+
+using Microsoft.UI.Xaml.Controls;
 
 namespace BookingManagementSystem.Services;
 
@@ -16,8 +17,16 @@ public class PageService : IPageService
     {
         Configure<LoginViewModel, LoginPage>();
         Configure<MainViewModel, MainPage>();
-        Configure<QuizViewModel, QuizPage>();
+        Configure<HomeViewModel, HomePage>();
         Configure<SettingsViewModel, SettingsPage>();
+        Configure<MapViewModel, MapPage>();
+        Configure<RentalDetailViewModel, RentalDetailPage>();
+        Configure<HostViewModel, HostPage>();
+        Configure<FAQViewModel, FAQPage>();
+        Configure<PaymentViewModel, PaymentPage>();
+        Configure<AdministratorViewModel, AdministratorPage>();
+        Configure<ReportViewModel, ReportPage>();
+        Configure<ListingRequestViewModel, ListingRequestPage>();
     }
 
     public Type GetPageType(string key)

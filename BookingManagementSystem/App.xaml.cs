@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.UI.Xaml;
-
-using BookingManagementSystem.Activation;
+﻿using BookingManagementSystem.Activation;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Services;
@@ -12,6 +8,11 @@ using BookingManagementSystem.Notifications;
 using BookingManagementSystem.Services;
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.Views;
+using BookingManagementSystem.Views.Administrator;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.UI.Xaml;
 
 namespace BookingManagementSystem;
 
@@ -70,19 +71,41 @@ public partial class App : Application
 
             // Core Services
             services.AddSingleton<ISampleDataService, SampleDataService>();
+            services.AddSingleton<IDao, MockDao>();
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<ListingRequestViewModel>();
+            services.AddTransient<ListingRequestPage>();
+            services.AddTransient<ReportViewModel>();
+            services.AddTransient<ReportPage>();
+            services.AddTransient<AdministratorViewModel>();
+            services.AddTransient<AdministratorPage>();
+            services.AddTransient<PaymentViewModel>();
+            services.AddTransient<PaymentPage>();
+            services.AddTransient<FAQViewModel>();
+            services.AddTransient<FAQPage>();
+            services.AddTransient<HostViewModel>();
+            services.AddTransient<HostPage>();
+            services.AddTransient<MapViewModel>();
+            services.AddTransient<MapPage>();
+            services.AddTransient<RentalDetailPage>();
+            services.AddTransient<RentalDetailViewModel>();
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
-            services.AddTransient<QuizViewModel>();
-            services.AddTransient<QuizPage>();
+            services.AddTransient<HomeViewModel>();
+            services.AddTransient<HomePage>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<LoginPage>();
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainPage>();
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
+            services.AddTransient<SignupPage>();
+            services.AddTransient<SignupViewModel>();
+            services.AddTransient<RecoverPasswordPage>();
+            services.AddTransient<RecoverPasswordViewModel>();
+
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

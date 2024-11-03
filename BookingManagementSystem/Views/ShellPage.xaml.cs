@@ -12,18 +12,25 @@ using Windows.System;
 namespace BookingManagementSystem.Views;
 
 // TODO: Update NavigationViewItem titles and icons in ShellPage.xaml.
-public sealed partial class ShellPage : Page
+public partial class ShellPage : Page
 {
     public ShellViewModel ViewModel
     {
         get;
     }
 
+    // Variable to check login status
+    private bool isSignedIn = false;
+
+    private string username = "John Doe";
+
     // List of MenuItems
     private List<string> MenuItems { get; } = new()
     {
-        "Home",
-        "Smartphones"
+        "Home - Hotels & Apartments",
+        "Rental Details",
+        "Map Services",
+        "Host Dashboard"
     };
 
     public ShellPage(ShellViewModel viewModel)
@@ -103,7 +110,7 @@ public sealed partial class ShellPage : Page
             {
                 var found = splitText.All((key) =>
                 {
-                    return item.ToLower().Contains(key);
+                    return item.Contains(key, StringComparison.CurrentCultureIgnoreCase);
                 });
                 if (found)
                 {
@@ -132,5 +139,61 @@ public sealed partial class ShellPage : Page
         };
 
         await dialog.ShowAsync();
+    }
+
+    private void UserMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+    {
+        var clickedItem = sender as MenuFlyoutItem;
+        if (clickedItem?.Tag?.ToString() == "signin")
+        {
+            SignInUser();
+        }
+        else if (clickedItem?.Tag?.ToString() == "signout")
+        {
+            SignOutUser();
+        }
+        else if (clickedItem?.Tag?.ToString() == "host")
+        {
+            NavigationFrame.Navigate(typeof(HostPage));
+        }
+        else if (clickedItem?.Tag?.ToString() == "setting")
+        {
+            NavigationFrame.Navigate(typeof(SettingsPage));
+        }
+    }
+
+    private void SignInUser()
+    {
+        isSignedIn = true;
+        username = "John Doe";
+        NavigationFrame.Navigate(typeof(LoginPage));
+        UpdateUserMenu();
+    }
+
+    private void SignOutUser()
+    {
+        isSignedIn = false;
+        username = "Sign In";
+        NavigationFrame.Navigate(typeof(HomePage));
+        UpdateUserMenu();
+    }
+
+    private void UpdateUserMenu()
+    {
+        if (isSignedIn)
+        {
+            txtUsername.Text = username;
+            SignInMenuItem.Text = "Sign out";
+            SignInMenuItem.Icon = new SymbolIcon(Symbol.Back);
+            SignInMenuItem.Tag = "signout";
+        }
+        else
+        {
+            username = "Sign In";
+            txtUsername.Text = username;
+            SignInMenuItem.Text = "Sign in";
+            SignInMenuItem.Icon = new SymbolIcon(Symbol.Forward);
+            SignInMenuItem.Tag = "signin";
+        }
     }
 }
