@@ -10,12 +10,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
 using System.Collections.ObjectModel;
+using BookingManagementSystem.Core.Contracts.Repositories;
 
 namespace BookingManagementSystem.ViewModels;
 
 public partial class RentalDetailViewModel : ObservableRecipient, INavigationAware
 {
-    private readonly IDao _dao;
+    private readonly IRentalDetailFacade _rentalDetailFacade;
 
     [ObservableProperty]
     private Property? item;
@@ -24,45 +25,31 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = Enumerable.Empty<DestinationTypeSymbol>();
     public IEnumerable<PropertyPolicy> PropertyPolicies { get; set; } = Enumerable.Empty<PropertyPolicy>();
 
-    public RentalDetailViewModel(IDao dao)
+    public RentalDetailViewModel(IDao dao, IRentalDetailFacade rentalDetailFacade)
     {
-        _dao = dao;
+        _rentalDetailFacade = rentalDetailFacade;
     }
 
     public async void OnNavigatedTo(object parameter)
     {
         if (parameter is int Id)
         {
-            var data = await _dao.GetPropertyListDataAsync();
-            Item = data.First(i => i.Id == Id);
+            Item = await _rentalDetailFacade.GetPropertyByIdAsync(Id);
+            var reviews = await _rentalDetailFacade.GetReviewsAsync();
+            foreach (var review in reviews)
+            {
+                Reviews.Add(review);
+            }
+
+            var qnas = await _rentalDetailFacade.GetQnAsAsync();
+            foreach (var qna in qnas)
+            {
+                QnAs.Add(qna);
+            }
+
+            DestinationTypeSymbols = await _rentalDetailFacade.GetDestinationTypeSymbolsAsync();
+            PropertyPolicies = await _rentalDetailFacade.GetPropertyPoliciesAsync();
         }
-
-        // Load Reviews data
-        var reviews = await _dao.GetReviewListDataAsync();
-        foreach (var review in reviews)
-        {
-            Reviews.Add(review);
-        }
-
-        // Load QnAs data, DESC order by CreatedAt
-        var qnas = await _dao.GetQnAListDataAsync();
-        foreach (var qna in qnas)
-        {
-            QnAs.Add(qna);
-
-            //if (Item != null && qna.PropertyId == Item.Id)
-            //{
-            //    QnAs.Add(qna);
-            //}
-        }
-
-        // Load DestinationTypeSymbols data
-        var destinationTypeSymbols = await _dao.GetDestinationTypeSymbolDataAsync();
-        DestinationTypeSymbols = destinationTypeSymbols;
-
-        // Load PropertyPolicies data
-        var propertyPolicies = await _dao.GetPropertyPolicyListDataAsync();
-        PropertyPolicies = propertyPolicies;
     }
 
     public void OnNavigatedFrom()
@@ -71,16 +58,16 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
 
     public async Task AddReviewAsync(Review review)
     {
-        await _dao.AddReviewAsync(review);
+        await _rentalDetailFacade.AddReviewAsync(review);
     }
 
     public async Task AddQnAAsync(QnA qna)
     {
-        await _dao.AddQnAAsync(qna);
+        await _rentalDetailFacade.AddQnAAsync(qna);
     }
 
     public async Task AddBadReportAsync(BadReport badReport)
     {
-        await _dao.AddBadReportAsync(badReport);
+        await _rentalDetailFacade.AddBadReportAsync(badReport);
     }
 }

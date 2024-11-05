@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using BookingManagementSystem.Core.Contracts.Repositories;
 
 namespace BookingManagementSystem.Core.Repositories;
-public class Repository<T> : IRepository<T>
+public class Repository<T> : IRepository<T> where T : class
 {
     protected readonly List<T> _entities = [];
 
