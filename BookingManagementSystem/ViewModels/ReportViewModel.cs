@@ -1,5 +1,6 @@
 ﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
+using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -9,21 +10,21 @@ namespace BookingManagementSystem.ViewModels;
 public partial class ReportViewModel : ObservableRecipient
 {
     private readonly INavigationService _navigationService;
-    private readonly IDao _dao;
+    private readonly IRepository<BadReport> _badReportRepository;
 
     // List of content items
     public IEnumerable<BadReport> BadReports { get; set; } = Enumerable.Empty<BadReport>();
 
-    public ReportViewModel(INavigationService navigationService, IDao dao)
+    public ReportViewModel(INavigationService navigationService, IRepository<BadReport> badReportRepository)
     {
         _navigationService = navigationService;
-        _dao = dao;
-        OnNavigatedTo(_dao);
+        _badReportRepository = badReportRepository;
+        OnNavigatedTo(0);
     }
     public async void OnNavigatedTo(object parameter)
     {
         // Load BadReport data list
-        var reports = await _dao.GetBadReportListDataAsync();
+        var reports = await _badReportRepository.GetAllAsync();
         BadReports = reports;
     }
 

@@ -1,5 +1,6 @@
 ﻿using BookingManagementSystem.Activation;
 using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.Core.Contracts.Facades;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Facades;

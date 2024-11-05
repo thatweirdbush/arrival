@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BookingManagementSystem.Core.Models;
 
-namespace BookingManagementSystem.Core.Contracts.Repositories;
+namespace BookingManagementSystem.Core.Contracts.Facades;
 #nullable enable
 public interface IRentalDetailFacade
 {

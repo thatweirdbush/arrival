@@ -1,5 +1,6 @@
 ﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
+using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -9,7 +10,7 @@ namespace BookingManagementSystem.ViewModels;
 public partial class FAQViewModel : ObservableRecipient, INavigationAware
 {
     private readonly INavigationService _navigationService;
-    private readonly IDao _dao;
+    private readonly IRepository<FAQ> _faqRepository;
 
     // List of content items
     //public IEnumerable<FAQ> FAQs { get; set; } = Enumerable.Empty<FAQ>();   // All
@@ -20,17 +21,17 @@ public partial class FAQViewModel : ObservableRecipient, INavigationAware
     public IEnumerable<FAQ> CancellationsFAQs { get; set; } = Enumerable.Empty<FAQ>();  // Cancellations
     public IEnumerable<FAQ> PropertyPoliciesFAQs { get; set; } = Enumerable.Empty<FAQ>();   // PropertyPolicies
 
-    public FAQViewModel(INavigationService navigationService, IDao dao)
+    public FAQViewModel(INavigationService navigationService, IRepository<FAQ> faqRepository)
     {
         _navigationService = navigationService;
-        _dao = dao;
-        OnNavigatedTo(_dao);
+        _faqRepository = faqRepository;
+        OnNavigatedTo(0);
     }
 
     public async void OnNavigatedTo(object parameter)
     {
         // Load FAQs data - All
-        var faqs = await _dao.GetFAQListDataAsync();
+        var faqs = await _faqRepository.GetAllAsync();
 
         // Load FAQs data - General
         GeneralFAQs = faqs.Where(f => f.FAQCategory == FAQCategory.General);

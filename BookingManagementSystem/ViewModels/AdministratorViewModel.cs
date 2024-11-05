@@ -8,11 +8,9 @@ namespace BookingManagementSystem.ViewModels;
 public partial class AdministratorViewModel : ObservableRecipient, INavigationAware
 {
     private readonly INavigationService _navigationService;
-    private readonly IDao _dao;
-    public AdministratorViewModel(INavigationService navigationService, IDao dao)
+    public AdministratorViewModel(INavigationService navigationService)
     {
         _navigationService = navigationService;
-        _dao = dao;
     }
 
     public void OnNavigatedFrom()

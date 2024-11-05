@@ -10,13 +10,15 @@ using BookingManagementSystem.Core.Services;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using BookingManagementSystem.Core.Contracts.Repositories;
 
 namespace BookingManagementSystem.ViewModels;
 
 public partial class HomeViewModel : ObservableRecipient, INavigationAware
 {
     private readonly INavigationService _navigationService;
-    private readonly IDao _dao;
+    private readonly IRepository<Property> _propertyRepository;
+    private readonly IRepository<DestinationTypeSymbol> _destinationTypeSymbolRepository;
 
     // Filtered destination data
     public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = Enumerable.Empty<DestinationTypeSymbol>();
@@ -24,21 +26,22 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     // List of items for the AdaptiveGridView
     public ObservableCollection<Property> Properties { get; set; } = new ObservableCollection<Property>();
 
-    public HomeViewModel(INavigationService navigationService, IDao dao)
+    public HomeViewModel(INavigationService navigationService, 
+        IRepository<Property> propertyRepository, 
+        IRepository<DestinationTypeSymbol> destinationTypeSymbolRepository)
     {
         _navigationService = navigationService;
-        _dao = dao;
+        _propertyRepository = propertyRepository;
+        _destinationTypeSymbolRepository = destinationTypeSymbolRepository;
     }
 
     public async void OnNavigatedTo(object parameter)
     {
         // Load DestinationTypeSymbols data
-        var destinationTypeSymbols = await _dao.GetDestinationTypeSymbolDataAsync();
+        var destinationTypeSymbols = await _destinationTypeSymbolRepository.GetAllAsync();
         DestinationTypeSymbols = destinationTypeSymbols;
 
         // Load Properties data
-        //var properties = await _dao.GetPropertyListDataAsync();
-        //Properties = new ObservableCollection<Property>(properties);
         LoadAllProperties();
     }
 
@@ -48,10 +51,9 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
 
     public async void LoadAllProperties()
     {
-        // Load Properties data
         Properties.Clear();
+        var data = await _propertyRepository.GetAllAsync();
 
-        var data = await _dao.GetPropertyListDataAsync();
         foreach (var item in data)
         {
             Properties.Add(item);
@@ -82,7 +84,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
 
         Properties.Clear();
-        var data = await _dao.GetPropertyListDataAsync();
+        var data = await _propertyRepository.GetAllAsync();
 
         // Prepare Trending properties data by filtering based on IsPriority or IsFavourtie
         if (destinationTypeSymbol.DestinationType.Equals(DestinationType.Trending))

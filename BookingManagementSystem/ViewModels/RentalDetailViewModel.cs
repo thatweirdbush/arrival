@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
 using System.Collections.ObjectModel;
-using BookingManagementSystem.Core.Contracts.Repositories;
+using BookingManagementSystem.Core.Contracts.Facades;
 
 namespace BookingManagementSystem.ViewModels;
 
