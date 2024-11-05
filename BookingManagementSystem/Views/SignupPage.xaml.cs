@@ -69,24 +69,26 @@ public sealed partial class SignupPage : Page
         var isPasswordMatch = ValidationAccount.IsPasswordMatch(password, confirmPassword);
         if (!isUserNameValid)
         {
-            contentDialog.Content = "Recover failed! Invalid username.";
+            contentDialog.Content = "Sign up failed! Invalid username.";
+            await contentDialog.ShowAsync();
+            return;
         }
         else if (!isPasswordValid)
         {
-            contentDialog.Content = "Recover failed! Invalid password.";
+            contentDialog.Content = "Sign up failed! Invalid password.";
+            await contentDialog.ShowAsync();
+            return;
         }
         else if (!isPasswordMatch)
         {
-            contentDialog.Content = "Recover failed! Confirm password incorrect.";
-        }
-        else
-        {
-            contentDialog.Content = "Sign up successfully!";
+            contentDialog.Content = "Sign up failed! Confirm password incorrect.";
+            await contentDialog.ShowAsync();
+            return;
         }
 
         if (ViewModel.SignupAuthentication(username, password))
         {
-            // Show dialog
+            contentDialog.Content = "Sign up successfully!";
             var result = await contentDialog.ShowAsync();
 
             // If successful, navigate to LoginPage

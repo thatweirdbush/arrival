@@ -14,19 +14,16 @@ public class ValidationAccount
     public static bool IsValidUsername(string username)
     {
         // Biểu thức regex cho email
-        string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+        var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
         // Biểu thức regex cho số điện thoại (ít nhất 10 chữ số)
-        string phonePattern = @"^[0-9]{10,}$";
+        var phonePattern = @"^[0-9]{10,}$";
 
         // Kiểm tra nếu username là email hoặc số điện thoại
         if (Regex.IsMatch(username, emailPattern) || Regex.IsMatch(username, phonePattern))
         {
             return true;
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     // Kiểm tra password (ít nhất 8 ký tự)
