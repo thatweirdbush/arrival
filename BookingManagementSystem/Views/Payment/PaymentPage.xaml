@@ -220,11 +220,11 @@
                                         <TextBlock Text="Your total" Style="{ThemeResource TitleTextBlockStyle}"/>
                                         <Grid>
                                             <TextBlock Text="5 nights" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
-                                            <TextBlock Text="$199.90" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
+                                            <TextBlock x:Name="AmountTextBox" Text="$199.90" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
                                         </Grid>
                                         <Grid>
                                             <TextBlock Text="Taxes" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
-                                            <TextBlock Text="$9.90" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
+                                            <TextBlock x:Name="TaxTextBox" Text="$9.90" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
@@ -232,17 +232,16 @@
                                 <Grid>
                                     <TextBlock Text="Voucher" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
                                     <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
-                                        <TextBlock Style="{ThemeResource DetailSubTitleStyle}" TextDecorations="Underline" FontWeight="Normal" Foreground="Gray">
+                                        <TextBlock x:Name="DiscountTextBlock" Style="{ThemeResource DetailSubTitleStyle}" TextDecorations="Underline" FontWeight="Normal" Foreground="Gray" Visibility="Collapsed">
                                             <Run Text="10%"></Run> off
                                         </TextBlock>
-                                        <TextBlock Text="·" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
-                                        <TextBlock Text="$19.99" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
+                                        <TextBlock x:Name="VoucherTextBox" Text="" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
                                     </StackPanel>
                                 </Grid>
                                 <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
                                 <Grid>
                                     <TextBlock Text="Total" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                                    <TextBlock Text="$189.81" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                    <TextBlock x:Name="TotalAmountTextBox" Text="$209.8" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Bold" HorizontalAlignment="Right"/>
                                 </Grid>
                                 <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
                                 <Grid>
@@ -250,8 +249,8 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox PlaceholderText="Enter Voucher" BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" Margin="0 0 -1 0" Padding="12" CornerRadius="0" Height="43" VerticalAlignment="Top"/>
-                                    <Button Grid.Column="1" Content="Apply" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                    <TextBox x:Name="VoucherInputTextBox" PlaceholderText="Enter Voucher" BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" Margin="0 0 -1 0" Padding="12" CornerRadius="0" Height="43" VerticalAlignment="Top"/>
+                                    <Button Grid.Column="1" Content="Apply" HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="Apply_click"
                                             Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                             Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
                                             Style="{ThemeResource DefaultButtonStyle}"
@@ -261,6 +260,7 @@
                                             CornerRadius="0"
                                             ToolTipService.ToolTip="Confirm the information above and pay for your reservation"/>
                                 </Grid>
+                                <TextBlock x:Name="VoucherWarning" Foreground="Red" Visibility="Collapsed" Text="" FontSize="12"/>
                             </StackPanel>
                         </Grid>
                     </Grid>
