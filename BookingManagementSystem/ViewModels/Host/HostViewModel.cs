@@ -3,7 +3,7 @@ using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace BookingManagementSystem.ViewModels;
+namespace BookingManagementSystem.ViewModels.Host;
 
 public partial class HostViewModel : ObservableRecipient, INavigationAware
 {

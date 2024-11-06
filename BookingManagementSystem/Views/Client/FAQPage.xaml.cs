@@ -1,8 +1,8 @@
-﻿using BookingManagementSystem.ViewModels;
+﻿using BookingManagementSystem.ViewModels.Client;
 
 using Microsoft.UI.Xaml.Controls;
 
-namespace BookingManagementSystem.Views;
+namespace BookingManagementSystem.Views.Client;
 
 public sealed partial class FAQPage : Page
 {

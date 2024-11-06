@@ -12,7 +12,7 @@ using Microsoft.UI.Xaml;
 using System.Collections.ObjectModel;
 using BookingManagementSystem.Core.Contracts.Facades;
 
-namespace BookingManagementSystem.ViewModels;
+namespace BookingManagementSystem.ViewModels.Client;
 
 public partial class RentalDetailViewModel : ObservableRecipient, INavigationAware
 {

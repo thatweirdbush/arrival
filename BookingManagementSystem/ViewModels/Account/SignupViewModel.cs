@@ -9,27 +9,28 @@ using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Services;
+using BookingManagementSystem.Core.Contracts.Repositories;
 
-namespace BookingManagementSystem.ViewModels;
+namespace BookingManagementSystem.ViewModels.Account;
 
 public partial class SignupViewModel : ObservableRecipient
 {
     private readonly INavigationService _navigationService;
-    private readonly IDao _dao;
+    private readonly IRepository<User> _userRepository;
 
     public IEnumerable<User> Users { get; private set; } = Enumerable.Empty<User>();
 
-    public SignupViewModel(INavigationService navigationService, IDao dao)
+    public SignupViewModel(INavigationService navigationService, IRepository<User> userRepository)
     {
         _navigationService = navigationService;
-        _dao = dao;
-        OnNavigatedTo(_dao);
+        _userRepository = userRepository;
+        OnNavigatedTo(0);
     }
 
     public async void OnNavigatedTo(object parameter)
     {
         // Load user data list
-        var users = await _dao.GetUserListDataAsync();
+        var users = await _userRepository.GetAllAsync();
         Users = users;
     }
 
@@ -43,15 +44,14 @@ public partial class SignupViewModel : ObservableRecipient
         var user = Users.FirstOrDefault(u => u.Username.Equals(username));
         if (user == null)
         {
-            user = new User();
-            user.Username = username;
-            user.Password = password;
-
-            _dao.AddUserAsync(user);
-
+            user = new User
+            {
+                Username = username,
+                Password = password
+            };
+            _userRepository.AddAsync(user);
             return true;
         }
-
         return false; // Đăng ky thất bại
     }
 }

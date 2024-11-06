@@ -5,7 +5,7 @@ using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace BookingManagementSystem.ViewModels;
+namespace BookingManagementSystem.ViewModels.Client;
 
 public partial class FAQViewModel : ObservableRecipient, INavigationAware
 {
@@ -13,7 +13,6 @@ public partial class FAQViewModel : ObservableRecipient, INavigationAware
     private readonly IRepository<FAQ> _faqRepository;
 
     // List of content items
-    //public IEnumerable<FAQ> FAQs { get; set; } = Enumerable.Empty<FAQ>();   // All
     public IEnumerable<FAQ> GeneralFAQs { get; set; } = Enumerable.Empty<FAQ>();   // General
     public IEnumerable<FAQ> BookingFAQs { get; set; } = Enumerable.Empty<FAQ>();    // Booking
     public IEnumerable<FAQ> PaymentFAQs { get; set; } = Enumerable.Empty<FAQ>();    // Payment

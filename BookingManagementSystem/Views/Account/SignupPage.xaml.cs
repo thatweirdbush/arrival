@@ -5,10 +5,10 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Documents;
 using Windows.Storage;
-using BookingManagementSystem.ViewModels;
+using BookingManagementSystem.ViewModels.Account;
 using BookingManagementSystem.Helpers;
 
-namespace BookingManagementSystem.Views;
+namespace BookingManagementSystem.Views.Account;
 
 public sealed partial class SignupPage : Page
 {

@@ -51,22 +51,22 @@
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
             Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
             <NavigationView.MenuItems>
-                <NavigationViewItem x:Uid="Shell_Home" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.HomeViewModel">
+                <NavigationViewItem x:Uid="Shell_Home" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.HomeViewModel">
                     <NavigationViewItem.Icon>
                         <SymbolIcon Symbol="Home"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_Map" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.MapViewModel">
+                <NavigationViewItem x:Uid="Shell_Map" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.MapViewModel">
                     <NavigationViewItem.Icon>
                         <SymbolIcon Symbol="World"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_Host" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.HostViewModel">
+                <NavigationViewItem x:Uid="Shell_Host" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Host.HostViewModel">
                     <NavigationViewItem.Icon>
                         <SymbolIcon Symbol="Street"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_FAQ" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.FAQViewModel">
+                <NavigationViewItem x:Uid="Shell_FAQ" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.FAQViewModel">
                     <NavigationViewItem.Icon>
                         <SymbolIcon Symbol="Flag"/>
                     </NavigationViewItem.Icon>
@@ -120,7 +120,7 @@
             <NavigationView.FooterMenuItems>
                 <!--<NavigationViewItem x:Uid="Shell_Message" Icon="Message" AutomationProperties.Name="Messages" />
                 <NavigationViewItem x:Uid="Shell_Favourite" Icon="Favorite" AutomationProperties.Name="Favorites" />-->
-                <NavigationViewItem x:Uid="Shell_Admin" Icon="GoToStart" AutomationProperties.Name="Administrator" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.AdministratorViewModel" />
+                <NavigationViewItem x:Uid="Shell_Admin" Icon="GoToStart" AutomationProperties.Name="Administrator" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Administrator.AdministratorViewModel" />
             </NavigationView.FooterMenuItems>
         </NavigationView>
     </Grid>

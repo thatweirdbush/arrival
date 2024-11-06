@@ -8,6 +8,9 @@ using BookingManagementSystem.Helpers;
 using BookingManagementSystem.ViewModels;
 
 using Windows.System;
+using BookingManagementSystem.Views.Host;
+using BookingManagementSystem.Views.Account;
+using BookingManagementSystem.Views.Client;
 
 namespace BookingManagementSystem.Views;
 

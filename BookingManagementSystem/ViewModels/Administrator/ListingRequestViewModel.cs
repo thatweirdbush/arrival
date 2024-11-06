@@ -5,7 +5,7 @@ using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace BookingManagementSystem.ViewModels;
+namespace BookingManagementSystem.ViewModels.Administrator;
 
 public partial class ListingRequestViewModel : ObservableRecipient
 {

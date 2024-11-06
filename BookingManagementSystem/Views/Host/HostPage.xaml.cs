@@ -1,9 +1,10 @@
-﻿using BookingManagementSystem.ViewModels;
-
+﻿using BookingManagementSystem.ViewModels.Host;
+using BookingManagementSystem.Views.Account;
+using BookingManagementSystem.Views.Client;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 
-namespace BookingManagementSystem.Views;
+namespace BookingManagementSystem.Views.Host;
 
 public sealed partial class HostPage : Page
 {

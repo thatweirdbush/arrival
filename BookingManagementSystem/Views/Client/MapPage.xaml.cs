@@ -1,9 +1,9 @@
-﻿using BookingManagementSystem.ViewModels;
+﻿using BookingManagementSystem.ViewModels.Client;
 
 using Microsoft.UI.Xaml.Controls;
 using Windows.Devices.Geolocation;
 
-namespace BookingManagementSystem.Views;
+namespace BookingManagementSystem.Views.Client;
 
 public sealed partial class MapPage : Page
 {

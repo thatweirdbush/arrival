@@ -12,7 +12,7 @@ using System.Collections;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using BookingManagementSystem.Core.Contracts.Repositories;
 
-namespace BookingManagementSystem.ViewModels;
+namespace BookingManagementSystem.ViewModels.Client;
 
 public partial class HomeViewModel : ObservableRecipient, INavigationAware
 {

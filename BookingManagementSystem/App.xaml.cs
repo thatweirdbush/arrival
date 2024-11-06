@@ -7,13 +7,25 @@ using BookingManagementSystem.Core.Facades;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Repositories;
 using BookingManagementSystem.Core.Services;
+
 using BookingManagementSystem.Helpers;
 using BookingManagementSystem.Models;
 using BookingManagementSystem.Notifications;
 using BookingManagementSystem.Services;
-using BookingManagementSystem.ViewModels;
+
 using BookingManagementSystem.Views;
+using BookingManagementSystem.Views.Account;
 using BookingManagementSystem.Views.Administrator;
+using BookingManagementSystem.Views.Client;
+using BookingManagementSystem.Views.Host;
+using BookingManagementSystem.Views.Payment;
+
+using BookingManagementSystem.ViewModels;
+using BookingManagementSystem.ViewModels.Account;
+using BookingManagementSystem.ViewModels.Administrator;
+using BookingManagementSystem.ViewModels.Client;
+using BookingManagementSystem.ViewModels.Host;
+using BookingManagementSystem.ViewModels.Payment;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

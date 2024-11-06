@@ -5,11 +5,12 @@ using Microsoft.UI.Xaml.Controls;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.DataProtection;
 using Windows.Storage;
-using BookingManagementSystem.ViewModels;
+using BookingManagementSystem.ViewModels.Account;
 using Microsoft.UI.Xaml.Documents;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.Views.Client;
 
-namespace BookingManagementSystem.Views;
+namespace BookingManagementSystem.Views.Account;
 
 public sealed partial class LoginPage : Page
 {

@@ -15,9 +15,9 @@ using Microsoft.UI.Xaml.Navigation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
-using BookingManagementSystem.ViewModels; 
+using BookingManagementSystem.ViewModels.Account;
 
-namespace BookingManagementSystem.Views;
+namespace BookingManagementSystem.Views.Account;
 
 public sealed partial class RecoverPasswordPage : Page
 {

@@ -9,7 +9,7 @@ using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace BookingManagementSystem.ViewModels;
+namespace BookingManagementSystem.ViewModels.Client;
 
 public partial class MapViewModel : ObservableRecipient, INavigationAware
 {

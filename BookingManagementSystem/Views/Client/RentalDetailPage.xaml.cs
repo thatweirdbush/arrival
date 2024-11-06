@@ -12,17 +12,18 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using BookingManagementSystem.ViewModels;
+using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.Contracts.Services;
 using CommunityToolkit.WinUI.UI.Animations;
 using Windows.Devices.Geolocation;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Views.Forms;
+using BookingManagementSystem.Views.Payment;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace BookingManagementSystem.Views;
+namespace BookingManagementSystem.Views.Client;
 
 /// <summary>
 /// An empty page that can be used on its own or navigated to within a Frame.
