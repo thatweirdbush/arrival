@@ -1,7 +1,16 @@
 ﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.ViewModels;
+using BookingManagementSystem.ViewModels.Account;
+using BookingManagementSystem.ViewModels.Administrator;
+using BookingManagementSystem.ViewModels.Client;
+using BookingManagementSystem.ViewModels.Host;
+using BookingManagementSystem.ViewModels.Payment;
 using BookingManagementSystem.Views;
+using BookingManagementSystem.Views.Account;
 using BookingManagementSystem.Views.Administrator;
+using BookingManagementSystem.Views.Client;
+using BookingManagementSystem.Views.Host;
+using BookingManagementSystem.Views.Payment;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 

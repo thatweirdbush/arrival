@@ -1,9 +1,9 @@
-﻿using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.ViewModels;
+using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.ViewModels.Payment;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace BookingManagementSystem.Views;
+namespace BookingManagementSystem.Views.Payment;
 
 public sealed partial class PaymentPage : Page
 {

@@ -1,14 +1,31 @@
 ﻿using BookingManagementSystem.Activation;
 using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.Core.Contracts.Facades;
+using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
+using BookingManagementSystem.Core.Facades;
+using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.Core.Repositories;
 using BookingManagementSystem.Core.Services;
+
 using BookingManagementSystem.Helpers;
 using BookingManagementSystem.Models;
 using BookingManagementSystem.Notifications;
 using BookingManagementSystem.Services;
-using BookingManagementSystem.ViewModels;
+
 using BookingManagementSystem.Views;
+using BookingManagementSystem.Views.Account;
 using BookingManagementSystem.Views.Administrator;
+using BookingManagementSystem.Views.Client;
+using BookingManagementSystem.Views.Host;
+using BookingManagementSystem.Views.Payment;
+
+using BookingManagementSystem.ViewModels;
+using BookingManagementSystem.ViewModels.Account;
+using BookingManagementSystem.ViewModels.Administrator;
+using BookingManagementSystem.ViewModels.Client;
+using BookingManagementSystem.ViewModels.Host;
+using BookingManagementSystem.ViewModels.Payment;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -70,9 +87,41 @@ public partial class App : Application
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Core Services
-            services.AddSingleton<ISampleDataService, SampleDataService>();
+            //services.AddSingleton<ISampleDataService, SampleDataService>();
             services.AddSingleton<IDao, MockDao>();
             services.AddSingleton<IFileService, FileService>();
+
+            // Data Services
+            // TODO: Change to AddScoped when using a real data service
+            services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
+            services.AddSingleton<IRentalDetailFacade, RentalDetailFacade>();
+            services.AddSingleton<IRepository<Amenity>, AmenityRepository>();
+            services.AddSingleton<IRepository<BadReport>, BadReportRepository>();
+            services.AddSingleton<IRepository<Booking>, BookingRepository>();
+            services.AddSingleton<IRepository<DestinationTypeSymbol>, DestinationTypeSymbolRepository>();
+            services.AddSingleton<IRepository<FAQ>, FAQRepository>();
+            services.AddSingleton<IRepository<Notification>, NotificationRepository>();
+            services.AddSingleton<IRepository<Payment>, PaymentRepository>();
+            services.AddSingleton<IRepository<PropertyPolicy>, PropertyPolicyRepository>();
+            services.AddSingleton<IRepository<Property>, PropertyRepository>();
+            services.AddSingleton<IRepository<QnA>, QnARepository>();
+            services.AddSingleton<IRepository<User>, UserRepository>();
+            services.AddSingleton<IRepository<Review>, ReviewRepository>();
+            services.AddSingleton<IRepository<Voucher>, VoucherRepository>();
+
+            //services.AddSingleton<IRepository<Amenity>, Repository<Amenity>>();
+            //services.AddSingleton<IRepository<BadReport>, Repository<BadReport>>();
+            //services.AddSingleton<IRepository<Booking>, Repository<Booking>>();
+            //services.AddSingleton<IRepository<DestinationTypeSymbol>, Repository<DestinationTypeSymbol>>();
+            //services.AddSingleton<IRepository<FAQ>, Repository<FAQ>>();
+            //services.AddSingleton<IRepository<Notification>, Repository<Notification>>();
+            //services.AddSingleton<IRepository<Payment>, Repository<Payment>>();
+            //services.AddSingleton<IRepository<PropertyPolicy>, Repository<PropertyPolicy>>();
+            //services.AddSingleton<IRepository<Property>, Repository<Property>>();
+            //services.AddSingleton<IRepository<QnA>, Repository<QnA>>();
+            //services.AddSingleton<IRepository<User>, Repository<User>>();
+            //services.AddSingleton<IRepository<Review>, Repository<Review>>();
+            //services.AddSingleton<IRepository<Voucher>, Repository<Voucher>>();
 
             // Views and ViewModels
             services.AddTransient<ListingRequestViewModel>();
