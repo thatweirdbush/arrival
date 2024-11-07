@@ -200,4 +200,10 @@
   <data name="Shell_ListingRequest.Content" xml:space="preserve">
     <value>Listing Requests</value>
   </data>
+  <data name="Shell_BookingHistory.Content" xml:space="preserve">
+    <value>BookingHistory</value>
+  </data>
+  <data name="Shell_LoyaltyProgram.Content" xml:space="preserve">
+    <value>LoyaltyProgram</value>
+  </data>
 </root>

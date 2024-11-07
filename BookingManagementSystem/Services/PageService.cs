@@ -36,6 +36,8 @@ public class PageService : IPageService
         Configure<AdministratorViewModel, AdministratorPage>();
         Configure<ReportViewModel, ReportPage>();
         Configure<ListingRequestViewModel, ListingRequestPage>();
+        Configure<BookingHistoryViewModel, BookingHistoryPage>();
+        Configure<LoyaltyProgramViewModel, LoyaltyProgramPage>();
     }
 
     public Type GetPageType(string key)

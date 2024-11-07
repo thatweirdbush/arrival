@@ -7,25 +7,22 @@ using BookingManagementSystem.Core.Facades;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Repositories;
 using BookingManagementSystem.Core.Services;
-
 using BookingManagementSystem.Helpers;
 using BookingManagementSystem.Models;
 using BookingManagementSystem.Notifications;
 using BookingManagementSystem.Services;
-
-using BookingManagementSystem.Views;
-using BookingManagementSystem.Views.Account;
-using BookingManagementSystem.Views.Administrator;
-using BookingManagementSystem.Views.Client;
-using BookingManagementSystem.Views.Host;
-using BookingManagementSystem.Views.Payment;
-
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.ViewModels.Account;
 using BookingManagementSystem.ViewModels.Administrator;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.ViewModels.Host;
 using BookingManagementSystem.ViewModels.Payment;
+using BookingManagementSystem.Views;
+using BookingManagementSystem.Views.Account;
+using BookingManagementSystem.Views.Administrator;
+using BookingManagementSystem.Views.Client;
+using BookingManagementSystem.Views.Host;
+using BookingManagementSystem.Views.Payment;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -110,6 +107,10 @@ public partial class App : Application
             services.AddSingleton<IRepository<Voucher>, VoucherRepository>();
 
             // Views and ViewModels
+            services.AddTransient<LoyaltyProgramViewModel>();
+            services.AddTransient<LoyaltyProgramPage>();
+            services.AddTransient<BookingHistoryViewModel>();
+            services.AddTransient<BookingHistoryPage>();
             services.AddTransient<ListingRequestViewModel>();
             services.AddTransient<ListingRequestPage>();
             services.AddTransient<ReportViewModel>();
