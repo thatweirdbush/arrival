@@ -109,20 +109,6 @@ public partial class App : Application
             services.AddSingleton<IRepository<Review>, ReviewRepository>();
             services.AddSingleton<IRepository<Voucher>, VoucherRepository>();
 
-            //services.AddSingleton<IRepository<Amenity>, Repository<Amenity>>();
-            //services.AddSingleton<IRepository<BadReport>, Repository<BadReport>>();
-            //services.AddSingleton<IRepository<Booking>, Repository<Booking>>();
-            //services.AddSingleton<IRepository<DestinationTypeSymbol>, Repository<DestinationTypeSymbol>>();
-            //services.AddSingleton<IRepository<FAQ>, Repository<FAQ>>();
-            //services.AddSingleton<IRepository<Notification>, Repository<Notification>>();
-            //services.AddSingleton<IRepository<Payment>, Repository<Payment>>();
-            //services.AddSingleton<IRepository<PropertyPolicy>, Repository<PropertyPolicy>>();
-            //services.AddSingleton<IRepository<Property>, Repository<Property>>();
-            //services.AddSingleton<IRepository<QnA>, Repository<QnA>>();
-            //services.AddSingleton<IRepository<User>, Repository<User>>();
-            //services.AddSingleton<IRepository<Review>, Repository<Review>>();
-            //services.AddSingleton<IRepository<Voucher>, Repository<Voucher>>();
-
             // Views and ViewModels
             services.AddTransient<ListingRequestViewModel>();
             services.AddTransient<ListingRequestPage>();
@@ -144,17 +130,18 @@ public partial class App : Application
             services.AddTransient<SettingsPage>();
             services.AddTransient<HomeViewModel>();
             services.AddTransient<HomePage>();
-            services.AddTransient<LoginViewModel>();
-            services.AddTransient<LoginPage>();
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainPage>();
-            services.AddTransient<ShellPage>();
-            services.AddTransient<ShellViewModel>();
             services.AddTransient<SignupPage>();
             services.AddTransient<SignupViewModel>();
             services.AddTransient<RecoverPasswordPage>();
             services.AddTransient<RecoverPasswordViewModel>();
 
+            // These page's viewmodels are registered as singletons because they are used in multiple places
+            services.AddSingleton<LoginViewModel>();
+            services.AddTransient<LoginPage>();
+            services.AddTransient<ShellPage>();
+            services.AddSingleton<ShellViewModel>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

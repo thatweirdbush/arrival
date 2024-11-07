@@ -9,7 +9,7 @@ namespace BookingManagementSystem.ViewModels.Account;
 
 public partial class LoginViewModel : ObservableRecipient
 {
-
+    public event Action<User>? UserLoggedIn;
     private readonly INavigationService _navigationService;
     private readonly IRepository<User> _userRepository;
 
@@ -45,6 +45,10 @@ public partial class LoginViewModel : ObservableRecipient
         if (user != null && user.Password.Equals(password))
         {
             CurrentUser = user;
+
+            // Notify subscribers that a user has logged in
+            UserLoggedIn?.Invoke(CurrentUser);
+
             return true; // Đăng nhập thành công
         }
 

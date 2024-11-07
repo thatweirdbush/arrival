@@ -39,8 +39,8 @@ public sealed partial class PaymentPage : Page
             {
                 VoucherWarning.Visibility = Visibility.Collapsed;
 
+                DiscountTextBlock.Text = $"{Math.Floor(discountPercentage.GetValueOrDefault())}%";
                 DiscountTextBlock.Visibility = Visibility.Visible;
-                DiscountTextBlock.Text = $"{Math.Floor((decimal)discountPercentage)}%";
 
                 var discountAmount = amount * discountPercentage / 100;
 

@@ -151,6 +151,16 @@ public sealed partial class LoginPage : Page
 
     private void Hyperlink_Signup_Click(Hyperlink sender, HyperlinkClickEventArgs e)
     {
+        // Check if previous page is SignupPage
+        if (Frame.BackStackDepth > 0)
+        {
+            var previousPage = Frame.BackStack[Frame.BackStackDepth - 1].SourcePageType;
+            if (previousPage == typeof(SignupPage))
+            {
+                Frame.GoBack();
+                return;
+            }
+        }
         Frame.Navigate(typeof(SignupPage));
     }
 

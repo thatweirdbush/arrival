@@ -41,7 +41,17 @@ public sealed partial class SignupPage : Page
 
     private void Hyperlink_Login_Click(Hyperlink sender, HyperlinkClickEventArgs e)
     {
-        Frame.GoBack(); 
+        // Check if previous page is LoginPage
+        if (Frame.BackStackDepth > 0)
+        {
+            var lastPageType = Frame.BackStack.Last().SourcePageType;
+            if (lastPageType == typeof(LoginPage))
+            {
+                Frame.GoBack();
+                return;
+            }
+        }
+        Frame.Navigate(typeof(LoginPage));
     }
 
     private void btnBackLoginPage_Click(object sender, RoutedEventArgs e)

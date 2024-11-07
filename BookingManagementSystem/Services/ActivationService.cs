@@ -4,6 +4,8 @@ using Microsoft.UI.Xaml.Controls;
 using BookingManagementSystem.Activation;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Views;
+using BookingManagementSystem.ViewModels.Account;
+using BookingManagementSystem.ViewModels;
 
 namespace BookingManagementSystem.Services;
 
@@ -29,7 +31,12 @@ public class ActivationService : IActivationService
         // Set the MainWindow Content.
         if (App.MainWindow.Content == null)
         {
-            _shell = App.GetService<ShellPage>();
+            // Initialize ViewModels from DI container
+            var shellViewModel = App.GetService<ShellViewModel>();
+            var loginViewModel = App.GetService<LoginViewModel>();
+
+            // Create ShellPage with passed ViewModels
+            _shell = new ShellPage(shellViewModel, loginViewModel);
             App.MainWindow.Content = _shell ?? new Frame();
         }
 
