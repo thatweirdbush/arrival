@@ -105,6 +105,11 @@
                 <StackPanel x:Name="MainContent" Spacing="28">
                     <Grid x:Name="MainContentGrid">
                         <ListView x:Name="PriorityPropertyListView" ItemsSource="{x:Bind ViewModel.PriorityProperties}" SelectionMode="Single">
+                            <ListView.ItemContainerTransitions>
+                                <TransitionCollection>
+                                    <PaneThemeTransition Edge="Bottom"/>
+                                </TransitionCollection>
+                            </ListView.ItemContainerTransitions>
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="models:Property">
                                     <Grid Margin="0,12,0,12" AutomationProperties.Name="{x:Bind Name}">

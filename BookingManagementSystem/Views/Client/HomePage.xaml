@@ -290,6 +290,11 @@
                 FlowDirection="LeftToRight"
                 StretchContentForSingleRow="False"
                 Padding="30">
+                <controls:AdaptiveGridView.ItemContainerTransitions>
+                    <TransitionCollection>
+                        <PaneThemeTransition Edge="Bottom"/>
+                    </TransitionCollection>
+                </controls:AdaptiveGridView.ItemContainerTransitions>
                 <controls:AdaptiveGridView.ItemTemplate>
                     <!-- The data template bound to this AdaptiveGridView"s ItemTemplate property is based on which one you
                     select from the options on the right. The currently selected DataTemplate is: -->
