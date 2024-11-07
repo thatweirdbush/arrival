@@ -180,10 +180,13 @@ public partial class ShellPage : Page
                     NavigationFrame.Navigate(typeof(SettingsPage));
                     break;
                 case "account":
+                    NavigationFrame.Navigate(typeof(LoyaltyProgramPage));
                     break;
                 case "trips":
+                    NavigationFrame.Navigate(typeof(BookingHistoryPage));
                     break;
                 case "wishlists":
+                    NavigationFrame.Navigate(typeof(BookingHistoryPage));
                     break;
                 default:
                     break;

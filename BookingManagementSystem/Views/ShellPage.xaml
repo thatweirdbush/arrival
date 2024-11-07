@@ -107,14 +107,9 @@
                         <SymbolIcon Symbol="Flag"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_BookingHistory" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.BookingHistoryViewModel">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_LoyaltyProgram" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.LoyaltyProgramViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                        <FontIcon Glyph="&#xE7E3;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
