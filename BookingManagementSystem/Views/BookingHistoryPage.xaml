@@ -4,11 +4,22 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helper="using:BookingManagementSystem.Helpers"
     xmlns:models="using:BookingManagementSystem.Core.Models"
+    xmlns:dtos="using:BookingManagementSystem.Core.DTOs"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
     mc:Ignorable="d"
     CacheMode="BitmapCache">
+
+    <Page.Resources>
+        <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
+        <helper:IsFavouriteToImagePathConverter x:Key="IsFavouriteToImagePathConverter"/>
+        <helper:DateToShortDateFormatConverter x:Key="DateToShortDateFormatConverter"/>
+        <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
+    </Page.Resources>
 
     <ScrollView x:Name="MainScrollView">
         <Grid x:Name="MainGrid">
@@ -29,49 +40,174 @@
                     <Image Source="/Assets/arrival-bio-white.png" Height="60" Margin="16" Stretch="Fill"/>
                 </StackPanel>
             </Grid>
-            <StackPanel Grid.Row="1" Spacing="24" HorizontalAlignment="Stretch" Margin="{StaticResource BlogViewWideContentMargin}">
-                <Grid x:Name="HeaderContent">
-                    <StackPanel Spacing="18" HorizontalAlignment="Left">
-                        <TextBlock Text="User's Reports" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
-                        <TextBlock Text="Every reports submitted from users, includes 3 types: Property, User, Review" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" HorizontalAlignment="Left"/>
-                        <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" Margin="0 0 0 0"/>
-                    </StackPanel>
+            <StackPanel Grid.Row="1" Spacing="18" HorizontalAlignment="Stretch" Margin="{StaticResource BlogViewWideContentMargin}">
+                <Grid x:Name="BodyHeaderGrid">
+                    <TextBlock Text="Your Trips" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
                 </Grid>
-                <StackPanel x:Name="MainContent" Spacing="28">
-                    <Grid x:Name="MainContentGrid">
-                        <ListView x:Name="ReportListView" ItemsSource="{x:Bind ViewModel.BadReports}">
-                            <ListView.ItemContainerTransitions>
+                <StackPanel x:Name="BodyGridAllListEmpty" Spacing="18" Visibility="{x:Bind ViewModel.IsBookingListEmpty, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Line Stroke="Gray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 0 0 0"/>
+                    <TextBlock Text="No trips booked...yet!" Style="{ThemeResource TitleTextBlockStyle}" FontFamily="Arial" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <TextBlock Text="Time to dust off your bags and start planning your next adventure." Style="{ThemeResource BodyTextBlockStyle}" FontFamily="Arial" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 -12 0 0"/>
+                    <Button x:Name="btnStartSearching" Content="Start searching" FontWeight="SemiBold" FontSize="18" Height="48" Width="180" CornerRadius="12" BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" Click="btnStartSearching_Click" Background="Transparent"/>
+                    <Line Stroke="Gray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 24 0 0"/>
+                    <TextBlock FontFamily="Arial" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Run>Can’t find your reservation here?</Run>
+                        <Hyperlink NavigateUri="https://www.example.com" FontWeight="SemiBold">Visit the Help Center</Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel x:Name="BodyGrid" Spacing="40" Visibility="{x:Bind ViewModel.IsBookingListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                    <StackPanel x:Name="TripsStackPanel" Spacing="12">
+                        <Grid>
+                            <TextBlock Text="Upcoming plans" Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                <Button x:Name="btnDelete" Height="36" Click="btnDelete_Click" ToolTipService.ToolTip="Cancel a trip" Visibility="Collapsed" Background="Transparent" BorderThickness="0">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <SymbolIcon Symbol="Delete"/>
+                                        <TextBlock Text="Delete" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <Button.KeyboardAccelerators>
+                                        <KeyboardAccelerator Key="Delete" />
+                                    </Button.KeyboardAccelerators>
+                                </Button>
+                                <Button x:Name="btnSelect" Height="40" Click="btnSelect_Click" ToolTipService.ToolTip="Select trips" Background="Transparent" BorderThickness="0">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <SymbolIcon Symbol="Bullets"/>
+                                        <TextBlock Text="Select" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="btnCancel" Height="36" Click="btnCancel_Click" ToolTipService.ToolTip="Cancel editing priority list" Visibility="Collapsed" Background="Transparent" BorderThickness="0">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <SymbolIcon Symbol="Cancel"/>
+                                        <TextBlock Text="Cancel" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                        <controls:AdaptiveGridView
+                                animations:Connected.ListItemElementName="itemThumbnail"
+                                animations:Connected.ListItemKey="animationKeyBodyGrid"
+                                DesiredWidth="500"
+                                ItemHeight="400"                
+                                x:Name="TripsGridView"
+                                ItemsSource="{x:Bind ViewModel.Bookings}"
+                                IsItemClickEnabled="True"
+                                FlowDirection="LeftToRight"
+                                StretchContentForSingleRow="False"
+                                OneRowModeEnabled="True"
+                                ItemContainerStyle="{ThemeResource GridViewItemExpanded}"
+                                CacheMode="BitmapCache">
+                            <controls:AdaptiveGridView.ItemContainerTransitions>
                                 <TransitionCollection>
                                     <PaneThemeTransition Edge="Bottom"/>
                                 </TransitionCollection>
-                            </ListView.ItemContainerTransitions>
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="models:BadReport">
-                                    <Grid Margin="0,12,0,12" AutomationProperties.Name="{x:Bind ReportReason}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" MinWidth="80" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <PersonPicture DisplayName="{x:Bind UserId}" Width="48" Height="48"/>
-                                        <StackPanel Margin="12,0,0,0" Grid.Column="1" Spacing="8">
-                                            <Grid>
-                                                <TextBlock Text="{x:Bind ReportReason}" FontSize="18" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Left"/>
-                                                <TextBlock Text="{x:Bind Status}" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                                            </Grid>
-                                            <TextBlock Text="{x:Bind Description}" Style="{ThemeResource BodyTextBlockStyle}" TextTrimming="CharacterEllipsis" MaxLines="2" Margin="8 0 0 0"/>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{x:Bind EntityType}" Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                                <TextBlock Text=" ID: " Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                                <TextBlock Text="{x:Bind EntityId}" Style="{ThemeResource CaptionTextBlockStyle}" Margin="4 0 0 0"/>
-                                                <TextBlock Text=" ⋅ " Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                                <TextBlock Text="{x:Bind ReportDate}" Style="{ThemeResource CaptionTextBlockStyle}" Margin="4 0 0 0"/>
+                            </controls:AdaptiveGridView.ItemContainerTransitions>
+                            <controls:AdaptiveGridView.ItemTemplate>
+                                <DataTemplate x:DataType="dtos:BookingPropertyViewModel">
+                                    <Grid CornerRadius="6">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="11*"/>
+                                            <RowDefinition Height="4*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid>
+                                            <Image Stretch = "UniformToFill" VerticalAlignment="Center">
+                                                <Image.Source>
+                                                    <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="900"/>
+                                                </Image.Source>
+                                            </Image>
+                                            <Border x:Name="BorderVipMember" Visibility="{x:Bind IsPriority}" CornerRadius="18" Width="82" Height="36" Background="WhiteSmoke" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
+                                                <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                    <Image Width="18" Height="18">
+                                                        <Image.Source>
+                                                            <BitmapImage UriSource="/Assets/three-body-a.png" DecodePixelHeight="18"/>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <TextBlock Text="Elite" FontWeight="Bold" Foreground="Black " HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                            <Button x:Name="btnFavourite" Click="btnFavourite_Click" CornerRadius="48" Width="48" Height="48" Background="Transparent" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="4">
+                                                <Image x:Name="imgFavourite" Width="20" Height="20" Source="{x:Bind Property.IsFavourite, Mode=TwoWay, Converter={StaticResource IsFavouriteToImagePathConverter}}" Margin="0 2 0 0"/>
+                                            </Button>
+                                        </Grid>
+                                        <Grid Grid.Row="1" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}" Padding="20">
+                                            <StackPanel Spacing="4">
+                                                <StackPanel Orientation="Horizontal" Spacing="2">
+                                                    <TextBlock Text = "{x:Bind Booking.CheckInDate, Converter={StaticResource DateToShortDateFormatConverter}}" Style="{ThemeResource BodyStrongTextBlockStyle}" FontSize="12"/>
+                                                    <TextBlock Text = "-" Style = "{ThemeResource BodyStrongTextBlockStyle}" FontSize="12"/>
+                                                    <TextBlock Text = "{x:Bind Booking.CheckOutDate, Converter={StaticResource DateToShortDateFormatConverter}}" Style="{ThemeResource BodyStrongTextBlockStyle}" FontSize="12"/>
+                                                </StackPanel>
+                                                <TextBlock Text = "{x:Bind Location}" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" FontSize="22"/>
+                                                <TextBlock Text = "1 home reservation" Style="{ThemeResource BodyTextBlockStyle}" Foreground="Gray"/>
                                             </StackPanel>
-                                        </StackPanel>
+                                        </Grid>
                                     </Grid>
                                 </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </Grid>
+                            </controls:AdaptiveGridView.ItemTemplate>
+                        </controls:AdaptiveGridView>
+                    </StackPanel>
+
+                    <StackPanel x:Name="BookingHistoryStackPanel" Spacing="12">
+                        <TextBlock Text="Where you've been" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                        <controls:AdaptiveGridView
+                            animations:Connected.ListItemElementName="itemThumbnail"
+                            animations:Connected.ListItemKey="animationKeyBodyGrid"
+                            DesiredWidth="280"
+                            ItemHeight="200"                
+                            x:Name="BookingHistoryGridView"
+                            ItemsSource="{x:Bind ViewModel.Bookings}"
+                            IsItemClickEnabled="True"
+                            FlowDirection="LeftToRight"
+                            StretchContentForSingleRow="False"
+                            OneRowModeEnabled="True"
+                            ItemContainerStyle="{ThemeResource GridViewItemExpanded}"
+                            CacheMode="BitmapCache">
+                            <controls:AdaptiveGridView.ItemContainerTransitions>
+                                <TransitionCollection>
+                                    <PaneThemeTransition Edge="Bottom"/>
+                                </TransitionCollection>
+                            </controls:AdaptiveGridView.ItemContainerTransitions>
+                            <controls:AdaptiveGridView.ItemTemplate>
+                                <DataTemplate x:DataType="dtos:BookingPropertyViewModel">
+                                    <Grid CornerRadius="4">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="11*"/>
+                                            <RowDefinition Height="5*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid>
+                                            <Image Stretch = "UniformToFill" VerticalAlignment="Center">
+                                                <Image.Source>
+                                                    <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="360"/>
+                                                </Image.Source>
+                                            </Image>
+                                            <Border x:Name="BorderVipMember" Visibility="{x:Bind IsPriority}" CornerRadius="15" Width="64" Height="32" Background="WhiteSmoke" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
+                                                <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                    <Image Width="12" Height="12" Margin="0 0 0 1">
+                                                        <Image.Source>
+                                                            <BitmapImage UriSource="/Assets/three-body-a.png" DecodePixelHeight="24"/>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <TextBlock Text="Elite" FontWeight="ExtraBlack" Foreground="Black" FontSize="12.5" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+                                            <Button x:Name="btnFavourite" Click="btnFavourite_Click" CornerRadius="48" Width="48" Height="48" Background="Transparent" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="4">
+                                                <Image x:Name="imgFavourite" Width="20" Height="20" Source="{x:Bind Property.IsFavourite, Mode=TwoWay, Converter={StaticResource IsFavouriteToImagePathConverter}}" Margin="0 2 0 0"/>
+                                            </Button>
+                                        </Grid>
+                                        <Grid Grid.Row="1" Padding="0 8 0 0">
+                                            <StackPanel Spacing="4">
+                                                <StackPanel Orientation="Horizontal" Spacing="2">
+                                                    <TextBlock Text = "{x:Bind Booking.CheckInDate, Converter={StaticResource DateToShortDateFormatConverter}}" Style="{ThemeResource BodyStrongTextBlockStyle}" FontSize="10"/>
+                                                    <TextBlock Text = "-" Style = "{ThemeResource BodyStrongTextBlockStyle}" FontSize="10"/>
+                                                    <TextBlock Text = "{x:Bind Booking.CheckOutDate, Converter={StaticResource DateToShortDateFormatConverter}}" Style="{ThemeResource BodyStrongTextBlockStyle}" FontSize="10"/>
+                                                </StackPanel>
+                                                <TextBlock Text = "{x:Bind Location}" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" FontSize="16"/>
+                                                <TextBlock Text = "1 home reservation" Style="{ThemeResource BodyTextBlockStyle}" Foreground="Gray" FontSize="10"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </controls:AdaptiveGridView.ItemTemplate>
+                        </controls:AdaptiveGridView>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </Grid>

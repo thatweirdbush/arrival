@@ -104,6 +104,9 @@ public class Property : INotifyPropertyChanged
         get => _imagePaths.Select(ip => $"{MS_APPX}{ip}").ToList();
         set => _imagePaths = value;
     }
+
+    public string ImageThumbnail => ImagePaths.FirstOrDefault() ?? $"{MS_APPX}default-thumbnail.jpg";
+
     public string Location
     {
         get; set;

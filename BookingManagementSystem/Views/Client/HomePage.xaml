@@ -289,7 +289,8 @@
                 SelectionMode="Extended"
                 FlowDirection="LeftToRight"
                 StretchContentForSingleRow="False"
-                Padding="30">
+                Padding="30"
+                CacheMode="BitmapCache">
                 <controls:AdaptiveGridView.ItemContainerTransitions>
                     <TransitionCollection>
                         <PaneThemeTransition Edge="Bottom"/>
@@ -311,7 +312,7 @@
                                         <DataTemplate x:DataType="x:String">
                                             <Image Stretch = "UniformToFill" VerticalAlignment="Center">
                                                 <Image.Source>
-                                                    <BitmapImage UriSource="{x:Bind}" DecodePixelWidth="540"/>
+                                                    <BitmapImage UriSource="{x:Bind}" DecodePixelWidth="800"/>
                                                 </Image.Source>
                                             </Image>
                                         </DataTemplate>
