@@ -36,7 +36,7 @@ public partial class BookingHistoryViewModel : ObservableRecipient
 
     public async void OnNavigatedTo(object parameter)
     {
-        // Load BadReport data list
+        // Load Booking data list
         var bookings = await _bookingRepository.GetAllAsync();
         foreach (var booking in bookings)
         {

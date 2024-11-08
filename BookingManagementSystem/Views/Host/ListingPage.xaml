@@ -4,9 +4,132 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:helper="using:BookingManagementSystem.Helpers"
+    xmlns:models="using:BookingManagementSystem.Core.Models"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    mc:Ignorable="d"
+    CacheMode="BitmapCache">
 
-    <Grid x:Name="ContentArea">
-        
-    </Grid>
+    <Page.Resources>
+        <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
+        <helper:IsFavouriteToImagePathConverter x:Key="IsFavouriteToImagePathConverter"/>
+        <helper:DateToShortDateFormatConverter x:Key="DateToShortDateFormatConverter"/>
+        <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
+    </Page.Resources>
+
+    <ScrollView x:Name="MainScrollView">
+        <Grid x:Name="MainGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="240"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="PageHeader">
+                <Grid.Background>
+                    <ImageBrush Stretch="UniformToFill">
+                        <ImageBrush.ImageSource>
+                            <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="1280"/>
+                        </ImageBrush.ImageSource>
+                    </ImageBrush>
+                </Grid.Background>
+                <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Image Width="60" Height="60" Source="/Assets/three-body-a-white.png"/>
+                    <Image Source="/Assets/arrival-bio-white.png" Height="60" Margin="16" Stretch="Fill"/>
+                </StackPanel>
+            </Grid>
+            <StackPanel Grid.Row="1" Spacing="18" HorizontalAlignment="Stretch" Margin="{StaticResource BlogViewWideContentMargin}">
+                <Grid x:Name="BodyHeaderGrid">
+                    <TextBlock Text="Your listing" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
+                    <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        <Button x:Name="btnDelete" Height="36" Click="btnDelete_Click" ToolTipService.ToolTip="Remove a listing" Visibility="Collapsed" Background="Transparent" BorderThickness="0">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <SymbolIcon Symbol="Delete"/>
+                                <TextBlock Text="Delete" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <Button.KeyboardAccelerators>
+                                <KeyboardAccelerator Key="Delete" />
+                            </Button.KeyboardAccelerators>
+                        </Button>
+                        <Button x:Name="btnCancel" Height="36" Click="btnCancel_Click" ToolTipService.ToolTip="Cancel editing listings" Visibility="Collapsed" Background="Transparent" BorderThickness="0">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <SymbolIcon Symbol="Cancel"/>
+                                <TextBlock Text="Cancel" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnSelect" Height="40" Click="btnSelect_Click" ToolTipService.ToolTip="Select listings" Background="Transparent" BorderThickness="0">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <SymbolIcon Symbol="Bullets"/>
+                                <TextBlock Text="Select" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="btnAddNewListing" Height="40" Click="btnAddNewListing_Click" ToolTipService.ToolTip="Add new listing" Background="Transparent" BorderThickness="0">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <SymbolIcon Symbol="Add"/>
+                                <TextBlock Text="Add" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <StackPanel x:Name="BodyGridAllListEmpty" Spacing="18" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Image Source="/Assets/modern-european-house.png" Width="240" Height="240" Stretch="Fill" Margin="0 -18 0 -24"/>
+                    <TextBlock Text="You don’t have any listings yet" Style="{ThemeResource SubtitleTextBlockStyle}" FontFamily="Arial" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="Create a listing with Arrival Setup and start getting booked." Style="{ThemeResource BodyTextBlockStyle}" FontFamily="Arial" FontSize="18" Foreground="Gray" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 -12 0 0"/>
+                    <Button x:Name="btnGetStarted" Content="Get started" FontWeight="SemiBold" FontSize="18" Height="48" Width="180" CornerRadius="12" BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" Click="btnGetStarted_Click" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel x:Name="BodyGrid" Spacing="40" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                    <StackPanel x:Name="ListingsStackPanel" Spacing="12">
+                        <controls:AdaptiveGridView
+                                animations:Connected.ListItemElementName="itemThumbnail"
+                                animations:Connected.ListItemKey="animationKeyBodyGrid"
+                                DesiredWidth="500"
+                                ItemHeight="400"                
+                                x:Name="ListingsGridView"
+                                ItemsSource="{x:Bind ViewModel.Properties}"
+                                IsItemClickEnabled="True"
+                                FlowDirection="LeftToRight"
+                                StretchContentForSingleRow="False"
+                                OneRowModeEnabled="True"
+                                ItemContainerStyle="{ThemeResource GridViewItemExpanded}"
+                                CacheMode="BitmapCache">
+                            <controls:AdaptiveGridView.ItemContainerTransitions>
+                                <TransitionCollection>
+                                    <PaneThemeTransition Edge="Bottom"/>
+                                </TransitionCollection>
+                            </controls:AdaptiveGridView.ItemContainerTransitions>
+                            <controls:AdaptiveGridView.ItemTemplate>
+                                <DataTemplate x:DataType="models:Property">
+                                    <Grid CornerRadius="6">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="10*"/>
+                                            <RowDefinition Height="5*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid>
+                                            <Image Stretch = "UniformToFill" VerticalAlignment="Center">
+                                                <Image.Source>
+                                                    <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="900"/>
+                                                </Image.Source>
+                                            </Image>
+                                        </Grid>
+                                        <Grid Grid.Row="1" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}" Padding="20">
+                                            <StackPanel Spacing="4">
+                                                <TextBlock Text = "{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                                <TextBlock Text = "{x:Bind Location}" Style="{ThemeResource DetailBodyStyle}"/>
+                                                <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Foreground="Gray" VerticalAlignment="Bottom" Margin="0 2 0 0">  
+                                                    <Run/>Created at
+                                                    <Run Text = "{x:Bind CreatedAt}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <TextBlock Text = "{x:Bind PricePerNight, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style = "{ThemeResource ListTitleStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="20"/>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </controls:AdaptiveGridView.ItemTemplate>
+                        </controls:AdaptiveGridView>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </ScrollView>
 </Page>
