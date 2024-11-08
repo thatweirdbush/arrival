@@ -186,7 +186,7 @@ public partial class ShellPage : Page
                     NavigationFrame.Navigate(typeof(BookingHistoryPage));
                     break;
                 case "wishlists":
-                    NavigationFrame.Navigate(typeof(BookingHistoryPage));
+                    NavigationFrame.Navigate(typeof(WishlistPage));
                     break;
                 default:
                     break;

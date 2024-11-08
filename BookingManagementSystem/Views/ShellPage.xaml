@@ -111,7 +111,7 @@
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE7E3;"/>
                     </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                </NavigationViewItem>               
             </NavigationView.MenuItems>
 
             <NavigationView.PaneHeader>
