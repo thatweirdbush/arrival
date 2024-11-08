@@ -107,6 +107,14 @@ public partial class App : Application
             services.AddSingleton<IRepository<Voucher>, VoucherRepository>();
 
             // Views and ViewModels
+            services.AddTransient<CreateListingViewModel>();
+            services.AddTransient<CreateListingPage>();
+            services.AddTransient<ReservationsViewModel>();
+            services.AddTransient<ReservationsPage>();
+            services.AddTransient<ListingViewModel>();
+            services.AddTransient<ListingPage>();
+            services.AddTransient<UserProfileViewModel>();
+            services.AddTransient<UserProfilePage>();
             services.AddTransient<WishlistViewModel>();
             services.AddTransient<WishlistPage>();
             services.AddTransient<LoyaltyProgramViewModel>();

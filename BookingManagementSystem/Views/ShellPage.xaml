@@ -111,7 +111,7 @@
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE7E3;"/>
                     </NavigationViewItem.Icon>
-                </NavigationViewItem>               
+                </NavigationViewItem>
             </NavigationView.MenuItems>
 
             <NavigationView.PaneHeader>
@@ -119,33 +119,7 @@
                     <Image Source="/Assets/Square44x44Logo.targetsize-48.png" Width="30" Height="30" Stretch="Fill"/>
                     <Image Source="/Assets/arrival-bio-resize-75.png" Height="30" Margin="6 0 0 0" Stretch="Fill"/>
                 </StackPanel>
-            </NavigationView.PaneHeader>
-
-            <!--<NavigationView.HeaderTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <TextBlock
-                            Text="{Binding}"
-                            Style="{ThemeResource TitleTextBlockStyle}" />
-                    </Grid>
-                </DataTemplate>
-            </NavigationView.HeaderTemplate>-->
-            <!--<i:Interaction.Behaviors>
-                <behaviors:NavigationViewHeaderBehavior
-                    DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
-                    <behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <TextBlock
-                                    Text="{Binding}"
-                                    Style="{ThemeResource TitleTextBlockStyle}" />
-                            </Grid>
-                        </DataTemplate>
-                    </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
-                </behaviors:NavigationViewHeaderBehavior>
-            </i:Interaction.Behaviors>-->
-
-            <!--<Grid Margin="{StaticResource NavigationViewPageContentMargin}">-->
+            </NavigationView.PaneHeader>           
             <Grid>
                 <Frame x:Name="NavigationFrame" />
             </Grid>
@@ -156,11 +130,9 @@
                                 QueryIcon="Find"
                                 SuggestionChosen="MenuAutoSuggestBox_SuggestionChosen"
                                 AutomationProperties.Name="Menu AutoSuggestBox" />
-
             </NavigationView.AutoSuggestBox>
+            
             <NavigationView.FooterMenuItems>
-                <!--<NavigationViewItem x:Uid="Shell_Message" Icon="Message" AutomationProperties.Name="Messages" />
-                <NavigationViewItem x:Uid="Shell_Favourite" Icon="Favorite" AutomationProperties.Name="Favorites" />-->
                 <NavigationViewItem x:Uid="Shell_Admin" Icon="GoToStart" AutomationProperties.Name="Administrator" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Administrator.AdministratorViewModel" />
             </NavigationView.FooterMenuItems>
         </NavigationView>

@@ -209,4 +209,16 @@
   <data name="Shell_Wishlist.Content" xml:space="preserve">
     <value>Wishlist</value>
   </data>
+  <data name="Shell_UserProfile.Content" xml:space="preserve">
+    <value>UserProfile</value>
+  </data>
+  <data name="Shell_Listing.Content" xml:space="preserve">
+    <value>Listing</value>
+  </data>
+  <data name="Shell_Reservations.Content" xml:space="preserve">
+    <value>Reservations</value>
+  </data>
+  <data name="Shell_CreateListing.Content" xml:space="preserve">
+    <value>CreateListing</value>
+  </data>
 </root>

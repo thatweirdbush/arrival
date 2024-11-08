@@ -39,6 +39,10 @@ public class PageService : IPageService
         Configure<BookingHistoryViewModel, BookingHistoryPage>();
         Configure<LoyaltyProgramViewModel, LoyaltyProgramPage>();
         Configure<WishlistViewModel, WishlistPage>();
+        Configure<UserProfileViewModel, UserProfilePage>();
+        Configure<ListingViewModel, ListingPage>();
+        Configure<ReservationsViewModel, ReservationsPage>();
+        Configure<CreateListingViewModel, CreateListingPage>();
     }
 
     public Type GetPageType(string key)
