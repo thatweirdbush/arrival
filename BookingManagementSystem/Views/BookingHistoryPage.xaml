@@ -17,6 +17,8 @@
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
         <helper:IsFavouriteToImagePathConverter x:Key="IsFavouriteToImagePathConverter"/>
         <helper:DateToShortDateFormatConverter x:Key="DateToShortDateFormatConverter"/>
+        <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
     </Page.Resources>
 
     <ScrollView x:Name="MainScrollView">
@@ -38,19 +40,29 @@
                     <Image Source="/Assets/arrival-bio-white.png" Height="60" Margin="16" Stretch="Fill"/>
                 </StackPanel>
             </Grid>
-            <StackPanel Grid.Row="1" Spacing="8" HorizontalAlignment="Stretch" Margin="{StaticResource BlogViewWideContentMargin}">
+            <StackPanel Grid.Row="1" Spacing="18" HorizontalAlignment="Stretch" Margin="{StaticResource BlogViewWideContentMargin}">
                 <Grid x:Name="BodyHeaderGrid">
                     <TextBlock Text="Your Trips" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
                 </Grid>
-                <StackPanel x:Name="BodyGrid" Spacing="40">
+                <StackPanel x:Name="BodyGridAllListEmpty" Spacing="18" Visibility="{x:Bind ViewModel.IsBookingListEmpty, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Line Stroke="Gray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 0 0 0"/>
+                    <TextBlock Text="No trips booked...yet!" Style="{ThemeResource TitleTextBlockStyle}" FontFamily="Arial" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <TextBlock Text="Time to dust off your bags and start planning your next adventure." Style="{ThemeResource BodyTextBlockStyle}" FontFamily="Arial" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 -12 0 0"/>
+                    <Button x:Name="btnStartSearching" Content="Start searching" FontWeight="SemiBold" FontSize="18" Height="48" Width="180" CornerRadius="12" BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" Click="btnStartSearching_Click" Background="Transparent"/>
+                    <Line Stroke="Gray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 24 0 0"/>
+                    <TextBlock FontFamily="Arial" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Run>Can’t find your reservation here?</Run>
+                        <Hyperlink NavigateUri="https://www.example.com" FontWeight="SemiBold">Visit the Help Center</Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel x:Name="BodyGrid" Spacing="40" Visibility="{x:Bind ViewModel.IsBookingListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
                     <StackPanel x:Name="TripsStackPanel" Spacing="12">
                         <Grid>
-                            <TextBlock Text="Upcoming plans" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <TextBlock Text="Upcoming plans" Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                             <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right" VerticalAlignment="Top">
                                 <Button x:Name="btnDelete" Height="36" Click="btnDelete_Click" ToolTipService.ToolTip="Cancel a trip" Visibility="Collapsed" Background="Transparent" BorderThickness="0">
-                                    <StackPanel Orientation="Horizontal" Spacing="6">
-                                        <SymbolIcon Symbol="Delete">
-                                        </SymbolIcon>
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <SymbolIcon Symbol="Delete"/>
                                         <TextBlock Text="Delete" VerticalAlignment="Center"/>
                                     </StackPanel>
                                     <Button.KeyboardAccelerators>
@@ -58,22 +70,14 @@
                                     </Button.KeyboardAccelerators>
                                 </Button>
                                 <Button x:Name="btnSelect" Height="40" Click="btnSelect_Click" ToolTipService.ToolTip="Select trips" Background="Transparent" BorderThickness="0">
-                                    <StackPanel Orientation="Horizontal" Spacing="4">
-                                        <SymbolIcon Symbol="Bullets" RenderTransformOrigin="0.5, 0.5">
-                                            <SymbolIcon.RenderTransform>
-                                                <ScaleTransform ScaleX="0.75" ScaleY="0.75" />
-                                            </SymbolIcon.RenderTransform>
-                                        </SymbolIcon>
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <SymbolIcon Symbol="Bullets"/>
                                         <TextBlock Text="Select" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
                                 <Button x:Name="btnCancel" Height="36" Click="btnCancel_Click" ToolTipService.ToolTip="Cancel editing priority list" Visibility="Collapsed" Background="Transparent" BorderThickness="0">
-                                    <StackPanel Orientation="Horizontal" Spacing="4">
-                                        <SymbolIcon Symbol="Cancel" RenderTransformOrigin="0.5, 0.5">
-                                            <SymbolIcon.RenderTransform>
-                                                <ScaleTransform ScaleX="0.75" ScaleY="0.75" />
-                                            </SymbolIcon.RenderTransform>
-                                        </SymbolIcon>
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <SymbolIcon Symbol="Cancel"/>
                                         <TextBlock Text="Cancel" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
@@ -107,7 +111,7 @@
                                         <Grid>
                                             <Image Stretch = "UniformToFill" VerticalAlignment="Center">
                                                 <Image.Source>
-                                                    <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="540"/>
+                                                    <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="900"/>
                                                 </Image.Source>
                                             </Image>
                                             <Border x:Name="BorderVipMember" Visibility="{x:Bind IsPriority}" CornerRadius="18" Width="82" Height="36" Background="WhiteSmoke" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
@@ -120,8 +124,8 @@
                                                     <TextBlock Text="Elite" FontWeight="Bold" Foreground="Black " HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                 </StackPanel>
                                             </Border>
-                                            <Button x:Name="btnFavourite" CornerRadius="48" Width="48" Height="48" Background="Transparent" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="4">
-                                                <Image x:Name="imgFavourite" Width="20" Height="20" Source="{x:Bind IsFavourite, Converter={StaticResource IsFavouriteToImagePathConverter}}" Margin="0 2 0 0"/>
+                                            <Button x:Name="btnFavourite" Click="btnFavourite_Click" CornerRadius="48" Width="48" Height="48" Background="Transparent" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="4">
+                                                <Image x:Name="imgFavourite" Width="20" Height="20" Source="{x:Bind Property.IsFavourite, Mode=TwoWay, Converter={StaticResource IsFavouriteToImagePathConverter}}" Margin="0 2 0 0"/>
                                             </Button>
                                         </Grid>
                                         <Grid Grid.Row="1" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}" Padding="20">
@@ -171,7 +175,7 @@
                                         <Grid>
                                             <Image Stretch = "UniformToFill" VerticalAlignment="Center">
                                                 <Image.Source>
-                                                    <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="540"/>
+                                                    <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="360"/>
                                                 </Image.Source>
                                             </Image>
                                             <Border x:Name="BorderVipMember" Visibility="{x:Bind IsPriority}" CornerRadius="15" Width="64" Height="32" Background="WhiteSmoke" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
@@ -184,8 +188,8 @@
                                                     <TextBlock Text="Elite" FontWeight="ExtraBlack" Foreground="Black" FontSize="12.5" VerticalAlignment="Center"/>
                                                 </StackPanel>
                                             </Border>
-                                            <Button x:Name="btnFavourite" CornerRadius="48" Width="48" Height="48" Background="Transparent" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="4">
-                                                <Image x:Name="imgFavourite" Width="20" Height="20" Source="{x:Bind IsFavourite, Converter={StaticResource IsFavouriteToImagePathConverter}}" Margin="0 2 0 0"/>
+                                            <Button x:Name="btnFavourite" Click="btnFavourite_Click" CornerRadius="48" Width="48" Height="48" Background="Transparent" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="4">
+                                                <Image x:Name="imgFavourite" Width="20" Height="20" Source="{x:Bind Property.IsFavourite, Mode=TwoWay, Converter={StaticResource IsFavouriteToImagePathConverter}}" Margin="0 2 0 0"/>
                                             </Button>
                                         </Grid>
                                         <Grid Grid.Row="1" Padding="0 8 0 0">

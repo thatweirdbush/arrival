@@ -106,7 +106,7 @@
                                     HorizontalAlignment="Center" VerticalAlignment="Center"
                                     ToolTipService.ToolTip="You can scroll, pan and zoom an image in this panel. Try it out!">
                                         <Image.Source>
-                                            <BitmapImage UriSource="{x:Bind}" DecodePixelWidth="1280"/>
+                                            <BitmapImage UriSource="{x:Bind}" DecodePixelWidth="1440"/>
                                         </Image.Source>
                                     </Image>
                                 </ScrollView>

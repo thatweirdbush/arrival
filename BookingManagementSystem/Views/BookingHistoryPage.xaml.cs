@@ -1,6 +1,9 @@
-﻿using BookingManagementSystem.Core.DTOs;
+﻿using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.Core.DTOs;
+using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels;
-
+using BookingManagementSystem.ViewModels.Client;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace BookingManagementSystem.Views;
@@ -70,6 +73,23 @@ public sealed partial class BookingHistoryPage : Page
             {
                 ViewModel.DeleteBookingAsync(bookingPropertyViewModel);
             }
+        }
+    }
+
+    private void btnStartSearching_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        // Navigate to Home Page
+        App.GetService<INavigationService>().NavigateTo(typeof(HomeViewModel).FullName!);
+    }
+
+    private void btnFavourite_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        // Toggle the favourite button  
+        // Change the image source to the filled heart icon  
+        if (sender is FrameworkElement frameworkElement
+            && frameworkElement.DataContext is BookingPropertyViewModel bookingProperty)
+        {
+            bookingProperty.Property.IsFavourite = !bookingProperty.Property.IsFavourite;
         }
     }
 }
