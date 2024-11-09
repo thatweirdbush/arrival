@@ -15,5 +15,8 @@ public sealed partial class CreateListingPage : Page
     {
         ViewModel = App.GetService<CreateListingViewModel>();
         InitializeComponent();
+
+        // Set up DataContext for binding from XAML to easily access ViewModel
+        DataContext = ViewModel;
     }
 }
