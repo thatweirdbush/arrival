@@ -224,13 +224,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Views\Host\" />
 		<Folder Include="Views\Administrator\" />
 		<Folder Include="Views\Account\" />
 		<Folder Include="Views\Client\" />
+		<Folder Include="Views\Host\CreateListingSteps\" />
 		<Folder Include="Views\Payment\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="Assets\Media\isometric-room-blender.mp4">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+	
 	<ItemGroup>
 		<None Update="Assets\symbol-icons\favourite.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

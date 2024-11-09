@@ -17,16 +17,16 @@
         <vm:CreateListingViewModel />
     </Page.DataContext>
 
-    <Grid x:Name="ContentArea">
+    <Grid x:Name="ContentArea" Background="{ThemeResource LayerOnMicaBaseAltFillColorTertiary}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="68"/>
+            <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
 
         <Grid x:Name="Header" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-            <Image Width="36" Height="36" Source="/Assets/three-body-a.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="60 0 0 0"/>
-            <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,42,0">
+            <Image Width="36" Height="36" Source="/Assets/three-body-a.png" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="60 0 0 0"/>
+            <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,42,0">
                 <Button Content="Questions?"
                         BorderThickness="1" CornerRadius="20" Height="44" Padding="14,8,14,8"
                         FontWeight="SemiBold" FontSize="16" />
@@ -35,7 +35,7 @@
                         FontWeight="SemiBold" FontSize="16" />
             </StackPanel>
         </Grid>
-        
+
         <Frame x:Name="ContentFrame" Grid.Row="1" />
 
         <Grid x:Name="Footer" Grid.Row="2">

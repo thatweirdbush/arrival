@@ -1,0 +1,32 @@
+﻿<Page
+    x:Class="BookingManagementSystem.Views.Host.CreateListingSteps.AboutYourPlacePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helper="using:BookingManagementSystem.Helpers"
+    xmlns:models="using:BookingManagementSystem.Core.Models"
+    xmlns:vm="using:BookingManagementSystem.ViewModels"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled"
+    CacheMode="BitmapCache">
+
+    <Grid x:Name="ContentArea">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="6*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Spacing="12" VerticalAlignment="Center" Padding="80">
+            <TextBlock Text="Step 1" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+            <TextBlock Text="Tell us about your place" Style="{ThemeResource TitleLargeTextBlockStyle}" FontSize="48"/>
+            <TextBlock Text="In this step, we'll ask you which type of property you have and if guests will book the entire place or just a room. Then let us know the location and how many guests can stay." 
+                       Style="{ThemeResource DetailSubTitleStyle}" FontFamily="Arial" FontWeight="Medium" Margin="0 8 0 0"/>
+        </StackPanel>
+        <Grid Grid.Column="1" CornerRadius="420 0 0 0">
+            <MediaPlayerElement Source="ms-appx:///Assets/Media/isometric-room-blender.mp4" Stretch="UniformToFill" AutoPlay="True" CacheMode="BitmapCache" />
+        </Grid>
+    </Grid>
+</Page>

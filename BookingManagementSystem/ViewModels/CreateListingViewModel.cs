@@ -1,5 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
+using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.ViewModels.Client;
+using BookingManagementSystem.ViewModels.Host;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -8,21 +11,33 @@ namespace BookingManagementSystem.ViewModels;
 public partial class CreateListingViewModel : ObservableRecipient
 {
     private int _currentStageIndex;
-    private ObservableCollection<string> _stages;
+    private readonly ObservableCollection<string> _stages = new()
+    {
+                "AboutYourPlacePage",
+                "PlaceStructurePage",
+                "AmenitiesPage",
+                "StandOutPage",
+                "PlacePhotosPage",
+            };
+    public string CurrentStage
+    {
+        get => _stages[_currentStageIndex];
+        set
+        {
+            if (_stages[_currentStageIndex] != value)
+            {
+                _stages[_currentStageIndex] = value;
+                OnPropertyChanged(nameof(CurrentStage));
+            }
+        }
+    }
     public CreateListingViewModel()
     {
-        _stages = new ObservableCollection<string>
-            {
-                "SelectPropertyType",
-                "SelectLocation",
-                "EnterDetails",
-                "UploadPhotos",
-                "ReviewAndSubmit"
-            };
         _currentStageIndex = 0;
+        CurrentStage = _stages[_currentStageIndex];
 
-        GoForwardCommand = new RelayCommand(GoForward, () => CanGoForward);
-        GoBackwardCommand = new RelayCommand(GoBackward, () => CanGoBackward);
+        GoForwardCommand = new RelayCommand(GoForward);
+        GoBackwardCommand = new RelayCommand(GoBackward);
     }
 
     public ICommand GoForwardCommand
@@ -34,31 +49,21 @@ public partial class CreateListingViewModel : ObservableRecipient
         get;
     }
 
-    public bool CanGoForward => _currentStageIndex < _stages.Count - 1;
-    public bool CanGoBackward => _currentStageIndex > 0;
-
     public void GoForward()
     {
-        if (CanGoForward)
-        {
-            _currentStageIndex++;
-            UpdateContentFrame();
-        }
+        _currentStageIndex++;
+        OnPropertyChanged(nameof(CurrentStage));
     }
 
     public void GoBackward()
     {
-        if (CanGoBackward)
+        if (_currentStageIndex == 0)
         {
-            _currentStageIndex--;
-            UpdateContentFrame();
+            // Return to Listings page using BackTrack
+            App.GetService<INavigationService>()?.Frame?.GoBack();
+            return;
         }
-    }
-
-    private void UpdateContentFrame()
-    {
-        // Logic to update the Frame content based on _currentStageIndex
-        var currentStage = _stages[_currentStageIndex];
-        // Assuming ContentFrame is set through a binding or code-behind
+        _currentStageIndex--;
+        OnPropertyChanged(nameof(CurrentStage));
     }
 }

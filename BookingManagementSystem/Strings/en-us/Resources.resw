@@ -221,4 +221,19 @@
   <data name="Shell_CreateListing.Content" xml:space="preserve">
     <value>CreateListing</value>
   </data>
+  <data name="Shell_AboutYourPlace.Content" xml:space="preserve">
+    <value>AboutYourPlace</value>
+  </data>
+  <data name="Shell_PlaceStructure.Content" xml:space="preserve">
+    <value>PlaceStructure</value>
+  </data>
+  <data name="Shell_StandOut.Content" xml:space="preserve">
+    <value>StandOut</value>
+  </data>
+  <data name="Shell_Amenities.Content" xml:space="preserve">
+    <value>Amenities</value>
+  </data>
+  <data name="Shell_PlacePhotos.Content" xml:space="preserve">
+    <value>PlacePhotos</value>
+  </data>
 </root>

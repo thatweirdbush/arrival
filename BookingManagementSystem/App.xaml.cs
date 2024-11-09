@@ -15,6 +15,7 @@ using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.ViewModels.Account;
 using BookingManagementSystem.ViewModels.Administrator;
 using BookingManagementSystem.ViewModels.Client;
+using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 using BookingManagementSystem.ViewModels.Host;
 using BookingManagementSystem.ViewModels.Payment;
 using BookingManagementSystem.Views;
@@ -22,6 +23,7 @@ using BookingManagementSystem.Views.Account;
 using BookingManagementSystem.Views.Administrator;
 using BookingManagementSystem.Views.Client;
 using BookingManagementSystem.Views.Host;
+using BookingManagementSystem.Views.Host.CreateListingSteps;
 using BookingManagementSystem.Views.Payment;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -107,6 +109,16 @@ public partial class App : Application
             services.AddSingleton<IRepository<Voucher>, VoucherRepository>();
 
             // Views and ViewModels
+            services.AddTransient<PlacePhotosViewModel>();
+            services.AddTransient<PlacePhotosPage>();
+            services.AddTransient<AmenitiesViewModel>();
+            services.AddTransient<AmenitiesPage>();
+            services.AddTransient<StandOutViewModel>();
+            services.AddTransient<StandOutPage>();
+            services.AddTransient<PlaceStructureViewModel>();
+            services.AddTransient<PlaceStructurePage>();
+            services.AddTransient<AboutYourPlaceViewModel>();
+            services.AddTransient<AboutYourPlacePage>();
             services.AddTransient<CreateListingViewModel>();
             services.AddTransient<CreateListingPage>();
             services.AddTransient<ReservationsViewModel>();
