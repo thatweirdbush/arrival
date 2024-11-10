@@ -27,10 +27,12 @@
         <Grid x:Name="Header" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
             <Image Width="36" Height="36" Source="/Assets/three-body-a.png" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="60 0 0 0"/>
             <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,42,0">
-                <Button Content="Questions?"
+                <Button x:Name="QuestionButton" Content="Questions?"
+                        Click="QuestionButton_Click" 
                         BorderThickness="1" CornerRadius="20" Height="44" Padding="14,8,14,8"
                         FontWeight="SemiBold" FontSize="16" />
-                <Button Content="Save &amp; exit"
+                <Button x:Name="SaveAndExitButton" Content="Save &amp; exit" 
+                        Click="SaveAndExitButton_Click"
                         BorderThickness="1" CornerRadius="20" Height="44" Padding="14,8,14,8"
                         FontWeight="SemiBold" FontSize="16" />
             </StackPanel>

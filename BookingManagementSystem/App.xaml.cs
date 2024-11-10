@@ -107,6 +107,7 @@ public partial class App : Application
             services.AddSingleton<IRepository<User>, UserRepository>();
             services.AddSingleton<IRepository<Review>, ReviewRepository>();
             services.AddSingleton<IRepository<Voucher>, VoucherRepository>();
+            services.AddSingleton<IRepository<PropertyTypeIcon>, PropertyTypeIconRepository>();
 
             // Views and ViewModels
             services.AddTransient<PlacePhotosViewModel>();

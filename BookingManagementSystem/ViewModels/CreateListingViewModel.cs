@@ -13,12 +13,12 @@ public partial class CreateListingViewModel : ObservableRecipient
     private int _currentStageIndex;
     private readonly ObservableCollection<string> _stages = new()
     {
-                "AboutYourPlacePage",
-                "PlaceStructurePage",
-                "AmenitiesPage",
-                "StandOutPage",
-                "PlacePhotosPage",
-            };
+        "AboutYourPlacePage",
+        "PlaceStructurePage",
+        "AmenitiesPage",
+        "StandOutPage",
+        "PlacePhotosPage",
+    };
     public string CurrentStage
     {
         get => _stages[_currentStageIndex];

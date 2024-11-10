@@ -4,9 +4,54 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:helper="using:BookingManagementSystem.Helpers"
+    xmlns:models="using:BookingManagementSystem.Core.Models"
+    xmlns:vm="using:BookingManagementSystem.ViewModels"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled"
+    CacheMode="BitmapCache">
+
+    <Page.Resources>
+        <helper:StringToGeometryConverter x:Key="StringToGeometryConverter"/>
+    </Page.Resources>
 
     <Grid x:Name="ContentArea">
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Which of these best describes your place?" Style="{ThemeResource TitleTextBlockStyle}" HorizontalAlignment="Center" Margin="0 0 0 24"/>
+        <Grid Grid.Row="1" HorizontalAlignment="Center">
+            <GridView
+                x:Name="PropertyTypeGridView"
+                ItemsSource="{x:Bind ViewModel.PropertyTypeIcons}"
+                FlowDirection="LeftToRight"
+                CacheMode="BitmapCache"
+                ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                           MaximumRowsOrColumns="3"
+                           Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem" BasedOn="{StaticResource DefaultGridViewItemStyle}">
+                        <Setter Property="Margin" Value="8"/>
+                    </Style>
+                </GridView.ItemContainerStyle>
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="models:PropertyTypeIcon">
+                        <StackPanel Spacing="0" Padding="18" Width="200" BorderThickness="1" BorderBrush="LightGray" CornerRadius="8" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
+                            <Image Source="{x:Bind ImagePath}" Height="48" HorizontalAlignment="Left"/>
+                            <TextBlock Text="{x:Bind Name}" FontSize="16" FontWeight="SemiBold" Margin="4 0 0 0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </Grid>
     </Grid>
 </Page>

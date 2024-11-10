@@ -10,49 +10,55 @@ namespace BookingManagementSystem.Core.Models;
 // These types best describe your place
 public enum PropertyType
 {
-    Apartment,
     House,
-    Villa,
-    Cabin,
-    Cottage,
-    Bungalow,
-    Chalet,
-    Lodge,
-    Tent,
-    Yurt,
-    Treehouse,
-    Boat,
-    Plane,
-    Train,
-    Bus,
-    Camper,
-    RV,
-    Castle,
-    Dorm,
-    Hostel,
-    Hotel,
-    Resort,
-    Motel,
-    Inn,
+    Apartment,
+    Barn,
     BedAndBreakfast,
-    Guesthouse,
-    Ryokan,
-    Pousada,
-    Riad,
-    Aparthotel,
-    Condo,
-    Townhouse,
-    Farmhouse,
-    Houseboat,
-    Lighthouse,
-    Tipi,
+    Boat,
+    Cabin,
+    CamperRV,
+    CasaParticular,
+    Castle,
     Cave,
-    Island,
-    EarthHouse,
-    Hut,
+    Container,
+    CycladicHome,
+    Dammuso,
     Dome,
-    Igloo,
-    Other
+    Farm,
+    Guesthouse,
+    Hotel,
+    Houseboat,
+    Kezhan,
+    Minsu,
+    Riad,
+    Ryokan,
+    Tent,
+    TinyHome,
+    Tower,
+    Treehouse,
+    Trullo,
+    Windmill,
+    Yurt
+}
+
+public class PropertyTypeIcon
+{
+    // Define XAML Image's Path Declaration
+    public static string MS_APPX = "ms-appx:///Assets/real-estate-type-icons/";
+    private string _imagePath;
+    public PropertyType PropertyType
+    {
+        get; set;
+    }
+    public string Name
+    {
+        get; set;
+    }
+    public string ImagePath
+    {
+        get => $"{MS_APPX}{_imagePath}";
+        set => _imagePath = value;
+    }
 }
 
 public enum PropertyRatingStatus
