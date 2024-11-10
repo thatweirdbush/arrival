@@ -23,35 +23,123 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Which of these best describes your place?" Style="{ThemeResource TitleTextBlockStyle}" HorizontalAlignment="Center" Margin="0 0 0 24"/>
-        <Grid Grid.Row="1" HorizontalAlignment="Center">
-            <GridView
-                x:Name="PropertyTypeGridView"
-                ItemsSource="{x:Bind ViewModel.PropertyTypeIcons}"
-                FlowDirection="LeftToRight"
-                CacheMode="BitmapCache"
-                ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+        <StackPanel x:Name="PageHeader" MaxWidth="640" Spacing="8" Margin="0 0 0 32" HorizontalAlignment="Stretch">
+            <TextBlock Text="Tell guests what your place has to offer" Style="{ThemeResource TitleTextBlockStyle}"/>
+            <TextBlock Text="You can add more amenities after you publish your listing." Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
+        </StackPanel>
+        <ScrollView Grid.Row="1">
+            <StackPanel x:Name="PageBody" HorizontalAlignment="Center" Spacing="32">
+                <StackPanel x:Name="GuestFavoriteAmenitiesPanel" Spacing="16">
+                    <TextBlock Text="What about these guest favorites?" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="8 0 0 0"/>
+                    <GridView
+                        x:Name="GuestFavoriteAmenitiesGridView"
+                        ItemsSource="{x:Bind ViewModel.GuestFavoriteAmenities}"
+                        FlowDirection="LeftToRight"
+                        CacheMode="BitmapCache"
+                        SelectionMode="Extended"
+                        Padding="0"
+                        ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
                            MaximumRowsOrColumns="3"
                            Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
-                <GridView.ItemContainerStyle>
-                    <Style TargetType="GridViewItem" BasedOn="{StaticResource DefaultGridViewItemStyle}">
-                        <Setter Property="Margin" Value="8"/>
-                    </Style>
-                </GridView.ItemContainerStyle>
-                <GridView.ItemTemplate>
-                    <DataTemplate x:DataType="models:PropertyTypeIcon">
-                        <StackPanel Spacing="0" Padding="18" Width="200" BorderThickness="1" BorderBrush="LightGray" CornerRadius="8" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
-                            <Image Source="{x:Bind ImagePath}" Height="48" HorizontalAlignment="Left"/>
-                            <TextBlock Text="{x:Bind Name}" FontSize="16" FontWeight="SemiBold" Margin="4 0 0 0"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-            </GridView>
-        </Grid>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                        <GridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem" BasedOn="{StaticResource DefaultGridViewItemStyle}">
+                                <Setter Property="Margin" Value="8"/>
+                            </Style>
+                        </GridView.ItemContainerStyle>
+                        <GridView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Amenity">
+                                <StackPanel Spacing="0" Padding="10 18 10 18" Width="200" BorderThickness="1" BorderBrush="LightGray" CornerRadius="8" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
+                                    <Image Source="{x:Bind ImagePath}" Height="48" HorizontalAlignment="Left">
+                                        <Image.Clip>
+                                            <RectangleGeometry Rect="6 0 36 42"/>
+                                        </Image.Clip>
+                                    </Image>
+                                    <TextBlock Text="{x:Bind Name}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" Margin="6 0 0 0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
+                </StackPanel>
+
+                <StackPanel x:Name="StandoutAmenitiesPanel" Spacing="16">
+                    <TextBlock Text="Do you have any standout amenities?" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="8 0 0 0"/>
+                    <GridView
+                        x:Name="StandoutAmenitiesGridView"
+                        ItemsSource="{x:Bind ViewModel.StandoutAmenities}"
+                        FlowDirection="LeftToRight"
+                        CacheMode="BitmapCache"
+                        SelectionMode="Extended"
+                        Padding="0"
+                        ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                           MaximumRowsOrColumns="3"
+                           Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                        <GridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem" BasedOn="{StaticResource DefaultGridViewItemStyle}">
+                                <Setter Property="Margin" Value="8"/>
+                            </Style>
+                        </GridView.ItemContainerStyle>
+                        <GridView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Amenity">
+                                <StackPanel Spacing="0" Padding="10 18 10 18" Width="200" BorderThickness="1" BorderBrush="LightGray" CornerRadius="8" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
+                                    <Image Source="{x:Bind ImagePath}" Height="48" HorizontalAlignment="Left">
+                                        <Image.Clip>
+                                            <RectangleGeometry Rect="6 0 36 42"/>
+                                        </Image.Clip>
+                                    </Image>
+                                    <TextBlock Text="{x:Bind Name}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" Margin="6 0 0 0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
+                </StackPanel>
+
+                <StackPanel x:Name="SafetyAmenitiesPanel" Spacing="16">
+                    <TextBlock Text="Do you have any of these safety items?" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="8 0 0 0"/>
+                    <GridView
+                        x:Name="SafetyAmenitiesGridView"
+                        ItemsSource="{x:Bind ViewModel.SafetyAmenities}"
+                        FlowDirection="LeftToRight"
+                        CacheMode="BitmapCache"
+                        SelectionMode="Extended"
+                        Padding="0"
+                        ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                           MaximumRowsOrColumns="3"
+                           Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                        <GridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem" BasedOn="{StaticResource DefaultGridViewItemStyle}">
+                                <Setter Property="Margin" Value="8"/>
+                            </Style>
+                        </GridView.ItemContainerStyle>
+                        <GridView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Amenity">
+                                <StackPanel Spacing="0" Padding="10 18 10 18" Width="200" BorderThickness="1" BorderBrush="LightGray" CornerRadius="8" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
+                                    <Image Source="{x:Bind ImagePath}" Height="48" HorizontalAlignment="Left">
+                                        <Image.Clip>
+                                            <RectangleGeometry Rect="6 0 36 42"/>
+                                        </Image.Clip>
+                                    </Image>
+                                    <TextBlock Text="{x:Bind Name}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" Margin="6 0 0 0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
+                </StackPanel>
+            </StackPanel>
+        </ScrollView>
     </Grid>
 </Page>

@@ -18,12 +18,15 @@
         <helper:StringToGeometryConverter x:Key="StringToGeometryConverter"/>
     </Page.Resources>
 
-    <Grid x:Name="ContentArea">
+    <Grid x:Name="ContentArea" HorizontalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Which of these best describes your place?" Style="{ThemeResource TitleTextBlockStyle}" HorizontalAlignment="Center" Margin="0 0 0 24"/>
+        <StackPanel Spacing="8" Margin="0 0 0 24">
+            <TextBlock Text="Tell guests what your place has to offer" Style="{ThemeResource TitleTextBlockStyle}"/>
+            <TextBlock Text="You can add more amenities after you publish your listing." Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
+        </StackPanel>
         <Grid Grid.Row="1" HorizontalAlignment="Center">
             <GridView
                 x:Name="PropertyTypeGridView"

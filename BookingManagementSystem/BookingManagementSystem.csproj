@@ -15,6 +15,107 @@
 		<EnableMsixTooling>true</EnableMsixTooling>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Content Remove="Assets\a-drip-dark.png" />
+	  <Content Remove="Assets\a-drip-light.png" />
+	  <Content Remove="Assets\amenity-icons\air-conditioning.svg" />
+	  <Content Remove="Assets\amenity-icons\bbq-grill.svg" />
+	  <Content Remove="Assets\amenity-icons\beach-area.svg" />
+	  <Content Remove="Assets\amenity-icons\carbon-monoxide-alarm.svg" />
+	  <Content Remove="Assets\amenity-icons\cube.svg" />
+	  <Content Remove="Assets\amenity-icons\fire-extinguisher.svg" />
+	  <Content Remove="Assets\amenity-icons\fire-pit.svg" />
+	  <Content Remove="Assets\amenity-icons\first-aid-kit.svg" />
+	  <Content Remove="Assets\amenity-icons\gym.svg" />
+	  <Content Remove="Assets\amenity-icons\hot-tub.svg" />
+	  <Content Remove="Assets\amenity-icons\indoor-fireplace.svg" />
+	  <Content Remove="Assets\amenity-icons\kitchen.svg" />
+	  <Content Remove="Assets\amenity-icons\lake-area.svg" />
+	  <Content Remove="Assets\amenity-icons\outdoor-dining.svg" />
+	  <Content Remove="Assets\amenity-icons\paid-parking.svg" />
+	  <Content Remove="Assets\amenity-icons\parking.svg" />
+	  <Content Remove="Assets\amenity-icons\patio.svg" />
+	  <Content Remove="Assets\amenity-icons\piano.svg" />
+	  <Content Remove="Assets\amenity-icons\pool-table.svg" />
+	  <Content Remove="Assets\amenity-icons\pool.svg" />
+	  <Content Remove="Assets\amenity-icons\shower.svg" />
+	  <Content Remove="Assets\amenity-icons\ski.svg" />
+	  <Content Remove="Assets\amenity-icons\smoke-alarm.svg" />
+	  <Content Remove="Assets\amenity-icons\tv.svg" />
+	  <Content Remove="Assets\amenity-icons\washer.svg" />
+	  <Content Remove="Assets\amenity-icons\wifi.svg" />
+	  <Content Remove="Assets\amenity-icons\workspace.svg" />
+	  <Content Remove="Assets\arrival-bio-resize-75.png" />
+	  <Content Remove="Assets\arrival-bio-white.png" />
+	  <Content Remove="Assets\arrival-bio.png" />
+	  <Content Remove="Assets\destination-type-symbol-icons\all-icon.png" />
+	  <Content Remove="Assets\destination-type-symbol-icons\amazing-pools.jpg" />
+	  <Content Remove="Assets\destination-type-symbol-icons\amazing-views.jpg" />
+	  <Content Remove="Assets\destination-type-symbol-icons\beach.jpg" />
+	  <Content Remove="Assets\destination-type-symbol-icons\countryside.jpg" />
+	  <Content Remove="Assets\destination-type-symbol-icons\farm.jpg" />
+	  <Content Remove="Assets\destination-type-symbol-icons\islands.jpg" />
+	  <Content Remove="Assets\destination-type-symbol-icons\lakefront.jpg" />
+	  <Content Remove="Assets\destination-type-symbol-icons\luxe.jpg" />
+	  <Content Remove="Assets\destination-type-symbol-icons\mansions.jpg" />
+	  <Content Remove="Assets\destination-type-symbol-icons\national-parks.jpg" />
+	  <Content Remove="Assets\destination-type-symbol-icons\room.jpg" />
+	  <Content Remove="Assets\destination-type-symbol-icons\tiny-homes.jpg" />
+	  <Content Remove="Assets\destination-type-symbol-icons\top-cities.jpg" />
+	  <Content Remove="Assets\destination-type-symbol-icons\treehouses.jpg" />
+	  <Content Remove="Assets\destination-type-symbol-icons\trending.jpg" />
+	  <Content Remove="Assets\destination-type-symbol-icons\tropical.jpg" />
+	  <Content Remove="Assets\homescreen.jpg" />
+	  <Content Remove="Assets\Media\isometric-room-blender.mp4" />
+	  <Content Remove="Assets\momo-logo.png" />
+	  <Content Remove="Assets\real-estate-type-icons\apartment.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\barn.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\bed-breakfast.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\boat.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\cabin.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\campervan.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\casa-particular.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\castle.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\cave.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\container.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\cycladic-home.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\dammuso.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\dome.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\farm.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\guesthouse.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\hotel.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\house.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\houseboat.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\kezhan.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\minsu.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\riad.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\ryokan.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\tent.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\tiny-home.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\tower.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\treehouse.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\trullo.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\windmill.svg" />
+	  <Content Remove="Assets\real-estate-type-icons\yurt.svg" />
+	  <Content Remove="Assets\Screenshots\Screenshot Git Flow.png" />
+	  <Content Remove="Assets\Screenshots\Screenshot Home Page.png" />
+	  <Content Remove="Assets\Screenshots\Screenshot Listing Requests Page.png" />
+	  <Content Remove="Assets\Screenshots\Screenshot Map Service Page.png" />
+	  <Content Remove="Assets\Screenshots\Screenshot Project Management Trello.png" />
+	  <Content Remove="Assets\Screenshots\Screenshot Pull Requests 2.png" />
+	  <Content Remove="Assets\Screenshots\Screenshot Pull Requests.png" />
+	  <Content Remove="Assets\Screenshots\Screenshot Rental Details Page.png" />
+	  <Content Remove="Assets\Screenshots\Screenshot Signin Page.png" />
+	  <Content Remove="Assets\symbol-icons\credit-card-icon.png" />
+	  <Content Remove="Assets\symbol-icons\favourite.png" />
+	  <Content Remove="Assets\symbol-icons\filter-icon.png" />
+	  <Content Remove="Assets\symbol-icons\flag-gray-icon.png" />
+	  <Content Remove="Assets\symbol-icons\not-favourite.png" />
+	  <Content Remove="Assets\symbol-icons\search-icon-white.png" />
+	  <Content Remove="Assets\symbol-icons\search-icon.png" />
+	  <Content Remove="Assets\symbol-icons\white-star-icon.png" />
+	  <Content Remove="Assets\three-body-a.png" />
+	</ItemGroup>
 	
 	<ItemGroup>
 		<None Remove="Assets\BadgeLogo.scale-100.png" />
@@ -100,6 +201,87 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Update="Assets\amenity-icons\air-conditioning.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\bbq-grill.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\beach-area.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\carbon-monoxide-alarm.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\cube.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\fire-extinguisher.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\fire-pit.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\first-aid-kit.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\gym.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\hot-tub.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\indoor-fireplace.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\kitchen.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\lake-area.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\outdoor-dining.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\paid-parking.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\parking.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\patio.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\piano.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\pool-table.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\pool.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\shower.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\ski.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\smoke-alarm.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\tv.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\washer.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\wifi.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\amenity-icons\workspace.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<None Update="Assets\symbol-icons\favourite.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
