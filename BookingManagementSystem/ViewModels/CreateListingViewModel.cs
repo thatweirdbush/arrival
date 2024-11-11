@@ -17,6 +17,7 @@ public partial class CreateListingViewModel : ObservableRecipient
         "PlaceStructurePage",
         "AmenitiesPage",
         "StandOutPage",
+        "SetPricePage",
         "PlacePhotosPage",
     };
     public string CurrentStage

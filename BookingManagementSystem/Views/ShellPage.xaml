@@ -112,6 +112,11 @@
                         <FontIcon Glyph="&#xE7E3;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_Listing" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Host.ListingViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE7E3;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
 
             <NavigationView.PaneHeader>

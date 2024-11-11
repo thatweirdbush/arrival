@@ -236,4 +236,7 @@
   <data name="Shell_PlacePhotos.Content" xml:space="preserve">
     <value>PlacePhotos</value>
   </data>
+  <data name="Shell_SetPrice.Content" xml:space="preserve">
+    <value>SetPrice</value>
+  </data>
 </root>

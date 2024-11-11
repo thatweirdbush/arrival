@@ -15,8 +15,8 @@ using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.ViewModels.Account;
 using BookingManagementSystem.ViewModels.Administrator;
 using BookingManagementSystem.ViewModels.Client;
-using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 using BookingManagementSystem.ViewModels.Host;
+using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 using BookingManagementSystem.ViewModels.Payment;
 using BookingManagementSystem.Views;
 using BookingManagementSystem.Views.Account;
@@ -110,6 +110,8 @@ public partial class App : Application
             services.AddSingleton<IRepository<PropertyTypeIcon>, PropertyTypeIconRepository>();
 
             // Views and ViewModels
+            services.AddTransient<SetPriceViewModel>();
+            services.AddTransient<SetPricePage>();
             services.AddTransient<PlacePhotosViewModel>();
             services.AddTransient<PlacePhotosPage>();
             services.AddTransient<AmenitiesViewModel>();
