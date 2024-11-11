@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.ViewModels.Client;
-using BookingManagementSystem.ViewModels.Host;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -18,6 +16,8 @@ public partial class CreateListingViewModel : ObservableRecipient
         "AmenitiesPage",
         "StandOutPage",
         "SetPricePage",
+        "ReviewListingPage",
+        "PublishCelebrationPage",
         "PlacePhotosPage",
     };
     public string CurrentStage
@@ -52,6 +52,15 @@ public partial class CreateListingViewModel : ObservableRecipient
 
     public void GoForward()
     {
+        if (_currentStageIndex == _stages.Count - 1)
+        {
+            // Save listing
+            //await SaveListingAsync();
+
+            // Return to Listings page using BackTrack
+            App.GetService<INavigationService>()?.Frame?.GoBack();
+            return;
+        }
         _currentStageIndex++;
         OnPropertyChanged(nameof(CurrentStage));
     }

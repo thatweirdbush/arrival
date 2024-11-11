@@ -239,4 +239,10 @@
   <data name="Shell_SetPrice.Content" xml:space="preserve">
     <value>SetPrice</value>
   </data>
+  <data name="Shell_ReviewListing.Content" xml:space="preserve">
+    <value>ReviewListing</value>
+  </data>
+  <data name="Shell_PublishCelebration.Content" xml:space="preserve">
+    <value>PublishCelebration</value>
+  </data>
 </root>

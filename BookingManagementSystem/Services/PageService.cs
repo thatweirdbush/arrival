@@ -51,6 +51,8 @@ public class PageService : IPageService
         Configure<AmenitiesViewModel, AmenitiesPage>();
         Configure<PlacePhotosViewModel, PlacePhotosPage>();
         Configure<SetPriceViewModel, SetPricePage>();
+        Configure<ReviewListingViewModel, ReviewListingPage>();
+        Configure<PublishCelebrationViewModel, PublishCelebrationPage>();
     }
 
     public Type GetPageType(string key)
