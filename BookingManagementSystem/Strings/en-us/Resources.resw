@@ -245,4 +245,16 @@
   <data name="Shell_PublishCelebration.Content" xml:space="preserve">
     <value>Publish Celebration</value>
   </data>
+  <data name="Shell_FinishSetup.Content" xml:space="preserve">
+    <value>Finish Setup</value>
+  </data>
+  <data name="Shell_PlaceDescription.Content" xml:space="preserve">
+    <value>Place Description</value>
+  </data>
+  <data name="Shell_PlaceLocation.Content" xml:space="preserve">
+    <value>Place Location</value>
+  </data>
+  <data name="Shell_FloorPlan.Content" xml:space="preserve">
+    <value>Floor Plan</value>
+  </data>
 </root>

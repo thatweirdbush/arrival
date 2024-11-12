@@ -48,6 +48,7 @@
 	  <Content Remove="Assets\arrival-bio-resize-75.png" />
 	  <Content Remove="Assets\arrival-bio-white.png" />
 	  <Content Remove="Assets\arrival-bio.png" />
+	  <Content Remove="Assets\camera.png" />
 	  <Content Remove="Assets\common-icons\calendar.svg" />
 	  <Content Remove="Assets\common-icons\pencil.svg" />
 	  <Content Remove="Assets\common-icons\person-greeting.svg" />
@@ -285,6 +286,9 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\amenity-icons\workspace.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\camera.png">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\common-icons\calendar.svg">

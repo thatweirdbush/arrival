@@ -110,6 +110,14 @@ public partial class App : Application
             services.AddSingleton<IRepository<PropertyTypeIcon>, PropertyTypeIconRepository>();
 
             // Views and ViewModels
+            services.AddTransient<FloorPlanViewModel>();
+            services.AddTransient<FloorPlanPage>();
+            services.AddTransient<PlaceLocationViewModel>();
+            services.AddTransient<PlaceLocationPage>();
+            services.AddTransient<PlaceDescriptionViewModel>();
+            services.AddTransient<PlaceDescriptionPage>();
+            services.AddTransient<FinishSetupViewModel>();
+            services.AddTransient<FinishSetupPage>();
             services.AddTransient<PublishCelebrationViewModel>();
             services.AddTransient<PublishCelebrationPage>();
             services.AddTransient<ReviewListingViewModel>();

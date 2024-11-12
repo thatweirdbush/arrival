@@ -14,10 +14,6 @@
     NavigationCacheMode="Enabled"
     CacheMode="BitmapCache">
 
-    <Page.Resources>
-        <helper:StringToGeometryConverter x:Key="StringToGeometryConverter"/>
-    </Page.Resources>
-
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

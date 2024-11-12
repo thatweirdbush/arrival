@@ -9,17 +9,21 @@ namespace BookingManagementSystem.ViewModels;
 public partial class CreateListingViewModel : ObservableRecipient
 {
     private int _currentStageIndex;
-    private readonly ObservableCollection<string> _stages = new()
-    {
+    private readonly ObservableCollection<string> _stages =
+    [
         "AboutYourPlacePage",
         "PlaceStructurePage",
-        "AmenitiesPage",
+        "PlaceLocationPage",
+        "FloorPlanPage",
         "StandOutPage",
+        "AmenitiesPage",
+        "PlacePhotosPage",
+        "PlaceDescriptionPage",
+        "FinishSetupPage",
         "SetPricePage",
         "ReviewListingPage",
         "PublishCelebrationPage",
-        "PlacePhotosPage",
-    };
+    ];
     public string CurrentStage
     {
         get => _stages[_currentStageIndex];

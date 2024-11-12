@@ -53,6 +53,10 @@ public class PageService : IPageService
         Configure<SetPriceViewModel, SetPricePage>();
         Configure<ReviewListingViewModel, ReviewListingPage>();
         Configure<PublishCelebrationViewModel, PublishCelebrationPage>();
+        Configure<FinishSetupViewModel, FinishSetupPage>();
+        Configure<PlaceDescriptionViewModel, PlaceDescriptionPage>();
+        Configure<PlaceLocationViewModel, PlaceLocationPage>();
+        Configure<FloorPlanViewModel, FloorPlanPage>();
     }
 
     public Type GetPageType(string key)

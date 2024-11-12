@@ -14,7 +14,51 @@
     NavigationCacheMode="Enabled"
     CacheMode="BitmapCache">
 
-    <Grid x:Name="ContentArea">
-        
+    <Page.Resources>
+        <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
+    </Page.Resources>
+
+    <Grid x:Name="ContentArea" MaxWidth="640" Padding="0 0 0 40">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="PageHeader" Spacing="8" Margin="0 0 0 32">
+            <TextBlock Text="Add some photos of your house" Style="{ThemeResource TitleTextBlockStyle}"/>
+            <TextBlock Text="You'll need 1 photo to get started. You can add more or make changes later." Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid x:Name="EmptyPhotoCollectionGrid" Visibility="{x:Bind ViewModel.IsPhotoListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Border x:Name="ShadowTarget"/>
+                    <Grid CornerRadius="18" MaxWidth="640" Height="500" VerticalAlignment="Top"
+                      Background="{ThemeResource LayerOnMicaBaseAltFillColorDefault}">
+                        <ui:Effects.Shadow>
+                            <ui:AttachedDropShadow CastTo="{x:Bind ShadowTarget}" 
+                                                   CornerRadius="18" Offset="4" 
+                                                   BlurRadius="20" Color="{ThemeResource SmokeFillColorDefault}"/>
+                        </ui:Effects.Shadow>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="24">
+                            <Grid CornerRadius="10">
+                                <Image Source="/Assets/camera.png" Width="180" Stretch="UniformToFill"/>
+                            </Grid>
+                            <Grid Grid.Row="1">
+                                <Button x:Name="AddPhotosButton" Click="AddPhotosButton_Click" Content="Add photos" 
+                                        FontWeight="SemiBold" FontSize="16" CornerRadius="8" Padding="12" Width="140" HorizontalAlignment="Center"
+                                        BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            <Grid x:Name="PhotoCollectionGrid" Visibility="{x:Bind ViewModel.IsPhotoListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                <ListView x:Name="PhotosListView">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding}" Stretch="Uniform" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>
