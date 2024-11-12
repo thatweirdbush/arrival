@@ -70,6 +70,7 @@
 	  <Content Remove="Assets\destination-type-symbol-icons\tropical.jpg" />
 	  <Content Remove="Assets\homescreen.jpg" />
 	  <Content Remove="Assets\Media\isometric-room-blender-03.mp4" />
+	  <Content Remove="Assets\Media\isometric-room-blender-04.mp4" />
 	  <Content Remove="Assets\Media\isometric-room-blender.mp4" />
 	  <Content Remove="Assets\momo-logo.png" />
 	  <Content Remove="Assets\real-estate-type-icons\apartment.svg" />
@@ -296,6 +297,9 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Media\isometric-room-blender-03.mp4">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Media\isometric-room-blender-04.mp4">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\symbol-icons\favourite.png">

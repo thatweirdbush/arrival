@@ -23,7 +23,7 @@
             <TextBlock Text="Step 1" Style="{ThemeResource SubtitleTextBlockStyle}"/>
             <TextBlock Text="Tell us about your place" Style="{ThemeResource TitleLargeTextBlockStyle}" FontSize="48"/>
             <TextBlock Text="In this step, we'll ask you which type of property you have and if guests will book the entire place or just a room. Then let us know the location and how many guests can stay." 
-                       Style="{ThemeResource DetailSubTitleStyle}" FontFamily="Arial" FontWeight="Medium" Margin="0 8 0 0"/>
+                       Style="{ThemeResource DetailSubTitleStyle}" FontFamily="Arial" Margin="0 8 0 0"/>
         </StackPanel>
         <Grid Grid.Column="1" CornerRadius="420 0 0 0">
             <MediaPlayerElement Source="ms-appx:///Assets/Media/isometric-room-blender.mp4" Stretch="UniformToFill" AutoPlay="True" CacheMode="BitmapCache" />

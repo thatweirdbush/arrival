@@ -34,7 +34,7 @@
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
-            <Grid CornerRadius="18" Padding="16" Background="{ThemeResource LayerOnMicaBaseAltFillColorTertiary}">
+            <Grid CornerRadius="18" Padding="16" Background="{ThemeResource LayerFillColorAltBrush}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="80"/>
@@ -42,7 +42,7 @@
                 <ui:Effects.Shadow>
                     <ui:AttachedDropShadow CastTo="{x:Bind ShadowTarget}" 
                                            CornerRadius="18" Offset="4" 
-                                           BlurRadius="20" Color="{ThemeResource LayerOnAcrylicFillColorDefault}"/>
+                                           BlurRadius="20" Color="{ThemeResource SmokeFillColorDefault}"/>
                 </ui:Effects.Shadow>
                 <Grid CornerRadius="10">
                     <Image Source="/Assets/homescreen.jpg" Stretch="UniformToFill"/>

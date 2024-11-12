@@ -87,46 +87,20 @@
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
             Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
             <NavigationView.MenuItems>
-                <NavigationViewItem x:Uid="Shell_Home" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.HomeViewModel">
-                    <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Home"/>
-                    </NavigationViewItem.Icon>
+                <NavigationViewItem x:Uid="Shell_Home" Icon="Home" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.HomeViewModel"/>
+                <NavigationViewItem x:Uid="Shell_Map" Icon="World" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.MapViewModel"/>
+                <NavigationViewItem x:Uid="Shell_Host" Icon="Street" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Host.HostViewModel">
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem x:Uid="Shell_Listing" Icon="List" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Host.ListingViewModel"/>
+                        <NavigationViewItem x:Uid="Shell_CreateListing" Icon="NewFolder" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.CreateListingViewModel"/>
+                        <NavigationViewItem x:Uid="Shell_LoyaltyProgram" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.LoyaltyProgramViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon Glyph="&#xE7E3;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_Map" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.MapViewModel">
-                    <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="World"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_Host" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Host.HostViewModel">
-                    <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Street"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_FAQ" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.FAQViewModel">
-                    <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Flag"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_LoyaltyProgram" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.LoyaltyProgramViewModel">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE7E3;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_Listing" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Host.ListingViewModel">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE7E3;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_ReviewListing" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Host.CreateListingSteps.ReviewListingViewModel">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_PublishCelebration" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Host.CreateListingSteps.PublishCelebrationViewModel">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_FAQ" Icon="Flag" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.FAQViewModel"/>
             </NavigationView.MenuItems>
 
             <NavigationView.PaneHeader>

@@ -201,16 +201,16 @@
     <value>Listing Requests</value>
   </data>
   <data name="Shell_BookingHistory.Content" xml:space="preserve">
-    <value>BookingHistory</value>
+    <value>Booking History</value>
   </data>
   <data name="Shell_LoyaltyProgram.Content" xml:space="preserve">
-    <value>LoyaltyProgram</value>
+    <value>Loyalty Program</value>
   </data>
   <data name="Shell_Wishlist.Content" xml:space="preserve">
     <value>Wishlist</value>
   </data>
   <data name="Shell_UserProfile.Content" xml:space="preserve">
-    <value>UserProfile</value>
+    <value>User Profile</value>
   </data>
   <data name="Shell_Listing.Content" xml:space="preserve">
     <value>Listing</value>
@@ -219,30 +219,30 @@
     <value>Reservations</value>
   </data>
   <data name="Shell_CreateListing.Content" xml:space="preserve">
-    <value>CreateListing</value>
+    <value>Create Listing</value>
   </data>
   <data name="Shell_AboutYourPlace.Content" xml:space="preserve">
-    <value>AboutYourPlace</value>
+    <value>About Your Place</value>
   </data>
   <data name="Shell_PlaceStructure.Content" xml:space="preserve">
-    <value>PlaceStructure</value>
+    <value>Place Structure</value>
   </data>
   <data name="Shell_StandOut.Content" xml:space="preserve">
-    <value>StandOut</value>
+    <value>Stand Out</value>
   </data>
   <data name="Shell_Amenities.Content" xml:space="preserve">
     <value>Amenities</value>
   </data>
   <data name="Shell_PlacePhotos.Content" xml:space="preserve">
-    <value>PlacePhotos</value>
+    <value>Place Photos</value>
   </data>
   <data name="Shell_SetPrice.Content" xml:space="preserve">
-    <value>SetPrice</value>
+    <value>Set Price</value>
   </data>
   <data name="Shell_ReviewListing.Content" xml:space="preserve">
-    <value>ReviewListing</value>
+    <value>Review Listing</value>
   </data>
   <data name="Shell_PublishCelebration.Content" xml:space="preserve">
-    <value>PublishCelebration</value>
+    <value>Publish Celebration</value>
   </data>
 </root>
