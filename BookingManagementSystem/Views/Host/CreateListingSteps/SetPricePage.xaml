@@ -28,8 +28,8 @@
             <TextBlock Text="You can change it anytime." Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
         </StackPanel>
         <Grid Grid.Row="1">
-            <StackPanel Spacing="12" HorizontalAlignment="Center">
-                <TextBox Name="PriceTextBox" HorizontalAlignment="Center" PreviewKeyDown="PriceTextBox_PreviewKeyDown" FontSize="120" FontWeight="Bold" BorderThickness="0"
+            <StackPanel Spacing="8" HorizontalAlignment="Center">
+                <TextBox Name="PriceTextBox" HorizontalAlignment="Center" PreviewKeyDown="PriceTextBox_PreviewKeyDown" FontSize="120" FontWeight="Bold" BorderThickness="0" Background="Transparent"
                     Text="{x:Bind ViewModel.BasePrice, Mode=TwoWay,
                     Converter={StaticResource NumberToCurencyConverter},
                     UpdateSourceTrigger=LostFocus}"/>

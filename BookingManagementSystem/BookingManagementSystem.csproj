@@ -48,6 +48,9 @@
 	  <Content Remove="Assets\arrival-bio-resize-75.png" />
 	  <Content Remove="Assets\arrival-bio-white.png" />
 	  <Content Remove="Assets\arrival-bio.png" />
+	  <Content Remove="Assets\common-icons\calendar.svg" />
+	  <Content Remove="Assets\common-icons\pencil.svg" />
+	  <Content Remove="Assets\common-icons\person-greeting.svg" />
 	  <Content Remove="Assets\destination-type-symbol-icons\all-icon.png" />
 	  <Content Remove="Assets\destination-type-symbol-icons\amazing-pools.jpg" />
 	  <Content Remove="Assets\destination-type-symbol-icons\amazing-views.jpg" />
@@ -281,6 +284,15 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\amenity-icons\workspace.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\common-icons\calendar.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\common-icons\pencil.svg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\common-icons\person-greeting.svg">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\Media\isometric-room-blender-03.mp4">
