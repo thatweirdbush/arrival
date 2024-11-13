@@ -15,7 +15,6 @@ using Microsoft.UI.Xaml.Navigation;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.Contracts.Services;
 using CommunityToolkit.WinUI.UI.Animations;
-using Windows.Devices.Geolocation;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Views.Forms;
 using BookingManagementSystem.Views.Payment;
@@ -55,29 +54,11 @@ public sealed partial class RentalDetailPage : Page
 
         if (ViewModel.Item != null)
         {
-            // Set up initial map location
-            var centerPosition = new BasicGeoposition { Latitude = ViewModel.Item.Latitude, Longitude = ViewModel.Item.Longitude };
-            var centerPoint = new Geopoint(centerPosition);
+            // Set up initial map location            
+            var query = $"{ViewModel.Item.Latitude}+{ViewModel.Item.Longitude}";
 
-            MainMap.Center = centerPoint;
-
-            var myLandmarks = new List<MapElement>();
-            var position = new BasicGeoposition { Latitude = ViewModel.Item.Latitude, Longitude = ViewModel.Item.Longitude };
-            var point = new Geopoint(position);
-
-            var icon = new MapIcon
-            {
-                Location = point,
-            };
-
-            myLandmarks.Add(icon);
-
-            var LandmarksLayer = new MapElementsLayer
-            {
-                MapElements = myLandmarks
-            };
-
-            MainMap.Layers.Add(LandmarksLayer);
+            // Set the source of the WebView to the Pinned Google Maps URL
+            MapWebView2.Source = new Uri($"https://www.google.com/maps/place/{query}");
         }
     }
 

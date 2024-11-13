@@ -10,7 +10,6 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:models="using:BookingManagementSystem.Core.Models"
     mc:Ignorable="d"
-    Background="Transparent"
     NavigationCacheMode="Enabled"
     CacheMode="BitmapCache">
     <Page.Resources>
@@ -206,9 +205,7 @@
                                 <StackPanel Spacing="18">
                                     <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
                                     <TextBlock Text="Where you’ll be" FontSize="26" FontWeight="Bold"/>
-                                    <MapControl x:Name="MainMap" ZoomLevel="12" InteractiveControlsVisible="True" 
-                                    Width="Auto" MinHeight="460"
-                                    MapServiceToken="2nuFEi0eKk7LYqZyP3CnciPsaR8TQDyfOYIY0Ai8bFZ1oCFjqGM6JQQJ99AJACYeBjFx5reYAAAgAZMPA7sY"/>
+                                    <WebView2 x:Name="MapWebView2" Source="https://www.google.com/maps" Width="Auto" MinHeight="460"/>
                                 </StackPanel>
                             </Grid>
 
