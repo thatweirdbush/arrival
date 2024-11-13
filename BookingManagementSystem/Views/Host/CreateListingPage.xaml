@@ -38,26 +38,19 @@
             </StackPanel>
         </Grid>
 
-        <Frame x:Name="ContentFrame" Grid.Row="1" />
+        <Frame x:Name="ContentFrame" Grid.Row="1" Margin="0 0 0 -5" />
 
         <Grid x:Name="Footer" Grid.Row="2">
-            <Grid x:Name="DecorationLineGrid" VerticalAlignment="Top" ColumnSpacing="6">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="10"/>
-                <Line Grid.Column="1" Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="10"/>
-                <Line Grid.Column="2" Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="10"/>
-            </Grid>
-            <Button Content="Back" Command="{Binding GoBackwardCommand}" IsEnabled="{Binding CanGoBackward}"
+            <ProgressBar MinHeight="10" VerticalAlignment="Top" Maximum="11"
+                         Value="{Binding CurrentStageIndex, Mode=OneWay}"
+                         Foreground="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" />
+            <Button Content="Back" Command="{Binding GoBackwardCommand}"
                     BorderThickness="0" CornerRadius="8" Height="44" Width="90"
                     Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" 
                     Foreground="{ThemeResource SystemControlBackgroundBaseHighBrush}"
                     FontWeight="SemiBold" FontSize="18"
                     HorizontalAlignment="Left" Margin="42,0,0,0" />
-            <Button Content="Next" Command="{Binding GoForwardCommand}" IsEnabled="{Binding CanGoForward}" 
+            <Button Content="Next" Command="{Binding GoForwardCommand}"
                     BorderThickness="0" CornerRadius="8" Height="44" Width="90"
                     Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" 
                     Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"

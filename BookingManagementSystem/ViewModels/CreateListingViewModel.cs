@@ -8,7 +8,8 @@ namespace BookingManagementSystem.ViewModels;
 
 public partial class CreateListingViewModel : ObservableRecipient
 {
-    private int _currentStageIndex;
+    [ObservableProperty]
+    private int currentStageIndex;
     public readonly ObservableCollection<string> Stages =
     [
         "AboutYourPlacePage",
@@ -26,20 +27,20 @@ public partial class CreateListingViewModel : ObservableRecipient
     ];
     public string CurrentStage
     {
-        get => Stages[_currentStageIndex];
+        get => Stages[CurrentStageIndex];
         set
         {
-            if (Stages[_currentStageIndex] != value)
+            if (Stages[CurrentStageIndex] != value)
             {
-                Stages[_currentStageIndex] = value;
+                Stages[CurrentStageIndex] = value;
                 OnPropertyChanged(nameof(CurrentStage));
             }
         }
     }
     public CreateListingViewModel()
     {
-        _currentStageIndex = 0;
-        CurrentStage = Stages[_currentStageIndex];
+        CurrentStageIndex = 0;
+        CurrentStage = Stages[CurrentStageIndex];
 
         GoForwardCommand = new RelayCommand(GoForward);
         GoBackwardCommand = new RelayCommand(GoBackward);
@@ -56,7 +57,7 @@ public partial class CreateListingViewModel : ObservableRecipient
 
     public void GoForward()
     {
-        if (_currentStageIndex == Stages.Count - 1)
+        if (CurrentStageIndex == Stages.Count - 1)
         {
             // Save listing
             //await SaveListingAsync();
@@ -65,19 +66,17 @@ public partial class CreateListingViewModel : ObservableRecipient
             App.GetService<INavigationService>()?.Frame?.GoBack();
             return;
         }
-        _currentStageIndex++;
-        OnPropertyChanged(nameof(CurrentStage));
+        CurrentStageIndex++;
     }
 
     public void GoBackward()
     {
-        if (_currentStageIndex == 0)
+        if (CurrentStageIndex == 0)
         {
             // Return to Listings page using BackTrack
             App.GetService<INavigationService>()?.Frame?.GoBack();
             return;
         }
-        _currentStageIndex--;
-        OnPropertyChanged(nameof(CurrentStage));
+        CurrentStageIndex--;
     }
 }

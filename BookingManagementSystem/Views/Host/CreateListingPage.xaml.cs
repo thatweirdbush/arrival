@@ -27,7 +27,7 @@ public sealed partial class CreateListingPage : Page
         ViewModel.PropertyChanged += ViewModel_PropertyChanged;
 
         // Set up initial content
-        ContentFrame.Navigate(typeof(AboutYourPlacePage), null, new DrillInNavigationTransitionInfo());
+        ContentFrame.Navigate(typeof(AboutYourPlacePage));
     }
 
     private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
