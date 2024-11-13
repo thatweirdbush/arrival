@@ -9,7 +9,7 @@ namespace BookingManagementSystem.ViewModels;
 public partial class CreateListingViewModel : ObservableRecipient
 {
     private int _currentStageIndex;
-    private readonly ObservableCollection<string> _stages =
+    public readonly ObservableCollection<string> Stages =
     [
         "AboutYourPlacePage",
         "PlaceStructurePage",
@@ -26,12 +26,12 @@ public partial class CreateListingViewModel : ObservableRecipient
     ];
     public string CurrentStage
     {
-        get => _stages[_currentStageIndex];
+        get => Stages[_currentStageIndex];
         set
         {
-            if (_stages[_currentStageIndex] != value)
+            if (Stages[_currentStageIndex] != value)
             {
-                _stages[_currentStageIndex] = value;
+                Stages[_currentStageIndex] = value;
                 OnPropertyChanged(nameof(CurrentStage));
             }
         }
@@ -39,7 +39,7 @@ public partial class CreateListingViewModel : ObservableRecipient
     public CreateListingViewModel()
     {
         _currentStageIndex = 0;
-        CurrentStage = _stages[_currentStageIndex];
+        CurrentStage = Stages[_currentStageIndex];
 
         GoForwardCommand = new RelayCommand(GoForward);
         GoBackwardCommand = new RelayCommand(GoBackward);
@@ -56,7 +56,7 @@ public partial class CreateListingViewModel : ObservableRecipient
 
     public void GoForward()
     {
-        if (_currentStageIndex == _stages.Count - 1)
+        if (_currentStageIndex == Stages.Count - 1)
         {
             // Save listing
             //await SaveListingAsync();

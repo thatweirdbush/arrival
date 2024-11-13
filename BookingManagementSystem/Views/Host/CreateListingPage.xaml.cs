@@ -3,11 +3,13 @@ using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.Views.Host.CreateListingSteps;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Animation;
 
 namespace BookingManagementSystem.Views.Host;
 
 public sealed partial class CreateListingPage : Page
 {
+    private int previousStageIndex = 0;
     public CreateListingViewModel ViewModel
     {
         get;
@@ -25,14 +27,27 @@ public sealed partial class CreateListingPage : Page
         ViewModel.PropertyChanged += ViewModel_PropertyChanged;
 
         // Set up initial content
-        ContentFrame.Navigate(typeof(AboutYourPlacePage));
+        ContentFrame.Navigate(typeof(AboutYourPlacePage), null, new DrillInNavigationTransitionInfo());
     }
 
     private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(ViewModel.CurrentStage))
         {
-            ContentFrame.Navigate(Type.GetType($"BookingManagementSystem.Views.Host.CreateListingSteps.{ViewModel.CurrentStage}"));
+            var pageType = Type.GetType($"BookingManagementSystem.Views.Host.CreateListingSteps.{ViewModel.CurrentStage}");
+            var currentStageIndex = ViewModel.Stages.IndexOf(ViewModel.CurrentStage);
+
+            var slideNavigationTransitionEffect =
+                currentStageIndex - previousStageIndex > 0 ?
+                    SlideNavigationTransitionEffect.FromRight :
+                    SlideNavigationTransitionEffect.FromLeft;
+
+            ContentFrame.Navigate(pageType, null, new SlideNavigationTransitionInfo()
+            {
+                Effect = slideNavigationTransitionEffect
+            });
+
+            previousStageIndex = currentStageIndex;
         }
     }
 
