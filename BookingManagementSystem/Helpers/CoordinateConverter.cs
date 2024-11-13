@@ -12,7 +12,7 @@ public class CoordinateConverter : IValueConverter
     {
         if (value is double coordinate)
         {
-            // Kiểm tra xem có phải vĩ độ hay kinh độ (parameter là "latitude" hoặc "longitude")
+            // Check if view is latitude or longitude (parameter is "latitude" or "longitude")
             var isLatitude = parameter != null && parameter.ToString() == "latitude";
             return ConvertToDms(coordinate, isLatitude);
         }
@@ -21,37 +21,36 @@ public class CoordinateConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
     {
-        // Không cần thiết, vì chỉ chuyển đổi một chiều từ Decimal sang DMS
         throw new NotImplementedException();
     }
 
     private string ConvertToDms(double degree, bool isLatitude)
     {
-        int d = (int)degree;  // Độ
-        int m = (int)((Math.Abs(degree) - Math.Abs(d)) * 60);  // Phút
-        double s = (Math.Abs(degree) - Math.Abs(d) - m / 60.0) * 3600;  // Giây
+        var d = (int)degree;  // Degree
+        var m = (int)((Math.Abs(degree) - Math.Abs(d)) * 60);  // Minute
+        var s = (Math.Abs(degree) - Math.Abs(d) - m / 60.0) * 3600;  // Second
 
-        // Làm tròn giây đến 1 chữ số thập phân
+        // Round seconds to 1 decimal place
         s = Math.Round(s, 1);
 
-        // Kiểm tra lại giây nếu quá 60
+        // Check seconds again if over 60
         if (s >= 60)
         {
-            m += (int)(s / 60);  // Thêm vào phút
-            s = s % 60;          // Cập nhật lại giây
+            m += (int)(s / 60);  // Add to minute
+            s %= 60;          // Update second
         }
 
-        string direction = "";
+        string direction;
         if (isLatitude)
         {
-            direction = degree >= 0 ? "N" : "S";  // Vĩ độ: Bắc (N) hoặc Nam (S)
+            direction = degree >= 0 ? "N" : "S";  // Latitude: North (N) or South (S)
         }
         else
         {
-            direction = degree >= 0 ? "E" : "W";  // Kinh độ: Đông (E) hoặc Tây (W)
+            direction = degree >= 0 ? "E" : "W";  // Longitude: East (E) or West (W)
         }
 
-        // Trả về kết quả dưới định dạng DMS
+        // Return result in DMS format
         return $"{Math.Abs(d)}°{m}'{s}\"{direction}";
     }
 }
