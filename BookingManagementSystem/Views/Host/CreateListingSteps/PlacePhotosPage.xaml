@@ -19,7 +19,7 @@
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
     </Page.Resources>
 
-    <Grid x:Name="ContentArea" MaxWidth="640" Padding="0 0 0 40">
+    <Grid x:Name="ContentArea" MaxWidth="640" VerticalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>

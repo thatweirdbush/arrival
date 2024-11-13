@@ -52,6 +52,7 @@
 	  <Content Remove="Assets\common-icons\calendar.svg" />
 	  <Content Remove="Assets\common-icons\pencil.svg" />
 	  <Content Remove="Assets\common-icons\person-greeting.svg" />
+	  <Content Remove="Assets\common-icons\pinned-location.png" />
 	  <Content Remove="Assets\destination-type-symbol-icons\all-icon.png" />
 	  <Content Remove="Assets\destination-type-symbol-icons\amazing-pools.jpg" />
 	  <Content Remove="Assets\destination-type-symbol-icons\amazing-views.jpg" />
@@ -435,6 +436,12 @@
 		<Folder Include="Views\Client\" />
 		<Folder Include="Views\Host\CreateListingSteps\" />
 		<Folder Include="Views\Payment\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Assets\common-icons\pinned-location.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup>
