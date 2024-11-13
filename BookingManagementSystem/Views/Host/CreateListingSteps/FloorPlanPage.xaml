@@ -1,0 +1,52 @@
+﻿<Page
+    x:Class="BookingManagementSystem.Views.Host.CreateListingSteps.FloorPlanPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helper="using:BookingManagementSystem.Helpers"
+    xmlns:models="using:BookingManagementSystem.Core.Models"
+    xmlns:vm="using:BookingManagementSystem.ViewModels"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled"
+    CacheMode="BitmapCache">
+
+    <ScrollView>
+        <Grid x:Name="ContentArea" VerticalAlignment="Center" MaxWidth="640" Padding="0 0 0 40">
+            <Grid RowSpacing="48">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel x:Name="TitleHeaderPanel" MaxWidth="640" Spacing="8">
+                    <TextBlock Text="Share some basics about your place" Style="{ThemeResource TitleTextBlockStyle}"/>
+                    <TextBlock Text="You'll add more details later, such as bed types." Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Spacing="24">
+                    <Grid>
+                        <TextBlock Text="Guests" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Normal" VerticalAlignment="Center"/>
+                        <NumberBox x:Name="GuestsNumberBox" HorizontalAlignment="Right" Value="2" SpinButtonPlacementMode="Inline"/>
+                    </Grid>
+                    <Line Stroke="Gray" X1="0" Y1="0" X2="1000" Y2="0"/>
+                    <Grid>
+                        <TextBlock Text="Bedrooms" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Normal" VerticalAlignment="Center"/>
+                        <NumberBox x:Name="BedroomsNumberBox" HorizontalAlignment="Right" Value="2" SpinButtonPlacementMode="Inline"/>
+                    </Grid>
+                    <Line Stroke="Gray" X1="0" Y1="0" X2="1000" Y2="0"/>
+                    <Grid>
+                        <TextBlock Text="Beds" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Normal" VerticalAlignment="Center"/>
+                        <NumberBox x:Name="BedsNumberBox" HorizontalAlignment="Right" Value="2" SpinButtonPlacementMode="Inline"/>
+                    </Grid>
+                    <Line Stroke="Gray" X1="0" Y1="0" X2="1000" Y2="0"/>
+                    <Grid>
+                        <TextBlock Text="Bathrooms" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Normal" VerticalAlignment="Center"/>
+                        <NumberBox x:Name="BathroomsNumberBox" HorizontalAlignment="Right" Value="2" SpinButtonPlacementMode="Inline"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </ScrollView>
+</Page>

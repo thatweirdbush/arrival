@@ -1,0 +1,52 @@
+﻿<Page
+    x:Class="BookingManagementSystem.Views.Host.CreateListingSteps.PlaceLocationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helper="using:BookingManagementSystem.Helpers"
+    xmlns:models="using:BookingManagementSystem.Core.Models"
+    xmlns:vm="using:BookingManagementSystem.ViewModels"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled"
+    CacheMode="BitmapCache">
+
+    <ScrollView>
+        <Grid x:Name="ContentArea" VerticalAlignment="Center" MaxWidth="640" Padding="0 0 0 40">
+            <Grid RowSpacing="32">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel x:Name="TitleHeaderPanel" MaxWidth="640" Spacing="8" HorizontalAlignment="Stretch">
+                    <TextBlock Text="Where's your place located?" Style="{ThemeResource TitleTextBlockStyle}"/>
+                    <TextBlock Text="Your address is only shared with guests after they’ve made a reservation." Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
+                </StackPanel>
+                <Grid Grid.Row="1" CornerRadius="12">
+                    <WebView2 x:Name="MyWebView2" Height="480" Source="https://www.google.com/maps" />
+                    <Image Height="50" Source="/Assets/common-icons/pinned-location.png"/>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel x:Name="DescriptionHeaderPanel" MaxWidth="640" Spacing="8" Margin="0 0 0 32" HorizontalAlignment="Stretch">
+                        <TextBlock Text="Confirm your address" Style="{ThemeResource TitleTextBlockStyle}"/>
+                        <TextBlock Text="It would be helpful if the address is more detailed." Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
+                    </StackPanel>
+                    <StackPanel x:Name="DescriptionBody" Grid.Row="1" Spacing="12">
+                        <TextBox FontSize="20" Padding="18" CornerRadius="8" Height="100" TextWrapping="Wrap" BorderBrush="{ThemeResource AcrylicInAppFillColorDefaultInverseBrush}"/>
+                        <TextBlock  Style="{ThemeResource BaseTextBlockStyle}" Foreground="DimGray">
+                        <Run Text="0"/>/250
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </ScrollView>
+</Page>

@@ -16,12 +16,14 @@ using BookingManagementSystem.ViewModels.Account;
 using BookingManagementSystem.ViewModels.Administrator;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.ViewModels.Host;
+using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 using BookingManagementSystem.ViewModels.Payment;
 using BookingManagementSystem.Views;
 using BookingManagementSystem.Views.Account;
 using BookingManagementSystem.Views.Administrator;
 using BookingManagementSystem.Views.Client;
 using BookingManagementSystem.Views.Host;
+using BookingManagementSystem.Views.Host.CreateListingSteps;
 using BookingManagementSystem.Views.Payment;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -105,8 +107,33 @@ public partial class App : Application
             services.AddSingleton<IRepository<User>, UserRepository>();
             services.AddSingleton<IRepository<Review>, ReviewRepository>();
             services.AddSingleton<IRepository<Voucher>, VoucherRepository>();
+            services.AddSingleton<IRepository<PropertyTypeIcon>, PropertyTypeIconRepository>();
 
             // Views and ViewModels
+            services.AddTransient<FloorPlanViewModel>();
+            services.AddTransient<FloorPlanPage>();
+            services.AddTransient<PlaceLocationViewModel>();
+            services.AddTransient<PlaceLocationPage>();
+            services.AddTransient<PlaceDescriptionViewModel>();
+            services.AddTransient<PlaceDescriptionPage>();
+            services.AddTransient<FinishSetupViewModel>();
+            services.AddTransient<FinishSetupPage>();
+            services.AddTransient<PublishCelebrationViewModel>();
+            services.AddTransient<PublishCelebrationPage>();
+            services.AddTransient<ReviewListingViewModel>();
+            services.AddTransient<ReviewListingPage>();
+            services.AddTransient<SetPriceViewModel>();
+            services.AddTransient<SetPricePage>();
+            services.AddTransient<PlacePhotosViewModel>();
+            services.AddTransient<PlacePhotosPage>();
+            services.AddTransient<AmenitiesViewModel>();
+            services.AddTransient<AmenitiesPage>();
+            services.AddTransient<StandOutViewModel>();
+            services.AddTransient<StandOutPage>();
+            services.AddTransient<PlaceStructureViewModel>();
+            services.AddTransient<PlaceStructurePage>();
+            services.AddTransient<AboutYourPlaceViewModel>();
+            services.AddTransient<AboutYourPlacePage>();
             services.AddTransient<CreateListingViewModel>();
             services.AddTransient<CreateListingPage>();
             services.AddTransient<ReservationsViewModel>();

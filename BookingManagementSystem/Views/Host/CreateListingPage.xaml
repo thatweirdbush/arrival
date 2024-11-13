@@ -4,9 +4,65 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:helper="using:BookingManagementSystem.Helpers"
+    xmlns:models="using:BookingManagementSystem.Core.Models"
+    xmlns:vm="using:BookingManagementSystem.ViewModels"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    mc:Ignorable="d"
+    CacheMode="BitmapCache">
 
-    <Grid x:Name="ContentArea">
-        
+    <Page.DataContext>
+        <vm:CreateListingViewModel />
+    </Page.DataContext>
+
+    <Grid x:Name="ContentArea" Background="{ThemeResource LayerOnMicaBaseAltFillColorTertiary}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="Header" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+            <Image Width="36" Height="36" Source="/Assets/three-body-a.png" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="60 0 0 0"/>
+            <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,42,0">
+                <Button x:Name="QuestionButton" Content="Questions?"
+                        Click="QuestionButton_Click" 
+                        BorderThickness="1" CornerRadius="20" Height="44" Padding="14,8,14,8"
+                        FontWeight="SemiBold" FontSize="16" />
+                <Button x:Name="SaveAndExitButton" Content="Save &amp; exit" 
+                        Click="SaveAndExitButton_Click"
+                        BorderThickness="1" CornerRadius="20" Height="44" Padding="14,8,14,8"
+                        FontWeight="SemiBold" FontSize="16" />
+            </StackPanel>
+        </Grid>
+
+        <Frame x:Name="ContentFrame" Grid.Row="1" />
+
+        <Grid x:Name="Footer" Grid.Row="2">
+            <Grid x:Name="DecorationLineGrid" VerticalAlignment="Top" ColumnSpacing="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="10"/>
+                <Line Grid.Column="1" Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="10"/>
+                <Line Grid.Column="2" Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="10"/>
+            </Grid>
+            <Button Content="Back" Command="{Binding GoBackwardCommand}" IsEnabled="{Binding CanGoBackward}"
+                    BorderThickness="0" CornerRadius="8" Height="44" Width="90"
+                    Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" 
+                    Foreground="{ThemeResource SystemControlBackgroundBaseHighBrush}"
+                    FontWeight="SemiBold" FontSize="18"
+                    HorizontalAlignment="Left" Margin="42,0,0,0" />
+            <Button Content="Next" Command="{Binding GoForwardCommand}" IsEnabled="{Binding CanGoForward}" 
+                    BorderThickness="0" CornerRadius="8" Height="44" Width="90"
+                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" 
+                    Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                    FontWeight="SemiBold" FontSize="18"
+                    HorizontalAlignment="Right" Margin="0,0,42,0" />
+        </Grid>
     </Grid>
 </Page>
