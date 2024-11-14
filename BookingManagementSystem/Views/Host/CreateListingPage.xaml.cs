@@ -20,14 +20,11 @@ public sealed partial class CreateListingPage : Page
         ViewModel = App.GetService<CreateListingViewModel>();
         InitializeComponent();
 
-        // Set up DataContext for binding from XAML to easily access ViewModel
-        DataContext = ViewModel;
-
         // Subscribe to property change notifications
         ViewModel.PropertyChanged += ViewModel_PropertyChanged;
 
         // Set up initial content
-        ContentFrame.Navigate(typeof(AboutYourPlacePage));
+        ContentFrame.Navigate(typeof(AboutYourPlacePage), ViewModel.PropertyOnCreating);
     }
 
     private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -42,7 +39,7 @@ public sealed partial class CreateListingPage : Page
                     SlideNavigationTransitionEffect.FromRight :
                     SlideNavigationTransitionEffect.FromLeft;
 
-            ContentFrame.Navigate(pageType, null, new SlideNavigationTransitionInfo()
+            ContentFrame.Navigate(pageType, ViewModel.PropertyOnCreating, new SlideNavigationTransitionInfo()
             {
                 Effect = slideNavigationTransitionEffect
             });
@@ -63,10 +60,10 @@ public sealed partial class CreateListingPage : Page
             CloseButtonText = "Cancel"
         };
 
-        dialog.PrimaryButtonClick += (dialogSender, dialogArgs) =>
+        dialog.PrimaryButtonClick += async (dialogSender, dialogArgs) =>
         {
             // Save listing
-            //await ViewModel.SaveListingAsync();
+            await ViewModel.SaveListingAsync();
 
             // Return to Listings page using BackTrack
             App.GetService<INavigationService>()?.Frame?.Navigate(typeof(ListingPage));

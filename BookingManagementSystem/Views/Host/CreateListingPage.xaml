@@ -13,10 +13,6 @@
     mc:Ignorable="d"
     CacheMode="BitmapCache">
 
-    <Page.DataContext>
-        <vm:CreateListingViewModel />
-    </Page.DataContext>
-
     <Grid x:Name="ContentArea" Background="{ThemeResource LayerOnMicaBaseAltFillColorTertiary}">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
@@ -42,15 +38,15 @@
 
         <Grid x:Name="Footer" Grid.Row="2">
             <ProgressBar MinHeight="10" VerticalAlignment="Top" Maximum="11"
-                         Value="{Binding CurrentStageIndex, Mode=OneWay}"
+                         Value="{x:Bind ViewModel.CurrentStageIndex, Mode=OneWay}"
                          Foreground="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" />
-            <Button Content="Back" Command="{Binding GoBackwardCommand}"
+            <Button Content="Back" Command="{x:Bind ViewModel.GoBackwardCommand}"
                     BorderThickness="0" CornerRadius="8" Height="44" Width="90"
                     Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" 
                     Foreground="{ThemeResource SystemControlBackgroundBaseHighBrush}"
                     FontWeight="SemiBold" FontSize="18"
                     HorizontalAlignment="Left" Margin="42,0,0,0" />
-            <Button Content="Next" Command="{Binding GoForwardCommand}"
+            <Button Content="Next" Command="{x:Bind ViewModel.GoForwardCommand}"
                     BorderThickness="0" CornerRadius="8" Height="44" Width="90"
                     Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" 
                     Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"

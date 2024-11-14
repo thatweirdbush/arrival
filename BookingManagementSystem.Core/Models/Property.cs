@@ -70,13 +70,25 @@ public enum PropertyRatingStatus
     VeryGood, // 3.1-4 stars
     Excellent // 4.1-5 stars
 }
+
+public enum PropertyStatus
+{
+    Listed,
+    Unlisted,
+    InProgress,
+}
+
 public class Property : INotifyPropertyChanged
 {
+    // Define constants
+    public const string DEFAULT_PROPERTY_NAME = "Your House listing";
+    public const string DEFAULT_PROPERTY_LOCATION = "Your House location";
+
     // Define XAML Image's Path Declaration
     public static string MS_APPX = "ms-appx:///Assets/property-images/";
 
     // Private field for ImagePath
-    private ICollection<string> _imagePaths;
+    private ICollection<string> _imagePaths = [];
 
     public event PropertyChangedEventHandler PropertyChanged;
     public override string ToString() => $"{Name} ({Location}), {Description}, " +
@@ -89,7 +101,7 @@ public class Property : INotifyPropertyChanged
     public string Name
     {
         get; set;
-    }
+    } = DEFAULT_PROPERTY_NAME;
     public PropertyType Type
     {
         get; set;
@@ -98,7 +110,10 @@ public class Property : INotifyPropertyChanged
     {
         get; set;
     }
-
+    public int HostId
+    {
+        get; set;
+    } // Each property belongs to a host
     public ICollection<DestinationType> DestinationTypes
     {
         get; set;
@@ -116,7 +131,7 @@ public class Property : INotifyPropertyChanged
     public string Location
     {
         get; set;
-    }
+    } = DEFAULT_PROPERTY_LOCATION;
     public int Capacity
     {
         get; set;
@@ -132,16 +147,19 @@ public class Property : INotifyPropertyChanged
     public ICollection<Amenity> Amenities
     {
         get; set;
-    } // E.g., WiFi, Pool, Parking
+    } = []; // E.g., WiFi, Pool, Parking
     public ICollection<PropertyPolicy> Policies
     {
         get; set;
-    } // E.g., No smoking, No pets, No parties
-
+    } = []; // E.g., No smoking, No pets, No parties
     public bool IsAvailable
     {
         get; set;
     } = true;
+    public PropertyStatus Status
+    {
+        get; set;
+    } = PropertyStatus.Listed;
     public DateTime CreatedAt
     {
         get; set;
@@ -150,7 +168,7 @@ public class Property : INotifyPropertyChanged
     {
         get; set;
     }
-    // Add properties for geographic coordinates using GeoPoint
+    // Add properties for geographic coordinates using GeoPoint or WebView2 Url query string
     public double Latitude
     {
         get; set;

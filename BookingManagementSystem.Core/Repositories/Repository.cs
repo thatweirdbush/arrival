@@ -25,7 +25,7 @@ public class Repository<T> : IRepository<T> where T : class
 
     public async Task AddAsync(T entity)
     {
-        _entities.Add(entity);
+        _entities.Insert(0, entity);
         await Task.CompletedTask;
     }
 
