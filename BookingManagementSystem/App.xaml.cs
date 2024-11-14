@@ -86,9 +86,11 @@ public partial class App : Application
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Core Services
-            //services.AddSingleton<ISampleDataService, SampleDataService>();
             services.AddSingleton<IDao, MockDao>();
             services.AddSingleton<IFileService, FileService>();
+
+            // Bussiness Services
+            services.AddSingleton<IPropertyService, PropertyService>();
 
             // Data Services
             // TODO: Change to AddScoped when using a real data service

@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Contracts.Repositories;
+using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -11,13 +12,15 @@ namespace BookingManagementSystem.ViewModels;
 public partial class CreateListingViewModel : ObservableRecipient
 {
     // Stored property for the Property model through each step
-    public Property PropertyOnCreating = new()
+    private readonly IPropertyService _propertyService;
+    public Property PropertyOnCreating
+    {
+        get; set;
+    } = new()
     {
         Id = new Random().Next(1000, 9999),
         Status = PropertyStatus.InProgress,
     };
-
-    private readonly IRepository<Property> _propertyRepository;
 
     [ObservableProperty]
     private int currentStageIndex;
@@ -48,9 +51,9 @@ public partial class CreateListingViewModel : ObservableRecipient
             }
         }
     }
-    public CreateListingViewModel(IRepository<Property> propertyRepository)
+    public CreateListingViewModel(IPropertyService propertyService)
     {
-        _propertyRepository = propertyRepository;
+        _propertyService = propertyService;
 
         CurrentStageIndex = 0;
         CurrentStage = Stages[CurrentStageIndex];
@@ -72,8 +75,8 @@ public partial class CreateListingViewModel : ObservableRecipient
     {
         if (CurrentStageIndex == Stages.Count - 1)
         {
-            // Save listing
-            await SaveListingAsync();
+            // Save the current listing in each step
+            await SaveCurrentStepAsync();
 
             // Return to Listings page using BackTrack
             App.GetService<INavigationService>()?.Frame?.GoBack();
@@ -93,8 +96,19 @@ public partial class CreateListingViewModel : ObservableRecipient
         CurrentStageIndex--;
     }
 
-    public async Task SaveListingAsync()
+    public async Task SaveCurrentStepAsync()
     {
-        await _propertyRepository.AddAsync(PropertyOnCreating);
+        await _propertyService.SavePropertyAsync(PropertyOnCreating);
+    }
+
+    public async Task LoadPropertyInProgressAsync(int propertyId)
+    {
+        PropertyOnCreating = await _propertyService.GetPropertyInProgressAsync(propertyId)
+            ?? new Property()
+            {
+                Id = new Random().Next(1000, 9999),
+                Status = PropertyStatus.InProgress,
+            };
+        OnPropertyChanged(nameof(PropertyOnCreating));
     }
 }

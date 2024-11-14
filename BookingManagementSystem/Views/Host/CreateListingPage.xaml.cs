@@ -64,7 +64,7 @@ public sealed partial class CreateListingPage : Page
         dialog.PrimaryButtonClick += async (dialogSender, dialogArgs) =>
         {
             // Save listing
-            await ViewModel.SaveListingAsync();
+            await ViewModel.SaveCurrentStepAsync();
 
             // Return to Listings page using BackTrack
             App.GetService<INavigationService>()?.Frame?.Navigate(typeof(ListingPage));
