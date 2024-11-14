@@ -23,15 +23,6 @@ public sealed partial class PlaceLocationPage : Page
         _ = InitializeWebView2Async();
     }
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        if (e.Parameter is Property property)
-        {
-            ViewModel.PropertyOnCreating = property;
-        }
-        base.OnNavigatedTo(e);
-    }
-
     private async Task InitializeWebView2Async()
     {
         // Ensure WebView2 is initialized

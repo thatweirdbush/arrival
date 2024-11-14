@@ -32,8 +32,8 @@ public sealed partial class CreateListingPage : Page
         if (e.PropertyName == nameof(ViewModel.CurrentStep))
         {
             // Get the page type based on the current ViewModel name
-            var currentStepViewModel = ViewModel.CurrentStep.GetType().Name;
-            if (ViewModel.ViewModelToPageDictionary.TryGetValue(currentStepViewModel, out var pageType))
+            var currentStepViewModel = ViewModel.CurrentStep;
+            if (ViewModel.ViewModelToPageDictionary.TryGetValue(currentStepViewModel.GetType().Name, out var pageType))
             {
                 var currentStepIndex = ViewModel.CurrentStepIndex;
                 var slideNavigationTransitionEffect =
@@ -41,7 +41,7 @@ public sealed partial class CreateListingPage : Page
                         SlideNavigationTransitionEffect.FromRight :
                         SlideNavigationTransitionEffect.FromLeft;
 
-                ContentFrame.Navigate(pageType, null, new SlideNavigationTransitionInfo()
+                ContentFrame.Navigate(pageType, currentStepViewModel, new SlideNavigationTransitionInfo()
                 {
                     Effect = slideNavigationTransitionEffect
                 });

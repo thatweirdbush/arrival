@@ -8,21 +8,31 @@ namespace BookingManagementSystem.Views.Host.CreateListingSteps;
 
 public sealed partial class PlaceStructurePage : Page
 {
-    public PlaceStructureViewModel ViewModel
+    public PlaceStructureViewModel? ViewModel
     {
-        get;
+        get; set;
     }
 
     public PlaceStructurePage()
     {
-        ViewModel = App.GetService<PlaceStructureViewModel>();
         InitializeComponent();
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        if (e.Parameter is PlaceStructureViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+        base.OnNavigatedTo(e);
     }
 
     private void PropertyTypeGridView_ItemClick(object sender, ItemClickEventArgs e)
     {
-        // Save to ViewModel.SelectedType
-        ViewModel.SelectedType = ((PropertyTypeIcon)e.ClickedItem).PropertyType;
-        ViewModel.PropertyOnCreating.Type = ViewModel.SelectedType;
+        if (ViewModel != null && e.ClickedItem is PropertyTypeIcon propertyTypeIcon)
+        {
+            ViewModel.SelectedType = propertyTypeIcon.PropertyType;
+            ViewModel.PropertyOnCreating.Type = ViewModel.SelectedType;
+        }
     }
 }

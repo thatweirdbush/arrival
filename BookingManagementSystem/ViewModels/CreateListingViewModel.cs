@@ -33,21 +33,21 @@ public partial class CreateListingViewModel : ObservableRecipient
         _propertyService = propertyService;
         _propertyTypeIconRepository = propertyTypeIconRepository;
 
-        Stages =
-        [
-            new AboutYourPlaceViewModel(),
-            new PlaceStructureViewModel(_propertyService, _propertyTypeIconRepository),
-            //new PlaceLocationViewModel(),
-            //new FloorPlanViewModel(),
-            //new StandOutViewModel(),
-            //new AmenitiesViewModel(),
-            //new PlacePhotosViewModel(),
-            //new PlaceDescriptionViewModel(),
-            //new FinishSetupViewModel(),
-            //new SetPriceViewModel(),
-            //new ReviewListingViewModel(),
-            //new PublishCelebrationViewModel()
-        ];
+        // Using Dependency Injection to get the ViewModel instances
+        Stages = [
+            App.GetService<AboutYourPlaceViewModel>(),
+            App.GetService<PlaceStructureViewModel>(),
+            App.GetService<PlaceLocationViewModel>(),
+            //App.GetService<FloorPlanViewModel>(),
+            //App.GetService<StandOutViewModel>(),
+            //App.GetService<AmenitiesViewModel>(),
+            //App.GetService<PlacePhotosViewModel>(),
+            //App.GetService<PlaceDescriptionViewModel>(),
+            //App.GetService<FinishSetupViewModel>(),
+            //App.GetService<SetPriceViewModel>(),
+            //App.GetService<ReviewListingViewModel>(),
+            //App.GetService<PublishCelebrationViewModel>()
+            ];
 
         ViewModelToPageDictionary = new Dictionary<string, Type>
         {
