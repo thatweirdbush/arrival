@@ -16,11 +16,8 @@ public partial class PlaceLocationViewModel : BaseStepViewModel
 
     public void SetPropertyCoordinates(double latitude, double longitude)
     {
-        if (PropertyOnCreating != null)
-        {
-            PropertyOnCreating.Latitude = latitude;
-            PropertyOnCreating.Longitude = longitude;
-        }
+        PropertyOnCreating.Latitude = latitude;
+        PropertyOnCreating.Longitude = longitude;
     }
 
     public override void ValidateStep() 

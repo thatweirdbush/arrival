@@ -11,23 +11,21 @@ namespace BookingManagementSystem.Views.Host.CreateListingSteps;
 
 public sealed partial class FloorPlanPage : Page
 {
-    public FloorPlanViewModel ViewModel
+    public FloorPlanViewModel? ViewModel
     {
-        get;
+        get; set;
     }
 
     public FloorPlanPage()
     {
-        ViewModel = App.GetService<FloorPlanViewModel>();
         InitializeComponent();
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        if (e.Parameter is Property property)
+        if (e.Parameter is FloorPlanViewModel viewModel)
         {
-            ViewModel.PropertyOnCreating = property;
-            ViewModel.InitializePropertyFloorPlans();
+            ViewModel = viewModel;
         }
         base.OnNavigatedTo(e);
     }
@@ -82,35 +80,5 @@ public sealed partial class FloorPlanPage : Page
     private void GuestsNumberBox_PreviewKeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
     {
         ParseDigitKeyDown(e);
-    }
-
-    private void BedroomsNumberBox_LostFocus(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        // Update floor plan if a digit key is pressed
-        var BedroomPlan = ViewModel.PropertyOnCreating?.Amenities.FirstOrDefault(x => x.Name == "Bedroom");
-        if (BedroomPlan != null && ViewModel.BedroomPlan != null)
-        {
-            BedroomPlan.Quantity = ViewModel.BedroomPlan.Quantity;
-        }
-    }
-
-    private void BedsNumberBox_LostFocus(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        // Update floor plan if a digit key is pressed
-        var BedPlan = ViewModel.PropertyOnCreating?.Amenities.FirstOrDefault(x => x.Name == "Bed");
-        if (BedPlan != null && ViewModel.BedPlan != null)
-        {
-            BedPlan.Quantity = ViewModel.BedPlan.Quantity;
-        }
-    }
-
-    private void BathroomsNumberBox_LostFocus(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        // Update floor plan if a digit key is pressed
-        var BathroomPlan = ViewModel.PropertyOnCreating?.Amenities.FirstOrDefault(x => x.Name == "Bathroom");
-        if (BathroomPlan != null && ViewModel.BathoomPlan != null)
-        {
-            BathroomPlan.Quantity = ViewModel.BathoomPlan.Quantity;
-        }
     }
 }

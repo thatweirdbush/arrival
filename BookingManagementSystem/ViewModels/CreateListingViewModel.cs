@@ -38,7 +38,7 @@ public partial class CreateListingViewModel : ObservableRecipient
             App.GetService<AboutYourPlaceViewModel>(),
             App.GetService<PlaceStructureViewModel>(),
             App.GetService<PlaceLocationViewModel>(),
-            //App.GetService<FloorPlanViewModel>(),
+            App.GetService<FloorPlanViewModel>(),
             //App.GetService<StandOutViewModel>(),
             //App.GetService<AmenitiesViewModel>(),
             //App.GetService<PlacePhotosViewModel>(),
