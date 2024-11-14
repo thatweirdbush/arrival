@@ -33,6 +33,10 @@ public partial class PlaceStructureViewModel : BaseStepViewModel
 
     public override void ValidateStep()
     {
-        IsStepCompleted = SelectedType != null;
+        if (SelectedType != null)
+        {
+            PropertyOnCreating.Type = SelectedType;
+            IsStepCompleted = true;
+        }
     }
 }

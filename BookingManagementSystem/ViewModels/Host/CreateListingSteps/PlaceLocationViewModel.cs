@@ -9,19 +9,29 @@ public partial class PlaceLocationViewModel : BaseStepViewModel
 {
     private readonly IPropertyService _propertyService;
     public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
+    public double CurrentLatitude { get; set; } = 0.0;
+    public double CurrentLongitude { get; set; } = 0.0;
+    public string CurrentLocation { get; set; } = Property.DEFAULT_PROPERTY_LOCATION;
     public PlaceLocationViewModel(IPropertyService propertyService)
     {
         _propertyService = propertyService;
     }
 
-    public void SetPropertyCoordinates(double latitude, double longitude)
+    public void SetPropertyLocation()
     {
-        PropertyOnCreating.Latitude = latitude;
-        PropertyOnCreating.Longitude = longitude;
+        PropertyOnCreating.Latitude = CurrentLatitude;
+        PropertyOnCreating.Longitude = CurrentLongitude;
+        PropertyOnCreating.Location = CurrentLocation;
     }
 
-    public override void ValidateStep() 
-        => IsStepCompleted = PropertyOnCreating.Latitude != 0 
-        && PropertyOnCreating.Longitude != 0
-        && !string.IsNullOrEmpty(PropertyOnCreating.Location);
+    public override void ValidateStep()
+    {
+        SetPropertyLocation();
+        if (PropertyOnCreating.Latitude != 0.0 
+            && PropertyOnCreating.Longitude != 0.0 
+            && !string.IsNullOrEmpty(PropertyOnCreating.Location))
+        {
+            IsStepCompleted = true;
+        }
+    }
 }

@@ -43,7 +43,7 @@
                     </StackPanel>
                     <StackPanel x:Name="DescriptionBody" Grid.Row="1" Spacing="12">
                         <TextBox x:Name="LocationTextBox" FontSize="20" Padding="18" CornerRadius="8" Height="100" TextWrapping="Wrap" 
-                                 Text="{x:Bind ViewModel.PropertyOnCreating.Location, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                 Text="{x:Bind ViewModel.CurrentLocation, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                  BorderBrush="{ThemeResource AcrylicInAppFillColorDefaultInverseBrush}"/>
                         <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Foreground="DimGray">
                             <Run Text="0"/>/250

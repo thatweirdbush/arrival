@@ -11,7 +11,7 @@ public abstract class BaseStepViewModel : ObservableObject
     public bool IsStepCompleted
     {
         get; protected set;
-    }
+    } = false;
 
     public abstract void ValidateStep();
 }

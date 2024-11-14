@@ -32,7 +32,6 @@ public sealed partial class PlaceStructurePage : Page
         if (ViewModel != null && e.ClickedItem is PropertyTypeIcon propertyTypeIcon)
         {
             ViewModel.SelectedType = propertyTypeIcon.PropertyType;
-            ViewModel.PropertyOnCreating.Type = ViewModel.SelectedType;
         }
     }
 }

@@ -8,19 +8,24 @@ namespace BookingManagementSystem.Views.Host.CreateListingSteps;
 
 public sealed partial class PlaceLocationPage : Page
 {
-    private string _currentURL = string.Empty;
-    private double _currentLatitude = 0.0;
-    private double _currentLongitude = 0.0;
-    public PlaceLocationViewModel ViewModel
+    public PlaceLocationViewModel? ViewModel
     {
-        get;
+        get; set;
     }
 
     public PlaceLocationPage()
     {
-        ViewModel = App.GetService<PlaceLocationViewModel>();
         InitializeComponent();
         _ = InitializeWebView2Async();
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        if (e.Parameter is PlaceLocationViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+        base.OnNavigatedTo(e);
     }
 
     private async Task InitializeWebView2Async()
@@ -35,17 +40,18 @@ public sealed partial class PlaceLocationPage : Page
     private void CoreWebView2_SourceChanged(Microsoft.Web.WebView2.Core.CoreWebView2 sender, object args)
     {
         // Get current URL from WebView2
-        _currentURL = sender.Source;
-        ParseCoordinatesFromUrl(ref _currentLatitude, ref _currentLongitude);
-
-        // Save to ViewModel
-        ViewModel.SetPropertyCoordinates(_currentLatitude, _currentLongitude);
+        var currentURL = sender.Source;
+        ParseCoordinatesFromUrl(currentURL);
     }
 
-    private void ParseCoordinatesFromUrl(ref double CurrentLatitude, ref double CurrentLongitude)
+    private void ParseCoordinatesFromUrl(string url)
     {
+        if (ViewModel == null)
+        {
+            return;
+        }
         // Split string at '@' character
-        var splitUrl = _currentURL.Split('@');
+        var splitUrl = url.Split('@');
 
         if (splitUrl.Length > 1)
         {
@@ -55,8 +61,8 @@ public sealed partial class PlaceLocationPage : Page
 
             if (latLong.Length >= 2)
             {
-                CurrentLatitude = double.Parse(latLong[0]);
-                CurrentLongitude = double.Parse(latLong[1]);
+                ViewModel.CurrentLatitude = double.Parse(latLong[0]);
+                ViewModel.CurrentLongitude = double.Parse(latLong[1]);
             }
         }
     }
