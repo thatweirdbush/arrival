@@ -128,7 +128,8 @@
                                                 <TextBlock Text="{x:Bind Location}" Style="{ThemeResource DetailBodyStyle}" MaxLines="1"/>
                                                 <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Foreground="Gray" VerticalAlignment="Bottom" Margin="0 2 0 0">  
                                                     <Run/>Created at
-                                                    <Run Text="{x:Bind CreatedAt}"/>
+                                                    <Run Text="{x:Bind CreatedAt}"/> - 
+                                                    <Run Text="{x:Bind Amenities.Count}"/>
                                                 </TextBlock>
                                             </StackPanel>
                                             <TextBlock Text="{x:Bind PricePerNight, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}"

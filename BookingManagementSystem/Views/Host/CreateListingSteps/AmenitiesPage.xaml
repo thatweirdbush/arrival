@@ -32,7 +32,9 @@
                         ItemsSource="{x:Bind ViewModel.GuestFavoriteAmenities}"
                         FlowDirection="LeftToRight"
                         CacheMode="BitmapCache"
+                        IsItemClickEnabled="True"
                         SelectionMode="Extended"
+                        SelectionChanged="GuestFavoriteAmenitiesGridView_SelectionChanged"
                         Padding="0"
                         ScrollViewer.VerticalScrollBarVisibility="Hidden">
                         <GridView.ItemsPanel>
@@ -69,7 +71,9 @@
                         ItemsSource="{x:Bind ViewModel.StandoutAmenities}"
                         FlowDirection="LeftToRight"
                         CacheMode="BitmapCache"
+                        IsItemClickEnabled="True"
                         SelectionMode="Extended"
+                        SelectionChanged="StandoutAmenitiesGridView_SelectionChanged"                        
                         Padding="0"
                         ScrollViewer.VerticalScrollBarVisibility="Hidden">
                         <GridView.ItemsPanel>
@@ -106,7 +110,9 @@
                         ItemsSource="{x:Bind ViewModel.SafetyAmenities}"
                         FlowDirection="LeftToRight"
                         CacheMode="BitmapCache"
+                        IsItemClickEnabled="True"
                         SelectionMode="Extended"
+                        SelectionChanged="SafetyAmenitiesGridView_SelectionChanged"
                         Padding="0"
                         ScrollViewer.VerticalScrollBarVisibility="Hidden">
                         <GridView.ItemsPanel>
