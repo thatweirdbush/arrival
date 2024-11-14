@@ -13,6 +13,15 @@ public class PropertyService : IPropertyService
 {
     private readonly IRepository<Property> _propertyRepository;
 
+    public Property PropertyOnCreating
+    {
+        get; set;
+    } = new()
+    {
+        Id = new Random().Next(1000, 9999),
+        Status = PropertyStatus.InProgress,
+    };
+
     public PropertyService(IRepository<Property> propertyRepository)
     {
         _propertyRepository = propertyRepository;

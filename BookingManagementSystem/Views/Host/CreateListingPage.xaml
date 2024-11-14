@@ -38,7 +38,7 @@
 
         <Grid x:Name="Footer" Grid.Row="2">
             <ProgressBar MinHeight="10" VerticalAlignment="Top" Maximum="11"
-                         Value="{x:Bind ViewModel.CurrentStageIndex, Mode=OneWay}"
+                         Value="{x:Bind ViewModel.CurrentStepIndex, Mode=OneWay}"
                          Foreground="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" />
             <Button Content="Back" Command="{x:Bind ViewModel.GoBackwardCommand}"
                     BorderThickness="0" CornerRadius="8" Height="44" Width="90"

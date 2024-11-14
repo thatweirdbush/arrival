@@ -8,6 +8,10 @@ using BookingManagementSystem.Core.Models;
 namespace BookingManagementSystem.Core.Contracts.Services;
 public interface IPropertyService
 {
+    Property PropertyOnCreating
+    {
+        get; set;
+    }
     Task SavePropertyAsync(Property property);
     Task<Property> GetPropertyInProgressAsync(int propertyId);
 }

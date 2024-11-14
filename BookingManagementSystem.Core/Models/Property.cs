@@ -102,7 +102,7 @@ public class Property : INotifyPropertyChanged
     {
         get; set;
     } = DEFAULT_PROPERTY_NAME;
-    public PropertyType Type
+    public PropertyType? Type
     {
         get; set;
     }

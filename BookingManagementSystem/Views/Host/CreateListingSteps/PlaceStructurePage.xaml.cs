@@ -19,22 +19,10 @@ public sealed partial class PlaceStructurePage : Page
         InitializeComponent();
     }
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        if (e.Parameter is Property property)
-        {
-            ViewModel.PropertyOnCreating = property;
-        }
-        base.OnNavigatedTo(e);
-    }
-
     private void PropertyTypeGridView_ItemClick(object sender, ItemClickEventArgs e)
     {
         // Save to ViewModel.SelectedType
         ViewModel.SelectedType = ((PropertyTypeIcon)e.ClickedItem).PropertyType;
-        if (ViewModel.PropertyOnCreating != null)
-        {
-            ViewModel.PropertyOnCreating.Type = ViewModel.SelectedType;
-        }
+        ViewModel.PropertyOnCreating.Type = ViewModel.SelectedType;
     }
 }

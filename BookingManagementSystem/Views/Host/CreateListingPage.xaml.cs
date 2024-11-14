@@ -24,28 +24,30 @@ public sealed partial class CreateListingPage : Page
         ViewModel.PropertyChanged += ViewModel_PropertyChanged;
 
         // Set up initial content
-        ContentFrame.Navigate(typeof(AboutYourPlacePage), ViewModel.PropertyOnCreating);
+        ContentFrame.Navigate(typeof(AboutYourPlacePage));
     }
 
     private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(ViewModel.CurrentStage))
+        if (e.PropertyName == nameof(ViewModel.CurrentStep))
         {
-            var pageType = Type.GetType($"BookingManagementSystem.Views.Host.CreateListingSteps.{ViewModel.CurrentStage}");
-            var currentStageIndex = ViewModel.Stages.IndexOf(ViewModel.CurrentStage);
-
-            var slideNavigationTransitionEffect =
-                currentStageIndex - previousStageIndex > 0 ?
-                    SlideNavigationTransitionEffect.FromRight :
-                    SlideNavigationTransitionEffect.FromLeft;
-
-            var thisProperty = ViewModel.PropertyOnCreating;
-            ContentFrame.Navigate(pageType, thisProperty, new SlideNavigationTransitionInfo()
+            // Get the page type based on the current ViewModel name
+            var currentStepViewModel = ViewModel.CurrentStep.GetType().Name;
+            if (ViewModel.ViewModelToPageDictionary.TryGetValue(currentStepViewModel, out var pageType))
             {
-                Effect = slideNavigationTransitionEffect
-            });
+                var currentStepIndex = ViewModel.CurrentStepIndex;
+                var slideNavigationTransitionEffect =
+                    currentStepIndex - previousStageIndex > 0 ?
+                        SlideNavigationTransitionEffect.FromRight :
+                        SlideNavigationTransitionEffect.FromLeft;
 
-            previousStageIndex = currentStageIndex;
+                ContentFrame.Navigate(pageType, null, new SlideNavigationTransitionInfo()
+                {
+                    Effect = slideNavigationTransitionEffect
+                });
+
+                previousStageIndex = currentStepIndex;
+            }
         }
     }
 

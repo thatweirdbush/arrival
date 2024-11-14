@@ -1,40 +1,38 @@
-﻿using System.Collections.ObjectModel;
-using BookingManagementSystem.Contracts.Services;
+﻿using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Repositories;
-using BookingManagementSystem.Core.DTOs;
+using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.Core.Repositories;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
-public partial class PlaceStructureViewModel : ObservableRecipient
+public partial class PlaceStructureViewModel : BaseStepViewModel
 {
-    private readonly INavigationService _navigationService;
     private readonly IRepository<PropertyTypeIcon> _propertyTypeIconRepository;
-    public Property? PropertyOnCreating = null;
+    private readonly IPropertyService _propertyService;
 
     // List of content items
-    public IEnumerable<PropertyTypeIcon> PropertyTypeIcons { get; set; } = Enumerable.Empty<PropertyTypeIcon>();
-    public PropertyType SelectedType
+    public IEnumerable<PropertyTypeIcon> PropertyTypeIcons { get; set; } = [];
+    public PropertyType? SelectedType
     {
         get; set;
     }
-    public PlaceStructureViewModel(INavigationService navigationService, IRepository<PropertyTypeIcon> propertyTypeIconRepository)
-    {
-        _navigationService = navigationService;
-        _propertyTypeIconRepository = propertyTypeIconRepository;
+    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
 
-        OnNavigatedTo(0);
+    public PlaceStructureViewModel(IPropertyService propertyService, IRepository<PropertyTypeIcon> propertyTypeIconRepository)
+    {
+        _propertyService = propertyService;
+        _propertyTypeIconRepository = propertyTypeIconRepository;
+        LoadPropertyTypeIcons();
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public async void LoadPropertyTypeIcons()
     {
         // Load icon data list
         PropertyTypeIcons = await _propertyTypeIconRepository.GetAllAsync();
     }
 
-    public void OnNavigatedFrom()
+    public override void ValidateStep()
     {
+        IsStepCompleted = SelectedType != null;
     }
 }
