@@ -1,8 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using BookingManagementSystem.Contracts.ViewModels;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
-public partial class SetPriceViewModel : ObservableRecipient
+public partial class SetPriceViewModel : BaseStepViewModel
 {
     public const decimal DefaultPrice = 10m;
     public const decimal GuestServiceFeeRate = 0.14m;
@@ -36,5 +37,7 @@ public partial class SetPriceViewModel : ObservableRecipient
     {
         OnBasePriceChanged(basePrice);
     }
+
+    public override void ValidateStep() => IsStepCompleted = BasePrice > 0;
 }
 

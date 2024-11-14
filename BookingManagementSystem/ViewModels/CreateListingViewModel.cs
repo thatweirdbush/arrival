@@ -39,14 +39,14 @@ public partial class CreateListingViewModel : ObservableRecipient
             App.GetService<PlaceStructureViewModel>(),
             App.GetService<PlaceLocationViewModel>(),
             App.GetService<FloorPlanViewModel>(),
-            //App.GetService<StandOutViewModel>(),
-            //App.GetService<AmenitiesViewModel>(),
-            //App.GetService<PlacePhotosViewModel>(),
-            //App.GetService<PlaceDescriptionViewModel>(),
-            //App.GetService<FinishSetupViewModel>(),
-            //App.GetService<SetPriceViewModel>(),
-            //App.GetService<ReviewListingViewModel>(),
-            //App.GetService<PublishCelebrationViewModel>()
+            App.GetService<StandOutViewModel>(),
+            App.GetService<AmenitiesViewModel>(),
+            App.GetService<PlacePhotosViewModel>(),
+            App.GetService<PlaceDescriptionViewModel>(),
+            App.GetService<FinishSetupViewModel>(),
+            App.GetService<SetPriceViewModel>(),
+            App.GetService<ReviewListingViewModel>(),
+            App.GetService<PublishCelebrationViewModel>()
             ];
 
         ViewModelToPageDictionary = new Dictionary<string, Type>

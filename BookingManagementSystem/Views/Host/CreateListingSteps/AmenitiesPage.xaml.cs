@@ -8,22 +8,21 @@ namespace BookingManagementSystem.Views.Host.CreateListingSteps;
 
 public sealed partial class AmenitiesPage : Page
 {
-    public AmenitiesViewModel ViewModel
+    public AmenitiesViewModel? ViewModel
     {
-        get;
+        get; set;
     }
 
     public AmenitiesPage()
     {
-        ViewModel = App.GetService<AmenitiesViewModel>();
         InitializeComponent();
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        if (e.Parameter is Property property)
+        if (e.Parameter is AmenitiesViewModel viewModel)
         {
-            ViewModel.PropertyOnCreating = property;
+            ViewModel = viewModel;
         }
         base.OnNavigatedTo(e);
     }
@@ -32,7 +31,7 @@ public sealed partial class AmenitiesPage : Page
     private void AddPropertyAmenities(IEnumerable<Amenity> amenities)
     {
         // Check if the property collection is null
-        if (ViewModel.PropertyOnCreating?.Amenities == null)
+        if (ViewModel?.PropertyOnCreating?.Amenities == null)
         {
             throw new InvalidOperationException("Property on creating is null.");
         }

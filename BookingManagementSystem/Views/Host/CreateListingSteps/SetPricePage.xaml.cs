@@ -5,20 +5,29 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Windows.System;
 using BookingManagementSystem.Helpers;
+using Microsoft.UI.Xaml.Navigation;
 
 namespace BookingManagementSystem.Views.Host.CreateListingSteps;
 
 public sealed partial class SetPricePage : Page
 {
-    public SetPriceViewModel ViewModel
+    public SetPriceViewModel? ViewModel
     {
-        get;
+        get; set;
     }
 
     public SetPricePage()
     {
-        ViewModel = App.GetService<SetPriceViewModel>();
         InitializeComponent();
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        if (e.Parameter is SetPriceViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+        base.OnNavigatedTo(e);
     }
 
     private void LearnMoreHyperLink_Click(Microsoft.UI.Xaml.Documents.Hyperlink sender, Microsoft.UI.Xaml.Documents.HyperlinkClickEventArgs args)

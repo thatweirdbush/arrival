@@ -1,12 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
-public partial class AmenitiesViewModel : ObservableRecipient
+public partial class AmenitiesViewModel : BaseStepViewModel
 {
     private readonly IRepository<Amenity> _amenityRepository;
     public Property? PropertyOnCreating = null;
@@ -29,5 +30,11 @@ public partial class AmenitiesViewModel : ObservableRecipient
         GuestFavoriteAmenities = data.Where(x => x.Type == AmenityType.GuestFavorite);
         StandoutAmenities = data.Where(x => x.Type == AmenityType.Standout);
         SafetyAmenities = data.Where(x => x.Type == AmenityType.Safety);
+    }
+
+    public override void ValidateStep()
+    {
+        // User can skip this step too
+        IsStepCompleted = true;
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System.Collections.ObjectModel;
+using BookingManagementSystem.Contracts.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage;
 
 namespace BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
-public partial class PlacePhotosViewModel : ObservableRecipient
+public partial class PlacePhotosViewModel : BaseStepViewModel
 {
     public ObservableCollection<StorageFile> Photos
     {
@@ -29,4 +30,6 @@ public partial class PlacePhotosViewModel : ObservableRecipient
         // Update IsPhotoListEmpty every time the list changes
         IsPhotoListEmpty = Photos.Count == 0;
     }
+
+    public override void ValidateStep() => IsStepCompleted = !IsPhotoListEmpty;
 }
