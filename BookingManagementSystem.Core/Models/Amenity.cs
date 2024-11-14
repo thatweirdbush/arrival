@@ -12,6 +12,8 @@ public enum AmenityType
     GuestFavorite,
     Standout,
     Safety,
+    Household,
+    RoomEssentials,
     Other
 }
 
@@ -39,6 +41,10 @@ public class Amenity : INotifyPropertyChanged
     {
         get; set;
     }
+    public int Quantity
+    {
+        get; set;
+    } = 1;
     public string ImagePath
     {
         get

@@ -162,7 +162,55 @@ public class AmenityRepository : Repository<Amenity>
                     Type = AmenityType.Safety,
                     Description = "Carbon monoxide alarm in all rooms",
                     ImagePath = "carbon-monoxide-alarm.svg"
-            }
+            },
+            new() { Id = 26,
+                    Name = "Bedroom",
+                    Type = AmenityType.RoomEssentials,
+                    Description = "Bedroom with bed, pillows, and blankets",
+                    ImagePath = "bedroom.svg"
+            },
+            new() { Id = 27,
+                    Name = "Bathroom",
+                    Type = AmenityType.RoomEssentials,
+                    Description = "Bathroom with shower, toilet, and sink",
+                    ImagePath = "bathroom.svg"
+            },
+            new() { Id = 28,
+                    Name = "Living Room",
+                    Type = AmenityType.RoomEssentials,
+                    Description = "Living room with sofa, chairs, and coffee table",
+                    ImagePath = "living-room.svg"
+            },
+            new() { Id = 29,
+                    Name = "Dining Room",
+                    Type = AmenityType.RoomEssentials,
+                    Description = "Dining room with table, chairs, and cutlery",
+                    ImagePath = "dining-room.svg"
+            },
+            new() { Id = 30,
+                    Name = "Kitchen",
+                    Type = AmenityType.RoomEssentials,
+                    Description = "Kitchen with stove, oven, microwave, and fridge",
+                    ImagePath = "kitchen.svg"
+            },
+            new() { Id = 31,
+                    Name = "Laundry",
+                    Type = AmenityType.RoomEssentials,
+                    Description = "Laundry room with washer and dryer",
+                    ImagePath = "laundry.svg"
+            },
+            new() { Id = 32,
+                    Name = "Outdoor",
+                    Type = AmenityType.RoomEssentials,
+                    Description = "Outdoor area with patio, BBQ grill, and pool",
+                    ImagePath = "outdoor.svg"
+            },
+            new() { Id = 33,
+                    Name = "Bed",
+                    Type = AmenityType.Household,
+                    Description = "Bed with pillows, blankets, and sheets",
+                    ImagePath = "bed.svg"
+            },
         ]);
     }
 }

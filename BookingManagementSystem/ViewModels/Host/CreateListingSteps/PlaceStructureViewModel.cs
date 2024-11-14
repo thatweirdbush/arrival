@@ -12,6 +12,7 @@ public partial class PlaceStructureViewModel : ObservableRecipient
 {
     private readonly INavigationService _navigationService;
     private readonly IRepository<PropertyTypeIcon> _propertyTypeIconRepository;
+    public Property? PropertyOnCreating = null;
 
     // List of content items
     public IEnumerable<PropertyTypeIcon> PropertyTypeIcons { get; set; } = Enumerable.Empty<PropertyTypeIcon>();

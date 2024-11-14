@@ -39,7 +39,8 @@ public sealed partial class CreateListingPage : Page
                     SlideNavigationTransitionEffect.FromRight :
                     SlideNavigationTransitionEffect.FromLeft;
 
-            ContentFrame.Navigate(pageType, ViewModel.PropertyOnCreating, new SlideNavigationTransitionInfo()
+            var thisProperty = ViewModel.PropertyOnCreating;
+            ContentFrame.Navigate(pageType, thisProperty, new SlideNavigationTransitionInfo()
             {
                 Effect = slideNavigationTransitionEffect
             });
