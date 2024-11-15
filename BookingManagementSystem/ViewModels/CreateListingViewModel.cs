@@ -30,7 +30,15 @@ public partial class CreateListingViewModel : ObservableRecipient
 
     public CreateListingViewModel(IPropertyService propertyService, IRepository<PropertyTypeIcon> propertyTypeIconRepository)
     {
+        // Property Service is set to Singleton instance
         _propertyService = propertyService;
+
+        // So new Property instance must be created by this ViewModel, which is Transient
+        _propertyService.PropertyOnCreating = new()
+        {
+            Id = new Random().Next(1000, 9999),
+            Status = PropertyStatus.InProgress,
+        };
         _propertyTypeIconRepository = propertyTypeIconRepository;
 
         // Using Dependency Injection to get the ViewModel instances

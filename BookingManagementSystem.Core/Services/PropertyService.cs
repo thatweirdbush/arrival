@@ -16,11 +16,7 @@ public class PropertyService : IPropertyService
     public Property PropertyOnCreating
     {
         get; set;
-    } = new()
-    {
-        Id = new Random().Next(1000, 9999),
-        Status = PropertyStatus.InProgress,
-    };
+    }
 
     public PropertyService(IRepository<Property> propertyRepository)
     {

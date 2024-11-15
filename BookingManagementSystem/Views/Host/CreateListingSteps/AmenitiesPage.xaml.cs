@@ -27,44 +27,30 @@ public sealed partial class AmenitiesPage : Page
         base.OnNavigatedTo(e);
     }
 
-    // TODO: Fix the selection changed event handlers and this method
-    private void AddPropertyAmenities(IEnumerable<Amenity> amenities)
-    {
-        // Check if the property collection is null
-        if (ViewModel?.PropertyOnCreating?.Amenities == null)
-        {
-            throw new InvalidOperationException("Property on creating is null.");
-        }
-
-        // Add amenities to the property
-        foreach (var amenity in amenities)
-        {
-            // Check duplicate entity
-            if (!ViewModel.PropertyOnCreating.Amenities.Any(x => x.Id == amenity.Id))
-            {
-                ViewModel.PropertyOnCreating.Amenities.Add(amenity);
-            }
-        }
-    }
-
     private void GuestFavoriteAmenitiesGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        // Update the selected amenities
-        var data = GuestFavoriteAmenitiesGridView.SelectedItems.Cast<Amenity>();
-        AddPropertyAmenities(data);
+        if (ViewModel != null)
+        {
+            // Update the selected amenities
+            ViewModel.SelectedGuestFavoriteAmenities = GuestFavoriteAmenitiesGridView.SelectedItems.Cast<Amenity>();
+        }
     }
 
     private void StandoutAmenitiesGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        // Update the selected amenities
-        var data = StandoutAmenitiesGridView.SelectedItems.Cast<Amenity>();
-        AddPropertyAmenities(data);
+        if (ViewModel != null)
+        {
+            // Update the selected amenities
+            ViewModel.SelectedStandoutAmenities = GuestFavoriteAmenitiesGridView.SelectedItems.Cast<Amenity>();
+        }
     }
 
     private void SafetyAmenitiesGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        // Update the selected amenities
-        var data = SafetyAmenitiesGridView.SelectedItems.Cast<Amenity>();
-        AddPropertyAmenities(data);
+        if (ViewModel != null)
+        {
+            // Update the selected amenities
+            ViewModel.SelectedSafetyAmenities = GuestFavoriteAmenitiesGridView.SelectedItems.Cast<Amenity>();
+        }
     }
 }
