@@ -10,11 +10,26 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers"
     mc:Ignorable="d"
     NavigationCacheMode="Enabled"
     CacheMode="BitmapCache">
 
     <ScrollView>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="TitleTextBoxState">
+                <VisualState x:Name="TitleLengthGreaterThanMaxValue">
+                    <VisualState.StateTriggers>
+                        <triggers:CompareStateTrigger Comparison="GreaterThan" To="250" Value="{x:Bind ViewModel.CurrentLocation.Length, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="LocationTextBox.BorderBrush" Value="Red" />
+                        <Setter Target="LocationInputError.Visibility" Value="Visible" />
+                        <Setter Target="LocationErrorText.Text" Value="The maximum number of characters allowed is 250." />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid x:Name="ContentArea" VerticalAlignment="Center" MaxWidth="640" Padding="0 0 0 40">
             <Grid RowSpacing="32">
                 <Grid.RowDefinitions>
@@ -43,11 +58,17 @@
                     </StackPanel>
                     <StackPanel x:Name="DescriptionBody" Grid.Row="1" Spacing="12">
                         <TextBox x:Name="LocationTextBox" FontSize="20" Padding="18" CornerRadius="8" Height="100" TextWrapping="Wrap" 
-                                 Text="{x:Bind ViewModel.CurrentLocation, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                 Text="{x:Bind ViewModel.CurrentLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  BorderBrush="{ThemeResource AcrylicInAppFillColorDefaultInverseBrush}"/>
-                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Foreground="DimGray">
-                            <Run Text="0"/>/250
-                        </TextBlock>
+                        <Grid>
+                            <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Foreground="DimGray" HorizontalAlignment="Left">
+                                <Run Text="{x:Bind ViewModel.CurrentLocation.Length, Mode=OneWay}"/>/250
+                            </TextBlock>
+                            <StackPanel x:Name="LocationInputError" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" Visibility="Collapsed">
+                                <InfoBadge Style="{ThemeResource CriticalIconInfoBadgeStyle}"/>
+                                <TextBlock x:Name="LocationErrorText" Foreground="{ThemeResource SystemFillColorCriticalBrush}"/>
+                            </StackPanel>
+                        </Grid>
                     </StackPanel>
                 </Grid>
             </Grid>

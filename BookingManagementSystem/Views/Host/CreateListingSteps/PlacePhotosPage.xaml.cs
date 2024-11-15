@@ -61,8 +61,8 @@ public sealed partial class PlacePhotosPage : Page
             {
                 // Copy file to LocalFolder folder
                 var copiedFile = await file.CopyAsync(localFolder, file.Name, NameCollisionOption.ReplaceExisting);
-                ViewModel?.Photos.Insert(0, file);
-                PhotosListView.Items.Insert(0, new BitmapImage(new Uri(copiedFile.Path)));
+                ViewModel?.Photos.Add(copiedFile.Path);
+                PhotosListView.Items.Add(new BitmapImage(new Uri(copiedFile.Path)));
             }
         }
     }

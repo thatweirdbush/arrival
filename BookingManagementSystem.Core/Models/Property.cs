@@ -83,7 +83,12 @@ public class Property : INotifyPropertyChanged
     // Define constants
     public const string DEFAULT_PROPERTY_NAME = "Your House listing";
     public const string DEFAULT_PROPERTY_LOCATION = "Your House location";
+    public const decimal DEFAULT_PROPERTY_PRICE = 0.0M;
+    public const decimal DEFAULT_GUEST_SERVICE_FEE_RATE = 0.14m;
+    public const decimal DEFAULT_HOST_SERVICE_FEE_RATE = 0.03m;
+
     public const int PROPERTY_NAME_MAX_LENGTH = 32;
+    public const int PROPERTY_LOCATION_MAX_LENGTH = 250;
     public const int PROPERTY_DESCRIPTION_MAX_LENGTH = 500;
 
     // Define XAML Image's Path Declaration
@@ -141,7 +146,7 @@ public class Property : INotifyPropertyChanged
     public decimal PricePerNight
     {
         get; set;
-    }
+    } = DEFAULT_PROPERTY_PRICE;
     public bool IsFavourite
     {
         get; set;

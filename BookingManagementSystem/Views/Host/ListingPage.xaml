@@ -19,7 +19,6 @@
         <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
         <helper:PropertyStatusToStringConverter x:Key="PropertyStatusToStringConverter"/>
-        <helper:PropertyStatusToSeverityConverter x:Key="PropertyStatusToSeverityConverter"/>
         <helper:PropertyStatusToStyleConverter x:Key="PropertyStatusToStyleConverter"/>
     </Page.Resources>
 
@@ -127,8 +126,7 @@
                                             <TextBlock Text="{x:Bind Location}" Style="{ThemeResource DetailBodyStyle}" MaxLines="1"/>
                                             <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Foreground="Gray" VerticalAlignment="Bottom" Margin="0 2 0 0">  
                                                 <Run/>Created at
-                                                <Run Text="{x:Bind CreatedAt}"/> - 
-                                                <Run Text="{x:Bind Amenities.Count}"/>
+                                                <Run Text="{x:Bind CreatedAt}"/>
                                             </TextBlock>
                                         </StackPanel>
                                         <TextBlock Text="{x:Bind PricePerNight, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}"

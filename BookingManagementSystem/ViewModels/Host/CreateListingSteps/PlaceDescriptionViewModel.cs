@@ -30,7 +30,6 @@ public partial class PlaceDescriptionViewModel : BaseStepViewModel
 
         if (!string.IsNullOrEmpty(PropertyOnCreating.Name) &&
             !string.IsNullOrEmpty(PropertyOnCreating.Description) &&
-            !PropertyOnCreating.Name.Equals(Property.DEFAULT_PROPERTY_NAME) &&
             PropertyOnCreating.Name.Length <= Property.PROPERTY_NAME_MAX_LENGTH &&
             PropertyOnCreating.Description.Length <= Property.PROPERTY_DESCRIPTION_MAX_LENGTH)
         {

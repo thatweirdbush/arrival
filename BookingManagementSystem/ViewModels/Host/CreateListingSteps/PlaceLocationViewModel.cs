@@ -29,7 +29,8 @@ public partial class PlaceLocationViewModel : BaseStepViewModel
         SetPropertyLocation();
         if (PropertyOnCreating.Latitude != 0.0 
             && PropertyOnCreating.Longitude != 0.0 
-            && !string.IsNullOrEmpty(PropertyOnCreating.Location))
+            && !string.IsNullOrEmpty(PropertyOnCreating.Location)
+            && PropertyOnCreating.Location.Length <= Property.PROPERTY_LOCATION_MAX_LENGTH)
         {
             IsStepCompleted = true;
         }
