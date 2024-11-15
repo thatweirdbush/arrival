@@ -27,6 +27,7 @@ public partial class CreateListingViewModel : ObservableRecipient
     public readonly ObservableCollection<BaseStepViewModel> Stages = [];
 
     public readonly Dictionary<string, Type> ViewModelToPageDictionary;
+    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
 
     public CreateListingViewModel(IPropertyService propertyService, IRepository<PropertyTypeIcon> propertyTypeIconRepository)
     {
@@ -99,6 +100,9 @@ public partial class CreateListingViewModel : ObservableRecipient
         {
             // Save the current listing in each step
             await SaveCurrentStepAsync();
+
+            // Update new listing status
+            PropertyOnCreating.Status = PropertyStatus.Listed;
 
             // Return to Listings page using BackTrack
             App.GetService<INavigationService>()?.Frame?.GoBack();

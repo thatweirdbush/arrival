@@ -88,6 +88,7 @@ public partial class App : Application
             // Core Services
             services.AddSingleton<IDao, MockDao>();
             services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<PropertyImagesActivationHandler>();
 
             // Bussiness Services
             services.AddSingleton<IPropertyService, PropertyService>();
@@ -206,5 +207,9 @@ public partial class App : Application
         App.GetService<IAppNotificationService>().Show(string.Format("AppNotificationSamplePayload".GetLocalized(), AppContext.BaseDirectory));
 
         await App.GetService<IActivationService>().ActivateAsync(args);
+
+        await PropertyImagesActivationHandler.CopyPropertyImagesToLocalFolderAsync();
+
+        await PropertyImagesActivationHandler.BindingPropertyImagesWithLocalFolderAsync();
     }
 }

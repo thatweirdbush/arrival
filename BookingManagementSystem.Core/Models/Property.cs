@@ -91,12 +91,6 @@ public class Property : INotifyPropertyChanged
     public const int PROPERTY_LOCATION_MAX_LENGTH = 250;
     public const int PROPERTY_DESCRIPTION_MAX_LENGTH = 500;
 
-    // Define XAML Image's Path Declaration
-    public static string MS_APPX = "ms-appx:///Assets/property-images/";
-
-    // Private field for ImagePath
-    private ICollection<string> _imagePaths = [];
-
     public event PropertyChangedEventHandler PropertyChanged;
     public override string ToString() => $"{Name} ({Location}), {Description}, " +
         $"Capacity: {Capacity}, Price: {PricePerNight:C}, Is Available: {IsAvailable}, " +
@@ -128,12 +122,10 @@ public class Property : INotifyPropertyChanged
 
     public ICollection<string> ImagePaths
     {
-        // Concatenate MS_APPX with each image path
-        get => _imagePaths.Select(ip => $"{MS_APPX}{ip}").ToList();
-        set => _imagePaths = value;
-    }
+        get; set;
+    } = [];
 
-    public string ImageThumbnail => ImagePaths.FirstOrDefault() ?? $"{MS_APPX}default-thumbnail.jpg";
+    public string ImageThumbnail => ImagePaths.FirstOrDefault() ?? "ms-appx:///Assets/default-thumbnail.jpg";
 
     public string Location
     {
