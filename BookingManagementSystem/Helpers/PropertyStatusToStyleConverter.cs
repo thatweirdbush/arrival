@@ -17,7 +17,7 @@ public class PropertyStatusToStyleConverter : IValueConverter
             {
                 PropertyStatus.Listed => "SuccessDotInfoBadgeStyle",
                 PropertyStatus.Unlisted => "InformationalDotInfoBadgeStyle",
-                PropertyStatus.InProgress => "AttentionIconInfoBadgeStyle",
+                PropertyStatus.InProgress => "CautionDotInfoBadgeStyle",
                 _ => "DefaultDotInfoBadgeStyle"
             };
 

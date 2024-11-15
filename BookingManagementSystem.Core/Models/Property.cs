@@ -83,6 +83,8 @@ public class Property : INotifyPropertyChanged
     // Define constants
     public const string DEFAULT_PROPERTY_NAME = "Your House listing";
     public const string DEFAULT_PROPERTY_LOCATION = "Your House location";
+    public const int PROPERTY_NAME_MAX_LENGTH = 32;
+    public const int PROPERTY_DESCRIPTION_MAX_LENGTH = 500;
 
     // Define XAML Image's Path Declaration
     public static string MS_APPX = "ms-appx:///Assets/property-images/";

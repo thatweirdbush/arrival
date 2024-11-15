@@ -1,10 +1,7 @@
-﻿using System.Collections.ObjectModel;
-using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.Contracts.ViewModels;
+﻿using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
@@ -23,7 +20,6 @@ public partial class AmenitiesViewModel : BaseStepViewModel
     public IEnumerable<Amenity> SelectedGuestFavoriteAmenities { get; set; } = [];
     public IEnumerable<Amenity> SelectedStandoutAmenities { get; set; } = [];
     public IEnumerable<Amenity> SelectedSafetyAmenities { get; set; } = [];
-
 
     public AmenitiesViewModel(IPropertyService propertyService, IRepository<Amenity> amenityRepository)
     {
