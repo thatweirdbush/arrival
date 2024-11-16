@@ -40,7 +40,7 @@ public partial class AmenitiesViewModel : BaseStepViewModel
         SafetyAmenities = data.Where(x => x.Type == AmenityType.Safety);
     }
 
-    public override void ValidateStep()
+    public override void SaveProcess()
     {
         // Add selected amenities to the property
         foreach (var amenity in SelectedGuestFavoriteAmenities)
@@ -55,5 +55,9 @@ public partial class AmenitiesViewModel : BaseStepViewModel
         {
             PropertyOnCreating.Amenities.Add(amenity);
         }
+    }
+
+    public override void ValidateProcess()
+    {
     }
 }

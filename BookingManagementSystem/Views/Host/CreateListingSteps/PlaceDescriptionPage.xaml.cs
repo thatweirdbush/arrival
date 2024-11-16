@@ -28,11 +28,11 @@ public sealed partial class PlaceDescriptionPage : Page
 
     private void TitleTextBox_TextChanged(object sender, TextChangedEventArgs e)
     {
-        ViewModel?.ValidateStep();
+        ViewModel?.ValidateProcess();
     }
 
     private void DescriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
     {
-        ViewModel?.ValidateStep();
+        ViewModel?.ValidateProcess();
     }
 }

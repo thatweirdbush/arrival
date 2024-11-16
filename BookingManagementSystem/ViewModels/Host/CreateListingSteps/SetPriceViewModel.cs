@@ -25,7 +25,7 @@ public partial class SetPriceViewModel : BaseStepViewModel
         YouEarn = value - Math.Round(value * HostServiceFeeRate, 0);
 
         // Validate the step right after this property changes
-        ValidateStep();
+        ValidateProcess();
     }
 
     [ObservableProperty]
@@ -49,10 +49,14 @@ public partial class SetPriceViewModel : BaseStepViewModel
         IsStepCompleted = BasePrice > 0.0m;
     }
 
-    public override void ValidateStep()
+    public override void ValidateProcess()
+    {
+        IsStepCompleted = BasePrice > 0.0m;
+    }
+
+    public override void SaveProcess()
     {
         PropertyOnCreating.PricePerNight = BasePrice;
-        IsStepCompleted = BasePrice > 0.0m;
     }
 }
 

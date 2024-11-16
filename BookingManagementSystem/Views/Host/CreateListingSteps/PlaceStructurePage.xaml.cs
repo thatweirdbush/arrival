@@ -41,6 +41,6 @@ public sealed partial class PlaceStructurePage : Page
         {
             ViewModel.SelectedType = null;
         }
-        ViewModel.ValidateStep();
+        ViewModel.ValidateProcess();
     }
 }

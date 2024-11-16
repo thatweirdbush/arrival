@@ -11,5 +11,16 @@ public abstract partial class BaseStepViewModel : ObservableObject
     [ObservableProperty]
     public bool isStepCompleted = false;
 
-    public abstract void ValidateStep();
+    public bool TryValidateAndSaveProcess()
+    {
+        ValidateProcess();
+        if (IsStepCompleted)
+        {
+            SaveProcess();
+            return true;
+        }
+        return false;
+    }
+    public abstract void ValidateProcess();
+    public abstract void SaveProcess();
 }

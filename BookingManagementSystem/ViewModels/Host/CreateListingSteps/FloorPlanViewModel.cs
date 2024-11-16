@@ -32,7 +32,7 @@ public partial class FloorPlanViewModel : BaseStepViewModel
         BedPlan = data.FirstOrDefault(x => x.Name == "Bed");
     }
 
-    public override void ValidateStep()
+    public override void SaveProcess()
     {
         // Add amenities to the property if the quantity is greater than 0
         if (BedroomPlan?.Quantity > 0)
@@ -47,5 +47,9 @@ public partial class FloorPlanViewModel : BaseStepViewModel
         {
             PropertyOnCreating.Amenities.Add(BedPlan);
         }
+    }
+
+    public override void ValidateProcess()
+    {
     }
 }

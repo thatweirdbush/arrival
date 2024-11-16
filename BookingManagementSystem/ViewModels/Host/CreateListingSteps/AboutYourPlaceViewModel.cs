@@ -10,7 +10,11 @@ public partial class AboutYourPlaceViewModel : BaseStepViewModel
         IsStepCompleted = true;
     }
 
-    public override void ValidateStep()
+    public override void ValidateProcess()
+    {
+    }
+
+    public override void SaveProcess()
     {
     }
 }

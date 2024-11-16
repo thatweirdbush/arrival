@@ -9,7 +9,12 @@ public partial class StandOutViewModel : BaseStepViewModel
     {
         IsStepCompleted = true;
     }
-    public override void ValidateStep()
+
+    public override void ValidateProcess()
+    {
+    }
+
+    public override void SaveProcess()
     {
     }
 }

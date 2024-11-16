@@ -22,31 +22,15 @@ public partial class PlaceDescriptionViewModel : BaseStepViewModel
         _propertyService = propertyService;
     }
 
-    public override void ValidateStep()
+    public override void ValidateProcess()
     {
-        ValidateProcess();
-        if (IsStepCompleted)
-        {
-            SaveProcess();
-        }
+        IsStepCompleted = (!string.IsNullOrWhiteSpace(SelectedTitle) &&
+                        !string.IsNullOrWhiteSpace(SelectedDescription) &&
+                        SelectedTitle.Length <= Property.PROPERTY_NAME_MAX_LENGTH &&
+                        SelectedDescription.Length <= Property.PROPERTY_DESCRIPTION_MAX_LENGTH);
     }
 
-    public void ValidateProcess()
-    {
-        if (!string.IsNullOrWhiteSpace(SelectedTitle) &&
-            !string.IsNullOrWhiteSpace(SelectedDescription) &&
-            SelectedTitle.Length <= Property.PROPERTY_NAME_MAX_LENGTH &&
-            SelectedDescription.Length <= Property.PROPERTY_DESCRIPTION_MAX_LENGTH)
-        {
-            IsStepCompleted = true;
-        }
-        else
-        {
-            IsStepCompleted = false;
-        }
-    }
-
-    public void SaveProcess()
+    public override void SaveProcess()
     {
         // Add selected title and description to the property
         PropertyOnCreating.Name = SelectedTitle;
