@@ -51,9 +51,9 @@
             <RowDefinition Height="78"/>
             <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
-        <Grid x:Name="Header">
+        <Grid x:Name="Header" CacheMode="BitmapCache">
             <Grid.Background>
-                <ImageBrush Stretch="UniformToFill" Opacity=".85">
+                <ImageBrush Stretch="UniformToFill">
                     <ImageBrush.ImageSource>
                         <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="1280"/>
                     </ImageBrush.ImageSource>
