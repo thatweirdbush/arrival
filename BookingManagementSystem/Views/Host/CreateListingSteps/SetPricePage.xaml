@@ -29,10 +29,11 @@
         </StackPanel>
         <Grid Grid.Row="1">
             <StackPanel Spacing="8" HorizontalAlignment="Center">
-                <TextBox Name="PriceTextBox" HorizontalAlignment="Center" PreviewKeyDown="PriceTextBox_PreviewKeyDown" FontSize="120" FontWeight="Bold" BorderThickness="0" Background="Transparent"
-                    Text="{x:Bind ViewModel.BasePrice, Mode=TwoWay,
-                    Converter={StaticResource NumberToCurencyConverter},
-                    UpdateSourceTrigger=LostFocus}"/>
+                <TextBox Name="PriceTextBox" HorizontalAlignment="Center" PreviewKeyDown="PriceTextBox_PreviewKeyDown" 
+                         FontSize="120" FontWeight="Bold" BorderThickness="0" Background="Transparent"
+                         Text="{x:Bind ViewModel.BasePrice, Mode=TwoWay,
+                                Converter={StaticResource NumberToCurencyConverter},
+                                UpdateSourceTrigger=LostFocus}"/>
                 <Expander x:Name="GuestFeeInfoExpander" Tapped="GuestFeeInfoExpander_Tapped" IsExpanded="False" ExpandDirection="Down" VerticalAlignment="Top" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" >
                     <Expander.Header>
                         <Grid>

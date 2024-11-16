@@ -27,11 +27,20 @@ public sealed partial class PlaceStructurePage : Page
         base.OnNavigatedTo(e);
     }
 
-    private void PropertyTypeGridView_ItemClick(object sender, ItemClickEventArgs e)
+    private void PropertyTypeGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (ViewModel != null && e.ClickedItem is PropertyTypeIcon propertyTypeIcon)
+        if (ViewModel == null)
         {
-            ViewModel.SelectedType = propertyTypeIcon.PropertyType;
+            return;
         }
+        if (PropertyTypeGridView.SelectedItem is PropertyTypeIcon selectedItem)
+        {
+            ViewModel.SelectedType = selectedItem.PropertyType;
+        }
+        else
+        {
+            ViewModel.SelectedType = null;
+        }
+        ViewModel.ValidateStep();
     }
 }

@@ -84,7 +84,8 @@
                         </StackPanel>
                     </Button>
                 </StackPanel>
-                <ListView Grid.Row="1" x:Name="PhotosListView" ItemsSource="{x:Bind ViewModel.Photos}" CanReorderItems="True" CanDragItems="True" AllowDrop="True">
+                <ListView Grid.Row="1" x:Name="PhotosListView" ItemsSource="{x:Bind ViewModel.Photos}"
+                          CanReorderItems="True" CanDragItems="True" AllowDrop="True">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="storage:StorageFile">
                             <Image Source="{x:Bind Path}" Stretch="Uniform" />

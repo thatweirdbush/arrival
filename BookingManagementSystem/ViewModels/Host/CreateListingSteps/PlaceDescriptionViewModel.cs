@@ -24,16 +24,32 @@ public partial class PlaceDescriptionViewModel : BaseStepViewModel
 
     public override void ValidateStep()
     {
-        // Add selected title and description to the property
-        PropertyOnCreating.Name = SelectedTitle;
-        PropertyOnCreating.Description = SelectedDescription;
+        ValidateProcess();
+        if (IsStepCompleted)
+        {
+            SaveProcess();
+        }
+    }
 
-        if (!string.IsNullOrEmpty(PropertyOnCreating.Name) &&
-            !string.IsNullOrEmpty(PropertyOnCreating.Description) &&
-            PropertyOnCreating.Name.Length <= Property.PROPERTY_NAME_MAX_LENGTH &&
-            PropertyOnCreating.Description.Length <= Property.PROPERTY_DESCRIPTION_MAX_LENGTH)
+    public void ValidateProcess()
+    {
+        if (!string.IsNullOrWhiteSpace(SelectedTitle) &&
+            !string.IsNullOrWhiteSpace(SelectedDescription) &&
+            SelectedTitle.Length <= Property.PROPERTY_NAME_MAX_LENGTH &&
+            SelectedDescription.Length <= Property.PROPERTY_DESCRIPTION_MAX_LENGTH)
         {
             IsStepCompleted = true;
         }
+        else
+        {
+            IsStepCompleted = false;
+        }
+    }
+
+    public void SaveProcess()
+    {
+        // Add selected title and description to the property
+        PropertyOnCreating.Name = SelectedTitle;
+        PropertyOnCreating.Description = SelectedDescription;
     }
 }

@@ -59,6 +59,7 @@
                     <StackPanel x:Name="DescriptionBody" Grid.Row="1" Spacing="12">
                         <TextBox x:Name="LocationTextBox" FontSize="20" Padding="18" CornerRadius="8" Height="100" TextWrapping="Wrap" 
                                  Text="{x:Bind ViewModel.CurrentLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 TextChanged="LocationTextBox_TextChanged"
                                  BorderBrush="{ThemeResource AcrylicInAppFillColorDefaultInverseBrush}"/>
                         <Grid>
                             <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Foreground="DimGray" HorizontalAlignment="Left">

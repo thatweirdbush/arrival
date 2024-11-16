@@ -7,7 +7,10 @@ public partial class FinishSetupViewModel : BaseStepViewModel
 {
     public FinishSetupViewModel()
     {
+        IsStepCompleted = true;
     }
 
-    public override void ValidateStep() => IsStepCompleted = true;
+    public override void ValidateStep()
+    {
+    }
 }

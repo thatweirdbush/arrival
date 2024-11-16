@@ -7,7 +7,10 @@ public partial class ReviewListingViewModel : BaseStepViewModel
 {
     public ReviewListingViewModel()
     {
+        IsStepCompleted = true;
     }
 
-    public override void ValidateStep() => IsStepCompleted = true;
+    public override void ValidateStep()
+    {
+    }
 }

@@ -77,7 +77,7 @@ public partial class CreateListingViewModel : ObservableRecipient
         };
 
         CurrentStepIndex = 0;
-        GoForwardCommand = new RelayCommand(GoForward);
+        GoForwardCommand = new RelayCommand(GoForward, CanGoForward);
         GoBackwardCommand = new RelayCommand(GoBackward);
     }
 
@@ -90,13 +90,18 @@ public partial class CreateListingViewModel : ObservableRecipient
         get;
     }
 
+    public bool CanGoForward()
+    {
+        return CurrentStep.IsStepCompleted == true;
+    }
+
     public async void GoForward()
     {
-        CurrentStep.ValidateStep();
-        if (!CurrentStep.IsStepCompleted)
-        {
-            return;
-        }
+        //CurrentStep.ValidateStep();
+        //if (!CurrentStep.IsStepCompleted)
+        //{
+        //    return;
+        //}
 
         if (CurrentStepIndex == Stages.Count - 1)
         {

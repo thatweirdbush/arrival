@@ -7,7 +7,10 @@ public partial class AboutYourPlaceViewModel : BaseStepViewModel
 {
     public AboutYourPlaceViewModel()
     {
+        IsStepCompleted = true;
     }
 
-    public override void ValidateStep() => IsStepCompleted = true;
+    public override void ValidateStep()
+    {
+    }
 }

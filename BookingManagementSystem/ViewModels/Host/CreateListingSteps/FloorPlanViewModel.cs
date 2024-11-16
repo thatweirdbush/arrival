@@ -19,6 +19,9 @@ public partial class FloorPlanViewModel : BaseStepViewModel
         _propertyService = propertyService;
         _amenitiesRepository = amenitiesRepository;
         LoadFloorPlans();
+
+        // User can skip this step too
+        IsStepCompleted = true;
     }
 
     private async void LoadFloorPlans()
@@ -27,13 +30,6 @@ public partial class FloorPlanViewModel : BaseStepViewModel
         BedroomPlan = data.FirstOrDefault(x => x.Name == "Bedroom");
         BathoomPlan = data.FirstOrDefault(x => x.Name == "Bathroom");
         BedPlan = data.FirstOrDefault(x => x.Name == "Bed");
-    }
-
-    public void InitializePropertyFloorPlans()
-    {
-        PropertyOnCreating.Amenities.Add(BedroomPlan);
-        PropertyOnCreating.Amenities.Add(BathoomPlan);
-        PropertyOnCreating.Amenities.Add(BedPlan);
     }
 
     public override void ValidateStep()
@@ -51,8 +47,5 @@ public partial class FloorPlanViewModel : BaseStepViewModel
         {
             PropertyOnCreating.Amenities.Add(BedPlan);
         }
-
-        // User can skip this step too
-        IsStepCompleted = true;
     }
 }

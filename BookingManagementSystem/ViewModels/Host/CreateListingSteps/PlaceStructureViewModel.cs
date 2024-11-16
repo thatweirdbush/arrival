@@ -38,5 +38,9 @@ public partial class PlaceStructureViewModel : BaseStepViewModel
             PropertyOnCreating.Type = SelectedType;
             IsStepCompleted = true;
         }
+        else
+        {
+            IsStepCompleted = false;
+        }
     }
 }

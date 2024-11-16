@@ -27,12 +27,27 @@ public partial class PlaceLocationViewModel : BaseStepViewModel
     public override void ValidateStep()
     {
         SetPropertyLocation();
-        if (PropertyOnCreating.Latitude != 0.0 
-            && PropertyOnCreating.Longitude != 0.0 
-            && !string.IsNullOrEmpty(PropertyOnCreating.Location)
-            && PropertyOnCreating.Location.Length <= Property.PROPERTY_LOCATION_MAX_LENGTH)
+        //if (PropertyOnCreating.Latitude != 0.0 
+        //    && PropertyOnCreating.Longitude != 0.0 
+        //    && !string.IsNullOrEmpty(PropertyOnCreating.Location)
+        //    && PropertyOnCreating.Location.Length <= Property.PROPERTY_LOCATION_MAX_LENGTH)
+        //{
+        //    IsStepCompleted = true;
+        //}
+    }
+
+    public void ValidateProcess()
+    {
+        if (CurrentLatitude != 0.0
+        && CurrentLongitude != 0.0
+        && !string.IsNullOrWhiteSpace(CurrentLocation)
+        && CurrentLocation.Length <= Property.PROPERTY_LOCATION_MAX_LENGTH)
         {
             IsStepCompleted = true;
+        }
+        else
+        {
+            IsStepCompleted = false;
         }
     }
 }

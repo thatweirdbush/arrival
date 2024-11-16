@@ -35,18 +35,36 @@ public partial class PlacePhotosViewModel : BaseStepViewModel
     {
         // Update IsPhotoListEmpty every time the list changes
         IsPhotoListEmpty = Photos.Count == 0;
+        ValidateStep();
     }
 
     public override void ValidateStep()
     {
+        ValidateProcess();
+        if (IsStepCompleted)
+        {
+            SaveProcess();
+        }
+    }
+
+    public void ValidateProcess()
+    {
         if (Photos.Count > 0)
         {
-            // Add photos path to the Property instance
-            foreach (var photo in Photos)
-            {
-                PropertyOnCreating.ImagePaths.Add(photo.Path);
-            }
             IsStepCompleted = true;
+        }
+        else
+        {
+            IsStepCompleted = false;
+        }
+    }
+
+    public void SaveProcess()
+    {
+        // Add photos path to the Property instance
+        foreach (var photo in Photos)
+        {
+            PropertyOnCreating.ImagePaths.Add(photo.Path);
         }
     }
 }

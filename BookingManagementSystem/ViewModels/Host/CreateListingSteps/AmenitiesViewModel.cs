@@ -26,6 +26,9 @@ public partial class AmenitiesViewModel : BaseStepViewModel
         _propertyService = propertyService;
         _amenityRepository = amenityRepository;
         LoadAmenities();
+
+        // User can skip this step too
+        IsStepCompleted = true;
     }
 
     public async void LoadAmenities()
@@ -52,7 +55,5 @@ public partial class AmenitiesViewModel : BaseStepViewModel
         {
             PropertyOnCreating.Amenities.Add(amenity);
         }
-        // User can skip this step too
-        IsStepCompleted = true;
     }
 }
