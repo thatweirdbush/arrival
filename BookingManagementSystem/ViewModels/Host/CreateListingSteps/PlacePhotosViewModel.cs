@@ -10,7 +10,7 @@ namespace BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
 public partial class PlacePhotosViewModel : BaseStepViewModel
 {
-    public ObservableCollection<string> Photos
+    public ObservableCollection<StorageFile> Photos
     {
         get; set;
     } = [];
@@ -44,7 +44,7 @@ public partial class PlacePhotosViewModel : BaseStepViewModel
             // Add photos path to the Property instance
             foreach (var photo in Photos)
             {
-                PropertyOnCreating.ImagePaths.Add(photo);
+                PropertyOnCreating.ImagePaths.Add(photo.Path);
             }
             IsStepCompleted = true;
         }

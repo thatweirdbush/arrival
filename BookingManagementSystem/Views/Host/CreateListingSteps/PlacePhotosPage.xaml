@@ -9,7 +9,7 @@
     xmlns:vm="using:BookingManagementSystem.ViewModels"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
-    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations" xmlns:storage="using:Windows.Storage"
     mc:Ignorable="d"
     NavigationCacheMode="Enabled"
     CacheMode="BitmapCache">
@@ -30,31 +30,64 @@
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid x:Name="EmptyPhotoCollectionGrid" Visibility="{x:Bind ViewModel.IsPhotoListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Border x:Name="ShadowTarget"/>
-                    <Grid CornerRadius="18" MaxWidth="640" Height="500" VerticalAlignment="Top"
+                <Border x:Name="ShadowTarget"/>
+                <Grid CornerRadius="18" MaxWidth="640" Height="500" VerticalAlignment="Top"
                       Background="{ThemeResource LayerOnMicaBaseAltFillColorDefault}">
-                        <ui:Effects.Shadow>
-                            <ui:AttachedDropShadow CastTo="{x:Bind ShadowTarget}" 
+                    <ui:Effects.Shadow>
+                        <ui:AttachedDropShadow CastTo="{x:Bind ShadowTarget}" 
                                                    CornerRadius="18" Offset="4" 
                                                    BlurRadius="20" Color="{ThemeResource SmokeFillColorDefault}"/>
-                        </ui:Effects.Shadow>
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="24">
-                            <Grid CornerRadius="10">
-                                <Image Source="/Assets/camera.png" Width="180" Stretch="UniformToFill"/>
-                            </Grid>
-                            <Grid Grid.Row="1">
-                                <Button x:Name="AddPhotosButton" Click="AddPhotosButton_Click" Content="Add photos" 
+                    </ui:Effects.Shadow>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="24">
+                        <Grid CornerRadius="10">
+                            <Image Source="/Assets/camera.png" Width="180" Stretch="UniformToFill"/>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <Button x:Name="AddPhotosButton" Click="AddPhotosButton_Click" Content="Add photos" 
                                         FontWeight="SemiBold" FontSize="16" CornerRadius="8" Padding="12" Width="140" HorizontalAlignment="Center"
                                         BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"/>
-                            </Grid>
-                        </StackPanel>
-                    </Grid>
+                        </Grid>
+                    </StackPanel>
                 </Grid>
-            <Grid x:Name="PhotoCollectionGrid" Visibility="{x:Bind ViewModel.IsPhotoListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
-                <ListView x:Name="PhotosListView">
+            </Grid>
+            <Grid x:Name="PhotoCollectionGrid" RowSpacing="8" Visibility="{x:Bind ViewModel.IsPhotoListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    <Button x:Name="btnDelete" Height="36" Click="btnDelete_Click" ToolTipService.ToolTip="Remove a listing" Visibility="Collapsed" Background="Transparent" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <SymbolIcon Symbol="Delete"/>
+                            <TextBlock Text="Delete" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Key="Delete" />
+                        </Button.KeyboardAccelerators>
+                    </Button>
+                    <Button x:Name="btnCancel" Height="36" Click="btnCancel_Click" ToolTipService.ToolTip="Cancel editing listings" Visibility="Collapsed" Background="Transparent" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <SymbolIcon Symbol="Cancel"/>
+                            <TextBlock Text="Cancel" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnSelect" Height="40" Click="btnSelect_Click" ToolTipService.ToolTip="Select listings" Background="Transparent" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <SymbolIcon Symbol="Bullets"/>
+                            <TextBlock Text="Select" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="btnAddNewListing" Height="40" Click="btnAddNewListing_Click" ToolTipService.ToolTip="Add new listing" Background="Transparent" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <SymbolIcon Symbol="Add"/>
+                            <TextBlock Text="Add" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <ListView Grid.Row="1" x:Name="PhotosListView" ItemsSource="{x:Bind ViewModel.Photos}" CanReorderItems="True" CanDragItems="True" AllowDrop="True">
                     <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Image Source="{Binding}" Stretch="Uniform" />
+                        <DataTemplate x:DataType="storage:StorageFile">
+                            <Image Source="{x:Bind Path}" Stretch="Uniform" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
