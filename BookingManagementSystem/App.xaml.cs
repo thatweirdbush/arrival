@@ -29,6 +29,7 @@ using BookingManagementSystem.Views.Payment;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace BookingManagementSystem;
 
@@ -58,7 +59,10 @@ public partial class App : Application
 
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    public static UIElement? AppTitlebar { get; set; }
+    public static UIElement? AppTitlebar
+    {
+        get; set;
+    }
 
     public App()
     {
@@ -177,6 +181,7 @@ public partial class App : Application
             services.AddTransient<SignupViewModel>();
             services.AddTransient<RecoverPasswordPage>();
             services.AddTransient<RecoverPasswordViewModel>();
+            services.AddTransient<SplashScreenPage>();
 
             // These page's viewmodels are registered as singletons because they are used in multiple places
             services.AddSingleton<LoginViewModel>();
@@ -204,12 +209,24 @@ public partial class App : Application
     {
         base.OnLaunched(args);
 
-        App.GetService<IAppNotificationService>().Show(string.Format("AppNotificationSamplePayload".GetLocalized(), AppContext.BaseDirectory));
+        // Activate Splash Screen
+        MainWindow.Content = new SplashScreenPage();
+        MainWindow.Activate();
 
+        // Run heavy load functions on background threads
+        await Task.Run(async () =>
+        {
+            await RunLongRunningTasksAsync();
+        });
+
+        // Officially activate the app when all initialization is done
         await App.GetService<IActivationService>().ActivateAsync(args);
+    }
 
+    private async Task RunLongRunningTasksAsync()
+    {
         await PropertyImagesActivationHandler.CopyPropertyImagesToLocalFolderAsync();
-
         await PropertyImagesActivationHandler.BindingPropertyImagesWithLocalFolderAsync();
+        App.GetService<IAppNotificationService>().Show(string.Format("AppNotificationSamplePayload".GetLocalized(), AppContext.BaseDirectory));
     }
 }
