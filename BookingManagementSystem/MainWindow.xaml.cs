@@ -14,6 +14,7 @@ public sealed partial class MainWindow : WindowEx
     {
         InitializeComponent();
 
+        ExtendsContentIntoTitleBar = true;
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/three-body-a.ico"));
         Content = null;
         Title = "AppDisplayName".GetLocalized();

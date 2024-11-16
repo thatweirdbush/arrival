@@ -45,6 +45,8 @@
 	  <Content Remove="Assets\amenity-icons\washer.svg" />
 	  <Content Remove="Assets\amenity-icons\wifi.svg" />
 	  <Content Remove="Assets\amenity-icons\workspace.svg" />
+	  <Content Remove="Assets\Arrival Splash Screen - Dark.png" />
+	  <Content Remove="Assets\Arrival Splash Screen - Light.png" />
 	  <Content Remove="Assets\arrival-bio-resize-75.png" />
 	  <Content Remove="Assets\arrival-bio-white.png" />
 	  <Content Remove="Assets\arrival-bio.png" />
@@ -289,6 +291,9 @@
 		<None Update="Assets\amenity-icons\workspace.svg">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Update="Assets\Arrival Splash Screen - Dark.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<None Update="Assets\camera.png">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
@@ -436,6 +441,12 @@
 		<Folder Include="Views\Client\" />
 		<Folder Include="Views\Host\CreateListingSteps\" />
 		<Folder Include="Views\Payment\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Assets\Arrival Splash Screen - Light.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup>

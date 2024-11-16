@@ -5,13 +5,9 @@
     xmlns:local="using:BookingManagementSystem.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
 
     <Grid>
-        <TextBlock Text="Welcome to MyApp!" 
-                   VerticalAlignment="Center" 
-                   HorizontalAlignment="Center" 
-                   FontSize="32" />
+        <Image Source="/Assets/Arrival Splash Screen - Light.png" Stretch="UniformToFill"/>
     </Grid>
 </Page>
