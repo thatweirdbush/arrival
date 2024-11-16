@@ -1,31 +1,34 @@
-﻿using System.Collections.ObjectModel;
-using BookingManagementSystem.Contracts.Services;
+﻿using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Repositories;
+using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
-public partial class AmenitiesViewModel : ObservableRecipient
+public partial class AmenitiesViewModel : BaseStepViewModel
 {
-    private readonly INavigationService _navigationService;
     private readonly IRepository<Amenity> _amenityRepository;
+    private readonly IPropertyService _propertyService;
+    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
 
-    // List of content items
-    public IEnumerable<Amenity> GuestFavoriteAmenities { get; set; } = Enumerable.Empty<Amenity>();
-    public IEnumerable<Amenity> StandoutAmenities { get; set; } = Enumerable.Empty<Amenity>();
-    public IEnumerable<Amenity> SafetyAmenities { get; set; } = Enumerable.Empty<Amenity>();
-    public ObservableCollection<Amenity> SelectedAmenities { get; set; } = [];
+    // List of content items for UI
+    public IEnumerable<Amenity> GuestFavoriteAmenities { get; set; } = [];
+    public IEnumerable<Amenity> StandoutAmenities { get; set; } = [];
+    public IEnumerable<Amenity> SafetyAmenities { get; set; } = [];
 
-    public AmenitiesViewModel(INavigationService navigationService, IRepository<Amenity> amenityRepository)
+    // List of selected amenities by user
+    public IEnumerable<Amenity> SelectedGuestFavoriteAmenities { get; set; } = [];
+    public IEnumerable<Amenity> SelectedStandoutAmenities { get; set; } = [];
+    public IEnumerable<Amenity> SelectedSafetyAmenities { get; set; } = [];
+
+    public AmenitiesViewModel(IPropertyService propertyService, IRepository<Amenity> amenityRepository)
     {
-        _navigationService = navigationService;
+        _propertyService = propertyService;
         _amenityRepository = amenityRepository;
-
-        OnNavigatedTo(0);
+        LoadAmenities();
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public async void LoadAmenities()
     {
         // Load content data list
         var data = await _amenityRepository.GetAllAsync();
@@ -34,7 +37,22 @@ public partial class AmenitiesViewModel : ObservableRecipient
         SafetyAmenities = data.Where(x => x.Type == AmenityType.Safety);
     }
 
-    public void OnNavigatedFrom()
+    public override void ValidateStep()
     {
+        // Add selected amenities to the property
+        foreach (var amenity in SelectedGuestFavoriteAmenities)
+        {
+            PropertyOnCreating.Amenities.Add(amenity);
+        }
+        foreach (var amenity in SelectedStandoutAmenities)
+        {
+            PropertyOnCreating.Amenities.Add(amenity);
+        }
+        foreach (var amenity in SelectedSafetyAmenities)
+        {
+            PropertyOnCreating.Amenities.Add(amenity);
+        }
+        // User can skip this step too
+        IsStepCompleted = true;
     }
 }

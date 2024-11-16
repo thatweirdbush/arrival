@@ -1,19 +1,28 @@
 ﻿using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 
 namespace BookingManagementSystem.Views.Host.CreateListingSteps;
 
 public sealed partial class FinishSetupPage : Page
 {
-    public FinishSetupViewModel ViewModel
+    public FinishSetupViewModel? ViewModel
     {
-        get;
+        get; set;
     }
 
     public FinishSetupPage()
     {
-        ViewModel = App.GetService<FinishSetupViewModel>();
         InitializeComponent();
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        if (e.Parameter is FinishSetupViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+        base.OnNavigatedTo(e);
     }
 }

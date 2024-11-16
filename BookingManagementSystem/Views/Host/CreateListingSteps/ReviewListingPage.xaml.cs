@@ -1,19 +1,28 @@
 ﻿using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 
 namespace BookingManagementSystem.Views.Host.CreateListingSteps;
 
 public sealed partial class ReviewListingPage : Page
 {
-    public ReviewListingViewModel ViewModel
+    public ReviewListingViewModel? ViewModel
     {
-        get;
+        get; set;
     }
 
     public ReviewListingPage()
     {
-        ViewModel = App.GetService<ReviewListingViewModel>();
         InitializeComponent();
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        if (e.Parameter is ReviewListingViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+        base.OnNavigatedTo(e);
     }
 }

@@ -1,8 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using BookingManagementSystem.Contracts.ViewModels;
+using BookingManagementSystem.Core.Contracts.Services;
+using BookingManagementSystem.Core.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
-public partial class SetPriceViewModel : ObservableRecipient
+public partial class SetPriceViewModel : BaseStepViewModel
 {
     public const decimal DefaultPrice = 10m;
     public const decimal GuestServiceFeeRate = 0.14m;
@@ -10,6 +13,8 @@ public partial class SetPriceViewModel : ObservableRecipient
 
     [ObservableProperty]
     private decimal basePrice = DefaultPrice;
+    private readonly IPropertyService _propertyService;
+    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
 
     partial void OnBasePriceChanged(decimal value)
     {
@@ -32,9 +37,16 @@ public partial class SetPriceViewModel : ObservableRecipient
     [ObservableProperty]
     private decimal youEarn;
 
-    public SetPriceViewModel()
+    public SetPriceViewModel(IPropertyService propertyService)
     {
+        _propertyService = propertyService;
         OnBasePriceChanged(basePrice);
+    }
+
+    public override void ValidateStep()
+    {
+        PropertyOnCreating.PricePerNight = BasePrice;
+        IsStepCompleted = BasePrice > 0.0m;
     }
 }
 

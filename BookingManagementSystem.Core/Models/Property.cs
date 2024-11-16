@@ -70,13 +70,26 @@ public enum PropertyRatingStatus
     VeryGood, // 3.1-4 stars
     Excellent // 4.1-5 stars
 }
+
+public enum PropertyStatus
+{
+    Listed,
+    Unlisted,
+    InProgress,
+}
+
 public class Property : INotifyPropertyChanged
 {
-    // Define XAML Image's Path Declaration
-    public static string MS_APPX = "ms-appx:///Assets/property-images/";
+    // Define constants
+    public const string DEFAULT_PROPERTY_NAME = "Your House listing";
+    public const string DEFAULT_PROPERTY_LOCATION = "Your House location";
+    public const decimal DEFAULT_PROPERTY_PRICE = 0.0M;
+    public const decimal DEFAULT_GUEST_SERVICE_FEE_RATE = 0.14m;
+    public const decimal DEFAULT_HOST_SERVICE_FEE_RATE = 0.03m;
 
-    // Private field for ImagePath
-    private ICollection<string> _imagePaths;
+    public const int PROPERTY_NAME_MAX_LENGTH = 32;
+    public const int PROPERTY_LOCATION_MAX_LENGTH = 250;
+    public const int PROPERTY_DESCRIPTION_MAX_LENGTH = 500;
 
     public event PropertyChangedEventHandler PropertyChanged;
     public override string ToString() => $"{Name} ({Location}), {Description}, " +
@@ -89,8 +102,8 @@ public class Property : INotifyPropertyChanged
     public string Name
     {
         get; set;
-    }
-    public PropertyType Type
+    } = DEFAULT_PROPERTY_NAME;
+    public PropertyType? Type
     {
         get; set;
     }
@@ -98,7 +111,10 @@ public class Property : INotifyPropertyChanged
     {
         get; set;
     }
-
+    public int HostId
+    {
+        get; set;
+    } // Each property belongs to a host
     public ICollection<DestinationType> DestinationTypes
     {
         get; set;
@@ -106,17 +122,15 @@ public class Property : INotifyPropertyChanged
 
     public ICollection<string> ImagePaths
     {
-        // Concatenate MS_APPX with each image path
-        get => _imagePaths.Select(ip => $"{MS_APPX}{ip}").ToList();
-        set => _imagePaths = value;
-    }
+        get; set;
+    } = [];
 
-    public string ImageThumbnail => ImagePaths.FirstOrDefault() ?? $"{MS_APPX}default-thumbnail.jpg";
+    public string ImageThumbnail => ImagePaths.FirstOrDefault() ?? "ms-appx:///Assets/default-thumbnail.jpg";
 
     public string Location
     {
         get; set;
-    }
+    } = DEFAULT_PROPERTY_LOCATION;
     public int Capacity
     {
         get; set;
@@ -124,7 +138,7 @@ public class Property : INotifyPropertyChanged
     public decimal PricePerNight
     {
         get; set;
-    }
+    } = DEFAULT_PROPERTY_PRICE;
     public bool IsFavourite
     {
         get; set;
@@ -132,16 +146,19 @@ public class Property : INotifyPropertyChanged
     public ICollection<Amenity> Amenities
     {
         get; set;
-    } // E.g., WiFi, Pool, Parking
+    } = []; // E.g., WiFi, Pool, Parking
     public ICollection<PropertyPolicy> Policies
     {
         get; set;
-    } // E.g., No smoking, No pets, No parties
-
+    } = []; // E.g., No smoking, No pets, No parties
     public bool IsAvailable
     {
         get; set;
     } = true;
+    public PropertyStatus Status
+    {
+        get; set;
+    } = PropertyStatus.Listed;
     public DateTime CreatedAt
     {
         get; set;
@@ -150,7 +167,7 @@ public class Property : INotifyPropertyChanged
     {
         get; set;
     }
-    // Add properties for geographic coordinates using GeoPoint
+    // Add properties for geographic coordinates using GeoPoint or WebView2 Url query string
     public double Latitude
     {
         get; set;

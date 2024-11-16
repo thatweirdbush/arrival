@@ -4,20 +4,29 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
 using Windows.Storage;
+using Microsoft.UI.Xaml.Navigation;
 
 namespace BookingManagementSystem.Views.Host.CreateListingSteps;
 
 public sealed partial class PlacePhotosPage : Page
 {
-    public PlacePhotosViewModel ViewModel
+    public PlacePhotosViewModel? ViewModel
     {
-        get;
+        get; set;
     }
 
     public PlacePhotosPage()
     {
-        ViewModel = App.GetService<PlacePhotosViewModel>();
         InitializeComponent();
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        if (e.Parameter is PlacePhotosViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+        base.OnNavigatedTo(e);
     }
 
     private async void AddPhotosButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -52,8 +61,8 @@ public sealed partial class PlacePhotosPage : Page
             {
                 // Copy file to LocalFolder folder
                 var copiedFile = await file.CopyAsync(localFolder, file.Name, NameCollisionOption.ReplaceExisting);
-                ViewModel.Photos.Insert(0, file);
-                PhotosListView.Items.Insert(0, new BitmapImage(new Uri(copiedFile.Path)));
+                ViewModel?.Photos.Add(copiedFile.Path);
+                PhotosListView.Items.Add(new BitmapImage(new Uri(copiedFile.Path)));
             }
         }
     }

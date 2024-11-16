@@ -1,19 +1,28 @@
 ﻿using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 
 namespace BookingManagementSystem.Views.Host.CreateListingSteps;
 
 public sealed partial class StandOutPage : Page
 {
-    public StandOutViewModel ViewModel
+    public StandOutViewModel? ViewModel
     {
-        get;
+        get; set;
     }
 
     public StandOutPage()
     {
-        ViewModel = App.GetService<StandOutViewModel>();
         InitializeComponent();
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        if (e.Parameter is StandOutViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
+        base.OnNavigatedTo(e);
     }
 }

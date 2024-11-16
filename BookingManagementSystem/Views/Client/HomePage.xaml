@@ -318,7 +318,7 @@
                                         </DataTemplate>
                                     </FlipView.ItemTemplate>
                                 </FlipView>
-                                <Border x:Name="BorderVipMember" Visibility="{x:Bind IsPriority, Mode=OneWay}" CornerRadius="18" Width="82" Height="36" Background="WhiteSmoke" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
+                                <Border x:Name="BorderVipMember" Visibility="{x:Bind IsPriority, Mode=OneWay}" CornerRadius="18" Width="82" Height="36" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
                                     <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Image Width="18" Height="18">
                                             <Image.Source>

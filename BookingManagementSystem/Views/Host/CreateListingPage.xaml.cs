@@ -20,34 +20,34 @@ public sealed partial class CreateListingPage : Page
         ViewModel = App.GetService<CreateListingViewModel>();
         InitializeComponent();
 
-        // Set up DataContext for binding from XAML to easily access ViewModel
-        DataContext = ViewModel;
-
         // Subscribe to property change notifications
         ViewModel.PropertyChanged += ViewModel_PropertyChanged;
 
         // Set up initial content
-        ContentFrame.Navigate(typeof(AboutYourPlacePage), null, new DrillInNavigationTransitionInfo());
+        ContentFrame.Navigate(typeof(AboutYourPlacePage));
     }
 
     private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(ViewModel.CurrentStage))
+        if (e.PropertyName == nameof(ViewModel.CurrentStep))
         {
-            var pageType = Type.GetType($"BookingManagementSystem.Views.Host.CreateListingSteps.{ViewModel.CurrentStage}");
-            var currentStageIndex = ViewModel.Stages.IndexOf(ViewModel.CurrentStage);
-
-            var slideNavigationTransitionEffect =
-                currentStageIndex - previousStageIndex > 0 ?
-                    SlideNavigationTransitionEffect.FromRight :
-                    SlideNavigationTransitionEffect.FromLeft;
-
-            ContentFrame.Navigate(pageType, null, new SlideNavigationTransitionInfo()
+            // Get the page type based on the current ViewModel name
+            var currentStepViewModel = ViewModel.CurrentStep;
+            if (ViewModel.ViewModelToPageDictionary.TryGetValue(currentStepViewModel.GetType().Name, out var pageType))
             {
-                Effect = slideNavigationTransitionEffect
-            });
+                var currentStepIndex = ViewModel.CurrentStepIndex;
+                var slideNavigationTransitionEffect =
+                    currentStepIndex - previousStageIndex > 0 ?
+                        SlideNavigationTransitionEffect.FromRight :
+                        SlideNavigationTransitionEffect.FromLeft;
 
-            previousStageIndex = currentStageIndex;
+                ContentFrame.Navigate(pageType, currentStepViewModel, new SlideNavigationTransitionInfo()
+                {
+                    Effect = slideNavigationTransitionEffect
+                });
+
+                previousStageIndex = currentStepIndex;
+            }
         }
     }
 
@@ -63,10 +63,10 @@ public sealed partial class CreateListingPage : Page
             CloseButtonText = "Cancel"
         };
 
-        dialog.PrimaryButtonClick += (dialogSender, dialogArgs) =>
+        dialog.PrimaryButtonClick += async (dialogSender, dialogArgs) =>
         {
             // Save listing
-            //await ViewModel.SaveListingAsync();
+            await ViewModel.SaveCurrentStepAsync();
 
             // Return to Listings page using BackTrack
             App.GetService<INavigationService>()?.Frame?.Navigate(typeof(ListingPage));

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 using Microsoft.UI.Xaml.Data;
 
@@ -37,7 +38,7 @@ public class NumberToCurencyConverter : IValueConverter
         {
             if (string.IsNullOrWhiteSpace(str) || !str.Any(char.IsDigit))
             {
-                return SetPriceViewModel.DefaultPrice;
+                return Property.DEFAULT_PROPERTY_PRICE;
             }
             str = str.Trim();
             str = RemoveNonNumericCharacters(str);
@@ -48,7 +49,7 @@ public class NumberToCurencyConverter : IValueConverter
                 return result;
             }
         }
-        return SetPriceViewModel.DefaultPrice;
+        return Property.DEFAULT_PROPERTY_PRICE;
     }
 
     private string RemoveNonNumericCharacters(string input)

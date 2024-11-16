@@ -32,6 +32,8 @@
                 ItemsSource="{x:Bind ViewModel.PropertyTypeIcons}"
                 FlowDirection="LeftToRight"
                 CacheMode="BitmapCache"
+                IsItemClickEnabled="True"
+                ItemClick="PropertyTypeGridView_ItemClick"
                 ScrollViewer.VerticalScrollBarVisibility="Hidden">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>

@@ -18,9 +18,11 @@
         <helper:DateToShortDateFormatConverter x:Key="DateToShortDateFormatConverter"/>
         <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
+        <helper:PropertyStatusToStringConverter x:Key="PropertyStatusToStringConverter"/>
+        <helper:PropertyStatusToStyleConverter x:Key="PropertyStatusToStyleConverter"/>
     </Page.Resources>
 
-    <ScrollView x:Name="MainScrollView">
+    <ScrollViewer x:Name="MainScrollViewer">
         <Grid x:Name="MainGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="240"/>
@@ -79,57 +81,63 @@
                     <Button x:Name="btnGetStarted" Content="Get started" FontWeight="SemiBold" FontSize="18" Height="48" Width="180" CornerRadius="12" BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" Click="btnGetStarted_Click" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
                 <StackPanel x:Name="BodyGrid" Spacing="40" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
-                    <StackPanel x:Name="ListingsStackPanel" Spacing="12">
-                        <controls:AdaptiveGridView
-                                animations:Connected.ListItemElementName="itemThumbnail"
-                                animations:Connected.ListItemKey="animationKeyBodyGrid"
-                                DesiredWidth="500"
-                                ItemHeight="400"                
-                                x:Name="ListingsGridView"
-                                ItemsSource="{x:Bind ViewModel.Properties}"
-                                IsItemClickEnabled="True"
-                                FlowDirection="LeftToRight"
-                                StretchContentForSingleRow="False"
-                                OneRowModeEnabled="True"
-                                ItemContainerStyle="{ThemeResource GridViewItemExpanded}"
-                                CacheMode="BitmapCache">
-                            <controls:AdaptiveGridView.ItemContainerTransitions>
-                                <TransitionCollection>
-                                    <PaneThemeTransition Edge="Bottom"/>
-                                </TransitionCollection>
-                            </controls:AdaptiveGridView.ItemContainerTransitions>
-                            <controls:AdaptiveGridView.ItemTemplate>
-                                <DataTemplate x:DataType="models:Property">
-                                    <Grid CornerRadius="6">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="10*"/>
-                                            <RowDefinition Height="5*"/>
-                                        </Grid.RowDefinitions>
-                                        <Grid>
-                                            <Image Stretch = "UniformToFill" VerticalAlignment="Center">
-                                                <Image.Source>
-                                                    <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="900"/>
-                                                </Image.Source>
-                                            </Image>
-                                        </Grid>
-                                        <Grid Grid.Row="1" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}" Padding="20">
-                                            <StackPanel Spacing="4">
-                                                <TextBlock Text = "{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                                                <TextBlock Text = "{x:Bind Location}" Style="{ThemeResource DetailBodyStyle}"/>
-                                                <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Foreground="Gray" VerticalAlignment="Bottom" Margin="0 2 0 0">  
-                                                    <Run/>Created at
-                                                    <Run Text = "{x:Bind CreatedAt}"/>
-                                                </TextBlock>
-                                            </StackPanel>
-                                            <TextBlock Text = "{x:Bind PricePerNight, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style = "{ThemeResource ListTitleStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="20"/>
-                                        </Grid>
+                    <controls:AdaptiveGridView
+                            animations:Connected.ListItemElementName="itemThumbnail"
+                            animations:Connected.ListItemKey="animationKeyBodyGrid"
+                            DesiredWidth="500"
+                            ItemHeight="400"                
+                            x:Name="ListingsGridView"
+                            ItemsSource="{x:Bind ViewModel.Properties}"
+                            IsItemClickEnabled="True"
+                            FlowDirection="LeftToRight"
+                            StretchContentForSingleRow="False"
+                            OneRowModeEnabled="True"
+                            ItemContainerStyle="{ThemeResource GridViewItemExpanded}"
+                            CacheMode="BitmapCache">
+                        <controls:AdaptiveGridView.ItemContainerTransitions>
+                            <TransitionCollection>
+                                <PaneThemeTransition Edge="Bottom"/>
+                            </TransitionCollection>
+                        </controls:AdaptiveGridView.ItemContainerTransitions>
+                        <controls:AdaptiveGridView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Property">
+                                <Grid CornerRadius="6">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="10*"/>
+                                        <RowDefinition Height="5*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid>
+                                        <Image Stretch = "UniformToFill" VerticalAlignment="Center">
+                                            <Image.Source>
+                                                <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="900"/>
+                                            </Image.Source>
+                                        </Image>
+                                        <StackPanel Orientation="Horizontal" Spacing="6" CornerRadius="20" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                                        Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}" Margin="12" Padding="12">
+                                            <InfoBadge x:Name="ListingStatusInfoBadge" Width="8" Height="8" 
+                                                           Style="{Binding Status, Converter={StaticResource PropertyStatusToStyleConverter}, Mode=OneWay}"/>
+                                            <TextBlock Text="{x:Bind Status, Converter={StaticResource PropertyStatusToStringConverter}}" 
+                                                           Style="{ThemeResource BaseTextBlockStyle}" VerticalAlignment="Center"/>
+                                        </StackPanel>
                                     </Grid>
-                                </DataTemplate>
-                            </controls:AdaptiveGridView.ItemTemplate>
-                        </controls:AdaptiveGridView>
-                    </StackPanel>
+                                    <Grid Grid.Row="1" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}" MinHeight="12" MinWidth="12" Padding="20">
+                                        <StackPanel Spacing="4" MaxWidth="300" HorizontalAlignment="Left">
+                                            <TextBlock Text="{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}" MaxLines="1"/>
+                                            <TextBlock Text="{x:Bind Location}" Style="{ThemeResource DetailBodyStyle}" MaxLines="1"/>
+                                            <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Foreground="Gray" VerticalAlignment="Bottom" Margin="0 2 0 0">  
+                                                <Run/>Created at
+                                                <Run Text="{x:Bind CreatedAt}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <TextBlock Text="{x:Bind PricePerNight, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}"
+                                                    Style="{ThemeResource ListTitleStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="20"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </controls:AdaptiveGridView.ItemTemplate>
+                    </controls:AdaptiveGridView>
                 </StackPanel>
             </StackPanel>
         </Grid>
-    </ScrollView>
+    </ScrollViewer>
 </Page>
