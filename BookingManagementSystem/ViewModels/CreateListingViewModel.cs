@@ -5,6 +5,8 @@ using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.ViewModels.Client;
+using BookingManagementSystem.ViewModels.Host;
 using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 using BookingManagementSystem.Views.Host.CreateListingSteps;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -105,7 +107,7 @@ public partial class CreateListingViewModel : ObservableRecipient
             PropertyOnCreating.Status = PropertyStatus.Listed;
 
             // Return to Listings page using BackTrack
-            App.GetService<INavigationService>()?.Frame?.GoBack();
+            App.GetService<INavigationService>().NavigateTo(typeof(ListingViewModel).FullName!);
             return;
         }
         CurrentStepIndex++;
