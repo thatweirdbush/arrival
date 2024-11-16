@@ -8,6 +8,11 @@ using BookingManagementSystem.Helpers;
 using BookingManagementSystem.ViewModels;
 
 using Windows.System;
+using BookingManagementSystem.Views.Host;
+using BookingManagementSystem.Views.Account;
+using BookingManagementSystem.Views.Client;
+using BookingManagementSystem.ViewModels.Account;
+using BookingManagementSystem.Core.Models;
 
 namespace BookingManagementSystem.Views;
 
@@ -19,24 +24,34 @@ public partial class ShellPage : Page
         get;
     }
 
-    // Variable to check login status
-    private bool isSignedIn = false;
+    public LoginViewModel LoginViewModel
+    {
+        get;
+    }
 
-    private string username = "John Doe";
+    // Variable to check login status
+    private bool isLoggedIn = false;
 
     // List of MenuItems
-    private List<string> MenuItems { get; } = new()
+    private List<string> MenuItems
+    {
+        get;
+    } = new()
     {
         "Home - Hotels & Apartments",
         "Rental Details",
         "Map Services",
-        "Host Dashboard"
+        "Hosting"
     };
 
-    public ShellPage(ShellViewModel viewModel)
+    public ShellPage(ShellViewModel viewModel, LoginViewModel loginViewModel)
     {
         ViewModel = viewModel;
+        LoginViewModel = loginViewModel;
         InitializeComponent();
+
+        // Subscribe to the UserLoggedIn event
+        loginViewModel.UserLoggedIn += OnUserLoggedIn;
 
         ViewModel.NavigationService.Frame = NavigationFrame;
         ViewModel.NavigationViewService.Initialize(NavigationViewControl);
@@ -144,56 +159,96 @@ public partial class ShellPage : Page
     private void UserMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
     {
         var clickedItem = sender as MenuFlyoutItem;
-        if (clickedItem?.Tag?.ToString() == "signin")
+        var itemTag = clickedItem?.Tag?.ToString();
+        if (itemTag != null)
         {
-            SignInUser();
-        }
-        else if (clickedItem?.Tag?.ToString() == "signout")
-        {
-            SignOutUser();
-        }
-        else if (clickedItem?.Tag?.ToString() == "host")
-        {
-            NavigationFrame.Navigate(typeof(HostPage));
-        }
-        else if (clickedItem?.Tag?.ToString() == "setting")
-        {
-            NavigationFrame.Navigate(typeof(SettingsPage));
+            switch (itemTag)
+            {
+                case "signup":
+                    NavigationFrame.Navigate(typeof(SignupPage));
+                    break;
+                case "login":
+                    NavigationFrame.Navigate(typeof(LoginPage));
+                    break;
+                case "logout":
+                    OnUserLoggedOut();
+                    break;
+                case "host":
+                    NavigationFrame.Navigate(typeof(HostPage));
+                    break;
+                case "setting":
+                    NavigationFrame.Navigate(typeof(SettingsPage));
+                    break;
+                case "account":
+                    NavigationFrame.Navigate(typeof(LoyaltyProgramPage));
+                    break;
+                case "trips":
+                    NavigationFrame.Navigate(typeof(BookingHistoryPage));
+                    break;
+                case "wishlists":
+                    NavigationFrame.Navigate(typeof(WishlistPage));
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
-    private void SignInUser()
+    private void OnUserLoggedIn(BookingManagementSystem.Core.Models.User user)
     {
-        isSignedIn = true;
-        username = "John Doe";
+        isLoggedIn = true;
+        txtUsername.Text = user.FullName;
+        UserProfilePicture.DisplayName = user.FullName;
         NavigationFrame.Navigate(typeof(LoginPage));
-        UpdateUserMenu();
+        UserLoginStatusChanged();
     }
 
-    private void SignOutUser()
+    private void OnUserLoggedOut()
     {
-        isSignedIn = false;
-        username = "Sign In";
+        isLoggedIn = false;
+        txtUsername.Text = "Sign In";
+        UserProfilePicture.DisplayName = "";
         NavigationFrame.Navigate(typeof(HomePage));
-        UpdateUserMenu();
+        UserLoginStatusChanged(false);
     }
 
-    private void UpdateUserMenu()
+    private void UpdateMenuFlyoutVisibility()
     {
-        if (isSignedIn)
+        // Display items for logged in users
+        HostMenuItem.Visibility = isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
+        TripsMenuItem.Visibility = isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
+        WishlistsMenuItem.Visibility = isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
+        NoAccountSeparator.Visibility = !isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
+        LoggedInSeparator.Visibility = isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
+        AccountMenuItem.Visibility = isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
+        LogoutMenuItem.Visibility = isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
+
+        // Hide items for non-logged in users
+        SignUpMenuItem.Visibility = isLoggedIn ? Visibility.Collapsed : Visibility.Visible;
+        LoginMenuItem.Visibility = isLoggedIn ? Visibility.Collapsed : Visibility.Visible;
+    }
+
+    private void UserLoginStatusChanged(bool loggedIn = true)
+    {
+        isLoggedIn = loggedIn;
+        UpdateMenuFlyoutVisibility();
+    }
+
+    private void MultilingualButton_Click(object sender, RoutedEventArgs e)
+    {
+        var clickedItem = sender as MenuFlyoutItem;
+        var itemTag = clickedItem?.Tag?.ToString();
+        if (itemTag != null)
         {
-            txtUsername.Text = username;
-            SignInMenuItem.Text = "Sign out";
-            SignInMenuItem.Icon = new SymbolIcon(Symbol.Back);
-            SignInMenuItem.Tag = "signout";
-        }
-        else
-        {
-            username = "Sign In";
-            txtUsername.Text = username;
-            SignInMenuItem.Text = "Sign in";
-            SignInMenuItem.Icon = new SymbolIcon(Symbol.Forward);
-            SignInMenuItem.Tag = "signin";
+            switch (itemTag)
+            {
+                case "en-us":
+                    break;
+                case "vi-vn":
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

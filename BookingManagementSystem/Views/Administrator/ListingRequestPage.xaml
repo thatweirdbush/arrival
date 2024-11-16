@@ -105,6 +105,11 @@
                 <StackPanel x:Name="MainContent" Spacing="28">
                     <Grid x:Name="MainContentGrid">
                         <ListView x:Name="PriorityPropertyListView" ItemsSource="{x:Bind ViewModel.PriorityProperties}" SelectionMode="Single">
+                            <ListView.ItemContainerTransitions>
+                                <TransitionCollection>
+                                    <PaneThemeTransition Edge="Bottom"/>
+                                </TransitionCollection>
+                            </ListView.ItemContainerTransitions>
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="models:Property">
                                     <Grid Margin="0,12,0,12" AutomationProperties.Name="{x:Bind Name}">
@@ -117,7 +122,7 @@
                                                 <DataTemplate x:DataType="x:String">
                                                     <Image Stretch = "UniformToFill" VerticalAlignment="Center">
                                                         <Image.Source>
-                                                            <BitmapImage UriSource="{x:Bind}" DecodePixelWidth="180"/>
+                                                            <BitmapImage UriSource="{x:Bind}" DecodePixelWidth="270"/>
                                                         </Image.Source>
                                                     </Image>
                                                 </DataTemplate>

@@ -33,26 +33,38 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
 ### **Basics**
 - [x] **User Registration/Login/Password Recovery [3h] [21120060]** 
   - Allows users to create accounts, log in, and recover passwords for managing personal information and accessing services.
+  - You can try signing in with this example account:
+    - **Username:** `janesmith`
+    - **Password:** `password`
+  - You can try signing up following these **Regex Patterns:**
+    - **Email:** `^[^@\s]+@[^@\s]+\.[^@\s]+$`
+    - **Phone Number:** At least 10 digits
+    - **Password:** At least 8 characters
 - [ ] **Booking/Cancellation of Accommodation [2h]**  
   - Diverse booking options for private homes, apartments, and hotels ranging from budget to premium.
 - [ ] **Search for Rooms/Apartment by Schedule [2h]**  
   - Enables users to search for hotels and apartments by location, travel dates, and number of guests.
 - [x] **Preset Filters [1h] [21120082]**  
   - Filters based on destination types, including Amazing Views, Beach, Farms, Islands, etc.
+  - Currently only the `All` & `Trending` filters are available
 - [ ] **Advanced Filters [2h]**  
   - Filters by price, room type, guest capacity, amenities (Wi-Fi, air conditioning, pool), reviews, free cancellation, etc.
 - [ ] **Discount Voucher Management [1h]**  
   - Allows discounts to be applied to the final payment amount.
 - [x] **User Review Management [1h] [21120082]**  
-  - Customers can leave a review about rooms/accommodations, helping improve service quality.
+  - Customers can leave a review about rooms/accommodations, helping improve service quality
+  - You can leave a review in **Rental Details Page**
 - [x] **Question and FAQ Management [2h] [21120082]**  
   - Handles user questions about rooms/accommodations and a FAQ section for common booking, payment, and cancellation inquiries.
+  - You can leave a question in **Rental Details Page**
 - [ ] **Booking History Management [1h]**  
   - Stores users' past booking history.
 - [ ] **Booking Confirmation via Email [2h]**  
   - Sends booking confirmations through email or in-app notifications.
 - [x] **Report Abuse Management [1h] [21120082]**  
   - Allows users to report inappropriate behavior or accommodations that do not meet standards or match descriptions.
+  - You can make a report in **Rental Details Page**
+  - The **Management** feature is integrated in **Administrator Page > Subcriptions**
 - [ ] **Loyalty Member Management [2h]**  
   - Loyalty program offering exclusive benefits such as vouchers and priority listings.
 - [ ] **Amenity and Facility Tag Setup for Hosts [2h]**  
@@ -61,6 +73,9 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
   - Sends notifications for successful bookings, upcoming check-ins, and booking changes.
 - [x] **Trending/Priority Listing Management [2h] [21120082]**  
   - Lists popular accommodations or those requested to be prioritized for a certain period.
+  -  You can perform multiple selection, delete items, deselect & invert item selection.
+  - With the `Requests` filter, you can add items to the priority list with the `Add to Priority` Edit Option 
+  - This feature is integrated in **Administrator Page > Listing Requests**
 - [ ] **Multilingual Support [2h]**
     - Allows users to select the application language.
 
@@ -71,6 +86,7 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
   - Personalized travel suggestions by AI.
 - [x] **Map integration [1h] [21120082]** 
   - Display room/apartment location on map, helps it easy to locate.
+  - This feature is integrated in **Rental Details Page** & **Map Services Page**
 
  > ### Total Works Need To Be Done: **6h (for 2 members)**
  > ### Total Works Completed: **11h**

@@ -1,0 +1,64 @@
+﻿<Page
+    x:Class="BookingManagementSystem.Views.Host.CreateListingSteps.PlacePhotosPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helper="using:BookingManagementSystem.Helpers"
+    xmlns:models="using:BookingManagementSystem.Core.Models"
+    xmlns:vm="using:BookingManagementSystem.ViewModels"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled"
+    CacheMode="BitmapCache">
+
+    <Page.Resources>
+        <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
+    </Page.Resources>
+
+    <Grid x:Name="ContentArea" MaxWidth="640" VerticalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="PageHeader" Spacing="8" Margin="0 0 0 32">
+            <TextBlock Text="Add some photos of your house" Style="{ThemeResource TitleTextBlockStyle}"/>
+            <TextBlock Text="You'll need 1 photo to get started. You can add more or make changes later." Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid x:Name="EmptyPhotoCollectionGrid" Visibility="{x:Bind ViewModel.IsPhotoListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Border x:Name="ShadowTarget"/>
+                    <Grid CornerRadius="18" MaxWidth="640" Height="500" VerticalAlignment="Top"
+                      Background="{ThemeResource LayerOnMicaBaseAltFillColorDefault}">
+                        <ui:Effects.Shadow>
+                            <ui:AttachedDropShadow CastTo="{x:Bind ShadowTarget}" 
+                                                   CornerRadius="18" Offset="4" 
+                                                   BlurRadius="20" Color="{ThemeResource SmokeFillColorDefault}"/>
+                        </ui:Effects.Shadow>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="24">
+                            <Grid CornerRadius="10">
+                                <Image Source="/Assets/camera.png" Width="180" Stretch="UniformToFill"/>
+                            </Grid>
+                            <Grid Grid.Row="1">
+                                <Button x:Name="AddPhotosButton" Click="AddPhotosButton_Click" Content="Add photos" 
+                                        FontWeight="SemiBold" FontSize="16" CornerRadius="8" Padding="12" Width="140" HorizontalAlignment="Center"
+                                        BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            <Grid x:Name="PhotoCollectionGrid" Visibility="{x:Bind ViewModel.IsPhotoListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                <ListView x:Name="PhotosListView">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding}" Stretch="Uniform" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

@@ -1,9 +1,10 @@
-﻿using BookingManagementSystem.ViewModels;
-
+﻿using BookingManagementSystem.ViewModels.Host;
+using BookingManagementSystem.Views.Account;
+using BookingManagementSystem.Views.Client;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 
-namespace BookingManagementSystem.Views;
+namespace BookingManagementSystem.Views.Host;
 
 public sealed partial class HostPage : Page
 {
@@ -25,24 +26,25 @@ public sealed partial class HostPage : Page
                  (SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
     {
         var selectedItem = sender.SelectedItem;
+        var selectedTag = selectedItem.Tag.ToString();
         var currentSelectedIndex = sender.Items.IndexOf(selectedItem);
         System.Type pageType;
 
-        switch (currentSelectedIndex)
+        switch (selectedTag)
         {
-            case 0:
+            case "today":
                 pageType = typeof(LoginPage);
                 break;
-            case 1:
+            case "calendar":
                 pageType = typeof(SignupPage);
                 break;
-            case 2:
-                pageType = typeof(FAQPage);
+            case "listings":
+                pageType = typeof(ListingPage);
                 break;
-            case 3:
+            case "messages":
                 pageType = typeof(MapPage);
                 break;
-            case 4:
+            case "menu":
                 return;
             default:
                 pageType = typeof(HostPage);
@@ -79,7 +81,7 @@ public sealed partial class HostPage : Page
         }
         else if (clickedItem.Tag.ToString() == "reservations")
         {
-            pageType = typeof(FAQPage);
+            pageType = typeof(ReservationsPage);
         }
         else if (clickedItem.Tag.ToString() == "earnings")
         {
@@ -88,6 +90,10 @@ public sealed partial class HostPage : Page
         else if (clickedItem.Tag.ToString() == "vouchers")
         {
             pageType = typeof(FAQPage);
+        }
+        else if (clickedItem.Tag.ToString() == "create-new-listing")
+        {
+            pageType = typeof(CreateListingPage);
         }
         else if (clickedItem.Tag.ToString() == "guidebooks")
         {

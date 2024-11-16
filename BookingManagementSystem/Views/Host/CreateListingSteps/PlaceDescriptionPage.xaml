@@ -1,0 +1,97 @@
+﻿<Page
+    x:Class="BookingManagementSystem.Views.Host.CreateListingSteps.PlaceDescriptionPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helper="using:BookingManagementSystem.Helpers"
+    xmlns:models="using:BookingManagementSystem.Core.Models"
+    xmlns:vm="using:BookingManagementSystem.ViewModels"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled"
+    CacheMode="BitmapCache">
+
+    <Grid x:Name="ContentArea" VerticalAlignment="Center" MaxWidth="640" Padding="0 0 0 40">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="TitleTextBoxState">
+                <VisualState x:Name="TitleLengthGreaterThanMaxValue">
+                    <VisualState.StateTriggers>
+                        <triggers:CompareStateTrigger Comparison="GreaterThan" To="32" Value="{x:Bind ViewModel.SelectedTitle.Length, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TitleTextBox.BorderBrush" Value="Red" />
+                        <Setter Target="TitleInputError.Visibility" Value="Visible" />
+                        <Setter Target="TitleErrorText.Text" Value="The maximum number of characters allowed is 32." />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="DescriptionTextBoxState">
+                <VisualState x:Name="DescriptionLengthGreaterThanMaxValue">
+                    <VisualState.StateTriggers>
+                        <triggers:CompareStateTrigger Comparison="GreaterThan" To="500" Value="{x:Bind ViewModel.SelectedDescription.Length, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="DescriptionTextBox.BorderBrush" Value="Red" />
+                        <Setter Target="DescriptionInputError.Visibility" Value="Visible" />
+                        <Setter Target="DescriptionErrorText.Text" Value="The maximum number of characters allowed is 500." />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <StackPanel Spacing="36">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel x:Name="TitleHeaderPanel" MaxWidth="640" Spacing="8" Margin="0 0 0 32" HorizontalAlignment="Stretch">
+                    <TextBlock Text="Now, let's give your house a title" Style="{ThemeResource TitleTextBlockStyle}"/>
+                    <TextBlock Text="Short titles work best. Have fun with it – you can always change it later." Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
+                </StackPanel>
+                <StackPanel x:Name="TitleBody" Grid.Row="1" Spacing="12">
+                    <TextBox x:Name="TitleTextBox" FontSize="20" Padding="18" CornerRadius="8" Height="100" TextWrapping="Wrap" 
+                             Text="{x:Bind ViewModel.SelectedTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             BorderBrush="{ThemeResource AcrylicInAppFillColorDefaultInverseBrush}"/>
+                    <Grid>
+                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Foreground="DimGray" HorizontalAlignment="Left">
+                            <Run Text="{x:Bind ViewModel.SelectedTitle.Length, Mode=OneWay}"/>/32
+                        </TextBlock>
+                        <StackPanel x:Name="TitleInputError" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" Visibility="Collapsed">
+                            <InfoBadge Style="{ThemeResource CriticalIconInfoBadgeStyle}"/>
+                            <TextBlock x:Name="TitleErrorText" Foreground="{ThemeResource SystemFillColorCriticalBrush}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel x:Name="DescriptionHeaderPanel" MaxWidth="640" Spacing="8" Margin="0 0 0 32" HorizontalAlignment="Stretch">
+                    <TextBlock Text="Create your description" Style="{ThemeResource TitleTextBlockStyle}"/>
+                    <TextBlock Text="Share what makes your place special." Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
+                </StackPanel>
+                <StackPanel x:Name="DescriptionBody" Grid.Row="1" Spacing="12">
+                    <TextBox x:Name="DescriptionTextBox" FontSize="20" Padding="18" CornerRadius="8" Height="200" TextWrapping="Wrap"
+                             Text="{x:Bind ViewModel.SelectedDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             BorderBrush="{ThemeResource AcrylicInAppFillColorDefaultInverseBrush}"/>
+                    <Grid>
+                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Foreground="DimGray" HorizontalAlignment="Left">
+                            <Run Text="{x:Bind ViewModel.SelectedDescription.Length, Mode=OneWay}"/>/500
+                        </TextBlock>
+                        <StackPanel x:Name="DescriptionInputError" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" Visibility="Collapsed">
+                            <InfoBadge Style="{ThemeResource CriticalIconInfoBadgeStyle}"/>
+                            <TextBlock x:Name="DescriptionErrorText" Foreground="{ThemeResource SystemFillColorCriticalBrush}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Page>

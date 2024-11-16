@@ -1,4 +1,4 @@
-﻿using BookingManagementSystem.ViewModels;
+﻿using BookingManagementSystem.ViewModels.Administrator;
 using BookingManagementSystem.Core.Models;
 
 using Microsoft.UI.Xaml.Controls;

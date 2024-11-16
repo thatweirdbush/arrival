@@ -1,7 +1,18 @@
 ﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.ViewModels;
+using BookingManagementSystem.ViewModels.Account;
+using BookingManagementSystem.ViewModels.Administrator;
+using BookingManagementSystem.ViewModels.Client;
+using BookingManagementSystem.ViewModels.Host;
+using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
+using BookingManagementSystem.ViewModels.Payment;
 using BookingManagementSystem.Views;
+using BookingManagementSystem.Views.Account;
 using BookingManagementSystem.Views.Administrator;
+using BookingManagementSystem.Views.Client;
+using BookingManagementSystem.Views.Host;
+using BookingManagementSystem.Views.Host.CreateListingSteps;
+using BookingManagementSystem.Views.Payment;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -27,6 +38,25 @@ public class PageService : IPageService
         Configure<AdministratorViewModel, AdministratorPage>();
         Configure<ReportViewModel, ReportPage>();
         Configure<ListingRequestViewModel, ListingRequestPage>();
+        Configure<BookingHistoryViewModel, BookingHistoryPage>();
+        Configure<LoyaltyProgramViewModel, LoyaltyProgramPage>();
+        Configure<WishlistViewModel, WishlistPage>();
+        Configure<UserProfileViewModel, UserProfilePage>();
+        Configure<ListingViewModel, ListingPage>();
+        Configure<ReservationsViewModel, ReservationsPage>();
+        Configure<CreateListingViewModel, CreateListingPage>();
+        Configure<AboutYourPlaceViewModel, AboutYourPlacePage>();
+        Configure<PlaceStructureViewModel, PlaceStructurePage>();
+        Configure<StandOutViewModel, StandOutPage>();
+        Configure<AmenitiesViewModel, AmenitiesPage>();
+        Configure<PlacePhotosViewModel, PlacePhotosPage>();
+        Configure<SetPriceViewModel, SetPricePage>();
+        Configure<ReviewListingViewModel, ReviewListingPage>();
+        Configure<PublishCelebrationViewModel, PublishCelebrationPage>();
+        Configure<FinishSetupViewModel, FinishSetupPage>();
+        Configure<PlaceDescriptionViewModel, PlaceDescriptionPage>();
+        Configure<PlaceLocationViewModel, PlaceLocationPage>();
+        Configure<FloorPlanViewModel, FloorPlanPage>();
     }
 
     public Type GetPageType(string key)

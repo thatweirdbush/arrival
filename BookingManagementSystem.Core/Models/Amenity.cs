@@ -6,10 +6,25 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 
 namespace BookingManagementSystem.Core.Models;
+
+public enum AmenityType
+{
+    GuestFavorite,
+    Standout,
+    Safety,
+    Household,
+    RoomEssentials,
+    Other
+}
+
 public class Amenity : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
-    public override string ToString() => $"{Name} - {Description} - Is Available: {IsAvailable}";
+
+    // Define XAML Image's Path Declaration
+    public static string MS_APPX = "ms-appx:///Assets/amenity-icons/";
+    private string _imagePath;
+    public override string ToString() => $"{Name} - {Description}";
     public int Id
     {
         get; set;
@@ -18,17 +33,28 @@ public class Amenity : INotifyPropertyChanged
     {
         get; set;
     }
+    public AmenityType Type
+    {
+        get; set;
+    } = AmenityType.Other;
     public string Description
     {
         get; set;
     }
-    // E.g., 1, 2, 3, etc. Default is 1
     public int Quantity
     {
         get; set;
     } = 1;
-    public bool IsAvailable
+    public string ImagePath
     {
-        get; set;
+        get
+        {   // Default image path is "default-icon.svg"
+            if (string.IsNullOrEmpty(_imagePath))
+            {
+                return $"{MS_APPX}cube.svg";
+            }
+            return $"{MS_APPX}{_imagePath}";
+        }
+        set => _imagePath = value;
     }
 }

@@ -24,20 +24,56 @@
                        TextWrapping="NoWrap"
                        Style="{StaticResource CaptionTextBlockStyle}"
                        Margin="28,0,0,0"/>
-            <Button x:Name="btnUser" Background="Transparent" BorderThickness="0" Margin="0 0 140 0" HorizontalAlignment="Right" HorizontalContentAlignment="Left">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <PersonPicture DisplayName="{x:Bind username}" Width="26" Height="26"/>
-                    <TextBlock x:Name="txtUsername" Text="Sign In" VerticalAlignment="Center" FontSize="14" Margin="10 0"/>
-                </StackPanel>
-                <Button.Flyout>
-                    <MenuFlyout x:Name="UserFlyout" Placement="Bottom">
-                        <MenuFlyoutItem x:Name="HostMenuItem" Text="Host Dashboard" Icon="Home" Click="UserMenuFlyoutItem_Click" Tag="host" Width="180" Height="40"/>
-                        <MenuFlyoutItem x:Name="SignInMenuItem" Text="Sign in" Icon="Forward" Click="UserMenuFlyoutItem_Click" Tag="signin" Width="180" Height="40"/>
-                        <MenuFlyoutSeparator/>
-                        <MenuFlyoutItem x:Name="SettingMenuItem" Text="Setting" Icon="Setting" Click="UserMenuFlyoutItem_Click" Tag="setting" Width="180" Height="40"/>
-                    </MenuFlyout>
-                </Button.Flyout>
-            </Button>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 140 0" Spacing="-10">
+                <Button x:Name="MultilingualButton" Click="MultilingualButton_Click" 
+                        Background="Transparent" BorderThickness="0" Width="48" 
+                        CornerRadius="80" VerticalAlignment="Stretch"
+                        ToolTipService.ToolTip="Select your language and region">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE774;"/>
+                    <Button.Flyout>
+                        <MenuFlyout x:Name="LanguageFlyout" Placement="BottomEdgeAlignedRight" >
+                            <RadioMenuFlyoutItem x:Name="enUsMenuItem" Text="English" IsChecked="True" FontWeight="SemiBold" Click="UserMenuFlyoutItem_Click" Tag="en-us" Width="180" Height="40"/>
+                            <RadioMenuFlyoutItem x:Name="ViVnMenuItem" Text="Tiếng Việt" FontWeight="SemiBold" Click="UserMenuFlyoutItem_Click" Tag="vi-vn" Width="180" Height="40"/>
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+                <Button x:Name="btnUser" Background="Transparent" BorderThickness="0" CornerRadius="24" 
+                        HorizontalContentAlignment="Left" VerticalAlignment="Stretch"
+                        ToolTipService.ToolTip="Account">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <PersonPicture x:Name="UserProfilePicture" Width="26" Height="26"/>
+                        <TextBlock x:Name="txtUsername" Text="Sign In" VerticalAlignment="Center" FontSize="14" Margin="10 0 0 0"/>
+                    </StackPanel>
+                    <Button.Flyout>
+                        <MenuFlyout x:Name="UserFlyout" Placement="BottomEdgeAlignedRight" >
+                            <MenuFlyoutItem x:Name="SignUpMenuItem" Text="Sign up" FontWeight="SemiBold" Click="UserMenuFlyoutItem_Click" Tag="signup" Width="240" Height="40">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE8FA;"/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem x:Name="LoginMenuItem" Text="Log in" FontWeight="SemiBold" Icon="Forward" Click="UserMenuFlyoutItem_Click" Tag="login" Width="240" Height="40"/>
+                            <MenuFlyoutSeparator x:Name="NoAccountSeparator"/>
+
+                            <MenuFlyoutItem x:Name="HostMenuItem" Text="Hosting" Visibility="Collapsed" FontWeight="SemiBold" Icon="Home" Click="UserMenuFlyoutItem_Click" Tag="host" Width="240" Height="40"/>
+                            <MenuFlyoutItem x:Name="TripsMenuItem" Text="Trips" Visibility="Collapsed" FontWeight="SemiBold" Icon="Street" Click="UserMenuFlyoutItem_Click" Tag="trips" Width="240" Height="40"/>
+                            <MenuFlyoutItem x:Name="WishlistsMenuItem" Text="Wishlists" Visibility="Collapsed" FontWeight="SemiBold" Click="UserMenuFlyoutItem_Click" Tag="wishlists" Width="240" Height="40">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE728;"/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutSeparator x:Name="LoggedInSeparator" Visibility="Collapsed"/>
+
+                            <MenuFlyoutItem x:Name="AccountMenuItem" Text="Account" Icon="Contact" Visibility="Collapsed" Click="UserMenuFlyoutItem_Click" Tag="account" Width="240" Height="40"/>
+                            <MenuFlyoutItem x:Name="SettingMenuItem" Text="Setting" Icon="Setting" Click="UserMenuFlyoutItem_Click" Tag="setting" Width="240" Height="40"/>
+                            <MenuFlyoutItem x:Name="LogoutMenuItem" Text="Log out" Visibility="Collapsed" Click="UserMenuFlyoutItem_Click" Tag="logout" Width="240" Height="40">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xF3B1;"/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+            </StackPanel>
         </Grid>
         <NavigationView
             x:Name="NavigationViewControl" PaneDisplayMode="LeftCompact" IsTitleBarAutoPaddingEnabled="False"
@@ -51,60 +87,28 @@
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
             Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
             <NavigationView.MenuItems>
-                <NavigationViewItem x:Uid="Shell_Home" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.HomeViewModel">
-                    <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Home"/>
-                    </NavigationViewItem.Icon>
+                <NavigationViewItem x:Uid="Shell_Home" Icon="Home" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.HomeViewModel"/>
+                <NavigationViewItem x:Uid="Shell_Map" Icon="World" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.MapViewModel"/>
+                <NavigationViewItem x:Uid="Shell_Host" Icon="Street" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Host.HostViewModel">
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem x:Uid="Shell_Listing" Icon="List" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Host.ListingViewModel"/>
+                        <NavigationViewItem x:Uid="Shell_CreateListing" Icon="NewFolder" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.CreateListingViewModel"/>
+                        <NavigationViewItem x:Uid="Shell_LoyaltyProgram" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.LoyaltyProgramViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon Glyph="&#xE7E3;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_Map" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.MapViewModel">
-                    <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="World"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_Host" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.HostViewModel">
-                    <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Street"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_FAQ" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.FAQViewModel">
-                    <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Flag"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_FAQ" Icon="Flag" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.FAQViewModel"/>
             </NavigationView.MenuItems>
-            
+
             <NavigationView.PaneHeader>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Image Source="/Assets/Square44x44Logo.targetsize-48.png" Width="30" Height="30" Stretch="Fill"/>
                     <Image Source="/Assets/arrival-bio-resize-75.png" Height="30" Margin="6 0 0 0" Stretch="Fill"/>
                 </StackPanel>
-            </NavigationView.PaneHeader>
-
-            <!--<NavigationView.HeaderTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <TextBlock
-                            Text="{Binding}"
-                            Style="{ThemeResource TitleTextBlockStyle}" />
-                    </Grid>
-                </DataTemplate>
-            </NavigationView.HeaderTemplate>-->
-            <!--<i:Interaction.Behaviors>
-                <behaviors:NavigationViewHeaderBehavior
-                    DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
-                    <behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <TextBlock
-                                    Text="{Binding}"
-                                    Style="{ThemeResource TitleTextBlockStyle}" />
-                            </Grid>
-                        </DataTemplate>
-                    </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
-                </behaviors:NavigationViewHeaderBehavior>
-            </i:Interaction.Behaviors>-->
-
-            <!--<Grid Margin="{StaticResource NavigationViewPageContentMargin}">-->
+            </NavigationView.PaneHeader>           
             <Grid>
                 <Frame x:Name="NavigationFrame" />
             </Grid>
@@ -115,12 +119,10 @@
                                 QueryIcon="Find"
                                 SuggestionChosen="MenuAutoSuggestBox_SuggestionChosen"
                                 AutomationProperties.Name="Menu AutoSuggestBox" />
-
             </NavigationView.AutoSuggestBox>
+            
             <NavigationView.FooterMenuItems>
-                <!--<NavigationViewItem x:Uid="Shell_Message" Icon="Message" AutomationProperties.Name="Messages" />
-                <NavigationViewItem x:Uid="Shell_Favourite" Icon="Favorite" AutomationProperties.Name="Favorites" />-->
-                <NavigationViewItem x:Uid="Shell_Admin" Icon="GoToStart" AutomationProperties.Name="Administrator" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.AdministratorViewModel" />
+                <NavigationViewItem x:Uid="Shell_Admin" Icon="GoToStart" AutomationProperties.Name="Administrator" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Administrator.AdministratorViewModel" />
             </NavigationView.FooterMenuItems>
         </NavigationView>
     </Grid>
