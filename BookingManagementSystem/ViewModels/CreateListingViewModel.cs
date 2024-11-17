@@ -24,6 +24,10 @@ public partial class CreateListingViewModel : ObservableRecipient
 
     [ObservableProperty]
     private int currentStepIndex;
+
+    [ObservableProperty]
+    private bool isLastStepCompleted;
+
     public BaseStepViewModel CurrentStep => Stages[CurrentStepIndex];
 
     public readonly ObservableCollection<BaseStepViewModel> Stages = [];
@@ -77,7 +81,8 @@ public partial class CreateListingViewModel : ObservableRecipient
         };
 
         CurrentStepIndex = 0;
-        GoForwardCommand = new RelayCommand(GoForward, CanGoForward);
+        IsLastStepCompleted = false;
+        GoForwardCommand = new RelayCommand(GoForward);
         GoBackwardCommand = new RelayCommand(GoBackward);
     }
 
@@ -88,11 +93,6 @@ public partial class CreateListingViewModel : ObservableRecipient
     public ICommand GoBackwardCommand
     {
         get;
-    }
-
-    public bool CanGoForward()
-    {
-        return CurrentStep.IsStepCompleted == true;
     }
 
     public async void GoForward()
@@ -125,6 +125,11 @@ public partial class CreateListingViewModel : ObservableRecipient
             return;
         }
         CurrentStepIndex--;
+    }
+
+    partial void OnCurrentStepIndexChanged(int value)
+    {
+        IsLastStepCompleted = value == Stages.Count - 1;
     }
 
     public async Task SaveCurrentStepAsync()

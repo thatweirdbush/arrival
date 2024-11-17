@@ -13,6 +13,11 @@
     mc:Ignorable="d"
     CacheMode="BitmapCache">
 
+    <Page.Resources>
+        <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
+        <helper:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
+    </Page.Resources>
+
     <Grid x:Name="ContentArea" Background="{ThemeResource LayerOnMicaBaseAltFillColorTertiary}">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
@@ -30,6 +35,7 @@
                 <Button x:Name="SaveAndExitButton" Content="Save &amp; exit" 
                         Click="SaveAndExitButton_Click"
                         BorderThickness="1" CornerRadius="20" Height="44" Padding="14,8,14,8"
+                        Visibility="{x:Bind ViewModel.IsLastStepCompleted, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"
                         FontWeight="SemiBold" FontSize="16" />
             </StackPanel>
         </Grid>
@@ -41,6 +47,7 @@
                          Value="{x:Bind ViewModel.CurrentStepIndex, Mode=OneWay}"
                          Foreground="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" />
             <Button Content="Back" Command="{x:Bind ViewModel.GoBackwardCommand}"
+                    IsEnabled="{x:Bind ViewModel.IsLastStepCompleted, Mode=OneWay, Converter={StaticResource InvertedBoolConverter}}"
                     BorderThickness="0" CornerRadius="8" Height="44" Width="90"
                     Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" 
                     Foreground="{ThemeResource SystemControlBackgroundBaseHighBrush}"
