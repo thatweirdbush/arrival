@@ -1,9 +1,11 @@
 ﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.Core.Repositories;
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.ViewModels.Host;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Windows.ApplicationModel.Contacts;
 
 namespace BookingManagementSystem.Views.Host;
 
@@ -78,7 +80,7 @@ public sealed partial class ListingPage : Page
         App.GetService<INavigationService>().NavigateTo(typeof(CreateListingViewModel).FullName!);
     }
 
-    private async void RemoveAllPhotos_Click(object sender, RoutedEventArgs e)
+    private async void RemoveAllLissting_Click(object sender, RoutedEventArgs e)
     {
         // Show confirmation dialog
         var confirm = new ContentDialog
@@ -107,6 +109,14 @@ public sealed partial class ListingPage : Page
         App.GetService<INavigationService>().NavigateTo(typeof(CreateListingViewModel).FullName!);
     }
 
+    private void SearchListing_Click(object sender, RoutedEventArgs e)
+    {
+        // Show search box and hide the Seach button
+        SearchBoxContent.Visibility = Visibility.Visible;
+        btnSearch.Visibility = Visibility.Collapsed;
+        SearchBox.Focus(FocusState.Programmatic);
+    }
+
     private void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
     {
         var element = (sender as AppBarButton)!.Label;
@@ -125,8 +135,62 @@ public sealed partial class ListingPage : Page
                 RemoveListing_Click(sender, e);
                 break;
             case "Remove all":
-                RemoveAllPhotos_Click(sender, e);
+                RemoveAllLissting_Click(sender, e);
+                break;
+            case "Search":
+                SearchListing_Click(sender, e);
                 break;
         }
+    }
+
+    private void CloseSearchBoxButton_Click(object sender, RoutedEventArgs e)
+    {
+        // Hide search box and show the Seach button
+        SearchBoxContent.Visibility = Visibility.Collapsed;
+        btnSearch.Visibility = Visibility.Visible;
+
+        // Reload Property List
+        if (ViewModel.PropertyCountTotal != ViewModel.Properties.Count)
+        {
+            ViewModel.Properties.Clear();
+            ViewModel.LoadPropertyList();
+        }
+
+        // Clear search box text
+        SearchBox.Text = string.Empty;
+    }
+
+    private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    {
+        // Since selecting an item will also change the text,
+        // only listen to changes caused by user entering text.
+        if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+        {
+            ViewModel.Properties.Clear();
+            var suitableItems = new List<string>();
+            var splitText = sender.Text.ToLower().Split(" ");
+            foreach (var line in ViewModel.PropertyNameAndLocationList)
+            {
+                var found = splitText.All((key) =>
+                {
+                    return line.Contains(key, StringComparison.CurrentCultureIgnoreCase);
+                });
+                if (found)
+                {
+                    suitableItems.Add(line);
+                    ViewModel.AddFilterProperties(line);
+                }
+            }
+            if (suitableItems.Count == 0)
+            {
+                suitableItems.Add("No results found");
+                ViewModel.Properties.Clear();
+            }
+            sender.ItemsSource = suitableItems;
+        }
+    }
+
+    private void SearchBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+    {
     }
 }
