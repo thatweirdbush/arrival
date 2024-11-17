@@ -46,14 +46,23 @@ public partial class ListingViewModel : ObservableRecipient
     {
     }
 
-    public void DeleteBookingAsync(Property property)
+    public void RemoveBookingAsync(Property property)
     {
         _propertyRepository.DeleteAsync(property.Id);
         Properties.Remove(property);
     }
 
+    public void RemoveAllBookingsAsync()
+    {
+        foreach (var property in Properties)
+        {
+            _propertyRepository.DeleteAsync(property.Id);
+        }
+        Properties.Clear();
+    }
+
     private void CheckPropertyListCount()
     {
-        IsPropertyListEmpty= Properties.Count == 0;
+        IsPropertyListEmpty = Properties.Count == 0;
     }
 }

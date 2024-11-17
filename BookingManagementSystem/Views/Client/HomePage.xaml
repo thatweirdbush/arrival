@@ -17,6 +17,9 @@
     <Page.Resources>
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
         <helper:IsFavouriteToImagePathConverter x:Key="IsFavouriteToImagePathConverter"/>
+        <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
+        
         <DataTemplate x:Key="ImageTemplate" x:DataType="models:DestinationTypeSymbol">
             <ItemContainer HorizontalAlignment="Left" Width="200" Height="140" AutomationProperties.Name="{x:Bind Name}">
                 <Image Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind ImagePath}" Margin="4" AutomationProperties.AccessibilityView="Raw"/>
@@ -267,13 +270,16 @@
                 </Button>
             </StackPanel>
         </Grid>
-        <Grid x:Name="EmptyListMessageGrid" Grid.Row="2" Visibility="Collapsed">
+        <Grid x:Name="EmptyListMessageGrid" Grid.Row="2" 
+              Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0 0 0 140">
+                <Image Source="/Assets/modern-european-house.png" Width="240" Height="240" Stretch="Fill" Margin="0 0 0 -12"/>
                 <TextBlock Text="No exact matches" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center"/>
                 <TextBlock Text="Try changing or removing some of your filters or adjusting your search area." Style="{ThemeResource DetailSubTitleStyle}"  HorizontalAlignment="Center"/>
             </StackPanel>
         </Grid>
-        <Grid x:Name="ListContentGrid" Grid.Row="2" Background="Transparent">
+        <Grid x:Name="ListContentGrid" Grid.Row="2" Background="Transparent" 
+              Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
             <controls:AdaptiveGridView
                 animations:Connected.ListItemElementName="itemThumbnail"
                 animations:Connected.ListItemKey="animationKeyContentGrid"

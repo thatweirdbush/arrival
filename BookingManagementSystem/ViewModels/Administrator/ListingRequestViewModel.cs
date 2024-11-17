@@ -15,11 +15,20 @@ public partial class ListingRequestViewModel : ObservableRecipient
     // List of content items
     public ObservableCollection<Property> PriorityProperties { get; set; } = [];
 
+    [ObservableProperty]
+    private bool isPropertyListEmpty;
+
     public ListingRequestViewModel(INavigationService navigationService, IRepository<Property> propertyRepository)
     {
         _navigationService = navigationService;
         _propertyRepository = propertyRepository;
         GetPriorityPropertyListDataAsync();
+
+        // Subscribe to CollectionChanged event
+        PriorityProperties.CollectionChanged += (s, e) => CheckPropertyListCount();
+
+        // Initial check
+        CheckPropertyListCount();
     }
 
     public void OnNavigatedTo(object parameter)
@@ -30,6 +39,11 @@ public partial class ListingRequestViewModel : ObservableRecipient
 
     public void OnNavigatedFrom()
     {
+    }
+
+    private void CheckPropertyListCount()
+    {
+        IsPropertyListEmpty = PriorityProperties.Count == 0;
     }
 
     public async void GetPriorityPropertyListDataAsync()

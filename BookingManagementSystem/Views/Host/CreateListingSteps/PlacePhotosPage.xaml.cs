@@ -1,15 +1,10 @@
 ﻿using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
 using Windows.Storage;
 using Microsoft.UI.Xaml.Navigation;
-using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.ViewModels;
 using Microsoft.UI.Xaml;
-using System.Collections.ObjectModel;
 
 namespace BookingManagementSystem.Views.Host.CreateListingSteps;
 
@@ -125,8 +120,8 @@ public sealed partial class PlacePhotosPage : Page
         {
             XamlRoot = XamlRoot,
             Title = "Remove all photos?",
-            Content = "Once you remove it, you can't get it back.",
-            PrimaryButtonText = "Remove it",
+            Content = "Once you remove all, you can't get them back.",
+            PrimaryButtonText = "Remove all",
             CloseButtonText = "Cancel",
             DefaultButton = ContentDialogButton.Primary
         };
