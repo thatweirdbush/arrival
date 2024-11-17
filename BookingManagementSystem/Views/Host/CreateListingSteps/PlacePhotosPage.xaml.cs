@@ -70,28 +70,26 @@ public sealed partial class PlacePhotosPage : Page
         }
     }
 
-    private void btnSelect_Click(object sender, RoutedEventArgs e)
+    private void EditPhotos_Click(object sender, RoutedEventArgs e)
     {
         PhotosListView.SelectionMode = ListViewSelectionMode.Multiple;
-        btnSelect.Visibility = Visibility.Collapsed;
+        btnEdit.Visibility = Visibility.Collapsed;
         btnCancel.Visibility = Visibility.Visible;
-        btnDelete.Visibility = Visibility.Visible;
+        btnRemove.Visibility = Visibility.Visible;
     }
 
-    private void btnCancel_Click(object sender, RoutedEventArgs e)
+    private void CancelEditing_Click(object sender, RoutedEventArgs e)
     {
         PhotosListView.SelectionMode = ListViewSelectionMode.Single;
         btnCancel.Visibility = Visibility.Collapsed;
-        btnDelete.Visibility = Visibility.Collapsed;
-        btnSelect.Visibility = Visibility.Visible;
+        btnRemove.Visibility = Visibility.Collapsed;
+        btnEdit.Visibility = Visibility.Visible;
     }
 
-    private async void btnDelete_Click(object sender, RoutedEventArgs e)
+    private async void RemovePhotos_Click(object sender, RoutedEventArgs e)
     {
         // Get selected items and remove them from the list
         var selectedItems = PhotosListView.SelectedItems.ToList();
-
-        // Check if there are selected items
         if (selectedItems.Count == 0)
         {
             return;
@@ -101,29 +99,68 @@ public sealed partial class PlacePhotosPage : Page
         var confirm = new ContentDialog
         {
             XamlRoot = XamlRoot,
-            Title = "Delete this photo?",
-            Content = "Once you delete it, you can't get it back.",
-            PrimaryButtonText = "Delete it",
-            CloseButtonText = "Cancel"
+            Title = "Remove this photo?",
+            Content = "Once you remove it, you can't get it back.",
+            PrimaryButtonText = "Remove it",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary
         };
 
         var result = await confirm.ShowAsync();
 
-        // Check if the user clicked the delete button
-        if (result != ContentDialogResult.Primary)
+        // Check if the user clicked the remove button
+        if (result == ContentDialogResult.Primary)
         {
-            return;
-        }
-
-        // Remove the selected items from the list
-        foreach (var item in selectedItems)
-        {
-            ViewModel?.Photos.Remove((StorageFile)item);
+            // Remove the selected items from the list
+            foreach (var item in selectedItems)
+            {
+                ViewModel?.Photos.Remove((StorageFile)item);
+            }
         }
     }
 
-    private void btnAddNewListing_Click(object sender, RoutedEventArgs e)
+    private async void RemoveAllPhotos_Click(object sender, RoutedEventArgs e)
     {
-        AddPhotosButton_Click(sender, e);
+        // Show confirmation dialog
+        var confirm = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = "Remove all photos?",
+            Content = "Once you remove it, you can't get it back.",
+            PrimaryButtonText = "Remove it",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary
+        };
+
+        var result = await confirm.ShowAsync();
+
+        // Check if the user clicked the remove button
+        if (result == ContentDialogResult.Primary)
+        {
+            ViewModel?.Photos.Clear();
+        }
+    }
+
+    private void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
+    {
+        var element = (sender as AppBarButton)!.Label;
+        switch (element)
+        {
+            case "Add":
+                AddPhotosButton_Click(sender, e);
+                break;
+            case "Edit":
+                EditPhotos_Click(sender, e);
+                break;
+            case "Cancel":
+                CancelEditing_Click(sender, e);
+                break;
+            case "Remove":
+                RemovePhotos_Click(sender, e);
+                break;
+            case "Remove all":
+                RemoveAllPhotos_Click(sender, e);
+                break;
+        }
     }
 }

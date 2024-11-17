@@ -9,7 +9,8 @@
     xmlns:vm="using:BookingManagementSystem.ViewModels"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
-    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations" xmlns:storage="using:Windows.Storage"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    xmlns:storage="using:Windows.Storage"
     mc:Ignorable="d"
     NavigationCacheMode="Enabled"
     CacheMode="BitmapCache">
@@ -26,17 +27,20 @@
         </Grid.RowDefinitions>
         <StackPanel x:Name="PageHeader" Spacing="8" Margin="0 0 0 32">
             <TextBlock Text="Add some photos of your house" Style="{ThemeResource TitleTextBlockStyle}"/>
-            <TextBlock Text="You'll need 1 photo to get started. You can add more or make changes later." Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
+            <TextBlock Text="You'll need 1 photo to get started. You can add more or make changes later." 
+                       Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
         </StackPanel>
         <Grid Grid.Row="1">
-            <Grid x:Name="EmptyPhotoCollectionGrid" Visibility="{x:Bind ViewModel.IsPhotoListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid x:Name="EmptyPhotoCollectionGrid" 
+                  Visibility="{x:Bind ViewModel.IsPhotoListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Border x:Name="ShadowTarget"/>
                 <Grid CornerRadius="18" MaxWidth="640" Height="500" VerticalAlignment="Top"
                       Background="{ThemeResource LayerOnMicaBaseAltFillColorDefault}">
                     <ui:Effects.Shadow>
-                        <ui:AttachedDropShadow CastTo="{x:Bind ShadowTarget}" 
-                                                   CornerRadius="18" Offset="4" 
-                                                   BlurRadius="20" Color="{ThemeResource SmokeFillColorDefault}"/>
+                        <ui:AttachedDropShadow 
+                            CastTo="{x:Bind ShadowTarget}" 
+                            CornerRadius="18" Offset="4" 
+                            BlurRadius="20" Color="{ThemeResource SmokeFillColorDefault}"/>
                     </ui:Effects.Shadow>
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="24">
                         <Grid CornerRadius="10">
@@ -44,54 +48,45 @@
                         </Grid>
                         <Grid Grid.Row="1">
                             <Button x:Name="AddPhotosButton" Click="AddPhotosButton_Click" Content="Add photos" 
-                                        FontWeight="SemiBold" FontSize="16" CornerRadius="8" Padding="12" Width="140" HorizontalAlignment="Center"
-                                        BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"/>
+                                    FontWeight="SemiBold" FontSize="16" CornerRadius="8" Padding="12" Width="140" HorizontalAlignment="Center"
+                                    BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"/>
                         </Grid>
                     </StackPanel>
                 </Grid>
             </Grid>
-            <Grid x:Name="PhotoCollectionGrid" RowSpacing="8" Visibility="{x:Bind ViewModel.IsPhotoListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+            <Grid x:Name="PhotoCollectionGrid" RowSpacing="8" Margin="0 -32 0 0" 
+                  Visibility="{x:Bind ViewModel.IsPhotoListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                    <Button x:Name="btnDelete" Height="36" Click="btnDelete_Click" ToolTipService.ToolTip="Remove a listing" Visibility="Collapsed" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <SymbolIcon Symbol="Delete"/>
-                            <TextBlock Text="Delete" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <Button.KeyboardAccelerators>
-                            <KeyboardAccelerator Key="Delete" />
-                        </Button.KeyboardAccelerators>
-                    </Button>
-                    <Button x:Name="btnCancel" Height="36" Click="btnCancel_Click" ToolTipService.ToolTip="Cancel editing listings" Visibility="Collapsed" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <SymbolIcon Symbol="Cancel"/>
-                            <TextBlock Text="Cancel" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="btnSelect" Height="40" Click="btnSelect_Click" ToolTipService.ToolTip="Select listings" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <SymbolIcon Symbol="Bullets"/>
-                            <TextBlock Text="Select" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="btnAddNewListing" Height="40" Click="btnAddNewListing_Click" ToolTipService.ToolTip="Add new listing" Background="Transparent" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <SymbolIcon Symbol="Add"/>
-                            <TextBlock Text="Add" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-                <ListView Grid.Row="1" x:Name="PhotosListView" ItemsSource="{x:Bind ViewModel.Photos}"
-                          CanReorderItems="True" CanDragItems="True" AllowDrop="True">
-                    <ListView.ItemTemplate>
+                <CommandBar x:Name="CollectionCommandBar" DefaultLabelPosition="Right" HorizontalAlignment="Right">
+                    <AppBarButton x:Name="btnAdd" Icon="Add" Label="Add" Click="OnCommandBarElementClicked"/>
+                    <AppBarButton x:Name="btnEdit" Icon="Edit" Label="Edit" Click="OnCommandBarElementClicked"/>
+                    <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
+                        <AppBarButton.KeyboardAccelerators>
+                            <KeyboardAccelerator Key="Delete"/>
+                        </AppBarButton.KeyboardAccelerators>
+                    </AppBarButton>
+                    <AppBarButton x:Name="btnCancel" Icon="Cancel" Label="Cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
+                    <CommandBar.SecondaryCommands>
+                        <AppBarButton x:Name="btnRemoveAll" Icon="ViewAll" Label="Remove all" Click="OnCommandBarElementClicked"/>
+                    </CommandBar.SecondaryCommands>
+                </CommandBar>
+                <controls:AdaptiveGridView
+                    Grid.Row="1" x:Name="PhotosListView" ItemsSource="{x:Bind ViewModel.Photos}"
+                    CanReorderItems="True" CanDragItems="True" AllowDrop="True" 
+                    DesiredWidth="360" ItemHeight="240" SelectionMode="Single"
+                    StretchContentForSingleRow="True" IsItemClickEnabled="True"
+                    ItemContainerStyle="{ThemeResource GridViewItemExpanded}">
+                    <GridView.ItemTemplate>
                         <DataTemplate x:DataType="storage:StorageFile">
-                            <Image Source="{x:Bind Path}" Stretch="Uniform" />
+                            <Grid CornerRadius="12">
+                                <Image Source="{x:Bind Path}" Stretch="UniformToFill"/>
+                            </Grid>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </GridView.ItemTemplate>
+                </controls:AdaptiveGridView>
             </Grid>
         </Grid>
     </Grid>
