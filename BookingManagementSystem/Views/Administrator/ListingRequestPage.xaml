@@ -112,7 +112,7 @@
                 <StackPanel x:Name="MainContent" Spacing="28">
                     <Grid x:Name="MainContentGrid">
                         <Grid x:Name="EmptyListMessageGrid" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0 0 0 140">
+                            <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0 8 0 140">
                                 <Image Source="/Assets/modern-european-house.png" Width="240" Height="240" Stretch="Fill" Margin="0 0 0 -12"/>
                                 <TextBlock Text="No request found" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center"/>
                                 <TextBlock Text="You will be notified when your clients post a listing request." Style="{ThemeResource DetailSubTitleStyle}"  HorizontalAlignment="Center"/>

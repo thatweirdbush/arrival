@@ -41,12 +41,30 @@
                     <Image Source="/Assets/arrival-bio-white.png" Height="60" Margin="16" Stretch="Fill"/>
                 </StackPanel>
             </Grid>
-            <StackPanel Grid.Row="1" Spacing="18" HorizontalAlignment="Stretch" Margin="{StaticResource BlogViewWideContentMargin}">
+            <StackPanel Grid.Row="1" Spacing="18" Margin="{StaticResource BlogViewWideContentMargin}">
                 <Grid x:Name="BodyHeaderGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
                     <TextBlock Text="Your listing" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
-                    <CommandBar x:Name="CollectionCommandBar" DefaultLabelPosition="Right" HorizontalAlignment="Right">
-                        <AppBarButton x:Name="btnAdd" Icon="Add" Label="Add" Click="OnCommandBarElementClicked"/>
+                    <Grid x:Name="SearchBoxContent" Grid.Column="1" Visibility="Collapsed" >
+                        <AutoSuggestBox x:Name="SearchBox" Height="36" Margin="60 0 12 0" Padding="0 0 24 0" CornerRadius="18"
+                                        PlaceholderText="Search listings by name or location" VerticalContentAlignment="Center"
+                                        Background="Transparent" BorderBrush="{ThemeResource AcrylicInAppFillColorDefaultInverseBrush}"
+                                        Visibility="Visible" TextChanged="SearchBox_TextChanged"
+                                        SuggestionChosen="SearchBox_SuggestionChosen"/>
+                        <Button CornerRadius="100" Margin="0 0 24 0" Background="LightGray" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Height="20" Width="20" Padding="0" BorderThickness="0"
+                                Click="CloseSearchBoxButton_Click">
+                            <FontIcon x:Name="SearchBoxIcon" Glyph="&#xE711;" FontSize="9" FontWeight="SemiBold"/>
+                        </Button>
+                    </Grid>
+                    <CommandBar x:Name="CollectionCommandBar" Grid.Column="2" DefaultLabelPosition="Right" HorizontalAlignment="Right">
+                        <AppBarButton x:Name="btnSearch" Icon="Find" Label="Search" Click="OnCommandBarElementClicked"/>
                         <AppBarButton x:Name="btnEdit" Icon="Edit" Label="Edit" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnAdd" Icon="Add" Label="Add" Click="OnCommandBarElementClicked"/>
                         <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
                             <AppBarButton.KeyboardAccelerators>
                                 <KeyboardAccelerator Key="Delete"/>
@@ -75,7 +93,6 @@
                             IsItemClickEnabled="True"
                             FlowDirection="LeftToRight"
                             StretchContentForSingleRow="False"
-                            OneRowModeEnabled="True"
                             ItemContainerStyle="{ThemeResource GridViewItemExpanded}"
                             CacheMode="BitmapCache">
                         <controls:AdaptiveGridView.ItemContainerTransitions>
