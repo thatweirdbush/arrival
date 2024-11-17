@@ -42,6 +42,7 @@ public sealed partial class PlaceLocationPage : Page
         // Get current URL from WebView2
         var currentURL = sender.Source;
         ParseCoordinatesFromUrl(currentURL);
+        ViewModel?.ValidateProcess();
     }
 
     private void ParseCoordinatesFromUrl(string url)
@@ -65,5 +66,10 @@ public sealed partial class PlaceLocationPage : Page
                 ViewModel.CurrentLongitude = double.Parse(latLong[1]);
             }
         }
+    }
+
+    private void LocationTextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        ViewModel?.ValidateProcess();
     }
 }

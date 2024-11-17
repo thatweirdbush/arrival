@@ -5,6 +5,8 @@ using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.ViewModels.Client;
+using BookingManagementSystem.ViewModels.Host;
 using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 using BookingManagementSystem.Views.Host.CreateListingSteps;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -22,6 +24,10 @@ public partial class CreateListingViewModel : ObservableRecipient
 
     [ObservableProperty]
     private int currentStepIndex;
+
+    [ObservableProperty]
+    private bool isLastStepCompleted;
+
     public BaseStepViewModel CurrentStep => Stages[CurrentStepIndex];
 
     public readonly ObservableCollection<BaseStepViewModel> Stages = [];
@@ -75,6 +81,7 @@ public partial class CreateListingViewModel : ObservableRecipient
         };
 
         CurrentStepIndex = 0;
+        IsLastStepCompleted = false;
         GoForwardCommand = new RelayCommand(GoForward);
         GoBackwardCommand = new RelayCommand(GoBackward);
     }
@@ -90,22 +97,20 @@ public partial class CreateListingViewModel : ObservableRecipient
 
     public async void GoForward()
     {
-        CurrentStep.ValidateStep();
-        if (!CurrentStep.IsStepCompleted)
-        {
-            return;
-        }
-
+        // If can go forward, the current step has been validated
+        // The below method will only save the current step's data to the PropertyOnCreating instance
+        // Not yet to database
+        CurrentStep.SaveProcess();
         if (CurrentStepIndex == Stages.Count - 1)
         {
-            // Save the current listing in each step
-            await SaveCurrentStepAsync();
+            // Save new listing to the database
+            await SaveCurrentStepAsync();   // Current step is the last step
 
             // Update new listing status
             PropertyOnCreating.Status = PropertyStatus.Listed;
 
             // Return to Listings page using BackTrack
-            App.GetService<INavigationService>()?.Frame?.GoBack();
+            App.GetService<INavigationService>().NavigateTo(typeof(ListingViewModel).FullName!);
             return;
         }
         CurrentStepIndex++;
@@ -120,6 +125,11 @@ public partial class CreateListingViewModel : ObservableRecipient
             return;
         }
         CurrentStepIndex--;
+    }
+
+    partial void OnCurrentStepIndexChanged(int value)
+    {
+        IsLastStepCompleted = value == Stages.Count - 1;
     }
 
     public async Task SaveCurrentStepAsync()

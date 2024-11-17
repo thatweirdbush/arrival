@@ -23,6 +23,9 @@ public partial class SetPriceViewModel : BaseStepViewModel
         GuestPriceBeforeTax = value + GuestServiceFee;
         HostServiceFee = -1m * Math.Round(value * HostServiceFeeRate, 0);
         YouEarn = value - Math.Round(value * HostServiceFeeRate, 0);
+
+        // Validate the step right after this property changes
+        ValidateProcess();
     }
 
     [ObservableProperty]
@@ -41,12 +44,19 @@ public partial class SetPriceViewModel : BaseStepViewModel
     {
         _propertyService = propertyService;
         OnBasePriceChanged(basePrice);
+
+        // Initial check because we are current using Lost Focus on Price Text Box
+        IsStepCompleted = BasePrice > 0.0m;
     }
 
-    public override void ValidateStep()
+    public override void ValidateProcess()
+    {
+        IsStepCompleted = BasePrice > 0.0m;
+    }
+
+    public override void SaveProcess()
     {
         PropertyOnCreating.PricePerNight = BasePrice;
-        IsStepCompleted = BasePrice > 0.0m;
     }
 }
 

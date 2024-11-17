@@ -31,12 +31,13 @@ public partial class PlaceStructureViewModel : BaseStepViewModel
         PropertyTypeIcons = await _propertyTypeIconRepository.GetAllAsync();
     }
 
-    public override void ValidateStep()
+    public override void ValidateProcess()
     {
-        if (SelectedType != null)
-        {
-            PropertyOnCreating.Type = SelectedType;
-            IsStepCompleted = true;
-        }
+        IsStepCompleted = SelectedType != null;
+    }
+
+    public override void SaveProcess()
+    {
+        PropertyOnCreating.Type = SelectedType;
     }
 }

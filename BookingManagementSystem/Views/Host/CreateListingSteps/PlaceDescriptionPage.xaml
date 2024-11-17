@@ -56,6 +56,7 @@
                 <StackPanel x:Name="TitleBody" Grid.Row="1" Spacing="12">
                     <TextBox x:Name="TitleTextBox" FontSize="20" Padding="18" CornerRadius="8" Height="100" TextWrapping="Wrap" 
                              Text="{x:Bind ViewModel.SelectedTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="TitleTextBox_TextChanged"
                              BorderBrush="{ThemeResource AcrylicInAppFillColorDefaultInverseBrush}"/>
                     <Grid>
                         <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Foreground="DimGray" HorizontalAlignment="Left">
@@ -79,6 +80,7 @@
                 </StackPanel>
                 <StackPanel x:Name="DescriptionBody" Grid.Row="1" Spacing="12">
                     <TextBox x:Name="DescriptionTextBox" FontSize="20" Padding="18" CornerRadius="8" Height="200" TextWrapping="Wrap"
+                             TextChanged="DescriptionTextBox_TextChanged"
                              Text="{x:Bind ViewModel.SelectedDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              BorderBrush="{ThemeResource AcrylicInAppFillColorDefaultInverseBrush}"/>
                     <Grid>

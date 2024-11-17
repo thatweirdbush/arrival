@@ -17,22 +17,18 @@ public partial class PlaceLocationViewModel : BaseStepViewModel
         _propertyService = propertyService;
     }
 
-    public void SetPropertyLocation()
+    public override void SaveProcess()
     {
         PropertyOnCreating.Latitude = CurrentLatitude;
         PropertyOnCreating.Longitude = CurrentLongitude;
         PropertyOnCreating.Location = CurrentLocation;
     }
 
-    public override void ValidateStep()
+    public override void ValidateProcess()
     {
-        SetPropertyLocation();
-        if (PropertyOnCreating.Latitude != 0.0 
-            && PropertyOnCreating.Longitude != 0.0 
-            && !string.IsNullOrEmpty(PropertyOnCreating.Location)
-            && PropertyOnCreating.Location.Length <= Property.PROPERTY_LOCATION_MAX_LENGTH)
-        {
-            IsStepCompleted = true;
-        }
+        IsStepCompleted = (CurrentLatitude != 0.0
+                        && CurrentLongitude != 0.0
+                        && !string.IsNullOrWhiteSpace(CurrentLocation)
+                        && CurrentLocation.Length <= Property.PROPERTY_LOCATION_MAX_LENGTH);
     }
 }

@@ -4,11 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helper="using:BookingManagementSystem.Helpers"
     xmlns:models="using:BookingManagementSystem.Core.Models"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
     mc:Ignorable="d"
     CacheMode="BitmapCache">
+
+    <Page.Resources>
+        <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
+        <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
+    </Page.Resources>
 
     <ScrollView x:Name="MainScrollView">
         <Grid x:Name="MainGrid">
@@ -104,7 +111,15 @@
                 </Grid>
                 <StackPanel x:Name="MainContent" Spacing="28">
                     <Grid x:Name="MainContentGrid">
-                        <ListView x:Name="PriorityPropertyListView" ItemsSource="{x:Bind ViewModel.PriorityProperties}" SelectionMode="Single">
+                        <Grid x:Name="EmptyListMessageGrid" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0 8 0 140">
+                                <Image Source="/Assets/modern-european-house.png" Width="240" Height="240" Stretch="Fill" Margin="0 0 0 -12"/>
+                                <TextBlock Text="No request found" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="You will be notified when your clients post a listing request." Style="{ThemeResource DetailSubTitleStyle}"  HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                        <ListView x:Name="PriorityPropertyListView" ItemsSource="{x:Bind ViewModel.PriorityProperties}" SelectionMode="Single"
+                                   Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
                             <ListView.ItemContainerTransitions>
                                 <TransitionCollection>
                                     <PaneThemeTransition Edge="Bottom"/>
@@ -138,7 +153,7 @@
                                                 <TextBlock Text="{x:Bind Location}" Style="{ThemeResource CaptionTextBlockStyle}"/>
                                                 <TextBlock Text=" ⋅ " Style="{ThemeResource CaptionTextBlockStyle}"/>
                                                 <TextBlock Text=" Price:" Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                                <TextBlock Text="{x:Bind PricePerNight}" Style="{ThemeResource CaptionTextBlockStyle}" Margin="4 0 0 0"/>
+                                                <TextBlock Text="{x:Bind PricePerNight, Converter={StaticResource NumberToCurencyConverter}}" Style="{ThemeResource CaptionTextBlockStyle}" Margin="4 0 0 0"/>
                                                 <TextBlock Text=" ⋅ " Style="{ThemeResource CaptionTextBlockStyle}"/>
                                                 <TextBlock Text="{x:Bind CreatedAt}" Style="{ThemeResource CaptionTextBlockStyle}" Margin="4 0 0 0"/>
                                             </StackPanel>

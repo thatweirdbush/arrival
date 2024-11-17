@@ -1,11 +1,11 @@
 ﻿using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.Core.DTOs;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.Core.Repositories;
 using BookingManagementSystem.ViewModels;
-using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.ViewModels.Host;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Windows.ApplicationModel.Contacts;
 
 namespace BookingManagementSystem.Views.Host;
 
@@ -22,23 +22,23 @@ public sealed partial class ListingPage : Page
         InitializeComponent();
     }
 
-    private void btnSelect_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void EditListing_Click(object sender, RoutedEventArgs e)
     {
         ListingsGridView.SelectionMode = ListViewSelectionMode.Multiple;
-        btnSelect.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
-        btnCancel.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
-        btnDelete.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+        btnEdit.Visibility = Visibility.Collapsed;
+        btnCancel.Visibility = Visibility.Visible;
+        btnRemove.Visibility = Visibility.Visible;
     }
 
-    private void btnCancel_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void CancelEditing_Click(object sender, RoutedEventArgs e)
     {
         ListingsGridView.SelectionMode = ListViewSelectionMode.Single;
-        btnCancel.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
-        btnDelete.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
-        btnSelect.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+        btnCancel.Visibility = Visibility.Collapsed;
+        btnRemove.Visibility = Visibility.Collapsed;
+        btnEdit.Visibility = Visibility.Visible;
     }
 
-    private async void btnDelete_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private async void RemoveListing_Click(object sender, RoutedEventArgs e)
     {
         // Get selected items and remove them from the list
         var selectedItems = ListingsGridView.SelectedItems.ToList();
@@ -48,44 +48,149 @@ public sealed partial class ListingPage : Page
         {
             return;
         }
-
         // Show confirmation dialog
         var confirm = new ContentDialog
         {
-            XamlRoot = this.XamlRoot,
+            XamlRoot = XamlRoot,
             Title = "Remove Listing",
             Content = "Are you sure you want to remove the selected listing(s)?",
             PrimaryButtonText = "Remove",
-            CloseButtonText = "Cancel"
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary
+        };
+        var result = await confirm.ShowAsync();
+
+        // Check if the user clicked the delete button
+        if (result == ContentDialogResult.Primary)
+        {
+            // Remove the selected items from the list
+            foreach (var item in selectedItems)
+            {
+                if (item is Property property)
+                {
+                    ViewModel.RemoveBookingAsync(property);
+                }
+            }
+        }
+    }
+
+    private void AddNewListing_Click(object sender, RoutedEventArgs e)
+    {
+        // Navigate to Create Listing Page
+        App.GetService<INavigationService>().NavigateTo(typeof(CreateListingViewModel).FullName!);
+    }
+
+    private async void RemoveAllLissting_Click(object sender, RoutedEventArgs e)
+    {
+        // Show confirmation dialog
+        var confirm = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = "Remove all listings?",
+            Content = "Once you remove all, you can't get them back.",
+            PrimaryButtonText = "Remove all",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary
         };
 
         var result = await confirm.ShowAsync();
 
         // Check if the user clicked the delete button
-        if (result != ContentDialogResult.Primary)
+        if (result == ContentDialogResult.Primary)
         {
-            return;
+            // Remove all listings
+            ViewModel.RemoveAllBookingsAsync();
+        }
+    }
+
+    private void btnGetStarted_Click(object sender, RoutedEventArgs e)
+    {
+        // Navigate to Create Listing Page
+        App.GetService<INavigationService>().NavigateTo(typeof(CreateListingViewModel).FullName!);
+    }
+
+    private void SearchListing_Click(object sender, RoutedEventArgs e)
+    {
+        // Show search box and hide the Seach button
+        SearchBoxContent.Visibility = Visibility.Visible;
+        btnSearch.Visibility = Visibility.Collapsed;
+        SearchBox.Focus(FocusState.Programmatic);
+    }
+
+    private void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
+    {
+        var element = (sender as AppBarButton)!.Label;
+        switch (element)
+        {
+            case "Add":
+                AddNewListing_Click(sender, e);
+                break;
+            case "Edit":
+                EditListing_Click(sender, e);
+                break;
+            case "Cancel":
+                CancelEditing_Click(sender, e);
+                break;
+            case "Remove":
+                RemoveListing_Click(sender, e);
+                break;
+            case "Remove all":
+                RemoveAllLissting_Click(sender, e);
+                break;
+            case "Search":
+                SearchListing_Click(sender, e);
+                break;
+        }
+    }
+
+    private void CloseSearchBoxButton_Click(object sender, RoutedEventArgs e)
+    {
+        // Hide search box and show the Seach button
+        SearchBoxContent.Visibility = Visibility.Collapsed;
+        btnSearch.Visibility = Visibility.Visible;
+
+        // Reload Property List
+        if (ViewModel.PropertyCountTotal != ViewModel.Properties.Count)
+        {
+            ViewModel.Properties.Clear();
+            ViewModel.LoadPropertyList();
         }
 
-        // Remove the selected items from the list
-        foreach (var item in selectedItems)
+        // Clear search box text
+        SearchBox.Text = string.Empty;
+    }
+
+    private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    {
+        // Since selecting an item will also change the text,
+        // only listen to changes caused by user entering text.
+        if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
         {
-            if (item is Property property)
+            ViewModel.Properties.Clear();
+            var suitableItems = new List<string>();
+            var splitText = sender.Text.ToLower().Split(" ");
+            foreach (var line in ViewModel.PropertyNameAndLocationList)
             {
-                ViewModel.DeleteBookingAsync(property);
+                var found = splitText.All((key) =>
+                {
+                    return line.Contains(key, StringComparison.CurrentCultureIgnoreCase);
+                });
+                if (found)
+                {
+                    suitableItems.Add(line);
+                    ViewModel.AddFilterProperties(line);
+                }
             }
+            if (suitableItems.Count == 0)
+            {
+                suitableItems.Add("No results found");
+                ViewModel.Properties.Clear();
+            }
+            sender.ItemsSource = suitableItems;
         }
     }
 
-    private void btnGetStarted_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void SearchBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
     {
-        // Navigate to Create Listing Page
-        App.GetService<INavigationService>().NavigateTo(typeof(CreateListingViewModel).FullName!);
-    }
-
-    private void btnAddNewListing_Click(object sender, RoutedEventArgs e)
-    {
-        // Navigate to Create Listing Page
-        App.GetService<INavigationService>().NavigateTo(typeof(CreateListingViewModel).FullName!);
     }
 }

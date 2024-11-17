@@ -31,7 +31,7 @@ public sealed partial class AmenitiesPage : Page
     {
         if (ViewModel != null)
         {
-            // Update the selected amenities
+            // Update the selected Guest Favorite amenities
             ViewModel.SelectedGuestFavoriteAmenities = GuestFavoriteAmenitiesGridView.SelectedItems.Cast<Amenity>();
         }
     }
@@ -40,8 +40,8 @@ public sealed partial class AmenitiesPage : Page
     {
         if (ViewModel != null)
         {
-            // Update the selected amenities
-            ViewModel.SelectedStandoutAmenities = GuestFavoriteAmenitiesGridView.SelectedItems.Cast<Amenity>();
+            // Update the selected Standout amenities
+            ViewModel.SelectedStandoutAmenities = StandoutAmenitiesGridView.SelectedItems.Cast<Amenity>();
         }
     }
 
@@ -49,8 +49,8 @@ public sealed partial class AmenitiesPage : Page
     {
         if (ViewModel != null)
         {
-            // Update the selected amenities
-            ViewModel.SelectedSafetyAmenities = GuestFavoriteAmenitiesGridView.SelectedItems.Cast<Amenity>();
+            // Update the selected Safety amenities
+            ViewModel.SelectedSafetyAmenities = SafetyAmenitiesGridView.SelectedItems.Cast<Amenity>();
         }
     }
 }

@@ -21,18 +21,32 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     private readonly IRepository<DestinationTypeSymbol> _destinationTypeSymbolRepository;
 
     // Filtered destination data
-    public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = Enumerable.Empty<DestinationTypeSymbol>();
+    public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = [];
 
     // List of items for the AdaptiveGridView
-    public ObservableCollection<Property> Properties { get; set; } = new ObservableCollection<Property>();
+    public ObservableCollection<Property> Properties { get; set; } = [];
+
+    [ObservableProperty]
+    private bool isPropertyListEmpty;
 
     public HomeViewModel(INavigationService navigationService, 
-        IRepository<Property> propertyRepository, 
-        IRepository<DestinationTypeSymbol> destinationTypeSymbolRepository)
+                        IRepository<Property> propertyRepository, 
+                        IRepository<DestinationTypeSymbol> destinationTypeSymbolRepository)
     {
         _navigationService = navigationService;
         _propertyRepository = propertyRepository;
         _destinationTypeSymbolRepository = destinationTypeSymbolRepository;
+
+        // Subscribe to CollectionChanged event
+        Properties.CollectionChanged += (s, e) => CheckPropertyListCount();
+
+        // Initial check
+        CheckPropertyListCount();
+    }
+
+    private void CheckPropertyListCount()
+    {
+        IsPropertyListEmpty = Properties.Count == 0;
     }
 
     public async void OnNavigatedTo(object parameter)

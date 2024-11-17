@@ -33,7 +33,7 @@
                 FlowDirection="LeftToRight"
                 CacheMode="BitmapCache"
                 IsItemClickEnabled="True"
-                ItemClick="PropertyTypeGridView_ItemClick"
+                SelectionChanged="PropertyTypeGridView_SelectionChanged"
                 ScrollViewer.VerticalScrollBarVisibility="Hidden">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>

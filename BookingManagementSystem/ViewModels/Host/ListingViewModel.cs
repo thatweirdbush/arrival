@@ -4,6 +4,7 @@ using BookingManagementSystem.Core.DTOs;
 using BookingManagementSystem.Core.Models;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Windows.ApplicationModel.Contacts;
 
 namespace BookingManagementSystem.ViewModels.Host;
 
@@ -18,21 +19,35 @@ public partial class ListingViewModel : ObservableRecipient
     [ObservableProperty]
     private bool isPropertyListEmpty;
 
+    public int PropertyCountTotal;
+
+    // List of Property's Name & Location
+    public List<string> PropertyNameAndLocationList
+    {
+        get;
+        set;
+    } = [];
+
     public ListingViewModel(INavigationService navigationService, IRepository<Property> propertyRepository)
     {
         _navigationService = navigationService;
         _propertyRepository = propertyRepository;
+        CheckPropertyListCount();
 
         // Subscribe to CollectionChanged event
         Properties.CollectionChanged += (s, e) => CheckPropertyListCount();
 
         // Initial check
-        CheckPropertyListCount();
+        LoadPropertyList();
 
-        OnNavigatedTo(0);
+        // Load Property Name and Location string data list
+        PropertyNameAndLocationList = Properties.Select(p => p.Name)
+                                                .Concat(Properties.Select(p => p.Location))
+                                                .ToList();
+        PropertyCountTotal = Properties.Count;
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public async void LoadPropertyList()
     {
         // Load Property data list filtered by User/Host Id
         var properties = await _propertyRepository.GetAllAsync();
@@ -46,14 +61,33 @@ public partial class ListingViewModel : ObservableRecipient
     {
     }
 
-    public void DeleteBookingAsync(Property property)
+    public void RemoveBookingAsync(Property property)
     {
         _propertyRepository.DeleteAsync(property.Id);
         Properties.Remove(property);
     }
 
+    public void RemoveAllBookingsAsync()
+    {
+        foreach (var property in Properties)
+        {
+            _propertyRepository.DeleteAsync(property.Id);
+        }
+        Properties.Clear();
+    }
+
     private void CheckPropertyListCount()
     {
-        IsPropertyListEmpty= Properties.Count == 0;
+        IsPropertyListEmpty = Properties.Count == 0;
+    }
+
+    public async void AddFilterProperties(string query)
+    {
+        var data = await _propertyRepository.GetAllAsync();
+        var filteredProperties = data.Where(p => p.Name.Contains(query) || p.Location.Contains(query)).ToList();
+        foreach (var item in filteredProperties)
+        {
+            Properties.Add(item);
+        }
     }
 }
