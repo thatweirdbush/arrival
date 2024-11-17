@@ -1,10 +1,10 @@
 ﻿using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
 using Windows.Storage;
 using Microsoft.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml;
 
 namespace BookingManagementSystem.Views.Host.CreateListingSteps;
 
@@ -29,7 +29,7 @@ public sealed partial class PlacePhotosPage : Page
         base.OnNavigatedTo(e);
     }
 
-    private async void AddPhotosButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private async void AddPhotosButton_Click(object sender, RoutedEventArgs e)
     {
         // Create a new instance of the FileOpenPicker
         var openPicker = new FileOpenPicker
@@ -61,9 +61,117 @@ public sealed partial class PlacePhotosPage : Page
             {
                 // Copy file to LocalFolder folder
                 var copiedFile = await file.CopyAsync(localFolder, file.Name, NameCollisionOption.ReplaceExisting);
-                ViewModel?.Photos.Add(copiedFile.Path);
-                PhotosListView.Items.Add(new BitmapImage(new Uri(copiedFile.Path)));
+                ViewModel?.Photos.Add(copiedFile);
             }
+        }
+    }
+
+    private void EditPhotos_Click(object sender, RoutedEventArgs e)
+    {
+        PhotosListView.SelectionMode = ListViewSelectionMode.Multiple;
+        btnEdit.Visibility = Visibility.Collapsed;
+        btnCancel.Visibility = Visibility.Visible;
+        btnRemove.Visibility = Visibility.Visible;
+    }
+
+    private void CancelEditing_Click(object sender, RoutedEventArgs e)
+    {
+        PhotosListView.SelectionMode = ListViewSelectionMode.Single;
+        btnCancel.Visibility = Visibility.Collapsed;
+        btnRemove.Visibility = Visibility.Collapsed;
+        btnEdit.Visibility = Visibility.Visible;
+    }
+
+    private async void RemovePhotos_Click(object sender, RoutedEventArgs e)
+    {
+        // Get selected items and remove them from the list
+        var selectedItems = PhotosListView.SelectedItems.ToList();
+        if (selectedItems.Count == 0)
+        {
+            return;
+        }
+        // Show confirmation dialog
+        var confirm = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = "Remove this photo?",
+            Content = "Once you remove it, you can't get it back.",
+            PrimaryButtonText = "Remove it",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary
+        };
+        var result = await confirm.ShowAsync();
+
+        // Check if the user clicked the remove button
+        if (result == ContentDialogResult.Primary)
+        {
+            // Remove the selected items from the list
+            foreach (var item in selectedItems)
+            {
+                ViewModel?.Photos.Remove((StorageFile)item);
+            }
+        }
+    }
+
+    private async void RemoveAllPhotos_Click(object sender, RoutedEventArgs e)
+    {
+        // Show confirmation dialog
+        var confirm = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = "Remove all photos?",
+            Content = "Once you remove all, you can't get them back.",
+            PrimaryButtonText = "Remove all",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary
+        };
+
+        var result = await confirm.ShowAsync();
+
+        // Check if the user clicked the remove button
+        if (result == ContentDialogResult.Primary)
+        {
+            ViewModel?.Photos.Clear();
+        }
+    }
+
+    private void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
+    {
+        var element = (sender as AppBarButton)!.Label;
+        switch (element)
+        {
+            case "Add":
+                AddPhotosButton_Click(sender, e);
+                break;
+            case "Edit":
+                EditPhotos_Click(sender, e);
+                break;
+            case "Cancel":
+                CancelEditing_Click(sender, e);
+                break;
+            case "Remove":
+                RemovePhotos_Click(sender, e);
+                break;
+            case "Remove all":
+                RemoveAllPhotos_Click(sender, e);
+                break;
+        }
+    }
+
+    private void PhotosListView_DragItemsCompleted(ListViewBase sender, DragItemsCompletedEventArgs args)
+    {
+        if (ViewModel == null)
+        {
+            return;
+        }
+        // Get the reordered photos
+        var reorderedPhotos = PhotosListView.Items.Cast<StorageFile>().ToList();
+
+        // Update the ViewModel's Photos list
+        ViewModel.Photos.Clear();
+        foreach (var photo in reorderedPhotos)
+        {
+            ViewModel.Photos.Add(photo);
         }
     }
 }

@@ -25,4 +25,14 @@ public sealed partial class PlaceDescriptionPage : Page
         }
         base.OnNavigatedTo(e);
     }
+
+    private void TitleTextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        ViewModel?.ValidateProcess();
+    }
+
+    private void DescriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        ViewModel?.ValidateProcess();
+    }
 }

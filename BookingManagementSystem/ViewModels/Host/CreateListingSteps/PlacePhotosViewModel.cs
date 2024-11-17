@@ -10,7 +10,7 @@ namespace BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
 public partial class PlacePhotosViewModel : BaseStepViewModel
 {
-    public ObservableCollection<string> Photos
+    public ObservableCollection<StorageFile> Photos
     {
         get; set;
     } = [];
@@ -28,25 +28,30 @@ public partial class PlacePhotosViewModel : BaseStepViewModel
         Photos.CollectionChanged += Photos_CollectionChanged;
 
         // Initialize the IsPhotoListEmpty property
-        IsPhotoListEmpty = Photos.Count == 0;
+        IsPhotoListEmpty = true;
     }
 
     private void Photos_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
         // Update IsPhotoListEmpty every time the list changes
         IsPhotoListEmpty = Photos.Count == 0;
+        ValidateProcess();
     }
 
-    public override void ValidateStep()
+    public override void ValidateProcess()
     {
-        if (Photos.Count > 0)
+        IsStepCompleted = Photos.Count > 0;
+    }
+
+    public override void SaveProcess()
+    {
+        // Clear() is called because user can go back to this page and reorder the photos
+        PropertyOnCreating.ImagePaths.Clear();
+
+        // Add photos path to the Property's ImagePaths
+        foreach (var photo in Photos)
         {
-            // Add photos path to the Property instance
-            foreach (var photo in Photos)
-            {
-                PropertyOnCreating.ImagePaths.Add(photo);
-            }
-            IsStepCompleted = true;
+            PropertyOnCreating.ImagePaths.Add(photo.Path);
         }
     }
 }

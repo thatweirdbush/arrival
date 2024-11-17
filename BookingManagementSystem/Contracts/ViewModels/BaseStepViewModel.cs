@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BookingManagementSystem.Contracts.ViewModels;
-public abstract class BaseStepViewModel : ObservableObject
+public abstract partial class BaseStepViewModel : ObservableObject
 {
-    public bool IsStepCompleted
-    {
-        get; protected set;
-    } = false;
-
-    public abstract void ValidateStep();
+    [ObservableProperty]
+    public bool isStepCompleted = false;
+    public abstract void ValidateProcess();
+    public abstract void SaveProcess();
 }
