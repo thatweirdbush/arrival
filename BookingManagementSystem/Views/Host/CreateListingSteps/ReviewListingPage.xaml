@@ -45,12 +45,14 @@
                                            BlurRadius="20" Color="{ThemeResource SmokeFillColorDefault}"/>
                 </ui:Effects.Shadow>
                 <Grid CornerRadius="10">
-                    <Image Source="/Assets/homescreen.jpg" Stretch="UniformToFill"/>
+                    <Image Source="{x:Bind ViewModel.PropertyOnCreating.ImageThumbnail, Mode=OneWay}" Stretch="UniformToFill"/>
                 </Grid>
                 <Grid Grid.Row="1" Padding="0 16 0 0">
                     <StackPanel Spacing="4" HorizontalAlignment="Left">
-                        <TextBlock Text="Your place" Style="{ThemeResource BaseTextBlockStyle}"/>
-                        <TextBlock Text="$10 a night" Style="{ThemeResource BaseTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.PropertyOnCreating.Name, Mode=OneWay}" Style="{ThemeResource BaseTextBlockStyle}"/>
+                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}">
+                            <Run Text="{x:Bind ViewModel.PropertyOnCreating.PricePerNight, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}"/> a night
+                        </TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right" VerticalAlignment="Top">
                         <TextBlock Text="New" Style="{ThemeResource DetailBodyStyle}"/>

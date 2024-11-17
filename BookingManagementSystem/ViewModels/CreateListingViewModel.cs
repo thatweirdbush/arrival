@@ -97,16 +97,14 @@ public partial class CreateListingViewModel : ObservableRecipient
 
     public async void GoForward()
     {
-        //CurrentStep.ValidateStep();
-        //if (!CurrentStep.IsStepCompleted)
-        //{
-        //    return;
-        //}
-
+        // If can go forward, the current step has been validated
+        // The below method will only save the current step's data to the PropertyOnCreating instance
+        // Not yet to database
+        CurrentStep.SaveProcess();
         if (CurrentStepIndex == Stages.Count - 1)
         {
-            // Save the current listing in each step
-            await SaveCurrentStepAsync();
+            // Save new listing to the database
+            await SaveCurrentStepAsync();   // Current step is the last step
 
             // Update new listing status
             PropertyOnCreating.Status = PropertyStatus.Listed;
