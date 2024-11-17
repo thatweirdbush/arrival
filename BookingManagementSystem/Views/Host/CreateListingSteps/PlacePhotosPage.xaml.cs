@@ -9,6 +9,7 @@ using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.ViewModels;
 using Microsoft.UI.Xaml;
+using System.Collections.ObjectModel;
 
 namespace BookingManagementSystem.Views.Host.CreateListingSteps;
 
@@ -65,7 +66,7 @@ public sealed partial class PlacePhotosPage : Page
             {
                 // Copy file to LocalFolder folder
                 var copiedFile = await file.CopyAsync(localFolder, file.Name, NameCollisionOption.ReplaceExisting);
-                ViewModel?.Photos.Insert(0, copiedFile);
+                ViewModel?.Photos.Add(copiedFile);
             }
         }
     }
@@ -94,7 +95,6 @@ public sealed partial class PlacePhotosPage : Page
         {
             return;
         }
-
         // Show confirmation dialog
         var confirm = new ContentDialog
         {
@@ -105,7 +105,6 @@ public sealed partial class PlacePhotosPage : Page
             CloseButtonText = "Cancel",
             DefaultButton = ContentDialogButton.Primary
         };
-
         var result = await confirm.ShowAsync();
 
         // Check if the user clicked the remove button
@@ -161,6 +160,23 @@ public sealed partial class PlacePhotosPage : Page
             case "Remove all":
                 RemoveAllPhotos_Click(sender, e);
                 break;
+        }
+    }
+
+    private void PhotosListView_DragItemsCompleted(ListViewBase sender, DragItemsCompletedEventArgs args)
+    {
+        if (ViewModel == null)
+        {
+            return;
+        }
+        // Get the reordered photos
+        var reorderedPhotos = PhotosListView.Items.Cast<StorageFile>().ToList();
+
+        // Update the ViewModel's Photos list
+        ViewModel.Photos.Clear();
+        foreach (var photo in reorderedPhotos)
+        {
+            ViewModel.Photos.Add(photo);
         }
     }
 }
