@@ -173,4 +173,12 @@ public sealed partial class ListingRequestPage : Page
             }
         }
     }
+
+    private void PriorityPropertyListView_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        if (e.ClickedItem is Property clickedItem)
+        {
+            ViewModel.OnItemClick(clickedItem);
+        }
+    }
 }

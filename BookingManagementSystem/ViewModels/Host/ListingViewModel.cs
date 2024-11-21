@@ -5,6 +5,8 @@ using BookingManagementSystem.Core.Models;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Windows.ApplicationModel.Contacts;
+using BookingManagementSystem.ViewModels.Client;
+using CommunityToolkit.Mvvm.Input;
 
 namespace BookingManagementSystem.ViewModels.Host;
 
@@ -59,6 +61,16 @@ public partial class ListingViewModel : ObservableRecipient
 
     public void OnNavigatedFrom()
     {
+    }
+
+    [RelayCommand]
+    private void OnItemClick(Property? clickedItem)
+    {
+        if (clickedItem != null)
+        {
+            _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
+            _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, clickedItem.Id);
+        }
     }
 
     public void RemoveBookingAsync(Property property)
