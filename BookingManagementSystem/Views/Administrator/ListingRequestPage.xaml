@@ -119,7 +119,11 @@
                             </StackPanel>
                         </Grid>
                         <ListView x:Name="PriorityPropertyListView" ItemsSource="{x:Bind ViewModel.PriorityProperties}" SelectionMode="Single"
-                                   Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                                  Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}"
+                                  animations:Connected.ListItemElementName="itemThumbnail"
+                                  animations:Connected.ListItemKey="animationKeyContentGrid"
+                                  ItemClick="PriorityPropertyListView_ItemClick"
+                                  IsItemClickEnabled="True">
                             <ListView.ItemContainerTransitions>
                                 <TransitionCollection>
                                     <PaneThemeTransition Edge="Bottom"/>

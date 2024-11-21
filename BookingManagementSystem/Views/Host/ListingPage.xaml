@@ -85,11 +85,12 @@
                 <StackPanel x:Name="BodyGrid" Spacing="40" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
                     <controls:AdaptiveGridView
                             animations:Connected.ListItemElementName="itemThumbnail"
-                            animations:Connected.ListItemKey="animationKeyBodyGrid"
+                            animations:Connected.ListItemKey="animationKeyContentGrid"
                             DesiredWidth="500"
                             ItemHeight="400"                
                             x:Name="ListingsGridView"
                             ItemsSource="{x:Bind ViewModel.Properties}"
+                            ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
                             IsItemClickEnabled="True"
                             FlowDirection="LeftToRight"
                             StretchContentForSingleRow="False"
