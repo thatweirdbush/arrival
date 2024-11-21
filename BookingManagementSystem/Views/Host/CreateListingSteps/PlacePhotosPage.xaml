@@ -20,75 +20,77 @@
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
     </Page.Resources>
 
-    <Grid x:Name="ContentArea" MaxWidth="640" VerticalAlignment="Center">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <StackPanel x:Name="PageHeader" Spacing="8" Margin="0 0 0 32">
-            <TextBlock Text="Add some photos of your house" Style="{ThemeResource TitleTextBlockStyle}"/>
-            <TextBlock Text="You'll need 1 photo to get started. You can add more or make changes later." 
-                       Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
-        </StackPanel>
-        <Grid Grid.Row="1">
-            <Grid x:Name="EmptyPhotoCollectionGrid" 
-                  Visibility="{x:Bind ViewModel.IsPhotoListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Border x:Name="ShadowTarget"/>
-                <Grid CornerRadius="18" MaxWidth="640" Height="500" VerticalAlignment="Top"
-                      Background="{ThemeResource LayerOnMicaBaseAltFillColorDefault}">
-                    <ui:Effects.Shadow>
-                        <ui:AttachedDropShadow 
-                            CastTo="{x:Bind ShadowTarget}" 
-                            CornerRadius="18" Offset="4" 
-                            BlurRadius="20" Color="{ThemeResource SmokeFillColorDefault}"/>
-                    </ui:Effects.Shadow>
-                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="24">
-                        <Grid CornerRadius="10">
-                            <Image Source="/Assets/camera.png" Width="180" Stretch="UniformToFill"/>
-                        </Grid>
-                        <Grid Grid.Row="1">
-                            <Button x:Name="AddPhotosButton" Click="AddPhotosButton_Click" Content="Add photos" 
-                                    FontWeight="SemiBold" FontSize="16" CornerRadius="8" Padding="12" Width="140" HorizontalAlignment="Center"
-                                    BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"/>
-                        </Grid>
-                    </StackPanel>
+    <ScrollViewer>
+        <Grid x:Name="ContentArea" MaxWidth="640" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="28 0 28 40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel x:Name="PageHeader" Spacing="8" Margin="0 0 0 32">
+                <TextBlock Text="Add some photos of your house" Style="{ThemeResource TitleTextBlockStyle}"/>
+                <TextBlock Text="You'll need 1 photo to get started. You can add more or make changes later." 
+                           Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
+            </StackPanel>
+            <Grid Grid.Row="1">
+                <Grid x:Name="EmptyPhotoCollectionGrid" 
+                      Visibility="{x:Bind ViewModel.IsPhotoListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Border x:Name="ShadowTarget" MinWidth="480"/>
+                    <Grid CornerRadius="18" MinWidth="480" Height="500" VerticalAlignment="Top"
+                          Background="{ThemeResource LayerOnMicaBaseAltFillColorDefault}">
+                        <ui:Effects.Shadow>
+                            <ui:AttachedDropShadow 
+                                CastTo="{x:Bind ShadowTarget}" 
+                                CornerRadius="18" Offset="4" 
+                                BlurRadius="20" Color="{ThemeResource SmokeFillColorDefault}"/>
+                        </ui:Effects.Shadow>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="24">
+                            <Grid CornerRadius="10">
+                                <Image Source="/Assets/camera.png" Width="180" Stretch="UniformToFill"/>
+                            </Grid>
+                            <Grid Grid.Row="1">
+                                <Button x:Name="AddPhotosButton" Click="AddPhotosButton_Click" Content="Add photos" 
+                                        FontWeight="SemiBold" FontSize="16" CornerRadius="8" Padding="12" Width="140" HorizontalAlignment="Center"
+                                        BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <Grid x:Name="PhotoCollectionGrid" RowSpacing="8" Margin="0 -32 0 0" 
+                      Visibility="{x:Bind ViewModel.IsPhotoListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <CommandBar x:Name="CollectionCommandBar" DefaultLabelPosition="Right" HorizontalAlignment="Right">
+                        <AppBarButton x:Name="btnAdd" Icon="Add" Label="Add" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnEdit" Icon="Edit" Label="Edit" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
+                            <AppBarButton.KeyboardAccelerators>
+                                <KeyboardAccelerator Key="Delete"/>
+                            </AppBarButton.KeyboardAccelerators>
+                        </AppBarButton>
+                        <AppBarButton x:Name="btnCancel" Icon="Cancel" Label="Cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
+                        <CommandBar.SecondaryCommands>
+                            <AppBarButton x:Name="btnRemoveAll" Icon="ViewAll" Label="Remove all" Click="OnCommandBarElementClicked"/>
+                        </CommandBar.SecondaryCommands>
+                    </CommandBar>
+                    <controls:AdaptiveGridView
+                        Grid.Row="1" x:Name="PhotosListView" ItemsSource="{x:Bind ViewModel.Photos}"
+                        CanReorderItems="True" ReorderMode="Enabled" CanDragItems="True" 
+                        AllowDrop="True" DragItemsCompleted="PhotosListView_DragItemsCompleted"
+                        DesiredWidth="360" ItemHeight="240" SelectionMode="Single"
+                        StretchContentForSingleRow="True" IsItemClickEnabled="True"
+                        ItemContainerStyle="{ThemeResource GridViewItemExpanded}">
+                        <GridView.ItemTemplate>
+                            <DataTemplate x:DataType="storage:StorageFile">
+                                <Grid CornerRadius="12">
+                                    <Image Source="{x:Bind Path}" Stretch="UniformToFill"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </controls:AdaptiveGridView>
                 </Grid>
             </Grid>
-            <Grid x:Name="PhotoCollectionGrid" RowSpacing="8" Margin="0 -32 0 0" 
-                  Visibility="{x:Bind ViewModel.IsPhotoListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <CommandBar x:Name="CollectionCommandBar" DefaultLabelPosition="Right" HorizontalAlignment="Right">
-                    <AppBarButton x:Name="btnAdd" Icon="Add" Label="Add" Click="OnCommandBarElementClicked"/>
-                    <AppBarButton x:Name="btnEdit" Icon="Edit" Label="Edit" Click="OnCommandBarElementClicked"/>
-                    <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
-                        <AppBarButton.KeyboardAccelerators>
-                            <KeyboardAccelerator Key="Delete"/>
-                        </AppBarButton.KeyboardAccelerators>
-                    </AppBarButton>
-                    <AppBarButton x:Name="btnCancel" Icon="Cancel" Label="Cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
-                    <CommandBar.SecondaryCommands>
-                        <AppBarButton x:Name="btnRemoveAll" Icon="ViewAll" Label="Remove all" Click="OnCommandBarElementClicked"/>
-                    </CommandBar.SecondaryCommands>
-                </CommandBar>
-                <controls:AdaptiveGridView
-                    Grid.Row="1" x:Name="PhotosListView" ItemsSource="{x:Bind ViewModel.Photos}"
-                    CanReorderItems="True" ReorderMode="Enabled" CanDragItems="True" 
-                    AllowDrop="True" DragItemsCompleted="PhotosListView_DragItemsCompleted"
-                    DesiredWidth="360" ItemHeight="240" SelectionMode="Single"
-                    StretchContentForSingleRow="True" IsItemClickEnabled="True"
-                    ItemContainerStyle="{ThemeResource GridViewItemExpanded}">
-                    <GridView.ItemTemplate>
-                        <DataTemplate x:DataType="storage:StorageFile">
-                            <Grid CornerRadius="12">
-                                <Image Source="{x:Bind Path}" Stretch="UniformToFill"/>
-                            </Grid>
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
-                </controls:AdaptiveGridView>
-            </Grid>
         </Grid>
-    </Grid>
+    </ScrollViewer>
 </Page>

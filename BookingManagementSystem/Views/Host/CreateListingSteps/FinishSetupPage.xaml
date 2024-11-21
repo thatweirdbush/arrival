@@ -19,11 +19,11 @@
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Spacing="12" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="80">
+        <StackPanel Spacing="12" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="80" MinWidth="60">
             <TextBlock Text="Step 3" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-            <TextBlock Text="Finish up and publish" Style="{ThemeResource TitleLargeTextBlockStyle}" FontSize="48" Width="600" HorizontalAlignment="Left"/>
+            <TextBlock Text="Finish up and publish" Style="{ThemeResource TitleLargeTextBlockStyle}" FontSize="48" MinWidth="280" HorizontalAlignment="Left"/>
             <TextBlock Text="Finally, you'll choose if you'd like to start with an experienced guest, then you'll set your nightly price. Answer a few quick questions and publish when you're ready." 
-                       Style="{ThemeResource DetailSubTitleStyle}" FontFamily="Arial" FontWeight="Medium" Margin="0 8 0 0" MaxWidth="500" HorizontalAlignment="Left"/>
+                       Style="{ThemeResource DetailSubTitleStyle}" FontFamily="Arial" FontWeight="Medium" Margin="0 8 0 0" MinWidth="310" MaxWidth="500" HorizontalAlignment="Left"/>
         </StackPanel>
         <Grid Grid.Column="1" CornerRadius="420 0 0 0">
             <MediaPlayerElement Source="ms-appx:///Assets/Media/isometric-room-blender-02.mp4" Stretch="UniformToFill" AutoPlay="True" CacheMode="BitmapCache" />

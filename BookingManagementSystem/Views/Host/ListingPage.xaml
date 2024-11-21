@@ -63,8 +63,8 @@
                     </Grid>
                     <CommandBar x:Name="CollectionCommandBar" Grid.Column="2" DefaultLabelPosition="Right" HorizontalAlignment="Right">
                         <AppBarButton x:Name="btnSearch" Icon="Find" Label="Search" Click="OnCommandBarElementClicked"/>
-                        <AppBarButton x:Name="btnEdit" Icon="Edit" Label="Edit" Click="OnCommandBarElementClicked"/>
                         <AppBarButton x:Name="btnAdd" Icon="Add" Label="Add" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnEdit" Icon="Edit" Label="Edit" Click="OnCommandBarElementClicked"/>
                         <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
                             <AppBarButton.KeyboardAccelerators>
                                 <KeyboardAccelerator Key="Delete"/>

@@ -18,77 +18,78 @@
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
     </Page.Resources>
 
-    <Grid x:Name="ContentArea">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <StackPanel Spacing="8" Margin="0 80 380 50" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="Now, set your price" Style="{ThemeResource TitleTextBlockStyle}" FontSize="36"/>
-            <TextBlock Text="You can change it anytime." Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
-        </StackPanel>
-        <Grid Grid.Row="1">
-            <StackPanel Spacing="8" HorizontalAlignment="Center">
-                <TextBox Name="PriceTextBox" HorizontalAlignment="Center" PreviewKeyDown="PriceTextBox_PreviewKeyDown" 
-                         FontSize="120" FontWeight="Bold" BorderThickness="0" Background="Transparent"
-                         Text="{x:Bind ViewModel.BasePrice, Mode=TwoWay,
-                                Converter={StaticResource NumberToCurencyConverter},
-                                UpdateSourceTrigger=LostFocus}"/>
-                <Expander x:Name="GuestFeeInfoExpander" Tapped="GuestFeeInfoExpander_Tapped" IsExpanded="False" ExpandDirection="Down" VerticalAlignment="Top" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" >
-                    <Expander.Header>
-                        <Grid>
-                            <TextBlock Text="Guest price before taxes" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}"/>
-                            <TextBlock HorizontalAlignment="Right" Text="{x:Bind ViewModel.GuestPriceBeforeTax, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}"/>
-                        </Grid>
-                    </Expander.Header>
-                    <Expander.Content>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Spacing="4">
-                                <TextBlock Text="Base price" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17"/>
-                                <TextBlock Text="Guest service fee" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1" Spacing="4" HorizontalAlignment="Right" Margin="0 0 44 0">
-                                <TextBlock Text="{x:Bind ViewModel.BasePrice, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" 
-                                           Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17" HorizontalAlignment="Right"/>
-                                <TextBlock Text="{x:Bind ViewModel.GuestServiceFee, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" 
-                                           Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17" HorizontalAlignment="Right"/>
-                            </StackPanel>
-                        </Grid>
-                    </Expander.Content>
-                </Expander>
-                <Expander x:Name="HostFeeInfoExpander" Tapped="HostFeeInfoExpander_Tapped" MinWidth="360" IsExpanded="False" ExpandDirection="Down" VerticalAlignment="Top" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" >
-                    <Expander.Header>
-                        <Grid>
-                            <TextBlock Text="You earn" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}"/>
-                            <TextBlock HorizontalAlignment="Right" Text="{x:Bind ViewModel.YouEarn, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}"/>
-                        </Grid>
-                    </Expander.Header>
-                    <Expander.Content>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Spacing="4">
-                                <TextBlock Text="Base price" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17"/>
-                                <TextBlock Text="Guest service fee" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1" Spacing="4" HorizontalAlignment="Right" Margin="0 0 44 0">
-                                <TextBlock Text="{x:Bind ViewModel.BasePrice, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" 
-                           Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17" HorizontalAlignment="Right"/>
-                                <TextBlock Text="{x:Bind ViewModel.HostServiceFee, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" 
-                           Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17" HorizontalAlignment="Right"/>
-                            </StackPanel>
-                        </Grid>
-                    </Expander.Content>
-                </Expander>
+    <ScrollViewer>
+        <Grid x:Name="ContentArea" Margin="28 0 28 40" Width="680">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Spacing="8" Margin="0 80 0 50">
+                <TextBlock Text="Now, set your price" Style="{ThemeResource TitleTextBlockStyle}" FontSize="36"/>
+                <TextBlock Text="You can change it anytime." Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
             </StackPanel>
+            <Grid Grid.Row="1">
+                <StackPanel Spacing="8" HorizontalAlignment="Center">
+                    <TextBox Name="PriceTextBox" HorizontalAlignment="Center" PreviewKeyDown="PriceTextBox_PreviewKeyDown" 
+                             FontSize="120" FontWeight="Bold" BorderThickness="0" Background="Transparent"
+                             Text="{x:Bind ViewModel.BasePrice, Mode=TwoWay,
+                                    Converter={StaticResource NumberToCurencyConverter},
+                                    UpdateSourceTrigger=LostFocus}"/>
+                    <Expander x:Name="GuestFeeInfoExpander" Tapped="GuestFeeInfoExpander_Tapped" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" >
+                        <Expander.Header>
+                            <Grid>
+                                <TextBlock Text="Guest price before taxes" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}"/>
+                                <TextBlock HorizontalAlignment="Right" Text="{x:Bind ViewModel.GuestPriceBeforeTax, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}"/>
+                            </Grid>
+                        </Expander.Header>
+                        <Expander.Content>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Base price" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17"/>
+                                    <TextBlock Text="Guest service fee" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Spacing="4" HorizontalAlignment="Right" Margin="0 0 44 0">
+                                    <TextBlock Text="{x:Bind ViewModel.BasePrice, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" 
+                                               Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17" HorizontalAlignment="Right"/>
+                                    <TextBlock Text="{x:Bind ViewModel.GuestServiceFee, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" 
+                                               Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17" HorizontalAlignment="Right"/>
+                                </StackPanel>
+                            </Grid>
+                        </Expander.Content>
+                    </Expander>
+                    <Expander x:Name="HostFeeInfoExpander" Tapped="HostFeeInfoExpander_Tapped" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" >
+                        <Expander.Header>
+                            <Grid>
+                                <TextBlock Text="You earn" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}"/>
+                                <TextBlock HorizontalAlignment="Right" Text="{x:Bind ViewModel.YouEarn, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}"/>
+                            </Grid>
+                        </Expander.Header>
+                        <Expander.Content>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="Base price" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17"/>
+                                    <TextBlock Text="Guest service fee" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Spacing="4" HorizontalAlignment="Right" Margin="0 0 44 0">
+                                    <TextBlock Text="{x:Bind ViewModel.BasePrice, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" 
+                                               Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17" HorizontalAlignment="Right"/>
+                                    <TextBlock Text="{x:Bind ViewModel.HostServiceFee, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" 
+                                               Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontSize="17" HorizontalAlignment="Right"/>
+                                </StackPanel>
+                            </Grid>
+                        </Expander.Content>
+                    </Expander>
+                </StackPanel>
 
-            <TextBlock x:Name="LearnMoreTextBlock" TextDecorations="Underline" Foreground="{ThemeResource AccentAAFillColorDefaultBrush}" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="40">
+                <TextBlock x:Name="LearnMoreTextBlock" TextDecorations="Underline" Foreground="{ThemeResource AccentAAFillColorDefaultBrush}" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Bottom">
                 <Hyperlink Click="LearnMoreHyperLink_Click">Learn more about pricing</Hyperlink>
                 <FlyoutBase.AttachedFlyout>
                     <Flyout>
@@ -124,6 +125,7 @@
                     </Flyout>
                 </FlyoutBase.AttachedFlyout>
             </TextBlock>
+            </Grid>
         </Grid>
-    </Grid>
+    </ScrollViewer>
 </Page>

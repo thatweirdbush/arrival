@@ -1,4 +1,6 @@
-﻿using BookingManagementSystem.ViewModels.Host;
+﻿using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.ViewModels;
+using BookingManagementSystem.ViewModels.Host;
 using BookingManagementSystem.Views.Account;
 using BookingManagementSystem.Views.Client;
 using Microsoft.UI.Xaml.Controls;
@@ -67,35 +69,31 @@ public sealed partial class HostPage : Page
     private void MenuFlyoutItem_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         var clickedItem = sender as MenuFlyoutItem;
-        if (clickedItem == null || clickedItem.Tag == null)
-        {
-            return;
-        }
-
         var currentSelectedIndex = MenuFlyoutButton.Items.IndexOf(clickedItem);
         var pageType = typeof(FAQPage);
 
-        if (clickedItem.Tag.ToString() == "elite")
+        if (clickedItem?.Tag.ToString() == "elite")
         {
             pageType = typeof(FAQPage);
         }
-        else if (clickedItem.Tag.ToString() == "reservations")
+        else if (clickedItem?.Tag.ToString() == "reservations")
         {
             pageType = typeof(ReservationsPage);
         }
-        else if (clickedItem.Tag.ToString() == "earnings")
+        else if (clickedItem?.Tag.ToString() == "earnings")
         {
             pageType = typeof(FAQPage);
         }
-        else if (clickedItem.Tag.ToString() == "vouchers")
+        else if (clickedItem?.Tag.ToString() == "vouchers")
         {
             pageType = typeof(FAQPage);
         }
-        else if (clickedItem.Tag.ToString() == "create-new-listing")
+        else if (clickedItem?.Tag.ToString() == "create-new-listing")
         {
-            pageType = typeof(CreateListingPage);
+            App.GetService<INavigationService>().NavigateTo(typeof(CreateListingViewModel).FullName!);
+            return;
         }
-        else if (clickedItem.Tag.ToString() == "guidebooks")
+        else if (clickedItem?.Tag.ToString() == "guidebooks")
         {
             pageType = typeof(FAQPage);
         }
