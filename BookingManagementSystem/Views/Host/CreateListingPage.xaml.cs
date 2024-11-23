@@ -60,7 +60,8 @@ public sealed partial class CreateListingPage : Page
             Title = "Save and Exit",
             Content = "Are you sure you want to save and exit?",
             PrimaryButtonText = "Save and Exit",
-            CloseButtonText = "Cancel"
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary
         };
 
         dialog.PrimaryButtonClick += async (dialogSender, dialogArgs) =>

@@ -13,8 +13,8 @@
     mc:Ignorable="d"
     NavigationCacheMode="Enabled"
     CacheMode="BitmapCache">
-    
-    <Grid x:Name="ContentArea">
+
+    <Grid x:Name="ContentArea" Margin="0 0 28 0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="6*"/>
             <ColumnDefinition Width="5*"/>
@@ -22,7 +22,7 @@
         <Grid CornerRadius="0 420 0 0">
             <MediaPlayerElement Source="ms-appx:///Assets/Media/isometric-room-blender-04.mp4" Stretch="UniformToFill" AutoPlay="True" CacheMode="BitmapCache" Margin="-60 0 0 -20" />
         </Grid>
-        <StackPanel Grid.Column="1" Spacing="12" VerticalAlignment="Center" Padding="80 0 0 0" MaxWidth="600" HorizontalAlignment="Left">
+        <StackPanel Grid.Column="1" Spacing="12" VerticalAlignment="Center" HorizontalAlignment="Left" Padding="80 0 0 0" MaxWidth="600">
             <TextBlock Style="{ThemeResource DisplayTextBlockStyle}" TextWrapping="WrapWholeWords">
                 <Run Text="Congratulations,"/>
                 <Run Text="Huy"/>!
@@ -30,6 +30,5 @@
             <TextBlock Text="From one Host to another—welcome aboard. Thank you for sharing your home and helping to create incredible experiences for our guests." 
                        Style="{ThemeResource DetailSubTitleStyle}" FontFamily="Arial"/>
         </StackPanel>
-
     </Grid>
 </Page>

@@ -125,7 +125,7 @@ public class Property : INotifyPropertyChanged
         get; set;
     } = [];
 
-    public string ImageThumbnail => ImagePaths.FirstOrDefault() ?? "ms-appx:///Assets/default-thumbnail.jpg";
+    public string ImageThumbnail => ImagePaths.FirstOrDefault() ?? "ms-appx:///Assets/modern-european-house.png";
 
     public string Location
     {

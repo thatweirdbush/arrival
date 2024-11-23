@@ -103,11 +103,11 @@ public partial class CreateListingViewModel : ObservableRecipient
         CurrentStep.SaveProcess();
         if (CurrentStepIndex == Stages.Count - 1)
         {
-            // Save new listing to the database
-            await SaveCurrentStepAsync();   // Current step is the last step
-
             // Update new listing status
             PropertyOnCreating.Status = PropertyStatus.Listed;
+
+            // Save new listing to the database
+            await SaveCurrentStepAsync();   // Current step is the last step
 
             // Return to Listings page using BackTrack
             App.GetService<INavigationService>().NavigateTo(typeof(ListingViewModel).FullName!);
