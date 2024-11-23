@@ -48,21 +48,9 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Your wishlist" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
-                    <Grid x:Name="SearchBoxContent" Grid.Column="1" Visibility="Collapsed" >
-                        <AutoSuggestBox x:Name="SearchBox" Height="36" Margin="60 0 12 0" Padding="0 0 24 0" CornerRadius="18"
-                                PlaceholderText="Search listings by name or location" VerticalContentAlignment="Center"
-                                Background="Transparent" BorderBrush="{ThemeResource AcrylicInAppFillColorDefaultInverseBrush}"
-                                Visibility="Visible" TextChanged="SearchBox_TextChanged"
-                                SuggestionChosen="SearchBox_SuggestionChosen"/>
-                        <Button CornerRadius="100" Margin="0 0 24 0" Background="LightGray" HorizontalAlignment="Right" VerticalAlignment="Center"
-                        Height="20" Width="20" Padding="0" BorderThickness="0"
-                        Click="CloseSearchBoxButton_Click">
-                            <FontIcon x:Name="SearchBoxIcon" Glyph="&#xE711;" FontSize="9" FontWeight="SemiBold"/>
-                        </Button>
-                    </Grid>
+                   
                     <CommandBar x:Name="CollectionCommandBar" Grid.Column="2" DefaultLabelPosition="Right" HorizontalAlignment="Right">
-                        <AppBarButton x:Name="btnSearch" Icon="Find" Label="Search" Click="OnCommandBarElementClicked"/>
-                        <AppBarButton x:Name="btnEdit" Icon="Edit" Label="Edit" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnSelect" Icon="Edit" Label="Select" Click="OnCommandBarElementClicked"/>
                         <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
                             <AppBarButton.KeyboardAccelerators>
                                 <KeyboardAccelerator Key="Delete"/>
@@ -88,7 +76,7 @@
                     animations:Connected.ListItemKey="animationKeyBodyGrid"
                     DesiredWidth="500"
                     ItemHeight="400"                
-                    x:Name="ListingsGridView"
+                    x:Name="WishlistGridView"
                     ItemsSource="{x:Bind ViewModel.Properties}"
                     IsItemClickEnabled="True"
                     FlowDirection="LeftToRight"
@@ -122,10 +110,8 @@
                                         <StackPanel Spacing="4" MaxWidth="300" HorizontalAlignment="Left">
                                             <TextBlock Text="{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}" MaxLines="1"/>
                                             <TextBlock Text="{x:Bind Location}" Style="{ThemeResource DetailBodyStyle}" MaxLines="1"/>
-                                            <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Foreground="Gray" VerticalAlignment="Bottom" Margin="0 2 0 0">  
-                                        <Run/>Created at
-                                        <Run Text="{x:Bind Type}"/>
-                                            </TextBlock>
+                                            <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Foreground="Gray" VerticalAlignment="Bottom" Margin="0 2 0 0"/>
+
                                         </StackPanel>
                                         <TextBlock Text="{x:Bind PricePerNight, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}"
                                             Style="{ThemeResource ListTitleStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="20"/>

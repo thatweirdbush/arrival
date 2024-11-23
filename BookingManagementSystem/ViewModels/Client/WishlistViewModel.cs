@@ -93,4 +93,20 @@ public partial class WishlistViewModel : ObservableRecipient
     {
         IsPropertyListEmpty = Properties.Count == 0;
     }
+
+    public void RemoveWishAsync(Property property)
+    {
+        _propertyRepository.DeleteAsync(property.Id);
+        Properties.Remove(property);
+    }
+
+    public void RemoveAllWishAsync()
+    {
+        foreach (var property in Properties)
+        {
+            _propertyRepository.DeleteAsync(property.Id);
+        }
+        Properties.Clear();
+    }
+
 }
