@@ -15,7 +15,7 @@ public partial class LoginViewModel : ObservableRecipient
 
     public IEnumerable<User> Users { get; private set; } = Enumerable.Empty<User>();
 
-    public User? CurrentUser { get; private set; } // Declare as nullable
+    public static User? CurrentUser { get; private set; } // Declare as nullable
 
     public LoginViewModel(INavigationService navigationService, IRepository<User> userRepository)
     {
