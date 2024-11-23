@@ -4,6 +4,7 @@ using BookingManagementSystem.Core.Models;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel;
+using BookingManagementSystem.ViewModels.Account;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -14,6 +15,8 @@ public partial class WishlistViewModel : ObservableRecipient
 
     // List of content items
     public ObservableCollection<Property> Properties { get; set; } = [];
+
+    public int CurrentUserID = LoginViewModel.CurrentUser.Id;
 
     [ObservableProperty]
     private bool isPropertyListEmpty;

@@ -149,8 +149,6 @@ public partial class App : Application
             services.AddTransient<ListingPage>();
             services.AddTransient<UserProfileViewModel>();
             services.AddTransient<UserProfilePage>();
-            services.AddTransient<WishlistViewModel>();
-            services.AddTransient<WishlistPage>();
             services.AddTransient<LoyaltyProgramViewModel>();
             services.AddTransient<LoyaltyProgramPage>();
             services.AddTransient<BookingHistoryViewModel>();
@@ -188,6 +186,8 @@ public partial class App : Application
             services.AddTransient<LoginPage>();
             services.AddTransient<ShellPage>();
             services.AddSingleton<ShellViewModel>();
+            services.AddTransient<WishlistViewModel>();
+            services.AddSingleton<WishlistPage>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
