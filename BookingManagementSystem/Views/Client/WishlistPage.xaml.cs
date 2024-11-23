@@ -48,8 +48,8 @@ public sealed partial class WishlistPage : Page
         var confirm = new ContentDialog
         {
             XamlRoot = XamlRoot,
-            Title = "Remove Listing",
-            Content = "Are you sure you want to remove the selected listing(s)?",
+            Title = "Remove wishlist",
+            Content = "Are you sure you want to remove the selected wishlist(s)?",
             PrimaryButtonText = "Remove",
             CloseButtonText = "Cancel",
             DefaultButton = ContentDialogButton.Primary
@@ -64,7 +64,7 @@ public sealed partial class WishlistPage : Page
             {
                 if (item is Property property)
                 {
-                    ViewModel.RemoveWishAsync(property);
+                    ViewModel.RemoveWishlistAsync(property);
                 }
             }
         }
@@ -76,7 +76,7 @@ public sealed partial class WishlistPage : Page
         var confirm = new ContentDialog
         {
             XamlRoot = XamlRoot,
-            Title = "Remove all listings?",
+            Title = "Remove all wishlists?",
             Content = "Once you remove all, you can't get them back.",
             PrimaryButtonText = "Remove all",
             CloseButtonText = "Cancel",
@@ -89,12 +89,14 @@ public sealed partial class WishlistPage : Page
         if (result == ContentDialogResult.Primary)
         {
             // Remove all listings
-            ViewModel.RemoveAllWishAsync();
+            ViewModel.RemoveAllWishlistAsync();
         }
     }
 
     private void btnGetStarted_Click(object sender, RoutedEventArgs e)
     {
+        // Navigate to Home page
+        Frame.Navigate(typeof(HomePage));
     }
 
     private void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
@@ -115,8 +117,7 @@ public sealed partial class WishlistPage : Page
                 RemoveAllLissting_Click(sender, e);
                 break;
         }
-    }
- 
+    } 
     
     private void btnFavourite_Click(object sender, RoutedEventArgs e)
     {
@@ -127,13 +128,5 @@ public sealed partial class WishlistPage : Page
         {
             property.IsFavourite = !property.IsFavourite;
         }
-    }
-
-    private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-    {
-    }
-
-    private void SearchBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
-    {
     }
 }

@@ -47,10 +47,9 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Your wishlist" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
-                   
+                    <TextBlock Text="Your Wishlists" Style="{ThemeResource TitleLargeTextBlockStyle}"/>                   
                     <CommandBar x:Name="CollectionCommandBar" Grid.Column="2" DefaultLabelPosition="Right" HorizontalAlignment="Right">
-                        <AppBarButton x:Name="btnSelect" Icon="Edit" Label="Select" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnSelect" Icon="Bullets" Label="Select" Click="OnCommandBarElementClicked"/>
                         <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
                             <AppBarButton.KeyboardAccelerators>
                                 <KeyboardAccelerator Key="Delete"/>
@@ -65,24 +64,24 @@
                 
                 <StackPanel x:Name="BodyGridAllListEmpty" Spacing="18" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Image Source="/Assets/modern-european-house.png" Width="240" Height="240" Stretch="Fill" Margin="0 -18 0 -24"/>
-                    <TextBlock Text="You don’t have any listings yet" Style="{ThemeResource SubtitleTextBlockStyle}" FontFamily="Arial" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock Text="Create a listing with Arrival Setup and start getting booked." Style="{ThemeResource BodyTextBlockStyle}" FontFamily="Arial" FontSize="18" Foreground="Gray" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 -12 0 0"/>
+                    <TextBlock Text="You don’t have any wishlist yet" Style="{ThemeResource SubtitleTextBlockStyle}" FontFamily="Arial" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="Create a wishlist by giving Homes &amp; Apartments a heart." Style="{ThemeResource BodyTextBlockStyle}" FontFamily="Arial" FontSize="18" Foreground="Gray" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 -12 0 0"/>
                     <Button x:Name="btnGetStarted" Content="Get started" FontWeight="SemiBold" FontSize="18" Height="48" Width="180" CornerRadius="12" BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" Click="btnGetStarted_Click" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
                 
                 <StackPanel x:Name="BodyGrid" Spacing="40" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
                     <controls:AdaptiveGridView
-                    animations:Connected.ListItemElementName="itemThumbnail"
-                    animations:Connected.ListItemKey="animationKeyBodyGrid"
-                    DesiredWidth="500"
-                    ItemHeight="400"                
-                    x:Name="WishlistGridView"
-                    ItemsSource="{x:Bind ViewModel.Properties}"
-                    IsItemClickEnabled="True"
-                    FlowDirection="LeftToRight"
-                    StretchContentForSingleRow="False"
-                    ItemContainerStyle="{ThemeResource GridViewItemExpanded}"
-                    CacheMode="BitmapCache">
+                        animations:Connected.ListItemElementName="itemThumbnail"
+                        animations:Connected.ListItemKey="animationKeyBodyGrid"
+                        DesiredWidth="500"
+                        ItemHeight="400"                
+                        x:Name="WishlistGridView"
+                        ItemsSource="{x:Bind ViewModel.Properties}"
+                        IsItemClickEnabled="True"
+                        FlowDirection="LeftToRight"
+                        StretchContentForSingleRow="False"
+                        ItemContainerStyle="{ThemeResource GridViewItemExpanded}"
+                        CacheMode="BitmapCache">
                         <controls:AdaptiveGridView.ItemContainerTransitions>
                             <TransitionCollection>
                                 <PaneThemeTransition Edge="Bottom"/>
@@ -107,14 +106,13 @@
                                     </Grid>
                                     
                                     <Grid Grid.Row="1" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}" MinHeight="12" MinWidth="12" Padding="20">
-                                        <StackPanel Spacing="4" MaxWidth="300" HorizontalAlignment="Left">
+                                        <StackPanel Spacing="4" MaxWidth="360" HorizontalAlignment="Left">
                                             <TextBlock Text="{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}" MaxLines="1"/>
                                             <TextBlock Text="{x:Bind Location}" Style="{ThemeResource DetailBodyStyle}" MaxLines="1"/>
-                                            <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Foreground="Gray" VerticalAlignment="Bottom" Margin="0 2 0 0"/>
-
+                                            <TextBlock Text="{x:Bind Type}" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="Gray" Margin="0 2 0 0"/>
                                         </StackPanel>
                                         <TextBlock Text="{x:Bind PricePerNight, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}"
-                                            Style="{ThemeResource ListTitleStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="20"/>
+                                                   Style="{ThemeResource ListTitleStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="20"/>
                                     </Grid>
                                 </Grid>
                             </DataTemplate>
