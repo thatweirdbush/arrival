@@ -138,7 +138,6 @@ public sealed partial class RentalDetailPage : Page
         }
     }
 
-
     private async void btnReport_Click(object sender, RoutedEventArgs e)
     {
         // Create an instance of BadReportDialog

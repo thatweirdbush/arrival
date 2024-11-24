@@ -40,7 +40,7 @@ public partial class ListingViewModel : ObservableRecipient
         Properties.CollectionChanged += (s, e) => CheckPropertyListCount();
 
         // Initial check
-        LoadPropertyList();
+        _ = LoadPropertyList();
 
         // Load Property Name and Location string data list
         PropertyNameAndLocationList = Properties.Select(p => p.Name)
@@ -49,7 +49,7 @@ public partial class ListingViewModel : ObservableRecipient
         PropertyCountTotal = Properties.Count;
     }
 
-    public async void LoadPropertyList()
+    public async Task LoadPropertyList()
     {
         // Load Property data list filtered by User/Host Id
         var properties = await _propertyRepository.GetAllAsync();
@@ -63,34 +63,17 @@ public partial class ListingViewModel : ObservableRecipient
     {
     }
 
-    [RelayCommand]
-    private void OnItemClick(Property? clickedItem)
+    public async Task RemoveBookingAsync(Property property)
     {
-        if (clickedItem != null)
-        {
-            if (clickedItem.Status == PropertyStatus.InProgress)
-            {
-                _navigationService.NavigateTo(typeof(CreateListingViewModel).FullName!, clickedItem.Id);
-            }
-            else
-            {
-                _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
-                _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, clickedItem.Id);
-            }
-        }
-    }
-
-    public void RemoveBookingAsync(Property property)
-    {
-        _propertyRepository.DeleteAsync(property.Id);
+        await _propertyRepository.DeleteAsync(property.Id);
         Properties.Remove(property);
     }
 
-    public void RemoveAllBookingsAsync()
+    public async Task RemoveAllBookingsAsync()
     {
         foreach (var property in Properties)
         {
-            _propertyRepository.DeleteAsync(property.Id);
+            await _propertyRepository.DeleteAsync(property.Id);
         }
         Properties.Clear();
     }

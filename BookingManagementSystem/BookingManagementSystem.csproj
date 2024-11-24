@@ -182,6 +182,7 @@
 		<None Remove="Assets\Wide310x150Logo.scale-150.png" />
 		<None Remove="Assets\Wide310x150Logo.scale-200.png" />
 		<None Remove="Assets\Wide310x150Logo.scale-400.png" />
+		<None Remove="Views\Forms\EditListingDialog.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -783,6 +784,9 @@
 		<None Update="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-9.jpg">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<Page Update="Views\Forms\EditListingDialog.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">

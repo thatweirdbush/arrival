@@ -89,7 +89,7 @@
                         ItemHeight="400"                
                         x:Name="ListingsGridView"
                         ItemsSource="{x:Bind ViewModel.Properties}"
-                        ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
+                        ItemClick="ListingsGridView_ItemClick"
                         IsItemClickEnabled="True"
                         FlowDirection="LeftToRight"
                         StretchContentForSingleRow="False"
