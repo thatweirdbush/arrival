@@ -43,10 +43,21 @@ public partial class SetPriceViewModel : BaseStepViewModel
     public SetPriceViewModel(IPropertyService propertyService)
     {
         _propertyService = propertyService;
+
+        // Initialize core properties
+        TryInitializePrice();
         OnBasePriceChanged(basePrice);
 
         // Initial check because we are current using Lost Focus on Price Text Box
         IsStepCompleted = BasePrice > 0.0m;
+    }
+
+    public void TryInitializePrice()
+    {
+        if (PropertyOnCreating.PricePerNight > 0.0m)
+        {
+            BasePrice = PropertyOnCreating.PricePerNight;
+        }
     }
 
     public override void ValidateProcess()

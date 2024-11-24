@@ -26,21 +26,4 @@ public sealed partial class PlaceStructurePage : Page
         }
         base.OnNavigatedTo(e);
     }
-
-    private void PropertyTypeGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (ViewModel == null)
-        {
-            return;
-        }
-        if (PropertyTypeGridView.SelectedItem is PropertyTypeIcon selectedItem)
-        {
-            ViewModel.SelectedType = selectedItem.PropertyType;
-        }
-        else
-        {
-            ViewModel.SelectedType = null;
-        }
-        ViewModel.ValidateProcess();
-    }
 }

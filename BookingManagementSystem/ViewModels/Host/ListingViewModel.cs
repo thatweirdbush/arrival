@@ -68,8 +68,15 @@ public partial class ListingViewModel : ObservableRecipient
     {
         if (clickedItem != null)
         {
-            _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
-            _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, clickedItem.Id);
+            if (clickedItem.Status == PropertyStatus.InProgress)
+            {
+                _navigationService.NavigateTo(typeof(CreateListingViewModel).FullName!, clickedItem.Id);
+            }
+            else
+            {
+                _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
+                _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, clickedItem.Id);
+            }
         }
     }
 

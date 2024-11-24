@@ -33,7 +33,7 @@
                 FlowDirection="LeftToRight"
                 CacheMode="BitmapCache"
                 IsItemClickEnabled="True"
-                SelectionChanged="PropertyTypeGridView_SelectionChanged"
+                SelectedItem="{x:Bind ViewModel.SelectedTypeIcon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ScrollViewer.VerticalScrollBarVisibility="Hidden">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
