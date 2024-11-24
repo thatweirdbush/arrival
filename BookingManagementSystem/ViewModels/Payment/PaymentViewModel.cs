@@ -5,13 +5,17 @@ using BookingManagementSystem.Core.Models;
 using Windows.System;
 using System.Security.Cryptography.X509Certificates;
 using System.Collections.ObjectModel;
+using BookingManagementSystem.Core.Contracts.Facades;
+using BookingManagementSystem.Core.Facades;
 
 namespace BookingManagementSystem.ViewModels.Payment;
 
 public partial class PaymentViewModel : ObservableRecipient
 {
-    private readonly INavigationService _navigationService;
-    private readonly IDao _dao;
+    //private readonly INavigationService _navigationService;
+    //private readonly IDao _dao;
+
+    private readonly IPaymentFacade _paymentFacade;
 
     [ObservableProperty]
     private Property? item;
@@ -19,17 +23,30 @@ public partial class PaymentViewModel : ObservableRecipient
     public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = Enumerable.Empty<DestinationTypeSymbol>();
     public IEnumerable<Voucher> Vouchers { get; private set; } = Enumerable.Empty<Voucher>();
 
-    public PaymentViewModel(INavigationService navigationService, IDao dao)
+    public PaymentViewModel(IPaymentFacade paymentFacade, IDao dao)
     {
-        _navigationService = navigationService;
-        _dao = dao;
-        OnNavigatedTo(_dao);
+        //_navigationService = navigationService;
+        //_dao = dao;
+        //OnNavigatedTo(_dao);
+
+        _paymentFacade = paymentFacade;
     }
 
     public async void OnNavigatedTo(object parameter)
     {
-        var vouchers = await _dao.GetVoucherListDataAsync();
-        Vouchers = vouchers;
+        //var vouchers = await _dao.GetVoucherListDataAsync();
+        //Vouchers = vouchers;
+        if (parameter is int Id)
+        {
+            Item = await _paymentFacade.GetPropertyByIdAsync(Id);
+            var reviews = await _paymentFacade.GetReviewsAsync();
+            foreach (var review in reviews)
+            {
+                Reviews.Add(review);
+            }
+
+            DestinationTypeSymbols = await _paymentFacade.GetDestinationTypeSymbolsAsync();
+        }
     }
 
     public void OnNavigatedFrom()
