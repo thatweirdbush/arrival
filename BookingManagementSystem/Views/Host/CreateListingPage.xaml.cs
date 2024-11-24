@@ -66,7 +66,8 @@ public sealed partial class CreateListingPage : Page
 
         dialog.PrimaryButtonClick += async (dialogSender, dialogArgs) =>
         {
-            // Save listing
+            // Save last edited step
+            ViewModel.PropertyOnCreating.LastEditedStep = ViewModel.CurrentStepIndex;
             await ViewModel.SaveCurrentStepAsync();
 
             // Return to Listings page using BackTrack

@@ -24,8 +24,36 @@ public sealed partial class AmenitiesPage : Page
         {
             ViewModel = viewModel;
         }
+        // Initialize the selected amenities
+        TryInitializeSelectedAmenities();
+
         base.OnNavigatedTo(e);
     }
+
+    private async void TryInitializeSelectedAmenities()
+    {
+        if (ViewModel == null)
+        {
+            return;
+        }
+        // Wait for UI to finish rendering the GridViews
+        // Considering replace with GridView's Loaded/LayoutUpdated events
+        await Task.Delay(50);
+
+        foreach (var amenity in ViewModel.SelectedGuestFavoriteAmenities)
+        {
+            GuestFavoriteAmenitiesGridView.SelectedItems.Add(amenity);
+        }
+        foreach (var amenity in ViewModel.SelectedStandoutAmenities)
+        {
+            StandoutAmenitiesGridView.SelectedItems.Add(amenity);
+        }
+        foreach (var amenity in ViewModel.SelectedSafetyAmenities)
+        {
+            SafetyAmenitiesGridView.SelectedItems.Add(amenity);
+        }
+    }
+
 
     private void GuestFavoriteAmenitiesGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {

@@ -11,39 +11,36 @@
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
-    mc:Ignorable="d"
-    NavigationCacheMode="Enabled"
-    CacheMode="BitmapCache">
+    mc:Ignorable="d">
 
     <ScrollViewer>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="TitleTextBoxState">
+                <VisualState x:Name="TitleLengthGreaterThanMaxValue">
+                    <VisualState.StateTriggers>
+                        <triggers:CompareStateTrigger Comparison="GreaterThan" To="32" Value="{x:Bind ViewModel.SelectedTitle.Length, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TitleTextBox.BorderBrush" Value="Red" />
+                        <Setter Target="TitleInputError.Visibility" Value="Visible" />
+                        <Setter Target="TitleErrorText.Text" Value="The maximum number of characters allowed is 32." />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="DescriptionTextBoxState">
+                <VisualState x:Name="DescriptionLengthGreaterThanMaxValue">
+                    <VisualState.StateTriggers>
+                        <triggers:CompareStateTrigger Comparison="GreaterThan" To="500" Value="{x:Bind ViewModel.SelectedDescription.Length, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="DescriptionTextBox.BorderBrush" Value="Red" />
+                        <Setter Target="DescriptionInputError.Visibility" Value="Visible" />
+                        <Setter Target="DescriptionErrorText.Text" Value="The maximum number of characters allowed is 500." />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid x:Name="ContentArea" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="28 0 28 40">
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup x:Name="TitleTextBoxState">
-                    <VisualState x:Name="TitleLengthGreaterThanMaxValue">
-                        <VisualState.StateTriggers>
-                            <triggers:CompareStateTrigger Comparison="GreaterThan" To="32" Value="{x:Bind ViewModel.SelectedTitle.Length, Mode=OneWay}" />
-                        </VisualState.StateTriggers>
-                        <VisualState.Setters>
-                            <Setter Target="TitleTextBox.BorderBrush" Value="Red" />
-                            <Setter Target="TitleInputError.Visibility" Value="Visible" />
-                            <Setter Target="TitleErrorText.Text" Value="The maximum number of characters allowed is 32." />
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-                <VisualStateGroup x:Name="DescriptionTextBoxState">
-                    <VisualState x:Name="DescriptionLengthGreaterThanMaxValue">
-                        <VisualState.StateTriggers>
-                            <triggers:CompareStateTrigger Comparison="GreaterThan" To="500" Value="{x:Bind ViewModel.SelectedDescription.Length, Mode=OneWay}" />
-                        </VisualState.StateTriggers>
-                        <VisualState.Setters>
-                            <Setter Target="DescriptionTextBox.BorderBrush" Value="Red" />
-                            <Setter Target="DescriptionInputError.Visibility" Value="Visible" />
-                            <Setter Target="DescriptionErrorText.Text" Value="The maximum number of characters allowed is 500." />
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
-
             <StackPanel Spacing="36">
                 <Grid>
                     <Grid.RowDefinitions>

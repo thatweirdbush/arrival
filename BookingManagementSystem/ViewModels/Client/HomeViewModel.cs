@@ -67,8 +67,9 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     {
         Properties.Clear();
         var data = await _propertyRepository.GetAllAsync();
+        var listedProperties = data.Where(x => x.Status == PropertyStatus.Listed);
 
-        foreach (var item in data)
+        foreach (var item in listedProperties)
         {
             Properties.Add(item);
         }

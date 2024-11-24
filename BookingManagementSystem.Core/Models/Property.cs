@@ -83,6 +83,7 @@ public class Property : INotifyPropertyChanged
     // Define constants
     public const string DEFAULT_PROPERTY_NAME = "Your House listing";
     public const string DEFAULT_PROPERTY_LOCATION = "Your House location";
+    public const string DEFAULT_PROPERTY_DESCRIPTION= "Your House description";
     public const decimal DEFAULT_PROPERTY_PRICE = 0.0M;
     public const decimal DEFAULT_GUEST_SERVICE_FEE_RATE = 0.14m;
     public const decimal DEFAULT_HOST_SERVICE_FEE_RATE = 0.03m;
@@ -110,7 +111,7 @@ public class Property : INotifyPropertyChanged
     public string Description
     {
         get; set;
-    }
+    } = DEFAULT_PROPERTY_DESCRIPTION;
     public int HostId
     {
         get; set;
@@ -180,4 +181,9 @@ public class Property : INotifyPropertyChanged
     {
         get; set;
     } = false;
+
+    public int LastEditedStep
+    {
+        get; set;
+    } = -1;
 }

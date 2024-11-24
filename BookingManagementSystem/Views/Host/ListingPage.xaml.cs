@@ -2,7 +2,9 @@
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Repositories;
 using BookingManagementSystem.ViewModels;
+using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.ViewModels.Host;
+using BookingManagementSystem.Views.Forms;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.ApplicationModel.Contacts;
@@ -24,6 +26,7 @@ public sealed partial class ListingPage : Page
 
     private void EditListing_Click(object sender, RoutedEventArgs e)
     {
+        ListingsGridView.IsItemClickEnabled = false;
         ListingsGridView.SelectionMode = ListViewSelectionMode.Multiple;
         btnEdit.Visibility = Visibility.Collapsed;
         btnCancel.Visibility = Visibility.Visible;
@@ -32,6 +35,7 @@ public sealed partial class ListingPage : Page
 
     private void CancelEditing_Click(object sender, RoutedEventArgs e)
     {
+        ListingsGridView.IsItemClickEnabled = true;
         ListingsGridView.SelectionMode = ListViewSelectionMode.Single;
         btnCancel.Visibility = Visibility.Collapsed;
         btnRemove.Visibility = Visibility.Collapsed;
@@ -68,7 +72,7 @@ public sealed partial class ListingPage : Page
             {
                 if (item is Property property)
                 {
-                    ViewModel.RemoveBookingAsync(property);
+                    await ViewModel.RemoveBookingAsync(property);
                 }
             }
         }
@@ -99,7 +103,7 @@ public sealed partial class ListingPage : Page
         if (result == ContentDialogResult.Primary)
         {
             // Remove all listings
-            ViewModel.RemoveAllBookingsAsync();
+            await ViewModel.RemoveAllBookingsAsync();
         }
     }
 
@@ -143,7 +147,7 @@ public sealed partial class ListingPage : Page
         }
     }
 
-    private void CloseSearchBoxButton_Click(object sender, RoutedEventArgs e)
+    private async void CloseSearchBoxButton_Click(object sender, RoutedEventArgs e)
     {
         // Hide search box and show the Seach button
         SearchBoxContent.Visibility = Visibility.Collapsed;
@@ -153,7 +157,7 @@ public sealed partial class ListingPage : Page
         if (ViewModel.PropertyCountTotal != ViewModel.Properties.Count)
         {
             ViewModel.Properties.Clear();
-            ViewModel.LoadPropertyList();
+            await ViewModel.LoadPropertyList();
         }
 
         // Clear search box text
@@ -192,5 +196,39 @@ public sealed partial class ListingPage : Page
 
     private void SearchBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
     {
+    }
+
+    private async void ListingsGridView_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        if (e.ClickedItem is Property property)
+        {
+            if (property.Status == PropertyStatus.InProgress)
+            {
+                // Create an instance of EditListing Dialog
+                var dialog = new EditListingDialog(property)
+                {
+                    // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
+                    XamlRoot = XamlRoot
+                };
+                await dialog.ShowAsync();
+                switch (dialog.Result)
+                {
+                    case EditListingDialog.DialogResult.Edit:
+                        Frame.Navigate(typeof(CreateListingPage), property.Id);
+                        break;
+                    case EditListingDialog.DialogResult.Remove:
+                        await ViewModel.RemoveBookingAsync(property);
+                        break;
+                    case EditListingDialog.DialogResult.None:
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                App.GetService<INavigationService>().SetListDataItemForNextConnectedAnimation(property);
+                App.GetService<INavigationService>().NavigateTo(typeof(RentalDetailViewModel).FullName!, property.Id);
+            }
+        }
     }
 }

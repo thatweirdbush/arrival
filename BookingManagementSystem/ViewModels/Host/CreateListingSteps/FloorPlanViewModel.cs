@@ -18,6 +18,8 @@ public partial class FloorPlanViewModel : BaseStepViewModel
     {
         _propertyService = propertyService;
         _amenitiesRepository = amenitiesRepository;
+
+        // Initialize core properties
         LoadFloorPlans();
 
         // User can skip this step too
@@ -26,10 +28,20 @@ public partial class FloorPlanViewModel : BaseStepViewModel
 
     private async void LoadFloorPlans()
     {
-        var data = await _amenitiesRepository.GetAllAsync();
-        BedroomPlan = data.FirstOrDefault(x => x.Name == "Bedroom");
-        BathoomPlan = data.FirstOrDefault(x => x.Name == "Bathroom");
-        BedPlan = data.FirstOrDefault(x => x.Name == "Bed");
+        if (PropertyOnCreating.Amenities.Count == 0)
+        {
+            var data = await _amenitiesRepository.GetAllAsync();
+
+            BedroomPlan = data.FirstOrDefault(x => x.Name == "Bedroom");
+            BathoomPlan = data.FirstOrDefault(x => x.Name == "Bathroom");
+            BedPlan = data.FirstOrDefault(x => x.Name == "Bed");
+        }
+        else
+        {
+            BedroomPlan = PropertyOnCreating.Amenities.FirstOrDefault(x => x.Name == "Bedroom");
+            BathoomPlan = PropertyOnCreating.Amenities.FirstOrDefault(x => x.Name == "Bathroom");
+            BedPlan = PropertyOnCreating.Amenities.FirstOrDefault(x => x.Name == "Bed");
+        }
     }
 
     public override void SaveProcess()

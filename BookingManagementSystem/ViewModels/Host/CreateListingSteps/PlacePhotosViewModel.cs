@@ -27,8 +27,11 @@ public partial class PlacePhotosViewModel : BaseStepViewModel
         // Attach CollectionChanged event to track changes in Photos list
         Photos.CollectionChanged += Photos_CollectionChanged;
 
+        // Initialize core properties
+        TryInitializePhotos();
+
         // Initialize the IsPhotoListEmpty property
-        IsPhotoListEmpty = true;
+        IsPhotoListEmpty = Photos.Count == 0;
     }
 
     private void Photos_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -36,6 +39,16 @@ public partial class PlacePhotosViewModel : BaseStepViewModel
         // Update IsPhotoListEmpty every time the list changes
         IsPhotoListEmpty = Photos.Count == 0;
         ValidateProcess();
+    }
+
+    public async void TryInitializePhotos()
+    {
+        // Load photos from Property's ImagePaths
+        foreach (var path in PropertyOnCreating.ImagePaths)
+        {
+            var photo = await StorageFile.GetFileFromPathAsync(path);
+            Photos.Add(photo);
+        }
     }
 
     public override void ValidateProcess()

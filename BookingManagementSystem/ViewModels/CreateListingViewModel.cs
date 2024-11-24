@@ -14,13 +14,13 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace BookingManagementSystem.ViewModels;
 
-public partial class CreateListingViewModel : ObservableRecipient
+public partial class CreateListingViewModel : ObservableRecipient, INavigationAware
 {
+    // Navigation Service DI
+    private readonly INavigationService _navigationService;
+
     // Stored property for the Property model through each step
     private readonly IPropertyService _propertyService;
-
-    // List of content items for each step's ViewModel
-    private readonly IRepository<PropertyTypeIcon> _propertyTypeIconRepository;
 
     [ObservableProperty]
     private int currentStepIndex;
@@ -30,24 +30,62 @@ public partial class CreateListingViewModel : ObservableRecipient
 
     public BaseStepViewModel CurrentStep => Stages[CurrentStepIndex];
 
-    public readonly ObservableCollection<BaseStepViewModel> Stages = [];
+    public ObservableCollection<BaseStepViewModel> Stages = [];
 
-    public readonly Dictionary<string, Type> ViewModelToPageDictionary;
+    public Dictionary<string, Type> ViewModelToPageDictionary = [];
     public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
 
-    public CreateListingViewModel(IPropertyService propertyService, IRepository<PropertyTypeIcon> propertyTypeIconRepository)
+    public CreateListingViewModel(IPropertyService propertyService, INavigationService navigationService)
     {
-        // Property Service is set to Singleton instance
+        // Dependency Injection workarounds
         _propertyService = propertyService;
+        _navigationService = navigationService;
 
-        // So new Property instance must be created by this ViewModel, which is Transient
-        _propertyService.PropertyOnCreating = new()
+        // Initialize core properties
+        CurrentStepIndex = 0;
+        IsLastStepCompleted = false;
+        GoForwardCommand = new RelayCommand(GoForward);
+        GoBackwardCommand = new RelayCommand(GoBackward);
+    }
+
+    public async void OnNavigatedTo(object? parameter)
+    {
+        // Check if we are editing an In Progress Property
+        if (parameter is int Id)
         {
-            Id = new Random().Next(1000, 9999),
-            Status = PropertyStatus.InProgress,
-        };
-        _propertyTypeIconRepository = propertyTypeIconRepository;
+            // Initialize steps' ViewModel
+            InitializeSteps();
 
+            // If there is a Property Id, this is the case of editing an In Progress Property
+            _propertyService.PropertyOnCreating = await _propertyService.GetPropertyInProgressAsync(Id);
+
+            // Update the current step index to the last step
+            var lastEditedStep = PropertyOnCreating.LastEditedStep;
+            if (lastEditedStep != -1)
+            {
+                CurrentStepIndex = lastEditedStep;
+            }
+        }
+        else
+        {
+            // Property Service is set to Singleton instance
+            // So new Property instance must be created by this ViewModel, which is Transient
+            _propertyService.PropertyOnCreating = new()
+            {
+                Id = new Random().Next(1000, 9999),
+                Status = PropertyStatus.InProgress,
+            };
+            // Initialize steps' ViewModel
+            InitializeSteps();
+        }
+    }
+
+    public void OnNavigatedFrom()
+    {
+    }
+
+    public void InitializeSteps()
+    {
         // Using Dependency Injection to get the ViewModel instances
         Stages = [
             App.GetService<AboutYourPlaceViewModel>(),
@@ -64,6 +102,7 @@ public partial class CreateListingViewModel : ObservableRecipient
             App.GetService<PublishCelebrationViewModel>()
             ];
 
+        // Dictionary to map ViewModel to Page
         ViewModelToPageDictionary = new Dictionary<string, Type>
         {
             { nameof(AboutYourPlaceViewModel), typeof(AboutYourPlacePage) },
@@ -79,11 +118,6 @@ public partial class CreateListingViewModel : ObservableRecipient
             { nameof(ReviewListingViewModel), typeof(ReviewListingPage) },
             { nameof(PublishCelebrationViewModel), typeof(PublishCelebrationPage) },
         };
-
-        CurrentStepIndex = 0;
-        IsLastStepCompleted = false;
-        GoForwardCommand = new RelayCommand(GoForward);
-        GoBackwardCommand = new RelayCommand(GoBackward);
     }
 
     public ICommand GoForwardCommand
@@ -135,16 +169,5 @@ public partial class CreateListingViewModel : ObservableRecipient
     public async Task SaveCurrentStepAsync()
     {
         await _propertyService.SavePropertyAsync(_propertyService.PropertyOnCreating);
-    }
-
-    public async Task LoadPropertyInProgressAsync(int propertyId)
-    {
-        _propertyService.PropertyOnCreating = await _propertyService.GetPropertyInProgressAsync(propertyId)
-            ?? new Property()
-            {
-                Id = new Random().Next(1000, 9999),
-                Status = PropertyStatus.InProgress,
-            };
-        OnPropertyChanged(nameof(_propertyService.PropertyOnCreating));
     }
 }

@@ -10,9 +10,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
-    mc:Ignorable="d"
-    NavigationCacheMode="Enabled"
-    CacheMode="BitmapCache">
+    mc:Ignorable="d">
 
     <Page.Resources>
         <helper:StringToGeometryConverter x:Key="StringToGeometryConverter"/>
@@ -33,7 +31,7 @@
                 FlowDirection="LeftToRight"
                 CacheMode="BitmapCache"
                 IsItemClickEnabled="True"
-                SelectionChanged="PropertyTypeGridView_SelectionChanged"
+                SelectedItem="{x:Bind ViewModel.SelectedTypeIcon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ScrollViewer.VerticalScrollBarVisibility="Hidden">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
