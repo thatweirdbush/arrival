@@ -54,8 +54,27 @@ public partial class AmenitiesViewModel : BaseStepViewModel
         SelectedSafetyAmenities = PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.Safety);
     }
 
+    public void ResetPropertyAmenities()
+    {
+        foreach (var amenity in PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.GuestFavorite).ToList())
+        {
+            PropertyOnCreating.Amenities.Remove(amenity);
+        }
+        foreach (var amenity in PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.Standout).ToList())
+        {
+            PropertyOnCreating.Amenities.Remove(amenity);
+        }
+        foreach (var amenity in PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.Safety).ToList())
+        {
+            PropertyOnCreating.Amenities.Remove(amenity);
+        }
+    }
+
     public override void SaveProcess()
     {
+        // Reset all amenities first
+        ResetPropertyAmenities();
+
         // Add selected amenities to the property
         foreach (var amenity in SelectedGuestFavoriteAmenities)
         {

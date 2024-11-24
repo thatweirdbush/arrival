@@ -12,7 +12,6 @@
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
     xmlns:storage="using:Windows.Storage"
     mc:Ignorable="d"
-    NavigationCacheMode="Enabled"
     CacheMode="BitmapCache">
 
     <Page.Resources>

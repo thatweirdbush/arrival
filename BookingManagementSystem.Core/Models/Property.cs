@@ -181,4 +181,9 @@ public class Property : INotifyPropertyChanged
     {
         get; set;
     } = false;
+
+    public int LastEditedStep
+    {
+        get; set;
+    } = -1;
 }

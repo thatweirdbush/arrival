@@ -9,8 +9,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
-    mc:Ignorable="d"
-    CacheMode="BitmapCache">
+    mc:Ignorable="d">
 
     <Page.Resources>
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>

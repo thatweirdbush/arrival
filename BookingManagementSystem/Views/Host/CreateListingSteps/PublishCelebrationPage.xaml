@@ -10,9 +10,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
-    mc:Ignorable="d"
-    NavigationCacheMode="Enabled"
-    CacheMode="BitmapCache">
+    mc:Ignorable="d">
 
     <Grid x:Name="ContentArea" Margin="0 0 28 0">
         <Grid.ColumnDefinitions>

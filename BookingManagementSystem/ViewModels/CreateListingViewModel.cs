@@ -50,10 +50,21 @@ public partial class CreateListingViewModel : ObservableRecipient, INavigationAw
 
     public async void OnNavigatedTo(object? parameter)
     {
+        // Check if we are editing an In Progress Property
         if (parameter is int Id)
         {
+            // Initialize steps' ViewModel
+            InitializeSteps();
+
             // If there is a Property Id, this is the case of editing an In Progress Property
             _propertyService.PropertyOnCreating = await _propertyService.GetPropertyInProgressAsync(Id);
+
+            // Update the current step index to the last step
+            var lastEditedStep = PropertyOnCreating.LastEditedStep;
+            if (lastEditedStep != -1)
+            {
+                CurrentStepIndex = lastEditedStep;
+            }
         }
         else
         {
@@ -64,9 +75,9 @@ public partial class CreateListingViewModel : ObservableRecipient, INavigationAw
                 Id = new Random().Next(1000, 9999),
                 Status = PropertyStatus.InProgress,
             };
+            // Initialize steps' ViewModel
+            InitializeSteps();
         }
-        // Initialize steps' ViewModel
-        InitializeSteps();
     }
 
     public void OnNavigatedFrom()

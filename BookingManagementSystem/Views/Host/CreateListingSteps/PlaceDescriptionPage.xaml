@@ -11,9 +11,7 @@
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
-    mc:Ignorable="d"
-    NavigationCacheMode="Enabled"
-    CacheMode="BitmapCache">
+    mc:Ignorable="d">
 
     <ScrollViewer>
         <VisualStateManager.VisualStateGroups>
