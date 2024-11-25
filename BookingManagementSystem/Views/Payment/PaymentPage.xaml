@@ -13,6 +13,11 @@
     mc:Ignorable="d"
     CacheMode="BitmapCache">
 
+    <Page.Resources>
+        <!--Converters-->
+        <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
+    </Page.Resources>
+
     <Grid x:Name="ContentArea">
         <ScrollView x:Name="ContentScrollView" ZoomMode="Disabled" IsTabStop="True" ContentOrientation="Vertical"
          HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden"
@@ -187,6 +192,7 @@
                                     Style="{ThemeResource DefaultButtonStyle}"
                                     FontWeight="SemiBold"
                                     Padding="18"
+                                    Click="btnConfirmAndPay_Click"
                                     ToolTipService.ToolTip="Confirm the information above and pay for your reservation"/>
                             </Grid>
                         </StackPanel>
@@ -199,14 +205,14 @@
                                     <Grid Height="110" Width="116" CornerRadius="12">
                                         <Image Stretch="UniformToFill">
                                             <Image.Source>
-                                                <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelHeight="110"/>
+                                                <BitmapImage UriSource="{x:Bind ViewModel.Item.ImageThumbnail, Mode=OneWay}" DecodePixelHeight="110"/>
                                             </Image.Source>
                                         </Image>
                                     </Grid>
                                     <Grid>
                                         <StackPanel x:Name="PropertyInfoPanel" Orientation="Vertical" Spacing="8" MaxWidth="280">
-                                            <TextBlock x:Name="txtPropertyName" Text="Whispering Pines Cottages| Cabin | Tandi" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap"/>
-                                            <TextBlock x:Name="txtPropertyType" Text="Entire cottage" Style="{ThemeResource DetailBodyStyle}" TextWrapping="Wrap"/>
+                                            <TextBlock x:Name="txtPropertyName" Text="{x:Bind ViewModel.Item.Name, Mode=OneWay}"  Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap"/>
+                                            <TextBlock x:Name="txtPropertyType" Text="{x:Bind ViewModel.Item.Type, Mode=OneWay}"  Style="{ThemeResource DetailBodyStyle}" TextWrapping="Wrap"/>
                                             <TextBlock x:Name="txtPropertyRateAndReview" Style="{ThemeResource DetailBodyStyle}" TextWrapping="Wrap">
                                             <Run FontWeight="SemiBold" Text="4.89"/> (
                                             <Run Text="232"/> reviews)
@@ -214,6 +220,8 @@
                                         </StackPanel>
                                     </Grid>
                                 </StackPanel>
+
+                                
                                 <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
                                 <Grid>
                                     <StackPanel Spacing="12">

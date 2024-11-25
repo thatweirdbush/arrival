@@ -101,6 +101,7 @@ public partial class App : Application
             // TODO: Change to AddScoped when using a real data service
             services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
             services.AddSingleton<IRentalDetailFacade, RentalDetailFacade>();
+            services.AddSingleton<IPaymentFacade, PaymentFacade>();
             services.AddSingleton<IRepository<Amenity>, AmenityRepository>();
             services.AddSingleton<IRepository<BadReport>, BadReportRepository>();
             services.AddSingleton<IRepository<Booking>, BookingRepository>();

@@ -1,7 +1,11 @@
+using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels.Payment;
+using CommunityToolkit.WinUI.UI.Animations;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
+using BookingManagementSystem.ViewModels.Client;
 
 namespace BookingManagementSystem.Views.Payment;
 
@@ -16,6 +20,29 @@ public sealed partial class PaymentPage : Page
     {
         ViewModel = App.GetService<PaymentViewModel>();
         InitializeComponent();
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+
+        // Scroll to top when navigating to this page
+        ContentScrollView.ScrollTo(0, 0);
+
+    }
+
+    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+    {
+        base.OnNavigatingFrom(e);
+        if (e.NavigationMode == NavigationMode.Back)
+        {
+            var navigationService = App.GetService<INavigationService>();
+
+            if (ViewModel.Item != null)
+            {
+                navigationService.SetListDataItemForNextConnectedAnimation(ViewModel.Item);
+            }
+        }
     }
 
     private void Apply_click(object sender, RoutedEventArgs e)
@@ -57,5 +84,10 @@ public sealed partial class PaymentPage : Page
                 VoucherWarning.Visibility = Visibility.Visible;
             }
         }
+    }
+
+    private void btnConfirmAndPay_Click(object sender, RoutedEventArgs e)
+    {
+
     }
 }
