@@ -5,6 +5,7 @@ using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.Input;
+using BookingManagementSystem.Core.Contracts.Services;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -24,28 +25,27 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     private bool isPropertyListEmpty;
 
     // Properties nessesary for Schedule searching
-    public DateTimeOffset? CheckInDate
-    {
-        get; set;
-    }
-    public DateTimeOffset? CheckOutDate
-    {
-        get; set;
-    }
+    private readonly IRoomService _roomService;
+    public DateTimeOffset CheckInDate { get; set; } = DateTimeOffset.Now;
+    public DateTimeOffset CheckOutDate { get; set; } = DateTimeOffset.Now.AddDays(1);
 
     public HomeViewModel(INavigationService navigationService, 
                         IRepository<Property> propertyRepository, 
-                        IRepository<DestinationTypeSymbol> destinationTypeSymbolRepository)
+                        IRepository<DestinationTypeSymbol> destinationTypeSymbolRepository,
+                        IRoomService roomService)
     {
         _navigationService = navigationService;
         _propertyRepository = propertyRepository;
         _destinationTypeSymbolRepository = destinationTypeSymbolRepository;
+        _roomService = roomService;
 
         // Subscribe to CollectionChanged event
         Properties.CollectionChanged += (s, e) => CheckPropertyListCount();
 
         // Initial check
         CheckPropertyListCount();
+
+        SearchAvailableRoomsCommand = new AsyncRelayCommand(SearchRoomsAsync);
     }
 
     private void CheckPropertyListCount()
@@ -88,6 +88,11 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
     }
 
+    public IAsyncRelayCommand SearchAvailableRoomsCommand
+    {
+        get;
+    }
+
     public async void FilterProperties(DestinationTypeSymbol destinationTypeSymbol)
     {
         if (destinationTypeSymbol.DestinationType.Equals(DestinationType.All))
@@ -111,6 +116,24 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         foreach (var item in data)
         {
             Properties.Add(item);
+        }
+    }
+
+    public async Task SearchRoomsAsync()
+    {
+        if (CheckInDate >= CheckOutDate)
+        {
+            return;
+        }
+        var results = await _roomService.GetAvailableRoomsAsync(CheckInDate, CheckOutDate);
+
+        // Simulate network delay
+        await Task.Delay(600);
+
+        Properties.Clear();
+        foreach (var room in results)
+        {
+            Properties.Add(room);
         }
     }
 }
