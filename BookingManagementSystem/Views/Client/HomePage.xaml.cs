@@ -1,60 +1,18 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Windows.Security.Cryptography;
-using Windows.Security.Cryptography.DataProtection;
-using Windows.Storage;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.Core.Models;
-using Microsoft.UI.Xaml.Media.Animation;
-using Microsoft.UI.Xaml.Media.Imaging;
-using Windows.Globalization.DateTimeFormatting;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using BookingManagementSystem.Core.Services;
 
 namespace BookingManagementSystem.Views.Client;
-
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class HomePage : Page
 {
-    public HomeViewModel ViewModel
-    {
-        get;
-    }
+    // Properties nessesary for Geographic Names searching
+    private CancellationTokenSource _debounceTokenSource = new();
+    private readonly GeographicNameService _geographicNamesService = new();
+    private const string GeoNamesUsername = "thatweirdbush";
 
-    // List of Auto SuggestBox Destinations
-    private List<string> Destinations
-    {
-        get;
-    } = new()
-    {
-        "District 1, Ho Chi Minh City",
-        "District 2, Ho Chi Minh City",
-        "Hai Ba Trung, Hanoi",
-        "Ba Dinh, Hanoi",
-        "Vung Tau, Ba Ria - Vung Tau",
-        "Quy Nhon, Binh Dinh",
-        "Ha Long, Quang Ninh",
-        "Hoi An, Quang Nam",
-        "Nha Trang, Khanh Hoa",
-        "Da Lat, Lam Dong",
-        "Phu Quoc, Kien Giang",
-        "Phan Thiet, Binh Thuan",
-        "Hue, Thua Thien Hue",
-        "Sapa, Lao Cai",
-        "Con Dao, Ba Ria - Vung Tau",
-        "Mui Ne, Binh Thuan",
-        "Tam Dao, Vinh Phuc",
-        "Cat Ba, Hai Phong",
-        "Phong Nha, Quang Binh",
-        "Bac Ha, Lao Cai",
-        "Cua Lo, Nghe An",
-        "Phu Quoc, Kien Giang",
-    };
+    public HomeViewModel ViewModel { get; }
 
     public HomePage()
     {
@@ -89,67 +47,44 @@ public sealed partial class HomePage : Page
     private void btnFavourite_Click(object sender, RoutedEventArgs e)
     {
         // Toggle the favourite button  
-        // Change the image source to the filled heart icon  
-        if (sender is FrameworkElement frameworkElement 
+        // That change the image source to the filled heart icon  
+        if (sender is FrameworkElement frameworkElement
             && frameworkElement.DataContext is Property property)
         {
             property.IsFavourite = !property.IsFavourite;
         }
     }
 
-    // Handle text change and present suitable items
-    private void DestinationAutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    private async void DestinationAutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
-        // Since selecting an item will also change the text,
-        // only listen to changes caused by user entering text.
         if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
         {
-            var suitableItems = new List<string>();
-            var splitText = sender.Text.ToLower().Split(" ");
-            foreach (var item in Destinations)
+            // Cancel previous token if any (if user continues typing)
+            _debounceTokenSource?.Cancel();
+            _debounceTokenSource = new CancellationTokenSource();
+
+            try
             {
-                var found = splitText.All((key) =>
-                {
-                    return item.ToLower().Contains(key);
-                });
-                if (found)
-                {
-                    suitableItems.Add(item);
-                }
+                // Wait 300ms to debounce
+                await Task.Delay(300, _debounceTokenSource.Token);
+
+                // After 300ms, call search API
+                var query = sender.Text;
+                var suggestions = await _geographicNamesService.SearchLocationsAsync(query, GeoNamesUsername);
+
+                // Display list of suggestions
+                sender.ItemsSource = suggestions;
             }
-            if (suitableItems.Count == 0)
+            catch (Exception)
             {
-                suitableItems.Add("No results found");
             }
-            sender.ItemsSource = suitableItems;
         }
-    }
-
-    // Handle user selecting an item, not implemented yet
-    private void DestinationAutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
-    {
-        //// Show ContentDialog with the selected item
-        //var dialog = new ContentDialog
-        //{
-        //    XamlRoot = Content.XamlRoot,
-        //    Title = "Selected item",
-        //    Content = args.SelectedItem,
-        //    PrimaryButtonText = "Ok",
-        //    CloseButtonText = "Close"
-        //};
-
-        //await dialog.ShowAsync();
-    }
-
-    private void DestinationAutoSuggestBox_Drop(object sender, DragEventArgs e)
-    {
-
     }
 
     private void btnFilterDestination_Click(object sender, RoutedEventArgs e)
     {
         // Filter Properties based on DestinationType  
-        if (sender is FrameworkElement frameworkElement 
+        if (sender is FrameworkElement frameworkElement
             && frameworkElement.DataContext is DestinationTypeSymbol destinationTypeSymbol)
         {
             ViewModel.FilterProperties(destinationTypeSymbol);

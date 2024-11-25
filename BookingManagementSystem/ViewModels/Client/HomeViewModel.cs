@@ -1,16 +1,10 @@
 ﻿using System.Collections.ObjectModel;
-
 using CommunityToolkit.Mvvm.ComponentModel;
-
-using BookingManagementSystem.Contracts.ViewModels;
-using BookingManagementSystem.Core.Contracts.Services;
-using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.Core.Services;
-using CommunityToolkit.Mvvm.Input;
-using System.Collections;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Repositories;
+using BookingManagementSystem.Core.Models;
+using CommunityToolkit.Mvvm.Input;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -52,8 +46,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     public async void OnNavigatedTo(object parameter)
     {
         // Load DestinationTypeSymbols data
-        var destinationTypeSymbols = await _destinationTypeSymbolRepository.GetAllAsync();
-        DestinationTypeSymbols = destinationTypeSymbols;
+        DestinationTypeSymbols = await _destinationTypeSymbolRepository.GetAllAsync();
 
         // Load Properties data
         LoadAllProperties();
@@ -85,19 +78,14 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
     }
 
-    public async void FilterProperties(DestinationTypeSymbol? destinationTypeSymbol)
+    public async void FilterProperties(DestinationTypeSymbol destinationTypeSymbol)
     {
-        if (destinationTypeSymbol == null)
-        {
-            return;
-        }
         if (destinationTypeSymbol.DestinationType.Equals(DestinationType.All))
         {
-            // Reload all properties before filtering
             LoadAllProperties();
             return;
         }
-
+        // Reload all properties before filtering
         Properties.Clear();
         var data = await _propertyRepository.GetAllAsync();
 
@@ -109,8 +97,6 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         else
         {
             data = data.Where(p => p.DestinationTypes.Contains(destinationTypeSymbol.DestinationType)).ToList();
-            Properties.Clear();
-
         }
         foreach (var item in data)
         {
