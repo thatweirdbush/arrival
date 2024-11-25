@@ -23,6 +23,16 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     [ObservableProperty]
     private bool isPropertyListEmpty;
 
+    // Properties nessesary for Schedule searching
+    public DateTimeOffset? CheckInDate
+    {
+        get; set;
+    }
+    public DateTimeOffset? CheckOutDate
+    {
+        get; set;
+    }
+
     public HomeViewModel(INavigationService navigationService, 
                         IRepository<Property> propertyRepository, 
                         IRepository<DestinationTypeSymbol> destinationTypeSymbolRepository)
