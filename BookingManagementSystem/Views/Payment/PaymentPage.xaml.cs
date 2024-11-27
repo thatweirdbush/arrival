@@ -1,7 +1,11 @@
+using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels.Payment;
+using CommunityToolkit.WinUI.UI.Animations;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
+using BookingManagementSystem.ViewModels.Client;
 
 namespace BookingManagementSystem.Views.Payment;
 
@@ -18,10 +22,34 @@ public sealed partial class PaymentPage : Page
         InitializeComponent();
     }
 
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+
+        // Scroll to top when navigating to this page
+        ContentScrollView.ScrollTo(0, 0);
+
+    }
+
+    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+    {
+        base.OnNavigatingFrom(e);
+        if (e.NavigationMode == NavigationMode.Back)
+        {
+            var navigationService = App.GetService<INavigationService>();
+
+            if (ViewModel.Item != null)
+            {
+                navigationService.SetListDataItemForNextConnectedAnimation(ViewModel.Item);
+            }
+        }
+    }
+
     private void Apply_click(object sender, RoutedEventArgs e)
     {
-        // Lấy giá trị từ AmountTextBox và TaxTextBox
-        var amount = decimal.Parse(AmountTextBox.Text.Trim('$'));
+        // Lấy giá trị từ AmountTextBox và TaxTextBox 
+        var amountText = AmountTextBox.Text.Trim('$').Replace(" x5", "");
+        var amount = decimal.Parse(amountText) * 5;
         var tax = decimal.Parse(TaxTextBox.Text.Trim('$'));
 
         var voucherCode = VoucherInputTextBox.Text.Trim();
@@ -33,29 +61,85 @@ public sealed partial class PaymentPage : Page
             VoucherWarning.Text = "Please enter a voucher!";
             VoucherWarning.Visibility = Visibility.Visible;
         }
+        else if (!ViewModel.CheckVoucherExist(voucherCode))
+        {
+            VoucherWarning.Text = "Voucher is non - existent!";
+            VoucherWarning.Visibility = Visibility.Visible;
+        }
+        else if (!ViewModel.CheckVoucherAmount(voucherCode))
+        {
+            VoucherWarning.Text = "Voucher quantity is out of stock!";
+            VoucherWarning.Visibility = Visibility.Visible;
+        }
+        else if (ViewModel.CheckVoucher(voucherCode, ref discountPercentage))
+        {
+            VoucherWarning.Visibility = Visibility.Collapsed;
+
+            DiscountTextBlock.Text = $"{Math.Floor(discountPercentage.GetValueOrDefault())}%";
+            DiscountTextBlock.Visibility = Visibility.Visible;
+
+            var discountAmount = amount * discountPercentage / 100;
+
+            // Cập nhật giá trị vào VoucherTextBox
+            VoucherTextBox.Text = $"-${discountAmount:F2}";
+
+            // Tính tổng tiền sau khi áp dụng voucher
+            var totalAmount = (amount + tax) - discountAmount;
+            TotalAmountTextBox.Text = $"${totalAmount:F2}";
+        }
+    }
+
+    private async void btnConfirmAndPay_Click(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.Item != null)
+        {
+            var voucherCode = VoucherInputTextBox.Text.Trim();
+
+            var booking = new Booking()
+            {
+                Id = new Random().Next(1000, 9999),
+                PropertyId = ViewModel.Item.Id,
+                TotalPrice = decimal.Parse(TotalAmountTextBox.Text.Trim('$')),
+                Status = BookingStatus.Confirmed
+            };
+
+            await ViewModel.AddBookingAsync(booking);
+
+            // Show the successful dialog and wait for it to close
+            var successDialog = new ContentDialog
+            {
+                XamlRoot = XamlRoot,
+                Title = "Booking Confirmed",
+                Content = "Your booking has been successfully completed! Here are the details of your reservation:\n\n" +
+                $"Booking ID: {booking.Id}\n" +
+                $"Property ID: {booking.PropertyId}\n" +
+                $"Voucher: {voucherCode}\n" +
+                $"Total Price: ${booking.TotalPrice}\n" +
+                $"Status: {booking.Status}\n" +
+                $"Booking Date: {booking.CreatedAt}\n\n" +
+                "We will review your booking and keep you updated. Thank you for choosing our service!",
+                CloseButtonText = "Ok"
+            };
+
+            await successDialog.ShowAsync();
+
+            if (ViewModel.CheckVoucherAmount(voucherCode))
+            {
+                ViewModel.VoucherUsed(voucherCode);
+            }
+
+            Frame.Navigate(typeof(BookingHistoryPage));
+        }
         else
         {
-            if (ViewModel.CheckVoucher(voucherCode, ref discountPercentage))
+            // Thông báo lỗi nếu không có thông tin
+            _ = new ContentDialog
             {
-                VoucherWarning.Visibility = Visibility.Collapsed;
-
-                DiscountTextBlock.Text = $"{Math.Floor(discountPercentage.GetValueOrDefault())}%";
-                DiscountTextBlock.Visibility = Visibility.Visible;
-
-                var discountAmount = amount * discountPercentage / 100;
-
-                // Cập nhật giá trị vào VoucherTextBox
-                VoucherTextBox.Text = $"-${discountAmount:F2}";
-
-                // Tính tổng tiền sau khi áp dụng voucher
-                var totalAmount = (amount + tax) - discountAmount;
-                TotalAmountTextBox.Text = $"${totalAmount:F2}";
-            }
-            else
-            {
-                VoucherWarning.Text = "Voucher is non - existent!";
-                VoucherWarning.Visibility = Visibility.Visible;
-            }
+                XamlRoot = XamlRoot,
+                Title = "Error",
+                Content = "No property selected for booking.",
+                CloseButtonText = "Ok"
+            }.ShowAsync();
         }
     }
 }
