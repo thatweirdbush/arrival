@@ -37,14 +37,14 @@ public class Voucher : INotifyPropertyChanged
     public decimal? DiscountPercentage
     {
         get; set;
-    }
+    } = 0.0m; // Default discount percentage is 0
 
     // Fixed amount discount applied by the voucher
     // Nullable if the voucher applies a fixed amount discount
     public decimal? DiscountAmount
     {
         get; set;
-    }
+    } = 0.0m; // Default discount amount is 0
 
     // Minimum order value required to apply the voucher
     // Nullable if there is no minimum order value

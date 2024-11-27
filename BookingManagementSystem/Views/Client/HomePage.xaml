@@ -19,42 +19,6 @@
         <helper:IsFavouriteToImagePathConverter x:Key="IsFavouriteToImagePathConverter"/>
         <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
-
-        <Style TargetType="Button" x:Key="HoverButtonStyle">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Grid>
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <!-- Normal State -->
-                                    <VisualState x:Name="Normal" />
-
-                                    <!-- PointerOver (Hover) State -->
-                                    <VisualState x:Name="PointerOver">
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="ButtonBackground">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlBackgroundChromeBlackMediumBrush}" />
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-
-                            <!-- Button Hover Background -->
-                            <Border x:Name="ButtonBackground"
-                                Background="{TemplateBinding Background}"
-                                CornerRadius="{TemplateBinding CornerRadius}">
-                                <ContentPresenter
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center" />
-                            </Border>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
         <DataTemplate x:Key="ImageTemplate" x:DataType="models:DestinationTypeSymbol">
             <ItemContainer HorizontalAlignment="Left" Width="200" Height="140" AutomationProperties.Name="{x:Bind Name}">
                 <Image Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind ImagePath}" Margin="4" AutomationProperties.AccessibilityView="Raw"/>
@@ -213,9 +177,9 @@
                                         <Grid>
                                             <StackPanel Orientation="Horizontal" Spacing="4" Visibility="{x:Bind ViewModel.SearchAvailableRoomsCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
                                                 <Image x:Name="imgSearch" Source="/Assets/symbol-icons/search-icon-white.png" Width="18" Height="18"/>
-                                                <TextBlock x:Name="txtSearch" Text="Search" FontWeight="SemiBold" Foreground="{ThemeResource SystemChromeWhiteColor}"/>
+                                                <TextBlock x:Name="ButtonTextBlock" Text="Search" FontWeight="SemiBold" Foreground="{ThemeResource SystemChromeWhiteColor}"/>
                                             </StackPanel>
-                                            <ProgressRing IsActive="True" Foreground="{ThemeResource SystemControlForegroundAltHighBrush}"
+                                            <ProgressRing x:Name="ButtonProgressRing" IsActive="True" Foreground="{ThemeResource SystemControlForegroundChromeWhiteBrush}"
                                                           Visibility="{x:Bind ViewModel.SearchAvailableRoomsCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                         </Grid>
                                     </Button>

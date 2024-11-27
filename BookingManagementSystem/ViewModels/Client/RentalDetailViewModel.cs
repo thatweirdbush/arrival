@@ -11,12 +11,17 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
 using System.Collections.ObjectModel;
 using BookingManagementSystem.Core.Contracts.Facades;
+using CommunityToolkit.Mvvm.Input;
+using BookingManagementSystem.Core.Services;
+using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.ViewModels.Payment;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
 public partial class RentalDetailViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IRentalDetailFacade _rentalDetailFacade;
+    private readonly INavigationService _navigationService;
 
     [ObservableProperty]
     private Property? item;
@@ -24,10 +29,16 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     public ObservableCollection<QnA> QnAs { get; set; } = [];
     public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = Enumerable.Empty<DestinationTypeSymbol>();
     public IEnumerable<PropertyPolicy> PropertyPolicies { get; set; } = Enumerable.Empty<PropertyPolicy>();
+    public IAsyncRelayCommand ProceedPaymentCommand
+    {
+        get;
+    }
 
-    public RentalDetailViewModel(IDao dao, IRentalDetailFacade rentalDetailFacade)
+    public RentalDetailViewModel(IRentalDetailFacade rentalDetailFacade, INavigationService navigationService)
     {
         _rentalDetailFacade = rentalDetailFacade;
+        _navigationService = navigationService;
+        ProceedPaymentCommand = new AsyncRelayCommand(ProceedPaymentAsync);
     }
 
     public async void OnNavigatedTo(object parameter)
@@ -69,5 +80,14 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     public async Task AddBadReportAsync(BadReport badReport)
     {
         await _rentalDetailFacade.AddBadReportAsync(badReport);
+    }
+
+    public async Task ProceedPaymentAsync()
+    {
+        // Simulate network delay
+        await Task.Delay(400);
+
+        // Navigate to Payment Page
+        _navigationService.NavigateTo(typeof(PaymentViewModel).FullName!, Item?.Id);
     }
 }

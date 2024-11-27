@@ -229,27 +229,4 @@ public sealed partial class RentalDetailPage : Page
         // Clear the question text box
         tbAskPropertyQuestion.Text = "";
     }
-
-    private void btnBookNow_Click(object sender, RoutedEventArgs e)
-    {
-        //Frame.Navigate(typeof(PaymentPage));
-        if (ViewModel.Item != null)
-        {
-            var navigationService = App.GetService<INavigationService>();
-
-            // Chuyển item Property hiện tại sang trang PaymentPage
-            navigationService.NavigateTo(typeof(PaymentViewModel).FullName!, ViewModel.Item.Id);
-        }
-        else
-        {
-            // Thông báo lỗi nếu không có thông tin
-            _ = new ContentDialog
-            {
-                XamlRoot = XamlRoot,
-                Title = "Error",
-                Content = "No property selected for booking.",
-                CloseButtonText = "Ok"
-            }.ShowAsync();
-        }
-    }
 }

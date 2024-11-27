@@ -15,6 +15,8 @@
         <!--Converters-->
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
         <helper:IsFavouriteToImagePathConverter x:Key="IsFavouriteToImagePathConverter"/>
+        <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
 
         <!--Layouts for stacks-->
         <StackLayout x:Name="VerticalStackLayout" Orientation="Vertical" Spacing="36"/>
@@ -61,23 +63,6 @@
     </Page.Resources>
 
     <Grid x:Name="ContentArea">
-        <!--<VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        --><!--1428 is the app's default Render Width--><!-- 
-                        <AdaptiveTrigger MinWindowWidth="1440"/>
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="itemHero.MaxHeight" Value="720"/>
-                        <Setter Target="RightContentGrid.MaxHeight" Value="720"/>
-                        <Setter Target="LineRatingReview.X2" Value="280"/>
-                        <Setter Target="LineReviewQnA.X2" Value="280"/>
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>-->
-
         <ScrollView x:Name="ContentScrollView" ZoomMode="Disabled" IsTabStop="True" ContentOrientation="Vertical"
                 HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden"
                 VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto"
@@ -150,16 +135,20 @@
                     </ScrollView>
 
                     <Grid x:Name="MainInfoActionsGrid" Grid.Row="1" Padding="24 18 24 18">
-                        <Button x:Name="btnBookNow" 
-                                  Content="Book now"
-                                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                  Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
-                                  Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
-                                  Style="{ThemeResource DefaultButtonStyle}"
-                                  Click="btnBookNow_Click"
-                                  FontWeight="SemiBold"
-                                  Padding="18"
-                                  ToolTipService.ToolTip="Place your reservation now"/>
+                        <Button x:Name="btnBookNow" Height="56"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
+                                Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                                Command="{x:Bind ViewModel.ProceedPaymentCommand}"
+                                FontWeight="SemiBold"
+                                ToolTipService.ToolTip="Place your reservation now">
+                            <Grid>
+                                <TextBlock Text="Book now" Visibility="{x:Bind ViewModel.ProceedPaymentCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"/>
+                                <ProgressRing x:Name="ButtonProgressRing" IsActive="True"
+                                              Visibility="{x:Bind ViewModel.ProceedPaymentCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                            </Grid>
+                        </Button>
                     </Grid>
                 </Grid>
 

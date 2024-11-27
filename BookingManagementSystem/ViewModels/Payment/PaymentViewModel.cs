@@ -8,12 +8,17 @@ using System.Collections.ObjectModel;
 using BookingManagementSystem.Core.Contracts.Facades;
 using BookingManagementSystem.Core.Facades;
 using BookingManagementSystem.Contracts.ViewModels;
+using CommunityToolkit.Mvvm.Input;
+using BookingManagementSystem.Core.Contracts.Messengers;
+using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.UI.Xaml.Controls;
 
 namespace BookingManagementSystem.ViewModels.Payment;
 
 public partial class PaymentViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IPaymentFacade _paymentFacade;
+    private readonly INavigationService _navigationService;
     public IEnumerable<Voucher> Vouchers { get; private set; } = [];
 
     [ObservableProperty]
@@ -32,10 +37,14 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
     public decimal Tax = 9.90m;
     public decimal PayPartLaterPrice => TotalAmount / 2;
     public DateTime PayLaterDate => DateTime.Now.AddDays(2);
+    public bool IsVoucherApplied => Voucher != null;
+    public AsyncRelayCommand ConfirmAndPayCommand { get; }
 
-    public PaymentViewModel(IPaymentFacade paymentFacade)
+    public PaymentViewModel(IPaymentFacade paymentFacade, INavigationService navigationService)
     {
         _paymentFacade = paymentFacade;
+        _navigationService = navigationService;
+        ConfirmAndPayCommand = new AsyncRelayCommand(ConfirmAndPayAsync);
     }
 
     public async void OnNavigatedTo(object parameter)
@@ -76,6 +85,70 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
         {
             DiscountAmount = 0.0m;
         }
+    }
+
+    private async Task ConfirmAndPayAsync()
+    {
+        if (Item == null)
+        {
+            await ShowErrorDialogAsync("Error", "No property selected for booking.");
+            return;
+        }
+        var booking = new Booking
+        {
+            Id = new Random().Next(1000, 9999),
+            PropertyId = Item.Id,
+            TotalPrice = TotalAmount,
+            Status = BookingStatus.Confirmed
+        };
+
+        // Voucher availability has been checked before
+        UpdateVoucherUsage();
+
+        // Add the booking to the database
+        await AddBookingAsync(booking);
+
+        // Simulate network delay
+        await Task.Delay(400);
+
+        // Navigate to the Booking History page
+        _navigationService.NavigateTo(typeof(BookingHistoryViewModel).FullName!);
+
+        // Show the success dialog
+        await ShowSuccessDialogAsync(booking);
+    }
+
+    private async Task ShowSuccessDialogAsync(Booking booking)
+    {
+        var dialog = new ContentDialog
+        {
+            XamlRoot = App.MainWindow.Content.XamlRoot,
+            Title = "Booking Confirmed",
+            Content = "Your booking has been successfully completed! Here are the details of your reservation:\n\n" +
+            $"Booking ID: {booking.Id}\n" +
+            $"Property ID: {booking.PropertyId}\n" +
+            $"Voucher: {Voucher?.Code}\n" +
+            $"Total Price: ${booking.TotalPrice}\n" +
+            $"Status: {booking.Status}\n" +
+            $"Booking Date: {booking.CreatedAt}\n\n" +
+            "We will review your booking and keep you updated. Thank you for choosing our service!",
+            CloseButtonText = "OK"
+        };
+
+        await dialog.ShowAsync();
+    }
+
+    private async Task ShowErrorDialogAsync(string title, string content)
+    {
+        var dialog = new ContentDialog
+        {
+            XamlRoot = App.MainWindow.Content.XamlRoot,
+            Title = title,
+            Content = content,
+            CloseButtonText = "OK"
+        };
+
+        await dialog.ShowAsync();
     }
 
     partial void OnVoucherChanged(Voucher? value)

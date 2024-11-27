@@ -10,12 +10,13 @@
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
-    mc:Ignorable="d"
-    CacheMode="BitmapCache">
+    mc:Ignorable="d">
 
     <Page.Resources>
         <!--Converters-->
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
+        <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
         <!--Flyout Template-->
         <Flyout x:Key="PricingDetailsFlyout">
             <StackPanel Spacing="16">
@@ -245,16 +246,21 @@
                             </Grid>
 
                             <Grid x:Name="ConfirmAndPayGrid">
-                                <Button x:Name="btnConfirmAndPay" 
-                                    Content="Confirm and pay"
+                                <Button x:Name="btnConfirmAndPay" Height="56"
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                     Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                     Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
                                     Style="{ThemeResource DefaultButtonStyle}"
+                                    Command="{x:Bind ViewModel.ConfirmAndPayCommand}"
                                     FontWeight="SemiBold"
-                                    Padding="18"
-                                    Click="btnConfirmAndPay_Click"
-                                    ToolTipService.ToolTip="Confirm the information above and pay for your reservation"/>
+                                    ToolTipService.ToolTip="Confirm the information above and pay for your reservation">
+                                    <Grid>
+                                        <TextBlock Text="Confirm and pay" Visibility="{x:Bind ViewModel.ConfirmAndPayCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"/>
+                                        <ProgressRing x:Name="ButtonProgressRing" IsActive="True"
+                                                      Visibility="{x:Bind ViewModel.ConfirmAndPayCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                    </Grid>
+                                </Button>
                             </Grid>
                         </StackPanel>
                     </Grid>
@@ -310,7 +316,7 @@
                                 <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
                                 <Grid>
                                     <TextBlock Text="Voucher" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
-                                    <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                                    <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" Visibility="{x:Bind ViewModel.IsVoucherApplied, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <TextBlock x:Name="DiscountPercentageTextBlock" Style="{ThemeResource DetailSubTitleStyle}" Visibility="Collapsed">
                                             <Hyperlink Click="DiscountPercentageTextBlock_Click">
                                                 <Run Text="{x:Bind ViewModel.Voucher.DiscountPercentage, Mode=OneWay}"/>% off

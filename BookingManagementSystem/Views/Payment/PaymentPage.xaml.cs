@@ -7,6 +7,8 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using BookingManagementSystem.ViewModels.Client;
 using Microsoft.UI.Xaml.Controls.Primitives;
+using BookingManagementSystem.Core.Contracts.Messengers;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace BookingManagementSystem.Views.Payment;
 
@@ -29,7 +31,6 @@ public sealed partial class PaymentPage : Page
 
         // Scroll to top when navigating to this page
         ContentScrollView.ScrollTo(0, 0);
-
     }
 
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -78,55 +79,6 @@ public sealed partial class PaymentPage : Page
             // Update the discount text blocks
             DiscountPercentageTextBlock.Visibility = Visibility.Visible;
             DiscountAmountTextBlock.Visibility = Visibility.Visible;
-        }
-    }
-
-    private async void btnConfirmAndPay_Click(object sender, RoutedEventArgs e)
-    {
-        if (ViewModel.Item != null)
-        {
-            var voucherCode = VoucherInputTextBox.Text.Trim();
-            var booking = new Booking()
-            {
-                Id = new Random().Next(1000, 9999),
-                PropertyId = ViewModel.Item.Id,
-                TotalPrice = ViewModel.TotalAmount,
-                Status = BookingStatus.Confirmed
-            };
-            // Voucher availability has been checked before
-            ViewModel.UpdateVoucherUsage();
-
-            // Add the booking to the database
-            await ViewModel.AddBookingAsync(booking);
-
-            // Show the successful dialog and wait for it to close
-            _ = new ContentDialog
-            {
-                XamlRoot = XamlRoot,
-                Title = "Booking Confirmed",
-                Content = "Your booking has been successfully completed! Here are the details of your reservation:\n\n" +
-                $"Booking ID: {booking.Id}\n" +
-                $"Property ID: {booking.PropertyId}\n" +
-                $"Voucher: {voucherCode}\n" +
-                $"Total Price: ${booking.TotalPrice}\n" +
-                $"Status: {booking.Status}\n" +
-                $"Booking Date: {booking.CreatedAt}\n\n" +
-                "We will review your booking and keep you updated. Thank you for choosing our service!",
-                CloseButtonText = "Ok"
-            }.ShowAsync();
-
-            Frame.Navigate(typeof(BookingHistoryPage));
-        }
-        else
-        {
-            // Thông báo lỗi nếu không có thông tin
-            _ = new ContentDialog
-            {
-                XamlRoot = XamlRoot,
-                Title = "Error",
-                Content = "No property selected for booking.",
-                CloseButtonText = "Ok"
-            }.ShowAsync();
         }
     }
 
