@@ -20,10 +20,22 @@ public class Notification : INotifyPropertyChanged
     {
         get; set;
     }
+    public string SenderName
+    {
+        get; set;
+    } = "Arrival";
+    public string Title
+    {
+        get; set;
+    }
     public string Message
     {
         get; set;
     }
+    public string ImagePath
+    {
+        get; set;
+    } = "ms-appx:///Assets/homescreen.jpg";
     public DateTime DateSent
     {
         get; set;

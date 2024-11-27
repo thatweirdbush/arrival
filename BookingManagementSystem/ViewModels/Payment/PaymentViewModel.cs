@@ -116,6 +116,9 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
 
         // Show the success dialog
         await ShowSuccessDialogAsync(booking);
+
+        // Show the system notification
+        ShowSystemNotification(Item);
     }
 
     private async Task ShowSuccessDialogAsync(Booking booking)
@@ -136,6 +139,24 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
         };
 
         await dialog.ShowAsync();
+    }
+
+    private void ShowSystemNotification(Property property)
+    {
+        // Create parameters for the notification
+        var IdParameter = $"id={property.Id}";
+
+        // Create notification channel
+        App.GetService<IAppNotificationService>().ShowNotification(
+            title: "Booking Confirmed",
+            message: $"Your booking to {property.Name} has been confirmed, we are looking forward to welcoming you!",
+            imageUri: property.ImageThumbnail,
+            buttons:
+            [
+                ("Mark as read", "action=mark-as-read"),
+                ("See details", IdParameter)
+            ]
+        );
     }
 
     private async Task ShowErrorDialogAsync(string title, string content)
