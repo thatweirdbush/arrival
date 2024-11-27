@@ -43,11 +43,13 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
     {
         get
         {
-            var amount = Item.PricePerNight; // Lấy giá trị từ AmountTextBox
+            var amount = Item.PricePerNight * 5; // Lấy giá trị từ AmountTextBox
             var tax = 9.90m; // Giá trị của TaxTextBox
             return $"${amount - tax:F2}";
         }
     }
+
+    public string PriceWithMultiplier => $"{Item.PricePerNight:C} x5";
 
     public bool CheckVoucher(string code, ref decimal? discountPecentage)
     {
@@ -55,6 +57,16 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
         if (voucher != null)
         {
             discountPecentage = voucher.DiscountPercentage;
+            return true;
+        }
+        return false;
+    }
+
+    public bool CheckVoucherExist(string code)
+    {
+        var voucher = Vouchers.FirstOrDefault(u => u.Code.Equals(code));
+        if (voucher != null)
+        {
             return true;
         }
         return false;

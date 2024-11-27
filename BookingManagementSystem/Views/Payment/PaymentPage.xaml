@@ -230,7 +230,7 @@
                                         <TextBlock Text="Your total" Style="{ThemeResource TitleTextBlockStyle}"/>
                                         <Grid>
                                             <TextBlock Text="5 nights" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
-                                            <TextBlock x:Name="AmountTextBox" Text="{x:Bind ViewModel.Item.PricePerNight, Converter={StaticResource NumberToCurencyConverter} , Mode=OneWay}" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
+                                            <TextBlock x:Name="AmountTextBox" Text="{x:Bind ViewModel.PriceWithMultiplier, Converter={StaticResource NumberToCurencyConverter} , Mode=OneWay}" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
                                         </Grid>
                                         <Grid>
                                             <TextBlock Text="Taxes" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>

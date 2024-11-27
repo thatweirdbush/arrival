@@ -46,7 +46,7 @@ public partial class BookingHistoryViewModel : ObservableRecipient
                 Booking = booking,
                 Property = property
             };
-            Bookings.Insert(0, bookingPropertyViewModel);
+            Bookings.Add(bookingPropertyViewModel);
         }
     }
 
