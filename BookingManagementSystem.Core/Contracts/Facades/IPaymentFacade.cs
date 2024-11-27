@@ -10,7 +10,7 @@ namespace BookingManagementSystem.Core.Contracts.Facades;
 public interface IPaymentFacade
 {
     Task<Property?> GetPropertyByIdAsync(int id);
-    Task<IEnumerable<Review>> GetReviewsAsync();
-    Task<IEnumerable<DestinationTypeSymbol>> GetDestinationTypeSymbolsAsync();
+    Task<IEnumerable<Voucher>> GetVouchersAsync();
+    Task AddBookingAsync(Booking booking);
 
 }

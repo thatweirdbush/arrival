@@ -48,7 +48,7 @@ public sealed partial class PaymentPage : Page
     private void Apply_click(object sender, RoutedEventArgs e)
     {
         // Lấy giá trị từ AmountTextBox và TaxTextBox
-        var amount = decimal.Parse(AmountTextBox.Text.Trim('$'));
+        var amount = decimal.Parse(AmountTextBox.Text.Trim('$')) * 5;
         var tax = decimal.Parse(TaxTextBox.Text.Trim('$'));
 
         var voucherCode = VoucherInputTextBox.Text.Trim();
@@ -58,6 +58,11 @@ public sealed partial class PaymentPage : Page
         if (string.IsNullOrWhiteSpace(VoucherInputTextBox.Text))
         {
             VoucherWarning.Text = "Please enter a voucher!";
+            VoucherWarning.Visibility = Visibility.Visible;
+        }
+        else if (ViewModel.CheckVoucherAmount(voucherCode) == false)
+        {
+            VoucherWarning.Text = "Voucher quantity is out of stock!";
             VoucherWarning.Visibility = Visibility.Visible;
         }
         else
@@ -86,8 +91,57 @@ public sealed partial class PaymentPage : Page
         }
     }
 
-    private void btnConfirmAndPay_Click(object sender, RoutedEventArgs e)
+    private async void btnConfirmAndPay_Click(object sender, RoutedEventArgs e)
     {
+        if (ViewModel.Item != null)
+        {
+            var voucherCode = VoucherInputTextBox.Text.Trim();
 
+            var booking = new Booking()
+            {
+                Id = new Random().Next(1000, 9999),
+                PropertyId = ViewModel.Item.Id,
+                TotalPrice = decimal.Parse(TotalAmountTextBox.Text.Trim('$')),
+                Status = BookingStatus.Confirmed
+            };
+
+            await ViewModel.AddBookingAsync(booking);
+
+            // Show the successful dialog and wait for it to close
+            var successDialog = new ContentDialog
+            {
+                XamlRoot = XamlRoot,
+                Title = "Booking Confirmed",
+                Content = "Your booking has been successfully completed! Here are the details of your reservation:\n\n" +
+                $"Booking ID: {booking.Id}\n" +
+                $"Property ID: {booking.PropertyId}\n" +
+                $"Voucher: {voucherCode}\n" +
+                $"Total Price: ${booking.TotalPrice}\n" +
+                $"Status: {booking.Status}\n" +
+                $"Booking Date: {booking.CreatedAt}\n\n" +
+                "We will review your booking and keep you updated. Thank you for choosing our service!",
+                CloseButtonText = "Ok"
+            };
+
+            await successDialog.ShowAsync();
+
+            if (ViewModel.CheckVoucherAmount(voucherCode))
+            {
+                ViewModel.VoucherUsed(voucherCode);
+            }
+
+            Frame.Navigate(typeof(BookingHistoryPage));
+        }
+        else
+        {
+            // Thông báo lỗi nếu không có thông tin
+            _ = new ContentDialog
+            {
+                XamlRoot = XamlRoot,
+                Title = "Error",
+                Content = "No property selected for booking.",
+                CloseButtonText = "Ok"
+            }.ShowAsync();
+        }
     }
 }

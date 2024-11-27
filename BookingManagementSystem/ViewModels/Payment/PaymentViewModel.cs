@@ -13,22 +13,14 @@ namespace BookingManagementSystem.ViewModels.Payment;
 
 public partial class PaymentViewModel : ObservableRecipient, INavigationAware
 {
-    //private readonly INavigationService _navigationService;
-    //private readonly IDao _dao;
-
     private readonly IPaymentFacade _paymentFacade;
 
     [ObservableProperty]
     private Property? item;
-    //public ObservableCollection<Review> Reviews { get; set; } = [];
-    //public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = Enumerable.Empty<DestinationTypeSymbol>();
-    //public IEnumerable<Voucher> Vouchers { get; private set; } = Enumerable.Empty<Voucher>();
+    public IEnumerable<Voucher> Vouchers { get; private set; } = Enumerable.Empty<Voucher>();
 
     public PaymentViewModel(IPaymentFacade paymentFacade, IDao dao)
     {
-        //_navigationService = navigationService;
-        //_dao = dao;
-        //OnNavigatedTo(_dao);
         _paymentFacade = paymentFacade;
     }
 
@@ -38,11 +30,8 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
         {
             Item = await _paymentFacade.GetPropertyByIdAsync(Id);
 
-            //DestinationTypeSymbols = await _paymentFacade.GetDestinationTypeSymbolsAsync();
+            Vouchers = await _paymentFacade.GetVouchersAsync();
         }
-
-        //var vouchers = await _dao.GetVoucherListDataAsync();
-        //Vouchers = vouchers;
     }
 
     public void OnNavigatedFrom()
@@ -50,16 +39,48 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
 
     }
 
+    public string TotalAmount
+    {
+        get
+        {
+            var amount = Item.PricePerNight; // Lấy giá trị từ AmountTextBox
+            var tax = 9.90m; // Giá trị của TaxTextBox
+            return $"${amount - tax:F2}";
+        }
+    }
+
     public bool CheckVoucher(string code, ref decimal? discountPecentage)
     {
-        //    var voucher = Vouchers.FirstOrDefault(u => u.Code.Equals(code));
-        //    if (voucher != null)
-        //    {
-        //        discountPecentage = voucher.DiscountPercentage;
-        //        return true;
-        //    }
-        //    return false;
-        //}
-        return true;
+        var voucher = Vouchers.FirstOrDefault(u => u.Code.Equals(code));
+        if (voucher != null)
+        {
+            discountPecentage = voucher.DiscountPercentage;
+            return true;
+        }
+        return false;
+    }
+
+    public bool CheckVoucherAmount(string code)
+    {
+        var voucher = Vouchers.FirstOrDefault(u => u.Code.Equals(code));
+        if (voucher != null && voucher.Quantity != 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public async Task AddBookingAsync(Booking booking)
+    {
+        await _paymentFacade.AddBookingAsync(booking);
+    }
+
+    public void VoucherUsed(string code)
+    {
+        var voucher = Vouchers.FirstOrDefault(u => u.Code.Equals(code));
+        if (voucher != null)
+        {
+            voucher.Quantity -= 1;
+        }
     }
 }

@@ -89,7 +89,8 @@
                                             <RadioButton x:Name="btnPayNow"
                                                      HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                                                      VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                     FlowDirection="RightToLeft" Background="Transparent"                                                 >
+                                                     FlowDirection="RightToLeft" Background="Transparent"
+                                                     GroupName="PaymentOptions">
                                                 <TextBlock Text="Pay $199.90 now" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap"/>
                                             </RadioButton>
                                         </Button>
@@ -98,7 +99,8 @@
                                             <RadioButton x:Name="btnPayLater"
                                                      HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                                                      VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                     FlowDirection="RightToLeft" Background="Transparent">
+                                                     FlowDirection="RightToLeft" Background="Transparent"
+                                                     GroupName="PaymentOptions">
                                                 <StackPanel Spacing="6">
                                                     <TextBlock Text="Pay part now, part later" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap"/>
                                                     <TextBlock Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap" FlowDirection="LeftToRight">
@@ -228,7 +230,7 @@
                                         <TextBlock Text="Your total" Style="{ThemeResource TitleTextBlockStyle}"/>
                                         <Grid>
                                             <TextBlock Text="5 nights" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
-                                            <TextBlock x:Name="AmountTextBox" Text="$199.90" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
+                                            <TextBlock x:Name="AmountTextBox" Text="{x:Bind ViewModel.Item.PricePerNight, Converter={StaticResource NumberToCurencyConverter} , Mode=OneWay}" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
                                         </Grid>
                                         <Grid>
                                             <TextBlock Text="Taxes" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
@@ -249,7 +251,7 @@
                                 <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
                                 <Grid>
                                     <TextBlock Text="Total" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                                    <TextBlock x:Name="TotalAmountTextBox" Text="$209.8" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                    <TextBlock x:Name="TotalAmountTextBox" Text="{x:Bind ViewModel.TotalAmount, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Bold" HorizontalAlignment="Right"/>
                                 </Grid>
                                 <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
                                 <Grid>

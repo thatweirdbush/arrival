@@ -9,7 +9,7 @@ namespace BookingManagementSystem.Core.Models;
 public class Voucher : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
-    public override string ToString() => $"Voucher Id: {Id}, Code: {Code}, " +
+    public override string ToString() => $"Voucher Id: {Id}, Code: {Code}, Quantity: {Quantity}, " +
         $"Discount Percentage: {DiscountPercentage}%, Discount Amount: {DiscountAmount}, " +
         $"Minimum Order Value: {MinimumOrderValue}, Max Discount Value: {MaxDiscountValue}, " +
         $"Valid From: {ValidFrom}, Valid Until: {ValidUntil}, Is Used: {IsUsed}";
@@ -24,6 +24,12 @@ public class Voucher : INotifyPropertyChanged
     public string Code
     {
         get; set;
+    }
+
+    // Quantity of voucher can be use
+    public int Quantity
+    {
+        get; set; 
     }
 
     // Percentage discount applied by the voucher

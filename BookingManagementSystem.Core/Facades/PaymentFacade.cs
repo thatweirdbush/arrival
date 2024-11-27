@@ -11,24 +11,24 @@ namespace BookingManagementSystem.Core.Facades;
 public class PaymentFacade : IPaymentFacade
 {
     private readonly IRepository<Property> _propertyRepository;
-    private readonly IRepository<Review> _reviewRepository;
-    private readonly IRepository<DestinationTypeSymbol> _destinationTypeSymbolRepository;
+    private readonly IRepository<Voucher> _voucherRepository;
+    private readonly IRepository<Booking> _bookingRepository; 
 
     public PaymentFacade(
         IRepository<Property> propertyRepository, 
-        IRepository<Review> reviewRepository, 
-        IRepository<DestinationTypeSymbol> destinationTypeSymbolRepository)
+        IRepository<Voucher> voucherRepository,
+        IRepository<Booking> bookingRepository)
     {
         _propertyRepository = propertyRepository;
-        _reviewRepository = reviewRepository;
-        _destinationTypeSymbolRepository = destinationTypeSymbolRepository;
+        _voucherRepository = voucherRepository;
+        _bookingRepository = bookingRepository;
+
     }
     public async Task<Property?> GetPropertyByIdAsync(int id) =>
         await _propertyRepository.GetByIdAsync(id);
 
-    public async Task<IEnumerable<Review>> GetReviewsAsync() =>
-        await _reviewRepository.GetAllAsync();
-
-    public async Task<IEnumerable<DestinationTypeSymbol>> GetDestinationTypeSymbolsAsync() =>
-        await _destinationTypeSymbolRepository.GetAllAsync();
+    public async Task<IEnumerable<Voucher>> GetVouchersAsync() =>
+        await _voucherRepository.GetAllAsync();
+    public async Task AddBookingAsync(Booking booking) =>
+        await _bookingRepository.AddAsync(booking);
 }
