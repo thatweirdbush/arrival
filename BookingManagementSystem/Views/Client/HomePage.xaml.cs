@@ -9,8 +9,7 @@ public sealed partial class HomePage : Page
 {
     // Properties nessesary for Geographic Names searching
     private CancellationTokenSource _debounceTokenSource = new();
-    private readonly GeographicNameService _geographicNamesService = new();
-    private const string GeoNamesUsername = "thatweirdbush";
+    private readonly GeographicNameService _geographicNamesService;
 
     public HomeViewModel ViewModel
     {
@@ -20,6 +19,7 @@ public sealed partial class HomePage : Page
     public HomePage()
     {
         ViewModel = App.GetService<HomeViewModel>();
+        _geographicNamesService = App.GetService<GeographicNameService>();
         InitializeComponent();
     }
 
@@ -141,7 +141,7 @@ public sealed partial class HomePage : Page
 
                 // After 300ms, call search API
                 var query = sender.Text;
-                var suggestions = await _geographicNamesService.SearchLocationsAsync(query, GeoNamesUsername);
+                var suggestions = await _geographicNamesService.SearchLocationsAsync(query);
 
                 // Display list of suggestions
                 sender.ItemsSource = suggestions;
