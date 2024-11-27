@@ -29,7 +29,6 @@ using BookingManagementSystem.Views.Payment;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 
 namespace BookingManagementSystem;
 
@@ -96,6 +95,7 @@ public partial class App : Application
 
             // Bussiness Services
             services.AddSingleton<IPropertyService, PropertyService>();
+            services.AddTransient<IRoomService, RoomService>();
 
             // Data Services
             // TODO: Change to AddScoped when using a real data service
