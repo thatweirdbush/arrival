@@ -145,7 +145,7 @@
     <value>About this application</value>
   </data>
   <data name="Settings_AboutDescription.Text" xml:space="preserve">
-    <value>This is the app description</value>
+    <value>Arrival is a WinUI 3 application for managing hotel and apartment bookings and rentals.</value>
   </data>
   <data name="SettingsPage_PrivacyTermsLink.Content" xml:space="preserve">
     <value>Privacy Statement</value>

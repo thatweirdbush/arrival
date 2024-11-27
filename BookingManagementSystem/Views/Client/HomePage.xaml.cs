@@ -18,9 +18,9 @@ public sealed partial class HomePage : Page
 
     public HomePage()
     {
+        InitializeComponent();
         ViewModel = App.GetService<HomeViewModel>();
         _geographicNamesService = App.GetService<GeographicNameService>();
-        InitializeComponent();
     }
 
     private void btnToggleSwitchWrapper_Click(object sender, RoutedEventArgs e)
@@ -122,8 +122,8 @@ public sealed partial class HomePage : Page
             ViewModel.CheckInDate = ViewModel.CheckOutDate;
         }
         // Update the UI
-        btnCheckInCalendar.Content = ViewModel.CheckInDate.ToString("MMMM d");
-        btnCheckOutCalendar.Content = ViewModel.CheckOutDate.ToString("MMMM d");
+        btnCheckInCalendar.Content = ViewModel.CheckInDate?.ToString("MMMM d");
+        btnCheckOutCalendar.Content = ViewModel.CheckOutDate?.ToString("MMMM d");
     }
 
     private async void DestinationAutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -159,6 +159,26 @@ public sealed partial class HomePage : Page
             && frameworkElement.DataContext is DestinationTypeSymbol destinationTypeSymbol)
         {
             ViewModel.FilterProperties(destinationTypeSymbol);
+        }
+    }
+
+    private void ToggleSwitchDisplayTax_Toggled(object sender, RoutedEventArgs e)
+    {
+        // Kiểm tra trạng thái của ToggleSwitch
+        var isOn = ToggleSwitchDisplayTax.IsOn;
+
+        // Duyệt qua tất cả các Property trong ViewModel
+        foreach (var property in ViewModel.Properties)
+        {
+            // Điều chỉnh giá dựa trên trạng thái ToggleSwitch
+            if (isOn)
+            {
+                property.PricePerNight += 9.90m; // Thêm thuế
+            }
+            else
+            {
+                property.PricePerNight -= 9.90m; // Bỏ thuế
+            }
         }
     }
 }

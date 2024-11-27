@@ -252,8 +252,8 @@
                 </Button>
                 <Button x:Name="btnToggleSwitchWrapper" Click="btnToggleSwitchWrapper_Click" Padding="14 3 10 3" CornerRadius="12">
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <TextBlock Text="Display total before taxes" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                        <ToggleSwitch x:Name="ToggleSwitchDisplayTax" OffContent="{x:Null}" OnContent="{x:Null}" MinWidth="0"/>
+                        <TextBlock Text="Display total after taxes" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        <ToggleSwitch x:Name="ToggleSwitchDisplayTax" Toggled="ToggleSwitchDisplayTax_Toggled" OffContent="{x:Null}" OnContent="{x:Null}" MinWidth="0"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
