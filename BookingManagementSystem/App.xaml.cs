@@ -29,7 +29,6 @@ using BookingManagementSystem.Views.Payment;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 
 namespace BookingManagementSystem;
 
@@ -57,7 +56,7 @@ public partial class App : Application
         return service;
     }
 
-    public static WindowEx MainWindow { get; } = new MainWindow();
+    public static WindowEx MainWindow { get; set; } = new MainWindow();
 
     public static UIElement? AppTitlebar
     {
@@ -96,6 +95,7 @@ public partial class App : Application
 
             // Bussiness Services
             services.AddSingleton<IPropertyService, PropertyService>();
+            services.AddTransient<IRoomService, RoomService>();
 
             // Data Services
             // TODO: Change to AddScoped when using a real data service
@@ -150,8 +150,6 @@ public partial class App : Application
             services.AddTransient<ListingPage>();
             services.AddTransient<UserProfileViewModel>();
             services.AddTransient<UserProfilePage>();
-            services.AddTransient<WishlistViewModel>();
-            services.AddTransient<WishlistPage>();
             services.AddTransient<LoyaltyProgramViewModel>();
             services.AddTransient<LoyaltyProgramPage>();
             services.AddTransient<BookingHistoryViewModel>();
@@ -189,6 +187,8 @@ public partial class App : Application
             services.AddTransient<LoginPage>();
             services.AddTransient<ShellPage>();
             services.AddSingleton<ShellViewModel>();
+            services.AddTransient<WishlistViewModel>();
+            services.AddSingleton<WishlistPage>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

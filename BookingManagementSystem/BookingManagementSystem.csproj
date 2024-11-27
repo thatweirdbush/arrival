@@ -182,6 +182,7 @@
 		<None Remove="Assets\Wide310x150Logo.scale-150.png" />
 		<None Remove="Assets\Wide310x150Logo.scale-200.png" />
 		<None Remove="Assets\Wide310x150Logo.scale-400.png" />
+		<None Remove="Views\Forms\EditListingDialog.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -197,12 +198,12 @@
 		<PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.1.240916" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240923002" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
 		<PackageReference Include="PropertyChanged.Fody" Version="4.1.0" PrivateAssets="All" />
-		<PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
-		<PackageReference Include="WinUIEx" Version="2.4.2" />
+		<PackageReference Include="System.Security.Cryptography.ProtectedData" Version="9.0.0" />
+		<PackageReference Include="WinUIEx" Version="2.5.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -783,6 +784,9 @@
 		<None Update="Assets\property-images\cozy-room-in-montmartre\cozy-room-in-montmartre-9.jpg">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<Page Update="Views\Forms\EditListingDialog.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">

@@ -12,6 +12,52 @@
             </ResourceDictionary.MergedDictionaries>
             <Thickness x:Key="BlogViewWideContentMargin">260,36,260,100</Thickness>
             <Thickness x:Key="BlogViewContentMargin">310,36,310,100</Thickness>
+            <Style TargetType="Button" x:Key="HoverButtonStyle">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <!-- Normal State -->
+                                        <VisualState x:Name="Normal" />
+
+                                        <!-- PointerOver State -->
+                                        <VisualState x:Name="PointerOver">
+                                            <Storyboard>
+                                                <!-- Thay đổi màu nền -->
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="ButtonBackground">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlBackgroundChromeBlackMediumBrush}" />
+                                                </ObjectAnimationUsingKeyFrames>
+
+                                                <!-- Thay đổi màu chữ -->
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlForegroundAltHighBrush}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+
+                                <!-- Button Background -->
+                                <Border x:Name="ButtonBackground"
+                                        Background="{TemplateBinding Background}"
+                                        CornerRadius="{TemplateBinding CornerRadius}"
+                                        Padding="{TemplateBinding Padding}">
+                                    <!-- ContentPresenter để hỗ trợ nội dung tùy chỉnh -->
+                                    <ContentPresenter x:Name="ContentPresenter"
+                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                      Content="{TemplateBinding Content}"
+                                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                      Foreground="{TemplateBinding Foreground}" />
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

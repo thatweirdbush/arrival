@@ -5,6 +5,8 @@ using BookingManagementSystem.Core.Models;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Windows.ApplicationModel.Contacts;
+using BookingManagementSystem.ViewModels.Client;
+using CommunityToolkit.Mvvm.Input;
 
 namespace BookingManagementSystem.ViewModels.Host;
 
@@ -38,7 +40,7 @@ public partial class ListingViewModel : ObservableRecipient
         Properties.CollectionChanged += (s, e) => CheckPropertyListCount();
 
         // Initial check
-        LoadPropertyList();
+        _ = LoadPropertyList();
 
         // Load Property Name and Location string data list
         PropertyNameAndLocationList = Properties.Select(p => p.Name)
@@ -47,7 +49,7 @@ public partial class ListingViewModel : ObservableRecipient
         PropertyCountTotal = Properties.Count;
     }
 
-    public async void LoadPropertyList()
+    public async Task LoadPropertyList()
     {
         // Load Property data list filtered by User/Host Id
         var properties = await _propertyRepository.GetAllAsync();
@@ -61,17 +63,17 @@ public partial class ListingViewModel : ObservableRecipient
     {
     }
 
-    public void RemoveBookingAsync(Property property)
+    public async Task RemoveBookingAsync(Property property)
     {
-        _propertyRepository.DeleteAsync(property.Id);
+        await _propertyRepository.DeleteAsync(property.Id);
         Properties.Remove(property);
     }
 
-    public void RemoveAllBookingsAsync()
+    public async Task RemoveAllBookingsAsync()
     {
         foreach (var property in Properties)
         {
-            _propertyRepository.DeleteAsync(property.Id);
+            await _propertyRepository.DeleteAsync(property.Id);
         }
         Properties.Clear();
     }

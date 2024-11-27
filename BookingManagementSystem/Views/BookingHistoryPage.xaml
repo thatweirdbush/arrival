@@ -21,7 +21,7 @@
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
     </Page.Resources>
 
-    <ScrollView x:Name="MainScrollView">
+    <ScrollViewer x:Name="MainScrollView">
         <Grid x:Name="MainGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="240"/>
@@ -85,11 +85,12 @@
                         </Grid>
                         <controls:AdaptiveGridView
                                 animations:Connected.ListItemElementName="itemThumbnail"
-                                animations:Connected.ListItemKey="animationKeyBodyGrid"
+                                animations:Connected.ListItemKey="animationKeyContentGrid"
                                 DesiredWidth="500"
                                 ItemHeight="400"                
                                 x:Name="TripsGridView"
                                 ItemsSource="{x:Bind ViewModel.Bookings}"
+                                ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
                                 IsItemClickEnabled="True"
                                 FlowDirection="LeftToRight"
                                 StretchContentForSingleRow="False"
@@ -149,11 +150,12 @@
                         <TextBlock Text="Where you've been" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" HorizontalAlignment="Left"/>
                         <controls:AdaptiveGridView
                             animations:Connected.ListItemElementName="itemThumbnail"
-                            animations:Connected.ListItemKey="animationKeyBodyGrid"
+                            animations:Connected.ListItemKey="animationKeyContentGrid"
                             DesiredWidth="280"
                             ItemHeight="200"                
                             x:Name="BookingHistoryGridView"
                             ItemsSource="{x:Bind ViewModel.Bookings}"
+                            ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
                             IsItemClickEnabled="True"
                             FlowDirection="LeftToRight"
                             StretchContentForSingleRow="False"
@@ -211,5 +213,5 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
-    </ScrollView>
+    </ScrollViewer>
 </Page>

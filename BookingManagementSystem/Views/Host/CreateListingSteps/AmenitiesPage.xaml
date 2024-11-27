@@ -10,23 +10,21 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
-    mc:Ignorable="d"
-    NavigationCacheMode="Enabled"
-    CacheMode="BitmapCache">
+    mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <StackPanel x:Name="PageHeader" MaxWidth="640" Spacing="8" Margin="0 0 0 32" HorizontalAlignment="Stretch">
-            <TextBlock Text="Tell guests what your place has to offer" Style="{ThemeResource TitleTextBlockStyle}"/>
-            <TextBlock Text="You can add more amenities after you publish your listing." Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
-        </StackPanel>
-        <ScrollView Grid.Row="1">
-            <StackPanel x:Name="PageBody" HorizontalAlignment="Center" Spacing="32">
+    <ScrollView>
+        <Grid x:Name="ContentArea" Margin="28 0 28 40" HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel x:Name="PageHeader" Spacing="8" Margin="0 0 0 32">
+                <TextBlock Text="Tell guests what your place has to offer" Style="{ThemeResource TitleTextBlockStyle}"/>
+                <TextBlock Text="You can add more amenities after you publish your listing." Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
+            </StackPanel>
+            <StackPanel x:Name="PageBody" Grid.Row="1" Spacing="32">
                 <StackPanel x:Name="GuestFavoriteAmenitiesPanel" Spacing="16">
-                    <TextBlock Text="What about these guest favorites?" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="8 0 0 0"/>
+                    <TextBlock Text="What about these guest favorites?" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     <GridView
                         x:Name="GuestFavoriteAmenitiesGridView"
                         ItemsSource="{x:Bind ViewModel.GuestFavoriteAmenities}"
@@ -35,13 +33,13 @@
                         IsItemClickEnabled="True"
                         SelectionMode="Extended"
                         SelectionChanged="GuestFavoriteAmenitiesGridView_SelectionChanged"
-                        Padding="0"
+                        Padding="-8 0 0 0"
                         ScrollViewer.VerticalScrollBarVisibility="Hidden">
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
-                           MaximumRowsOrColumns="3"
-                           Orientation="Horizontal"/>
+                                               MaximumRowsOrColumns="3"
+                                               Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
                         <GridView.ItemContainerStyle>
@@ -65,7 +63,7 @@
                 </StackPanel>
 
                 <StackPanel x:Name="StandoutAmenitiesPanel" Spacing="16">
-                    <TextBlock Text="Do you have any standout amenities?" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="8 0 0 0"/>
+                    <TextBlock Text="Do you have any standout amenities?" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     <GridView
                         x:Name="StandoutAmenitiesGridView"
                         ItemsSource="{x:Bind ViewModel.StandoutAmenities}"
@@ -74,13 +72,13 @@
                         IsItemClickEnabled="True"
                         SelectionMode="Extended"
                         SelectionChanged="StandoutAmenitiesGridView_SelectionChanged"                        
-                        Padding="0"
+                        Padding="-8 0 0 0"
                         ScrollViewer.VerticalScrollBarVisibility="Hidden">
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
-                           MaximumRowsOrColumns="3"
-                           Orientation="Horizontal"/>
+                                               MaximumRowsOrColumns="3"
+                                               Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
                         <GridView.ItemContainerStyle>
@@ -104,7 +102,7 @@
                 </StackPanel>
 
                 <StackPanel x:Name="SafetyAmenitiesPanel" Spacing="16">
-                    <TextBlock Text="Do you have any of these safety items?" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="8 0 0 0"/>
+                    <TextBlock Text="Do you have any of these safety items?" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     <GridView
                         x:Name="SafetyAmenitiesGridView"
                         ItemsSource="{x:Bind ViewModel.SafetyAmenities}"
@@ -113,13 +111,13 @@
                         IsItemClickEnabled="True"
                         SelectionMode="Extended"
                         SelectionChanged="SafetyAmenitiesGridView_SelectionChanged"
-                        Padding="0"
+                        Padding="-8 0 0 0"
                         ScrollViewer.VerticalScrollBarVisibility="Hidden">
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
-                           MaximumRowsOrColumns="3"
-                           Orientation="Horizontal"/>
+                                               MaximumRowsOrColumns="3"
+                                               Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
                         <GridView.ItemContainerStyle>
@@ -142,6 +140,6 @@
                     </GridView>
                 </StackPanel>
             </StackPanel>
-        </ScrollView>
-    </Grid>
+        </Grid>
+    </ScrollView>
 </Page>

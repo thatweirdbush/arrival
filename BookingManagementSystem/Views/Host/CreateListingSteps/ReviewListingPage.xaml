@@ -10,93 +10,94 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
-    mc:Ignorable="d"
-    CacheMode="BitmapCache">
+    mc:Ignorable="d">
 
     <Page.Resources>
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
     </Page.Resources>
 
-    <Grid x:Name="ContentArea" Margin="380 80 320 80" RowSpacing="42">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <StackPanel Spacing="8">
-            <TextBlock Text="Yay! It’s time to publish." Style="{ThemeResource TitleLargeTextBlockStyle}"/>
-            <TextBlock Text="Here's what we'll show to guests. Before you publish, make sure to review the details."
-                       Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
-        </StackPanel>
-        <Border x:Name="ShadowTarget" Grid.Row="1"/>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="4*"/>
-            </Grid.ColumnDefinitions>
-            <Grid CornerRadius="18" Padding="16" Background="{ThemeResource LayerFillColorAltBrush}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="80"/>
-                </Grid.RowDefinitions>
-                <ui:Effects.Shadow>
-                    <ui:AttachedDropShadow CastTo="{x:Bind ShadowTarget}" 
-                                           CornerRadius="18" Offset="4" 
-                                           BlurRadius="20" Color="{ThemeResource SmokeFillColorDefault}"/>
-                </ui:Effects.Shadow>
-                <Grid CornerRadius="10">
-                    <Image Source="{x:Bind ViewModel.PropertyOnCreating.ImageThumbnail, Mode=OneWay}" Stretch="UniformToFill"/>
-                </Grid>
-                <Grid Grid.Row="1" Padding="0 16 0 0">
-                    <StackPanel Spacing="4" HorizontalAlignment="Left">
-                        <TextBlock Text="{x:Bind ViewModel.PropertyOnCreating.Name, Mode=OneWay}" Style="{ThemeResource BaseTextBlockStyle}"/>
-                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}">
+    <ScrollViewer>
+        <Grid x:Name="ContentArea" Margin="320 0 320 80" HorizontalAlignment="Center" RowSpacing="42">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Spacing="8" MinWidth="430">
+                <TextBlock Text="Yay! It’s time to publish." Style="{ThemeResource TitleLargeTextBlockStyle}"/>
+                <TextBlock Text="Here's what we'll show to guests. Before you publish, make sure to review the details."
+                           Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
+            </StackPanel>
+            <Border x:Name="ShadowTarget" Grid.Row="1"/>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <Grid CornerRadius="18" Padding="16" Background="{ThemeResource LayerFillColorAltBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="80"/>
+                    </Grid.RowDefinitions>
+                    <ui:Effects.Shadow>
+                        <ui:AttachedDropShadow CastTo="{x:Bind ShadowTarget}" 
+                                               CornerRadius="18" Offset="4" 
+                                               BlurRadius="20" Color="{ThemeResource SmokeFillColorDefault}"/>
+                        </ui:Effects.Shadow>
+                    <Grid CornerRadius="10">
+                        <Image Source="{x:Bind ViewModel.PropertyOnCreating.ImageThumbnail, Mode=OneWay}" Stretch="UniformToFill"/>
+                    </Grid>
+                    <Grid Grid.Row="1" Padding="0 16 0 0">
+                        <StackPanel Spacing="4" HorizontalAlignment="Left" MinWidth="100">
+                            <TextBlock Text="{x:Bind ViewModel.PropertyOnCreating.Name, Mode=OneWay}" Style="{ThemeResource BaseTextBlockStyle}"/>
+                            <TextBlock Style="{ThemeResource BaseTextBlockStyle}">
                             <Run Text="{x:Bind ViewModel.PropertyOnCreating.PricePerNight, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}"/> a night
-                        </TextBlock>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right" VerticalAlignment="Top">
-                        <TextBlock Text="New" Style="{ThemeResource DetailBodyStyle}"/>
-                        <FontIcon FontSize="14" Height="14" Margin="0 0 0 2" Glyph="&#xE735;" />
+                            </TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <TextBlock Text="New" Style="{ThemeResource DetailBodyStyle}"/>
+                            <FontIcon FontSize="14" Height="14" Margin="0 0 0 2" Glyph="&#xE735;" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Column="1" HorizontalAlignment="Left" Padding="60 42 0 0" MaxWidth="460" >
+                    <StackPanel Spacing="20" MinWidth="300">
+                        <TextBlock Text="What's next?" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="/Assets/common-icons/calendar.svg" Height="32" Margin="0 -32 18 0" Stretch="UniformToFill"/>
+                            <StackPanel Spacing="4" Grid.Column="1">
+                                <TextBlock Text="Set up your calendar" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Text="Choose which dates are available. Guests can start booking 24 hours after you publish." Style="{ThemeResource DetailBodyStyle}" Foreground="DimGray"/>
+                            </StackPanel>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="/Assets/common-icons/pencil.svg" Height="32" Margin="0 -32 18 0" Stretch="UniformToFill"/>
+                            <StackPanel Spacing="4" Grid.Column="1">
+                                <TextBlock Text="Adjust your settings" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Text="Set house rules, select a cancellation policy, choose how guests can book, and more." Style="{ThemeResource DetailBodyStyle}" Foreground="DimGray"/>
+                            </StackPanel>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="/Assets/common-icons/person-greeting.svg" Height="32" Margin="0 -32 18 0" Stretch="UniformToFill"/>
+                            <StackPanel Spacing="4" Grid.Column="1">
+                                <TextBlock Text="Prepare for your first guest" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Text="Find tips in our Resource Center or get one-to-one guidance from a Superhost." Style="{ThemeResource DetailBodyStyle}" Foreground="DimGray"/>
+                            </StackPanel>
+                        </Grid>
                     </StackPanel>
                 </Grid>
-            </Grid>
-            <Grid Grid.Column="1" HorizontalAlignment="Left" Padding="60 42 0 0" MaxWidth="460" >
-                <StackPanel Spacing="20">
-                    <TextBlock Text="What's next?" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Image Source="/Assets/common-icons/calendar.svg" Height="32" Margin="0 -32 18 0" Stretch="UniformToFill"/>
-                        <StackPanel Spacing="4" Grid.Column="1">
-                            <TextBlock Text="Set up your calendar" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                            <TextBlock Text="Choose which dates are available. Guests can start booking 24 hours after you publish." Style="{ThemeResource DetailBodyStyle}" Foreground="DimGray"/>
-                        </StackPanel>
-                    </Grid>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Image Source="/Assets/common-icons/pencil.svg" Height="32" Margin="0 -32 18 0" Stretch="UniformToFill"/>
-                        <StackPanel Spacing="4" Grid.Column="1">
-                            <TextBlock Text="Adjust your settings" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                            <TextBlock Text="Set house rules, select a cancellation policy, choose how guests can book, and more." Style="{ThemeResource DetailBodyStyle}" Foreground="DimGray"/>
-                        </StackPanel>
-                    </Grid>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Image Source="/Assets/common-icons/person-greeting.svg" Height="32" Margin="0 -32 18 0" Stretch="UniformToFill"/>
-                        <StackPanel Spacing="4" Grid.Column="1">
-                            <TextBlock Text="Prepare for your first guest" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                            <TextBlock Text="Find tips in our Resource Center or get one-to-one guidance from a Superhost." Style="{ThemeResource DetailBodyStyle}" Foreground="DimGray"/>
-                        </StackPanel>
-                    </Grid>
-                </StackPanel>
             </Grid>
         </Grid>
-    </Grid>
+    </ScrollViewer>
 </Page>

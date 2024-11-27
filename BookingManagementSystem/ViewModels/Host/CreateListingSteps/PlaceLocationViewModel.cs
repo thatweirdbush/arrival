@@ -9,12 +9,17 @@ public partial class PlaceLocationViewModel : BaseStepViewModel
 {
     private readonly IPropertyService _propertyService;
     public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
-    public double CurrentLatitude { get; set; } = 0.0;
-    public double CurrentLongitude { get; set; } = 0.0;
-    public string CurrentLocation { get; set; } = Property.DEFAULT_PROPERTY_LOCATION;
+    public double CurrentLatitude { get; set; }
+    public double CurrentLongitude { get; set; }
+    public string CurrentLocation { get; set; }
     public PlaceLocationViewModel(IPropertyService propertyService)
     {
         _propertyService = propertyService;
+
+        // Initialize core properties
+        CurrentLatitude = PropertyOnCreating.Latitude;
+        CurrentLongitude = PropertyOnCreating.Longitude;
+        CurrentLocation = PropertyOnCreating.Location;
     }
 
     public override void SaveProcess()

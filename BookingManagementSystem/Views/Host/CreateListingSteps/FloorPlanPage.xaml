@@ -10,12 +10,10 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
-    mc:Ignorable="d"
-    NavigationCacheMode="Enabled"
-    CacheMode="BitmapCache">
+    mc:Ignorable="d">
 
     <ScrollView>
-        <Grid x:Name="ContentArea" VerticalAlignment="Center" MaxWidth="640" Padding="0 0 0 40">
+        <Grid x:Name="ContentArea" VerticalAlignment="Center" MaxWidth="640" Margin="28 0 28 40">
             <Grid RowSpacing="48">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

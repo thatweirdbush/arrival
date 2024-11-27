@@ -25,23 +25,56 @@ public partial class AmenitiesViewModel : BaseStepViewModel
     {
         _propertyService = propertyService;
         _amenityRepository = amenityRepository;
-        LoadAmenities();
+
+        // Initialize UI amenities for selection
+        _ = LoadUIAmenities();
+
+        // Initialize core properties
+        TryLoadSelectedAmenities();
 
         // User can skip this step too
         IsStepCompleted = true;
     }
 
-    public async void LoadAmenities()
+    public async Task LoadUIAmenities()
     {
         // Load content data list
         var data = await _amenityRepository.GetAllAsync();
+
         GuestFavoriteAmenities = data.Where(x => x.Type == AmenityType.GuestFavorite);
         StandoutAmenities = data.Where(x => x.Type == AmenityType.Standout);
         SafetyAmenities = data.Where(x => x.Type == AmenityType.Safety);
     }
 
+    public void TryLoadSelectedAmenities()
+    {
+        // Load selected amenities
+        SelectedGuestFavoriteAmenities = PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.GuestFavorite);
+        SelectedStandoutAmenities = PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.Standout);
+        SelectedSafetyAmenities = PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.Safety);
+    }
+
+    public void ResetPropertyAmenities()
+    {
+        foreach (var amenity in PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.GuestFavorite).ToList())
+        {
+            PropertyOnCreating.Amenities.Remove(amenity);
+        }
+        foreach (var amenity in PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.Standout).ToList())
+        {
+            PropertyOnCreating.Amenities.Remove(amenity);
+        }
+        foreach (var amenity in PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.Safety).ToList())
+        {
+            PropertyOnCreating.Amenities.Remove(amenity);
+        }
+    }
+
     public override void SaveProcess()
     {
+        // Reset all amenities first
+        ResetPropertyAmenities();
+
         // Add selected amenities to the property
         foreach (var amenity in SelectedGuestFavoriteAmenities)
         {

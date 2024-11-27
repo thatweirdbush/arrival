@@ -3,7 +3,9 @@ using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.ViewModels.Client;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace BookingManagementSystem.ViewModels.Administrator;
 
@@ -29,6 +31,16 @@ public partial class ListingRequestViewModel : ObservableRecipient
 
         // Initial check
         CheckPropertyListCount();
+    }
+
+    [RelayCommand]
+    public void OnItemClick(Property? clickedItem)
+    {
+        if (clickedItem != null)
+        {
+            _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
+            _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, clickedItem.Id);
+        }
     }
 
     public void OnNavigatedTo(object parameter)

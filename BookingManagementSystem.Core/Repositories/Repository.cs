@@ -35,7 +35,7 @@ public class Repository<T> : IRepository<T> where T : class
         if (existingEntity != null)
         {
             _entities.Remove(existingEntity);
-            _entities.Add(entity);
+            _entities.Insert(0, entity);
         }
         await Task.CompletedTask;
     }

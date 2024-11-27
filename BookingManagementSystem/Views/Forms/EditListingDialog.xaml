@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="BookingManagementSystem.Views.Forms.EditListingDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BookingManagementSystem.Views.Forms"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}">
+
+    <Grid>
+        <StackPanel Spacing="6">
+            <Grid CornerRadius="12" HorizontalAlignment="Center">
+                <Image Source="{x:Bind Property.ImageThumbnail}" Stretch="UniformToFill" Width="140" Height="140"/>
+            </Grid>
+            <TextBlock x:Name="TitleTextBox" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0 8 0 0">
+                <Run Text="{x:Bind Property.Name}"/> started 
+                <Run Text="{x:Bind Property.CreatedAt.ToShortDateString()}"/>
+            </TextBlock>
+            <TextBlock x:Name="LocationTextBox" Text="{x:Bind Property.Location}" Foreground="Gray" HorizontalAlignment="Center"/>
+            <StackPanel Spacing="12" Margin="0 28 0 0">
+                <Button x:Name="EditListingButton" Click="EditListingButton_Click" Content="Edit listing" FontWeight="SemiBold" Height="40" CornerRadius="8" BorderThickness="0" HorizontalAlignment="Stretch"
+                        Background="{ThemeResource AcrylicInAppFillColorDefaultInverseBrush}" Foreground="{ThemeResource SystemControlForegroundChromeWhiteBrush}"/>
+                <Button x:Name="RemoveListingButton" Click="RemoveListingButton_Click" Height="40" CornerRadius="8" BorderThickness="0" HorizontalAlignment="Stretch">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <FontIcon Glyph="&#xE74D;" FontSize="16"/>
+                        <TextBlock Text="Remove listing" FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+        <Button x:Name="CloseButton" BorderThickness="0" Height="28" Width="28" Padding="0" CornerRadius="100" Background="Transparent"
+                Click="CloseButton_Click" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <FontIcon Glyph="&#xE894;" FontSize="12" />
+        </Button>
+    </Grid>
+</ContentDialog>

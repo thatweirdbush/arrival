@@ -19,7 +19,6 @@
         <helper:IsFavouriteToImagePathConverter x:Key="IsFavouriteToImagePathConverter"/>
         <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
-        
         <DataTemplate x:Key="ImageTemplate" x:DataType="models:DestinationTypeSymbol">
             <ItemContainer HorizontalAlignment="Left" Width="200" Height="140" AutomationProperties.Name="{x:Bind Name}">
                 <Image Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind ImagePath}" Margin="4" AutomationProperties.AccessibilityView="Raw"/>
@@ -94,111 +93,100 @@
                                        Offset="4,4" />
                     </ui:Effects.Shadow>
 
-                    <StackPanel Orientation="Horizontal" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
-                        <Button x:Name="btnSearchDestinationWrapper" Click="btnSearchDestinationWrapper_Click" Background="Transparent" CornerRadius="24" Width="240" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="28 0 0 0">
-                            <StackPanel>
-                                <TextBlock Text="Where" FontWeight="SemiBold" Margin="10 0 0 0" FontSize="12.5"/>
-                                <AutoSuggestBox x:Name="DestinationAutoSuggestBox" 
+                    <Grid>
+                        <Button x:Name="HiddenMultiDatePicker" Click="HiddenMultiDatePicker_Click" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                            <Button.Flyout>
+                                <Flyout Placement="Bottom">
+                                    <CalendarView x:Name="MultiDatePicker" Width="420" IsTodayHighlighted="False" SelectionMode="Multiple" SelectedDatesChanged="MultiDatePicker_SelectedDatesChanged" Background="Transparent" BorderThickness="0" />
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+
+                        <StackPanel Orientation="Horizontal" Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
+                            <Button x:Name="btnSearchDestinationWrapper" Click="btnSearchDestinationWrapper_Click" Background="Transparent" CornerRadius="24" Width="240" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="28 0 0 0">
+                                <StackPanel>
+                                    <TextBlock Text="Where" FontWeight="SemiBold" Margin="10 0 0 0" FontSize="12.5"/>
+                                    <AutoSuggestBox x:Name="DestinationAutoSuggestBox" 
                                                 PlaceholderText="Search destinations" 
                                                 BorderThickness="0" Background="Transparent" 
                                                 MinHeight="0" MinWidth="200" CornerRadius="12" 
                                                 Foreground="Gray" Margin="0 0 0 -9"
                                                 TextChanged="DestinationAutoSuggestBox_TextChanged"
-                                                SuggestionChosen="DestinationAutoSuggestBox_SuggestionChosen"
                                                 AutomationProperties.Name="Destination AutoSuggestBox">
-                                    <AutoSuggestBox.Resources>
-                                        <Style TargetType="FlyoutPresenter">
-                                            <Setter Property="MinWidth" Value="500"/>
-                                            <Setter Property="MaxWidth" Value="1000"/>
-                                        </Style>
-                                    </AutoSuggestBox.Resources>
-                                </AutoSuggestBox>
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="btnCheckInCalendarWrapper" Click="btnCheckInCalendarWrapper_Click" Background="Transparent" CornerRadius="24" Width="150" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="16 0 0 0">
-                            <StackPanel>
-                                <TextBlock Text="Check in" FontWeight="SemiBold" FontSize="12.5" Margin="7 0 0 0"/>
-                                <CalendarDatePicker x:Name="CheckInCalendar" PlaceholderText="Dates" DateFormat="‎{month.full}‎ ‎{day.integer}‎" BorderThickness="0" Background="Transparent" HorizontalAlignment="Stretch" Height="28" CornerRadius="12 12 16 16" Foreground="Gray" Margin="-5 0 0 -5"/>
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="btnCheckOutCalendarWrapper" Click="btnCheckOutCalendarWrapper_Click" Background="Transparent" CornerRadius="24" Width="150" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="16 0 0 0">
-                            <StackPanel>
-                                <TextBlock Text="Check out" FontWeight="SemiBold" FontSize="12.5" Margin="7 0 0 0"/>
-                                <CalendarDatePicker x:Name="CheckOutCalendar" PlaceholderText="Dates" DateFormat="‎{month.full}‎ ‎{day.integer}‎" BorderThickness="0" Background="Transparent" Height="28" CornerRadius="12 12 16 16" Foreground="Gray" Margin="-5 0 0 -5"/>
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="btnAddGuestsWrapper" Background="Transparent" CornerRadius="24" Width="222" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="28 0 0 0">
-                            <Button.Flyout>
-                                <Flyout Placement="Bottom">
-                                    <Grid x:Name="AddGuestsGrid">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="2*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel x:Name="GuestsInfoStackPanel" Grid.Column="0" Spacing="16" Padding="0 0 0 0">
-                                            <StackPanel Spacing="4">
-                                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Adults" />
-                                                <TextBlock Style="{ThemeResource DetailBodyBaseMediumStyle}" FontSize="12" Text="Ages 13 or above" />
-                                                <Line Stroke="LightGray" X1="0" Y1="0" X2="180" Y2="0" StrokeThickness="1" Margin="0 12 0 0"/>
-                                            </StackPanel>
-                                            <StackPanel Spacing="4">
-                                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Children" />
-                                                <TextBlock Style="{ThemeResource DetailBodyBaseMediumStyle}" FontSize="12" Text="Under 13" />
-                                                <Line Stroke="LightGray" X1="0" Y1="0" X2="180" Y2="0" StrokeThickness="1" Margin="0 12 0 0"/>
-                                            </StackPanel>
-                                            <StackPanel Spacing="4">
-                                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Pets" />
-                                                <TextBlock Style="{ThemeResource DetailBodyBaseMediumStyle}" FontSize="12" Text="Service animals are not included" />
-                                                <Line Stroke="LightGray" X1="0" Y1="0" X2="180" Y2="0" StrokeThickness="1" Margin="0 12 0 0"/>
-                                            </StackPanel>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="1" Spacing="40" Margin="48 0 0 0">
-                                            <NumberBox x:Name="NumberBoxAdults" Value="0" SpinButtonPlacementMode="Compact" SmallChange="1" LargeChange="5" />
-                                            <NumberBox x:Name="NumberBoxChildren" Value="0" SpinButtonPlacementMode="Compact" SmallChange="1" LargeChange="5" />
-                                            <NumberBox x:Name="NumberBoxPets" Value="0" SpinButtonPlacementMode="Compact" SmallChange="1" LargeChange="5" />
-                                        </StackPanel>
-                                    </Grid>
-                                </Flyout>
-                            </Button.Flyout>
-
-                            <Grid>
-                                <StackPanel Margin="0 3 0 0">
-                                    <TextBlock Text="Who" FontWeight="SemiBold" FontSize="12.5" Margin="0 0 0 1"/>
-                                    <TextBlock Text="Add guests" FontWeight="Normal" Foreground="Gray" Padding="0 4 0 3"/>
+                                        <AutoSuggestBox.Resources>
+                                            <Style TargetType="FlyoutPresenter">
+                                                <Setter Property="MinWidth" Value="500"/>
+                                                <Setter Property="MaxWidth" Value="1000"/>
+                                            </Style>
+                                        </AutoSuggestBox.Resources>
+                                    </AutoSuggestBox>
                                 </StackPanel>
-                                <Button x:Name="btnSearch">
-                                    <Button.Template>
-                                        <ControlTemplate TargetType="Button">
-                                            <Grid>
-                                                <Button x:Name="btnSearch" CornerRadius="20" Width="96" Height="44" Margin="84 0 0 0" VerticalAlignment="Stretch" BorderThickness="0" Background="{ThemeResource SystemControlBackgroundChromeBlackHighBrush}">
-                                                    <StackPanel Orientation="Horizontal" Spacing="4">
-                                                        <Image x:Name="imgSearch" Source="/Assets/symbol-icons/search-icon-white.png" Width="18" Height="18"/>
-                                                        <TextBlock x:Name="txtSearch" Text="Search" FontWeight="SemiBold" Foreground="GhostWhite"/>
-                                                    </StackPanel>
-                                                </Button>
-                                                <VisualStateManager.VisualStateGroups>
-                                                    <VisualStateGroup>
-                                                        <VisualState x:Name="PointerOver">
-                                                            <VisualState.Setters>
-                                                                <Setter Target="txtSearch.Foreground" Value="Black"/>
-                                                                <Setter Target="imgSearch.Source" Value="/Assets/symbol-icons/search-icon.png"/>
-                                                            </VisualState.Setters>
-                                                        </VisualState>
-                                                        <VisualState x:Name="Normal">
-                                                            <VisualState.Setters>
-                                                                <Setter Target="txtSearch.Foreground" Value="GhostWhite"/>
-                                                                <Setter Target="imgSearch.Source" Value="/Assets/symbol-icons/search-icon-white.png"/>
-                                                            </VisualState.Setters>
-                                                        </VisualState>
-                                                    </VisualStateGroup>
-                                                </VisualStateManager.VisualStateGroups>
-                                            </Grid>
-                                        </ControlTemplate>
-                                    </Button.Template>
-                                </Button>
-                            </Grid>
-                        </Button>
-                    </StackPanel>
+                            </Button>
+                            <Button x:Name="btnCheckInCalendarWrapper" Click="HiddenMultiDatePicker_Click" Background="Transparent" CornerRadius="24" Width="150" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="16 0 0 0">
+                                <StackPanel>
+                                    <TextBlock Text="Check in" FontWeight="SemiBold" FontSize="12.5" Margin="7 0 0 0"/>
+                                    <Button x:Name="btnCheckInCalendar" Click="HiddenMultiDatePicker_Click" Content="Add dates" Background="Transparent" Foreground="Gray" BorderThickness="0" Height="28" CornerRadius="12 12 16 16" Margin="-5 0 0 -5"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnCheckOutCalendarWrapper" Click="HiddenMultiDatePicker_Click" Background="Transparent" CornerRadius="24" Width="150" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="16 0 0 0">
+                                <StackPanel>
+                                    <TextBlock Text="Check out" FontWeight="SemiBold" FontSize="12.5" Margin="7 0 0 0"/>
+                                    <Button x:Name="btnCheckOutCalendar" Click="HiddenMultiDatePicker_Click" Content="Add dates" Background="Transparent" Foreground="Gray" BorderThickness="0" Height="28" CornerRadius="12 12 16 16" Margin="-5 0 0 -5"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="btnAddGuestsWrapper" Background="Transparent" CornerRadius="24" Width="222" BorderThickness="0" HorizontalContentAlignment="Left" VerticalAlignment="Stretch" Padding="28 0 0 0">
+                                <Button.Flyout>
+                                    <Flyout Placement="Bottom">
+                                        <Grid x:Name="AddGuestsGrid">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel x:Name="GuestsInfoStackPanel" Grid.Column="0" Spacing="16" Padding="0 0 0 0">
+                                                <StackPanel Spacing="4">
+                                                    <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Adults" />
+                                                    <TextBlock Style="{ThemeResource DetailBodyBaseMediumStyle}" FontSize="12" Text="Ages 13 or above" />
+                                                    <Line Stroke="LightGray" X1="0" Y1="0" X2="180" Y2="0" StrokeThickness="1" Margin="0 12 0 0"/>
+                                                </StackPanel>
+                                                <StackPanel Spacing="4">
+                                                    <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Children" />
+                                                    <TextBlock Style="{ThemeResource DetailBodyBaseMediumStyle}" FontSize="12" Text="Under 13" />
+                                                    <Line Stroke="LightGray" X1="0" Y1="0" X2="180" Y2="0" StrokeThickness="1" Margin="0 12 0 0"/>
+                                                </StackPanel>
+                                                <StackPanel Spacing="4">
+                                                    <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Pets" />
+                                                    <TextBlock Style="{ThemeResource DetailBodyBaseMediumStyle}" FontSize="12" Text="Service animals are not included" />
+                                                    <Line Stroke="LightGray" X1="0" Y1="0" X2="180" Y2="0" StrokeThickness="1" Margin="0 12 0 0"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" Spacing="40" Margin="48 0 0 0">
+                                                <NumberBox x:Name="NumberBoxAdults" Value="0" SpinButtonPlacementMode="Compact" SmallChange="1" LargeChange="5" />
+                                                <NumberBox x:Name="NumberBoxChildren" Value="0" SpinButtonPlacementMode="Compact" SmallChange="1" LargeChange="5" />
+                                                <NumberBox x:Name="NumberBoxPets" Value="0" SpinButtonPlacementMode="Compact" SmallChange="1" LargeChange="5" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </Flyout>
+                                </Button.Flyout>
+
+                                <Grid>
+                                    <StackPanel Margin="0 3 0 0">
+                                        <TextBlock Text="Who" FontWeight="SemiBold" FontSize="12.5" Margin="0 0 0 1"/>
+                                        <TextBlock Text="Add guests" FontWeight="Normal" Foreground="Gray" Padding="0 4 0 3"/>
+                                    </StackPanel>
+                                    <Button x:Name="btnSearch" Command="{x:Bind ViewModel.SearchAvailableRoomsCommand}" Style="{StaticResource HoverButtonStyle}" CornerRadius="20" Width="96" Height="44" Margin="84 0 0 0" VerticalAlignment="Stretch" BorderThickness="0" Background="{ThemeResource SystemControlBackgroundChromeBlackHighBrush}">
+                                        <Grid>
+                                            <StackPanel Orientation="Horizontal" Spacing="4" Visibility="{x:Bind ViewModel.SearchAvailableRoomsCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                                                <Image x:Name="imgSearch" Source="/Assets/symbol-icons/search-icon-white.png" Width="18" Height="18"/>
+                                                <TextBlock x:Name="ButtonTextBlock" Text="Search" FontWeight="SemiBold" Foreground="{ThemeResource SystemChromeWhiteColor}"/>
+                                            </StackPanel>
+                                            <ProgressRing x:Name="ButtonProgressRing" IsActive="True" Foreground="{ThemeResource SystemControlForegroundChromeWhiteBrush}"
+                                                          Visibility="{x:Bind ViewModel.SearchAvailableRoomsCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                        </Grid>
+                                    </Button>
+                                </Grid>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
                 </Border>
             </Grid>
         </Grid>

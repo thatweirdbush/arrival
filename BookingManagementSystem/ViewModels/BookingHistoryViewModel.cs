@@ -3,7 +3,9 @@ using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.DTOs;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.ViewModels.Client;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace BookingManagementSystem.ViewModels;
 
@@ -32,6 +34,16 @@ public partial class BookingHistoryViewModel : ObservableRecipient
         CheckBookingListCount();
 
         OnNavigatedTo(0);
+    }
+
+    [RelayCommand]
+    private void OnItemClick(BookingPropertyViewModel? clickedItem)
+    {
+        if (clickedItem != null)
+        {
+            _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
+            _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, clickedItem.Property.Id);
+        }
     }
 
     public async void OnNavigatedTo(object parameter)
