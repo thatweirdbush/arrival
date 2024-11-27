@@ -14,12 +14,26 @@ namespace BookingManagementSystem.ViewModels.Payment;
 public partial class PaymentViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IPaymentFacade _paymentFacade;
+    public IEnumerable<Voucher> Vouchers { get; private set; } = [];
+
+    [ObservableProperty]
+    public Voucher? voucher;
 
     [ObservableProperty]
     private Property? item;
-    public IEnumerable<Voucher> Vouchers { get; private set; } = Enumerable.Empty<Voucher>();
+    
+    [ObservableProperty]
+    public int totalNights;
+    public decimal TotalAmount { get; set; }
+    public decimal TotalAmountBeforeFees { get; set; }
+    public decimal TotalAmountAfterFees { get; set; }
+    public decimal DiscountAmount { get; set; }
 
-    public PaymentViewModel(IPaymentFacade paymentFacade, IDao dao)
+    public decimal Tax = 9.90m;
+    public decimal PayPartLaterPrice => TotalAmount / 2;
+    public DateTime PayLaterDate => DateTime.Now.AddDays(2);
+
+    public PaymentViewModel(IPaymentFacade paymentFacade)
     {
         _paymentFacade = paymentFacade;
     }
@@ -29,70 +43,56 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
         if (parameter is int Id)
         {
             Item = await _paymentFacade.GetPropertyByIdAsync(Id);
-
             Vouchers = await _paymentFacade.GetVouchersAsync();
+
+            // Initialize core properties
+            TotalNights = 5;
+            TotalAmountBeforeFees = Item?.PricePerNight * TotalNights ?? 0.0m;
+            TotalAmountAfterFees = TotalAmountBeforeFees + Tax;
+            TotalAmount = TotalAmountAfterFees;
         }
     }
 
     public void OnNavigatedFrom()
     {
-
     }
 
-    public string TotalAmount
+    private void CalculateTotalAmount()
     {
-        get
+        TotalAmountBeforeFees = Item?.PricePerNight * TotalNights ?? 0.0m;
+        TotalAmountAfterFees = TotalAmountBeforeFees + Tax;
+        TotalAmount = TotalAmountAfterFees;
+        if (Voucher?.DiscountPercentage.HasValue == true)
         {
-            var amount = Item.PricePerNight * 5; // Lấy giá trị từ AmountTextBox
-            var tax = 9.90m; // Giá trị của TaxTextBox
-            return $"${amount - tax:F2}";
+            DiscountAmount = Voucher.DiscountPercentage.Value * TotalAmount / 100;
+            TotalAmount -= DiscountAmount;
+        }
+        else if (Voucher?.DiscountAmount.HasValue == true)
+        {
+            DiscountAmount = Voucher.DiscountAmount.Value;
+            TotalAmount -= DiscountAmount;
+        }
+        else
+        {
+            DiscountAmount = 0.0m;
         }
     }
 
-    public string PriceWithMultiplier => $"{Item.PricePerNight:C} x5";
-
-    public bool CheckVoucher(string code, ref decimal? discountPecentage)
+    partial void OnVoucherChanged(Voucher? value)
     {
-        var voucher = Vouchers.FirstOrDefault(u => u.Code.Equals(code));
-        if (voucher != null)
-        {
-            discountPecentage = voucher.DiscountPercentage;
-            return true;
-        }
-        return false;
+        CalculateTotalAmount();
     }
 
-    public bool CheckVoucherExist(string code)
+    public void UpdateVoucherUsage()
     {
-        var voucher = Vouchers.FirstOrDefault(u => u.Code.Equals(code));
-        if (voucher != null)
+        if (Voucher != null)
         {
-            return true;
+            Voucher.Quantity -= 1;
         }
-        return false;
-    }
-
-    public bool CheckVoucherAmount(string code)
-    {
-        var voucher = Vouchers.FirstOrDefault(u => u.Code.Equals(code));
-        if (voucher != null && voucher.Quantity != 0)
-        {
-            return true;
-        }
-        return false;
     }
 
     public async Task AddBookingAsync(Booking booking)
     {
         await _paymentFacade.AddBookingAsync(booking);
-    }
-
-    public void VoucherUsed(string code)
-    {
-        var voucher = Vouchers.FirstOrDefault(u => u.Code.Equals(code));
-        if (voucher != null)
-        {
-            voucher.Quantity -= 1;
-        }
     }
 }

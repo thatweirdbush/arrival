@@ -21,7 +21,7 @@
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
     </Page.Resources>
 
-    <ScrollView x:Name="MainScrollView">
+    <ScrollViewer x:Name="MainScrollView">
         <Grid x:Name="MainGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="240"/>
@@ -213,5 +213,5 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
-    </ScrollView>
+    </ScrollViewer>
 </Page>

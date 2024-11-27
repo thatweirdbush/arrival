@@ -16,6 +16,56 @@
     <Page.Resources>
         <!--Converters-->
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
+        <!--Flyout Template-->
+        <Flyout x:Key="PricingDetailsFlyout">
+            <StackPanel Spacing="16">
+                <StackPanel x:Name="FlyoutHeader" HorizontalAlignment="Center" Spacing="18" Margin="0 0 0 4">
+                    <TextBlock Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Text="More about pricing" Padding="18 8 18 0"/>
+                    <Line Stroke="Gray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
+                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Padding="12 0 12 12" Spacing="8">
+                        <TextBlock Text="Price per night:" Style="{ThemeResource BaseTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.Item.PricePerNight, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}" FontWeight="Normal"/>
+                        <TextBlock Text="Total nights:" Style="{ThemeResource BaseTextBlockStyle}"/>
+                        <TextBlock FontWeight="Normal">
+                        <Run Text="{x:Bind ViewModel.TotalNights, Mode=OneWay}"/> nights
+                        </TextBlock>
+                        <TextBlock Text="Taxes:" Style="{ThemeResource BaseTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.Tax, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}" FontWeight="Normal"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Padding="12 0 12 12" Spacing="8">
+                        <TextBlock Text="Total price before taxes:" Style="{ThemeResource BaseTextBlockStyle}"/>
+                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}" FontWeight="Normal">
+                        <Run Text="{x:Bind ViewModel.TotalAmountBeforeFees, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}"/>
+                        </TextBlock>
+                        <TextBlock Text="Total price with taxes:" Style="{ThemeResource BaseTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.TotalAmountAfterFees, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}" FontWeight="Normal"/>
+                        <TextBlock Text="Voucher discount:" Style="{ThemeResource BaseTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.DiscountAmount, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}" FontWeight="Normal"/>
+                    </StackPanel>
+                </Grid>
+                <Line Stroke="Gray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
+                <StackPanel Spacing="8" Padding="0 0 0 12" HorizontalAlignment="Right">
+                    <TextBlock Style="{ThemeResource BaseTextBlockStyle}" FontSize="16" FontWeight="Bold" HorizontalAlignment="Right">
+                <Run Text="Total price:"/>
+                <Run Text="{x:Bind ViewModel.TotalAmount, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}" FontSize="16" FontWeight="SemiBold"/>
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
+                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+                    <Setter Property="IsTabStop" Value="True"/>
+                    <Setter Property="TabNavigation" Value="Cycle"/>
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+        </Flyout>
     </Page.Resources>
 
     <Grid x:Name="ContentArea">
@@ -91,7 +141,11 @@
                                                      VerticalAlignment="Center" VerticalContentAlignment="Center"
                                                      FlowDirection="RightToLeft" Background="Transparent"
                                                      GroupName="PaymentOptions">
-                                                <TextBlock Text="Pay $199.90 now" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                                <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap">
+                                                    <Run Text="Pay"/>
+                                                    <Run Text="{x:Bind ViewModel.TotalAmount, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}"/>
+                                                    <Run Text="now"/>
+                                                </TextBlock>
                                             </RadioButton>
                                         </Button>
                                         <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
@@ -104,7 +158,12 @@
                                                 <StackPanel Spacing="6">
                                                     <TextBlock Text="Pay part now, part later" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap"/>
                                                     <TextBlock Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap" FlowDirection="LeftToRight">
-                                                    <Run Text="₫5,719,624 due today, ₫5,719,623 on Nov 17, 2024. No extra fees."/>
+                                                    <Run Text="{x:Bind ViewModel.PayPartLaterPrice, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}"/>
+                                                    <Run Text="due today,"/>
+                                                    <Run Text="{x:Bind ViewModel.PayPartLaterPrice, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}"/>
+                                                    <Run Text="on"/>
+                                                    <Run Text="{x:Bind ViewModel.PayLaterDate.ToShortDateString(), Mode=OneWay}"/>.
+                                                    <Run Text="No extra fees."/>
                                                     <Hyperlink NavigateUri="https://www.example.com">
                                                         <Run Text="More info" FontWeight="SemiBold"/>
                                                     </Hyperlink>
@@ -201,20 +260,20 @@
                     </Grid>
 
                     <Grid x:Name="RightMainGrid" Grid.Column="1" Margin="28 0 0 0" Canvas.ZIndex="1">
-                        <Grid x:Name="RentalDetailsGrid" CornerRadius="12" VerticalAlignment="Top" HorizontalAlignment="Stretch" Padding="24" BorderThickness="1" BorderBrush="LightGray">
+                        <Grid x:Name="RentalDetailsGrid" CornerRadius="12" VerticalAlignment="Top" Padding="24" BorderThickness="1" BorderBrush="LightGray">
                             <StackPanel Spacing="12">
-                                <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Top">
+                                <StackPanel Orientation="Horizontal" Spacing="12">
                                     <Grid Height="110" Width="116" CornerRadius="12">
-                                        <Image Stretch="UniformToFill">
+                                        <Image Stretch="UniformToFill" HorizontalAlignment="Center">
                                             <Image.Source>
                                                 <BitmapImage UriSource="{x:Bind ViewModel.Item.ImageThumbnail, Mode=OneWay}" DecodePixelHeight="110"/>
                                             </Image.Source>
                                         </Image>
                                     </Grid>
                                     <Grid>
-                                        <StackPanel x:Name="PropertyInfoPanel" Orientation="Vertical" Spacing="8" MaxWidth="280">
-                                            <TextBlock x:Name="txtPropertyName" Text="{x:Bind ViewModel.Item.Name, Mode=OneWay}"  Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap"/>
-                                            <TextBlock x:Name="txtPropertyType" Text="{x:Bind ViewModel.Item.Type, Mode=OneWay}"  Style="{ThemeResource DetailBodyStyle}" TextWrapping="Wrap"/>
+                                        <StackPanel x:Name="PropertyInfoPanel" Orientation="Vertical" Spacing="8" MaxWidth="250">
+                                            <TextBlock x:Name="txtPropertyName" Text="{x:Bind ViewModel.Item.Name, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" MaxLines="2"/>
+                                            <TextBlock x:Name="txtPropertyType" Text="{x:Bind ViewModel.Item.Type, Mode=OneWay}" Style="{ThemeResource DetailBodyStyle}" TextWrapping="Wrap"/>
                                             <TextBlock x:Name="txtPropertyRateAndReview" Style="{ThemeResource DetailBodyStyle}" TextWrapping="Wrap">
                                             <Run FontWeight="SemiBold" Text="4.89"/> (
                                             <Run Text="232"/> reviews)
@@ -223,18 +282,28 @@
                                     </Grid>
                                 </StackPanel>
 
-                                
                                 <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
                                 <Grid>
                                     <StackPanel Spacing="12">
-                                        <TextBlock Text="Your total" Style="{ThemeResource TitleTextBlockStyle}"/>
+                                        <Grid>
+                                            <TextBlock Text="Your total" Style="{ThemeResource TitleTextBlockStyle}"/>
+                                            <Button x:Name="QuestionButton" Click="QuestionButton_Click" Width="22" Height="22" BorderThickness="1" Background="{ThemeResource AcrylicInAppFillColorDefaultInverseBrush}" CornerRadius="100" Padding="0" HorizontalAlignment="Right">
+                                                <FontIcon Glyph="&#xF142;" Margin="0 0 0 2" Foreground="{ThemeResource SystemControlAltHighAcrylicElementBrush}" FontWeight="SemiBold" FontSize="18" />
+                                                <FlyoutBase.AttachedFlyout>
+                                                    <StaticResource ResourceKey="PricingDetailsFlyout"/>
+                                                </FlyoutBase.AttachedFlyout>
+                                            </Button>
+                                        </Grid>
                                         <Grid>
                                             <TextBlock Text="5 nights" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
-                                            <TextBlock x:Name="AmountTextBox" Text="{x:Bind ViewModel.PriceWithMultiplier, Converter={StaticResource NumberToCurencyConverter} , Mode=OneWay}" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
+                                            <TextBlock x:Name="AmountTextBox" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right">
+                                                <Run Text="{x:Bind ViewModel.Item.PricePerNight, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}"/>
+                                                <Run>x5</Run>
+                                            </TextBlock>
                                         </Grid>
                                         <Grid>
                                             <TextBlock Text="Taxes" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
-                                            <TextBlock x:Name="TaxTextBox" Text="$9.90" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
+                                            <TextBlock x:Name="TaxTextBox" Text="{x:Bind ViewModel.Tax, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
@@ -242,16 +311,23 @@
                                 <Grid>
                                     <TextBlock Text="Voucher" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
                                     <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
-                                        <TextBlock x:Name="DiscountTextBlock" Style="{ThemeResource DetailSubTitleStyle}" TextDecorations="Underline" FontWeight="Normal" Foreground="Gray" Visibility="Collapsed">
-                                            <Run Text="10%"></Run> off
+                                        <TextBlock x:Name="DiscountPercentageTextBlock" Style="{ThemeResource DetailSubTitleStyle}" Visibility="Collapsed">
+                                            <Hyperlink Click="DiscountPercentageTextBlock_Click">
+                                                <Run Text="{x:Bind ViewModel.Voucher.DiscountPercentage, Mode=OneWay}"/>% off
+                                            </Hyperlink>
+                                            <FlyoutBase.AttachedFlyout>
+                                                <StaticResource ResourceKey="PricingDetailsFlyout"/>
+                                            </FlyoutBase.AttachedFlyout>
                                         </TextBlock>
-                                        <TextBlock x:Name="VoucherTextBox" Text="" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
+                                        <TextBlock x:Name="DiscountAmountTextBlock" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" Visibility="Collapsed">
+                                            -<Run Text="{x:Bind ViewModel.DiscountAmount, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}"/>
+                                        </TextBlock>
                                     </StackPanel>
                                 </Grid>
                                 <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
                                 <Grid>
                                     <TextBlock Text="Total" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                                    <TextBlock x:Name="TotalAmountTextBox" Text="{x:Bind ViewModel.TotalAmount, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                    <TextBlock x:Name="TotalAmountTextBox" Text="{x:Bind ViewModel.TotalAmount, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Bold" HorizontalAlignment="Right"/>
                                 </Grid>
                                 <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
                                 <Grid>
@@ -260,17 +336,17 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBox x:Name="VoucherInputTextBox" PlaceholderText="Enter Voucher" BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" Margin="0 0 -1 0" Padding="12" CornerRadius="0" Height="43" VerticalAlignment="Top"/>
-                                    <Button Grid.Column="1" Content="Apply" HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="Apply_click"
+                                    <Button x:Name="ApplyVoucherButton" Grid.Column="1" Content="Apply" HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="ApplyVoucherButton_click"
+                                            BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                             Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                             Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
                                             Style="{ThemeResource DefaultButtonStyle}"
                                             FontWeight="SemiBold"
-                                            BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                             Padding="24 12 24 12"                                            
                                             CornerRadius="0"
-                                            ToolTipService.ToolTip="Confirm the information above and pay for your reservation"/>
+                                            ToolTipService.ToolTip="Enter a voucher code to get a discount"/>
                                 </Grid>
-                                <TextBlock x:Name="VoucherWarning" Foreground="Red" Visibility="Collapsed" Text="" FontSize="12"/>
+                                <TextBlock x:Name="VoucherWarning" Foreground="Red" Visibility="Collapsed" FontSize="12"/>
                             </StackPanel>
                         </Grid>
                     </Grid>
