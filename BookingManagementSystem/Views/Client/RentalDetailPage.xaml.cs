@@ -18,6 +18,8 @@ using CommunityToolkit.WinUI.UI.Animations;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Views.Forms;
 using BookingManagementSystem.Views.Payment;
+using BookingManagementSystem.Services;
+using BookingManagementSystem.ViewModels.Payment;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -230,6 +232,24 @@ public sealed partial class RentalDetailPage : Page
 
     private void btnBookNow_Click(object sender, RoutedEventArgs e)
     {
-        Frame.Navigate(typeof(PaymentPage));
+        //Frame.Navigate(typeof(PaymentPage));
+        if (ViewModel.Item != null)
+        {
+            var navigationService = App.GetService<INavigationService>();
+
+            // Chuyển item Property hiện tại sang trang PaymentPage
+            navigationService.NavigateTo(typeof(PaymentViewModel).FullName!, ViewModel.Item.Id);
+        }
+        else
+        {
+            // Thông báo lỗi nếu không có thông tin
+            _ = new ContentDialog
+            {
+                XamlRoot = XamlRoot,
+                Title = "Error",
+                Content = "No property selected for booking.",
+                CloseButtonText = "Ok"
+            }.ShowAsync();
+        }
     }
 }
