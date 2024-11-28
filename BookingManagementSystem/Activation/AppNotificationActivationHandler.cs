@@ -26,8 +26,6 @@ public class AppNotificationActivationHandler : ActivationHandler<LaunchActivate
 
     protected async override Task HandleInternalAsync(LaunchActivatedEventArgs args)
     {
-        // TODO: Handle notification activations.
-
         // Access the AppNotificationActivatedEventArgs.
         var activatedEventArgs = (AppNotificationActivatedEventArgs)AppInstance.GetCurrent().GetActivatedEventArgs().Data;
 

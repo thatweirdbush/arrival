@@ -251,4 +251,30 @@ public partial class ShellPage : Page
             }
         }
     }
+
+    private async void NotificationButton_Click(object sender, RoutedEventArgs e)
+    {
+        // Reload the notification list
+        await ViewModel.LoadNotificationData();
+    }
+
+    private async void AllNotificationToggleButton_Click(object sender, RoutedEventArgs e)
+    {
+        // Uncheck the UnreadNotificationToggleButton
+        UnreadNotificationToggleButton.IsChecked = false;
+        AllNotificationToggleButton.IsChecked = true;
+
+        // Reload the notification list
+        await ViewModel.LoadNotificationData();
+    }
+
+    private async void UnreadNotificationToggleButton_Click(object sender, RoutedEventArgs e)
+    {
+        // Uncheck the AllNotificationToggleButton
+        AllNotificationToggleButton.IsChecked = false;
+        UnreadNotificationToggleButton.IsChecked = true;
+
+        // Reload the notification list
+        await ViewModel.LoadNotificationData(isUnreadFilter: true);
+    }
 }

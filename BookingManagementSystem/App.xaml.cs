@@ -29,6 +29,7 @@ using BookingManagementSystem.Views.Payment;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
+
 using WinUIEx.Messaging;
 
 namespace BookingManagementSystem;
@@ -120,6 +121,8 @@ public partial class App : Application
             services.AddSingleton<IRepository<PropertyTypeIcon>, PropertyTypeIconRepository>();
 
             // Views and ViewModels
+            services.AddTransient<NotificationViewModel>();
+            services.AddTransient<NotificationPage>();
             services.AddTransient<FloorPlanViewModel>();
             services.AddTransient<FloorPlanPage>();
             services.AddTransient<PlaceLocationViewModel>();

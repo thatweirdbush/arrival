@@ -135,7 +135,8 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
             $"Status: {booking.Status}\n" +
             $"Booking Date: {booking.CreatedAt}\n\n" +
             "We will review your booking and keep you updated. Thank you for choosing our service!",
-            CloseButtonText = "OK"
+            CloseButtonText = "OK",
+            DefaultButton = ContentDialogButton.Close
         };
 
         await dialog.ShowAsync();
@@ -166,7 +167,8 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
             XamlRoot = App.MainWindow.Content.XamlRoot,
             Title = title,
             Content = content,
-            CloseButtonText = "OK"
+            CloseButtonText = "OK",
+            DefaultButton = ContentDialogButton.Close
         };
 
         await dialog.ShowAsync();

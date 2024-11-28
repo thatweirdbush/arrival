@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel;
 using BookingManagementSystem.ViewModels.Account;
+using CommunityToolkit.Mvvm.Input;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -47,6 +48,16 @@ public partial class WishlistViewModel : ObservableRecipient
 
         // Initial check
         LoadPropertyList();
+    }
+
+    [RelayCommand]
+    public void OnItemClick(Property? clickedItem)
+    {
+        if (clickedItem != null)
+        {
+            _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
+            _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, clickedItem.Id);
+        }
     }
 
     private void Property_PropertyChanged(object? sender, PropertyChangedEventArgs e)
