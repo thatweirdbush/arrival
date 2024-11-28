@@ -39,7 +39,7 @@
                     </Button.Flyout>
                 </Button>
                 <Grid>
-                    <InfoBadge x:Name="infoBadge1" Value="5" Style="{StaticResource CriticalIconInfoBadgeStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 6 2 0" Canvas.ZIndex="1"/>
+                    <InfoBadge x:Name="TitleBarNotificationInfoBadge" Value="5" Style="{StaticResource CriticalIconInfoBadgeStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 6 2 0" Canvas.ZIndex="1"/>
                     <Button x:Name="NotificationButton" Click="NotificationButton_Click" 
                         Background="Transparent" BorderThickness="0" Width="48" 
                         CornerRadius="80" VerticalAlignment="Stretch"
@@ -52,8 +52,8 @@
                                         <Grid>
                                             <TextBlock FontSize="24" FontWeight="Bold" Text="Notifications" VerticalAlignment="Center"/>
                                             <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right">
-                                                <ToggleButton x:Name="AllNotificationToggleButton" Click="AllNotificationToggleButton_Click" Content="All" IsChecked="True" FontWeight="SemiBold" Padding="12 8 12 8" CornerRadius="16" BorderThickness="0" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"/>
-                                                <ToggleButton x:Name="UnreadNotificationToggleButton" Click="UnreadNotificationToggleButton_Click" Content="Unread" FontWeight="SemiBold" Padding="12 8 12 8" CornerRadius="16" BorderThickness="0" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"/>
+                                                <ToggleButton x:Name="AllNotificationToggleButton" Click="NotificationToggleButton_Click" Tag="all" Content="All" IsChecked="True" FontWeight="SemiBold" Padding="12 8 12 8" CornerRadius="16" BorderThickness="0" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"/>
+                                                <ToggleButton x:Name="UnreadNotificationToggleButton" Click="NotificationToggleButton_Click" Tag="unread" Content="Unread" FontWeight="SemiBold" Padding="12 8 12 8" CornerRadius="16" BorderThickness="0" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"/>
                                             </StackPanel>
                                         </Grid>
                                         <Line Stroke="Gray" X1="0" Y1="0" X2="400" Y2="0" StrokeThickness="1" Margin="0 16 0 8"/>
@@ -154,7 +154,7 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA8F;"/>
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.InfoBadge>
-                        <InfoBadge Value="5" Style="{StaticResource CriticalIconInfoBadgeStyle}"/>
+                        <InfoBadge x:Name="NavigationViewNotificationInfoBadge" Value="5" Style="{StaticResource CriticalIconInfoBadgeStyle}"/>
                     </NavigationViewItem.InfoBadge>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_FAQ" Icon="Flag" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.FAQViewModel"/>

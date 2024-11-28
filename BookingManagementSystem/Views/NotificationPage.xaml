@@ -4,9 +4,114 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:helper="using:BookingManagementSystem.Helpers"
+    xmlns:models="using:BookingManagementSystem.Core.Models"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    mc:Ignorable="d"
+    CacheMode="BitmapCache">
 
-    <Grid x:Name="ContentArea">
-        
-    </Grid>
+    <Page.Resources>
+        <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
+        <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
+    </Page.Resources>
+
+    <ScrollView x:Name="MainScrollView">
+        <Grid x:Name="MainGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="240"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="PageHeader">
+                <Grid.Background>
+                    <ImageBrush Stretch="UniformToFill">
+                        <ImageBrush.ImageSource>
+                            <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="1280"/>
+                        </ImageBrush.ImageSource>
+                    </ImageBrush>
+                </Grid.Background>
+                <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Image Width="60" Height="60" Source="/Assets/three-body-a-white.png"/>
+                    <Image Source="/Assets/arrival-bio-white.png" Height="60" Margin="16" Stretch="Fill"/>
+                </StackPanel>
+            </Grid>
+            <StackPanel Grid.Row="1" Spacing="24" HorizontalAlignment="Stretch" Margin="{StaticResource BlogViewWideContentMargin}">
+                <Grid x:Name="HeaderContent">
+                    <StackPanel Spacing="18" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="Notifications" Style="{ThemeResource TitleLargeTextBlockStyle}" Margin="0 0 12 0"/>
+                            <ToggleButton x:Name="AllNotificationToggleButton" Click="NotificationToggleButton_Click" Tag="all" Content="All" IsChecked="True" FontWeight="SemiBold" Padding="12 8 12 8" CornerRadius="16" BorderThickness="0" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"/>
+                            <ToggleButton x:Name="UnreadNotificationToggleButton" Click="NotificationToggleButton_Click" Tag="unread" Content="Unread" FontWeight="SemiBold" Padding="12 8 12 8" CornerRadius="16" BorderThickness="0" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"/>
+                        </StackPanel>
+                        <TextBlock Text="All your recent notifications are here" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Left" MinWidth="332"/>
+                        <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" Margin="0 0 0 0"/>
+                    </StackPanel>
+                    <CommandBar x:Name="CollectionCommandBar" Grid.Column="2" DefaultLabelPosition="Right" HorizontalAlignment="Right">
+                        <AppBarButton x:Name="btnSearch" Icon="Find" Tag="search" Label="Search" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnSelect" Icon="Bullets" Tag="select" Label="Select" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnRemove" Icon="Delete" Tag="remove" Label="Remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
+                            <AppBarButton.KeyboardAccelerators>
+                                <KeyboardAccelerator Key="Delete"/>
+                            </AppBarButton.KeyboardAccelerators>
+                        </AppBarButton>
+                        <AppBarButton x:Name="btnCancel" Icon="Cancel" Tag="cancel" Label="Cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
+                        <CommandBar.SecondaryCommands>
+                            <AppBarButton x:Name="btnMarkAllAsRead" Icon="Accept" Tag="mark-all-as-read" Label="Mark all as read" Click="OnCommandBarElementClicked"/>
+                            <AppBarButton x:Name="btnRemoveAll" Icon="Cancel" Tag="remove-all" Label="Remove all" Click="OnCommandBarElementClicked"/>
+                        </CommandBar.SecondaryCommands>
+                    </CommandBar>
+                </Grid>
+                <StackPanel x:Name="MainContent" Spacing="28">
+                    <Grid x:Name="MainContentGrid">
+                        <Grid x:Name="EmptyListMessageGrid" Visibility="{x:Bind ViewModel.IsNotificationListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0 8 0 140">
+                                <Image Source="/Assets/modern-european-house.png" Width="240" Height="240" Stretch="Fill" Margin="0 0 0 -12"/>
+                                <TextBlock Text="Your notifications live here" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="You will be notified when your booking is approved." Style="{ThemeResource DetailSubTitleStyle}"  HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                        <ListView x:Name="NotificationListView" ItemsSource="{x:Bind ViewModel.Notifications}" SelectionMode="Single"
+                                  Visibility="{x:Bind ViewModel.IsNotificationListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}"
+                                  animations:Connected.ListItemElementName="itemThumbnail"
+                                  animations:Connected.ListItemKey="animationKeyContentGrid"
+                                  IsItemClickEnabled="True">
+                            <ListView.ItemContainerTransitions>
+                                <TransitionCollection>
+                                    <PaneThemeTransition Edge="Bottom"/>
+                                </TransitionCollection>
+                            </ListView.ItemContainerTransitions>
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="models:Notification">
+                                    <Grid Margin="0,8,0,8" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image MaxHeight="100" Stretch="UniformToFill">
+                                            <Image.Source>
+                                                <BitmapImage UriSource="{x:Bind ImagePath}" DecodePixelHeight="100"/>
+                                            </Image.Source>
+                                        </Image>
+                                        <Grid Grid.Column="1" Margin="12,0,0,0">
+                                            <StackPanel Spacing="4">
+                                                <Grid>
+                                                <TextBlock Text="{x:Bind SenderName}" FontWeight="Bold" Style="{ThemeResource DetailBodyStyle}" MaxLines="1"/>
+                                                    <TextBlock Text="{x:Bind DateSent}" FontSize="12" Margin="0 2 0 0" Style="{ThemeResource BodyTextBlockStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                                                    <TextBlock Text="{x:Bind DateSent}" FontSize="12" Margin="0 2 0 0" Style="{ThemeResource BodyTextBlockStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+
+                                                </Grid>
+                                                <TextBlock Text="{x:Bind Title}" FontWeight="SemiBold" Style="{ThemeResource BaseTextBlockStyle}" MaxLines="1"/>
+                                                <TextBlock Text="{x:Bind Message}" Style="{ThemeResource BodyTextBlockStyle}" TextTrimming="CharacterEllipsis" MaxLines="2"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </ScrollView>
 </Page>
