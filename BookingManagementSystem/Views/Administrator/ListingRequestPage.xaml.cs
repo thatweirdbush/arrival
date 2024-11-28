@@ -1,6 +1,7 @@
 ﻿using BookingManagementSystem.ViewModels.Administrator;
 using BookingManagementSystem.Core.Models;
 
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace BookingManagementSystem.Views.Administrator;
@@ -26,45 +27,47 @@ public sealed partial class ListingRequestPage : Page
         switch (selectedValue)
         {
             case "Current":
-                EditOptionMenuFlyoutItem_AddToPriority.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+                EditOptionMenuFlyoutItem_AddToPriority.Visibility = Visibility.Collapsed;
                 ViewModel.GetPriorityPropertyListDataAsync();
                 break;
             case "Elites":
-                EditOptionMenuFlyoutItem_AddToPriority.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+                EditOptionMenuFlyoutItem_AddToPriority.Visibility = Visibility.Collapsed;
                 ViewModel.GetElitePropertyListDataAsync();
                 break;
             case "Trendings":
-                EditOptionMenuFlyoutItem_AddToPriority.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+                EditOptionMenuFlyoutItem_AddToPriority.Visibility = Visibility.Collapsed;
                 ViewModel.GetTrendingPropertyListDataAsync();
                 break;
             case "Requests":
                 ViewModel.GetRequestedPropertyListDataAsync();
-                EditOptionMenuFlyoutItem_AddToPriority.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+                EditOptionMenuFlyoutItem_AddToPriority.Visibility = Visibility.Visible;
                 break;
             default:
-                EditOptionMenuFlyoutItem_AddToPriority.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+                EditOptionMenuFlyoutItem_AddToPriority.Visibility = Visibility.Collapsed;
                 ViewModel.GetPriorityPropertyListDataAsync();
                 break;
         }
     }
 
-    private void btnEditList_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void btnEditList_Click(object sender, RoutedEventArgs e)
     {
+        PriorityPropertyListView.IsItemClickEnabled = false;
         PriorityPropertyListView.SelectionMode = ListViewSelectionMode.Multiple;
-        btnEditList.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
-        btnCancelEditingList.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
-        btnEditOptions.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+        btnEditList.Visibility = Visibility.Collapsed;
+        btnCancelEditingList.Visibility = Visibility.Visible;
+        btnEditOptions.Visibility = Visibility.Visible;
     }
 
-    private void btnCancelEditingList_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void btnCancelEditingList_Click(object sender, RoutedEventArgs e)
     {
+        PriorityPropertyListView.IsItemClickEnabled = true;
         PriorityPropertyListView.SelectionMode = ListViewSelectionMode.Single;
-        btnCancelEditingList.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
-        btnEditOptions.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
-        btnEditList.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+        btnCancelEditingList.Visibility = Visibility.Collapsed;
+        btnEditOptions.Visibility = Visibility.Collapsed;
+        btnEditList.Visibility = Visibility.Visible;
     }
 
-    private void btnEditOptions_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void btnEditOptions_Click(object sender, RoutedEventArgs e)
     {
         var clickedItem = sender as MenuFlyoutItem;
 
@@ -98,7 +101,8 @@ public sealed partial class ListingRequestPage : Page
                 XamlRoot = XamlRoot,
                 Title = "Added to list",
                 Content = "Items added to priority list successfully!",
-                CloseButtonText = "Ok"
+                CloseButtonText = "Ok",
+                DefaultButton = ContentDialogButton.Close
             }.ShowAsync();
         }
         else if (clickedItem?.Tag?.ToString() == "delete")
@@ -151,7 +155,8 @@ public sealed partial class ListingRequestPage : Page
                 XamlRoot = XamlRoot,
                 Title = "Deleted from list",
                 Content = "Items deleted from list successfully!",
-                CloseButtonText = "Ok"
+                CloseButtonText = "Ok",
+                DefaultButton = ContentDialogButton.Close
             }.ShowAsync();
         }
         else if (clickedItem?.Tag?.ToString() == "deselect")
@@ -162,11 +167,7 @@ public sealed partial class ListingRequestPage : Page
         {
             foreach (var item in PriorityPropertyListView.Items)
             {
-                if (PriorityPropertyListView.SelectedItems.Contains(item))
-                {
-                    PriorityPropertyListView.SelectedItems.Remove(item); // Deselect if selected
-                }
-                else
+                if (!PriorityPropertyListView.SelectedItems.Remove(item)) // Deselect if selected
                 {
                     PriorityPropertyListView.SelectedItems.Add(item); // Select if not selected
                 }

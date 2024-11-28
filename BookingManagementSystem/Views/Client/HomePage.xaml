@@ -252,8 +252,8 @@
                 </Button>
                 <Button x:Name="btnToggleSwitchWrapper" Click="btnToggleSwitchWrapper_Click" Padding="14 3 10 3" CornerRadius="12">
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <TextBlock Text="Display total before taxes" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                        <ToggleSwitch x:Name="ToggleSwitchDisplayTax" OffContent="{x:Null}" OnContent="{x:Null}" MinWidth="0"/>
+                        <TextBlock Text="Display total after taxes" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        <ToggleSwitch x:Name="ToggleSwitchDisplayTax" Toggled="ToggleSwitchDisplayTax_Toggled" OffContent="{x:Null}" OnContent="{x:Null}" MinWidth="0"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
@@ -319,7 +319,7 @@
                                                 <BitmapImage UriSource="/Assets/three-body-a.png" DecodePixelHeight="18"/>
                                             </Image.Source>
                                         </Image>
-                                        <TextBlock Text="Elite" FontWeight="Bold" Foreground="Black " HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Elite" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Border>
                                 <Button x:Name="btnFavourite" Click="btnFavourite_Click" CornerRadius="48" Width="48" Height="48" Background="Transparent" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10">

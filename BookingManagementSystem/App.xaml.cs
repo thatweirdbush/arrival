@@ -30,6 +30,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 
+using WinUIEx.Messaging;
+
 namespace BookingManagementSystem;
 
 // To learn more about WinUI 3, see https://docs.microsoft.com/windows/apps/winui/winui3/.
@@ -83,6 +85,7 @@ public partial class App : Application
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
             services.AddTransient<INavigationViewService, NavigationViewService>();
+            services.AddTransient<GeographicNameService>();
 
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
@@ -118,6 +121,8 @@ public partial class App : Application
             services.AddSingleton<IRepository<PropertyTypeIcon>, PropertyTypeIconRepository>();
 
             // Views and ViewModels
+            services.AddTransient<NotificationViewModel>();
+            services.AddTransient<NotificationPage>();
             services.AddTransient<FloorPlanViewModel>();
             services.AddTransient<FloorPlanPage>();
             services.AddTransient<PlaceLocationViewModel>();
@@ -228,6 +233,17 @@ public partial class App : Application
     {
         await PropertyImagesActivationHandler.CopyPropertyImagesToLocalFolderAsync();
         await PropertyImagesActivationHandler.BindingPropertyImagesWithLocalFolderAsync();
-        App.GetService<IAppNotificationService>().Show(string.Format("AppNotificationSamplePayload".GetLocalized(), AppContext.BaseDirectory));
+
+        // Create notification channel
+        App.GetService<IAppNotificationService>().ShowNotification(
+            title: "Welcome back to Arrival!",
+            message: "Today is a perfect day to start a journey.",
+            imageUri: "https://letsenhance.io/static/a31ab775f44858f1d1b80ee51738f4f3/11499/EnhanceAfter.jpg",
+            buttons:
+            [
+                ("Mark as read", "action=mark-as-read"),
+                ("See details", "action=see-details")
+            ]
+        );
     }
 }

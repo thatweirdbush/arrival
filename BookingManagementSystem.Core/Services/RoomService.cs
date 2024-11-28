@@ -14,7 +14,7 @@ public class RoomService : IRoomService
         _bookingRepository = bookingRepository;
     }
 
-    public async Task<IEnumerable<Property>> GetAvailableRoomsAsync(DateTimeOffset checkIn, DateTimeOffset checkOut)
+    public async Task<IEnumerable<Property>> GetAvailableRoomsAsync(DateTimeOffset? checkIn, DateTimeOffset? checkOut)
     {
         var bookings = await _bookingRepository.GetAllAsync();
         var unavailableRoomIds = bookings

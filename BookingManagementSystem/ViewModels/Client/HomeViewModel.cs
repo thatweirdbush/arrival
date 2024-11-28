@@ -26,8 +26,8 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
 
     // Properties nessesary for Schedule searching
     private readonly IRoomService _roomService;
-    public DateTimeOffset CheckInDate { get; set; } = DateTimeOffset.Now;
-    public DateTimeOffset CheckOutDate { get; set; } = DateTimeOffset.Now.AddDays(1);
+    public DateTimeOffset? CheckInDate { get; set; }
+    public DateTimeOffset? CheckOutDate { get; set; }
 
     public HomeViewModel(INavigationService navigationService, 
                         IRepository<Property> propertyRepository, 
@@ -121,7 +121,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
 
     public async Task SearchRoomsAsync()
     {
-        if (CheckInDate >= CheckOutDate)
+        if (CheckInDate == null || CheckOutDate == null)
         {
             return;
         }
@@ -133,7 +133,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         Properties.Clear();
         foreach (var room in results)
         {
-            Properties.Add(room);
+            Properties.Add((Property)room);
         }
     }
 }

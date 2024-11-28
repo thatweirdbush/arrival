@@ -108,6 +108,14 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
         // Add the booking to the database
         await AddBookingAsync(booking);
 
+        // Add a notification to the user
+        await _paymentFacade.AddNotificationAsync(new Notification
+        {
+            Title = "Booking Confirmed",
+            Message = $"Your booking to {Item.Name} has been confirmed, we are looking forward to welcoming you!",
+            ImagePath= Item.ImageThumbnail
+        });
+
         // Simulate network delay
         await Task.Delay(400);
 
@@ -116,6 +124,9 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
 
         // Show the success dialog
         await ShowSuccessDialogAsync(booking);
+
+        // Show the system notification
+        ShowSystemNotification(Item);
     }
 
     private async Task ShowSuccessDialogAsync(Booking booking)
@@ -132,10 +143,29 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
             $"Status: {booking.Status}\n" +
             $"Booking Date: {booking.CreatedAt}\n\n" +
             "We will review your booking and keep you updated. Thank you for choosing our service!",
-            CloseButtonText = "OK"
+            CloseButtonText = "OK",
+            DefaultButton = ContentDialogButton.Close
         };
 
         await dialog.ShowAsync();
+    }
+
+    private void ShowSystemNotification(Property property)
+    {
+        // Create parameters for the notification
+        var IdParameter = $"id={property.Id}";
+
+        // Create notification channel
+        App.GetService<IAppNotificationService>().ShowNotification(
+            title: "Booking Confirmed",
+            message: $"Your booking to {property.Name} has been confirmed, we are looking forward to welcoming you!",
+            imageUri: property.ImageThumbnail,
+            buttons:
+            [
+                ("Mark as read", "action=mark-as-read"),
+                ("See details", IdParameter)
+            ]
+        );
     }
 
     private async Task ShowErrorDialogAsync(string title, string content)
@@ -145,7 +175,8 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
             XamlRoot = App.MainWindow.Content.XamlRoot,
             Title = title,
             Content = content,
-            CloseButtonText = "OK"
+            CloseButtonText = "OK",
+            DefaultButton = ContentDialogButton.Close
         };
 
         await dialog.ShowAsync();

@@ -20,6 +20,7 @@ public sealed partial class WishlistPage : Page
 
     private void EditListing_Click(object sender, RoutedEventArgs e)
     {
+        WishlistGridView.IsItemClickEnabled = false;
         WishlistGridView.SelectionMode = ListViewSelectionMode.Multiple;
         btnSelect.Visibility = Visibility.Collapsed;
         btnCancel.Visibility = Visibility.Visible;
@@ -28,6 +29,7 @@ public sealed partial class WishlistPage : Page
 
     private void CancelEditing_Click(object sender, RoutedEventArgs e)
     {
+        WishlistGridView.IsItemClickEnabled = true;
         WishlistGridView.SelectionMode = ListViewSelectionMode.Single;
         btnCancel.Visibility = Visibility.Collapsed;
         btnRemove.Visibility = Visibility.Collapsed;

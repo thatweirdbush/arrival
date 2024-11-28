@@ -9,8 +9,7 @@ public sealed partial class HomePage : Page
 {
     // Properties nessesary for Geographic Names searching
     private CancellationTokenSource _debounceTokenSource = new();
-    private readonly GeographicNameService _geographicNamesService = new();
-    private const string GeoNamesUsername = "thatweirdbush";
+    private readonly GeographicNameService _geographicNamesService;
 
     public HomeViewModel ViewModel
     {
@@ -19,8 +18,9 @@ public sealed partial class HomePage : Page
 
     public HomePage()
     {
-        ViewModel = App.GetService<HomeViewModel>();
         InitializeComponent();
+        ViewModel = App.GetService<HomeViewModel>();
+        _geographicNamesService = App.GetService<GeographicNameService>();
     }
 
     private void btnToggleSwitchWrapper_Click(object sender, RoutedEventArgs e)
@@ -122,8 +122,8 @@ public sealed partial class HomePage : Page
             ViewModel.CheckInDate = ViewModel.CheckOutDate;
         }
         // Update the UI
-        btnCheckInCalendar.Content = ViewModel.CheckInDate.ToString("MMMM d");
-        btnCheckOutCalendar.Content = ViewModel.CheckOutDate.ToString("MMMM d");
+        btnCheckInCalendar.Content = ViewModel.CheckInDate?.ToString("MMMM d");
+        btnCheckOutCalendar.Content = ViewModel.CheckOutDate?.ToString("MMMM d");
     }
 
     private async void DestinationAutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -141,7 +141,7 @@ public sealed partial class HomePage : Page
 
                 // After 300ms, call search API
                 var query = sender.Text;
-                var suggestions = await _geographicNamesService.SearchLocationsAsync(query, GeoNamesUsername);
+                var suggestions = await _geographicNamesService.SearchLocationsAsync(query);
 
                 // Display list of suggestions
                 sender.ItemsSource = suggestions;
@@ -159,6 +159,26 @@ public sealed partial class HomePage : Page
             && frameworkElement.DataContext is DestinationTypeSymbol destinationTypeSymbol)
         {
             ViewModel.FilterProperties(destinationTypeSymbol);
+        }
+    }
+
+    private void ToggleSwitchDisplayTax_Toggled(object sender, RoutedEventArgs e)
+    {
+        // Kiểm tra trạng thái của ToggleSwitch
+        var isOn = ToggleSwitchDisplayTax.IsOn;
+
+        // Duyệt qua tất cả các Property trong ViewModel
+        foreach (var property in ViewModel.Properties)
+        {
+            // Điều chỉnh giá dựa trên trạng thái ToggleSwitch
+            if (isOn)
+            {
+                property.PricePerNight += 9.90m; // Thêm thuế
+            }
+            else
+            {
+                property.PricePerNight -= 9.90m; // Bỏ thuế
+            }
         }
     }
 }

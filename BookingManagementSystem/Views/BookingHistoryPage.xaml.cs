@@ -1,8 +1,8 @@
 ﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.DTOs;
-using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.ViewModels.Client;
+
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -21,23 +21,25 @@ public sealed partial class BookingHistoryPage : Page
         InitializeComponent();
     }
 
-    private void btnSelect_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void btnSelect_Click(object sender, RoutedEventArgs e)
     {
+        TripsGridView.IsItemClickEnabled = false;
         TripsGridView.SelectionMode = ListViewSelectionMode.Multiple;
-        btnSelect.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
-        btnCancel.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
-        btnDelete.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+        btnSelect.Visibility = Visibility.Collapsed;
+        btnCancel.Visibility = Visibility.Visible;
+        btnDelete.Visibility = Visibility.Visible;
     }
 
-    private void btnCancel_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void btnCancel_Click(object sender, RoutedEventArgs e)
     {
+        TripsGridView.IsItemClickEnabled = true;
         TripsGridView.SelectionMode = ListViewSelectionMode.Single;
-        btnCancel.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
-        btnDelete.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
-        btnSelect.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+        btnCancel.Visibility = Visibility.Collapsed;
+        btnDelete.Visibility = Visibility.Collapsed;
+        btnSelect.Visibility = Visibility.Visible;
     }
 
-    private async void btnDelete_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private async void btnDelete_Click(object sender, RoutedEventArgs e)
     {
         // Get selected items and remove them from the list
         var selectedItems = TripsGridView.SelectedItems.ToList();
@@ -55,7 +57,8 @@ public sealed partial class BookingHistoryPage : Page
             Title = "Delete Booking",
             Content = "Are you sure you want to cancel the selected booking(s)?",
             PrimaryButtonText = "Delete",
-            CloseButtonText = "Cancel"
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary
         };
 
         var result = await confirm.ShowAsync();
@@ -76,13 +79,13 @@ public sealed partial class BookingHistoryPage : Page
         }
     }
 
-    private void btnStartSearching_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void btnStartSearching_Click(object sender, RoutedEventArgs e)
     {
         // Navigate to Home Page
         App.GetService<INavigationService>().NavigateTo(typeof(HomeViewModel).FullName!);
     }
 
-    private void btnFavourite_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void btnFavourite_Click(object sender, RoutedEventArgs e)
     {
         // Toggle the favourite button  
         // Change the image source to the filled heart icon  

@@ -11,14 +11,14 @@
   IgnorableNamespaces="uap rescap genTemplate">
 
   <Identity
-    Name="293895ac-a4c8-48df-9cf9-ed79cc96a67h"
+    Name="Arrival"
     Publisher="CN=huyph"
-    Version="1.0.0.0" />
+    Version="1.2.120.0" />
     
   <mp:PhoneIdentity PhoneProductId="293895ac-a4c8-48df-9cf9-ed79cc96a67f" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
     
   <Properties>
-    <DisplayName>BookingManagementSystem</DisplayName>
+    <DisplayName>Arrival - Booking Management System</DisplayName>
     <PublisherDisplayName>huyph</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>

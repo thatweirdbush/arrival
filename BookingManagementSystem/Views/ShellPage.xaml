@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helpers="using:BookingManagementSystem.Helpers"
     xmlns:behaviors="using:BookingManagementSystem.Behaviors"
+    xmlns:models="using:BookingManagementSystem.Core.Models"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     Loaded="OnLoaded">
 
@@ -37,6 +38,54 @@
                         </MenuFlyout>
                     </Button.Flyout>
                 </Button>
+                <Grid>
+                    <InfoBadge x:Name="TitleBarNotificationInfoBadge" Value="5" Style="{StaticResource CriticalIconInfoBadgeStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 6 2 0" Canvas.ZIndex="1"/>
+                    <Button x:Name="NotificationButton" Click="NotificationButton_Click" 
+                        Background="Transparent" BorderThickness="0" Width="48" 
+                        CornerRadius="80" VerticalAlignment="Stretch"
+                        ToolTipService.ToolTip="Click to see recent notifications">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEA8F;"/>
+                        <Button.Flyout>
+                            <Flyout>
+                                <Grid MaxWidth="400">
+                                    <StackPanel>
+                                        <Grid>
+                                            <TextBlock FontSize="24" FontWeight="Bold" Text="Notifications" VerticalAlignment="Center"/>
+                                            <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right">
+                                                <ToggleButton x:Name="AllNotificationToggleButton" Click="NotificationToggleButton_Click" Tag="all" Content="All" IsChecked="True" FontWeight="SemiBold" Padding="12 8 12 8" CornerRadius="16" BorderThickness="0" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"/>
+                                                <ToggleButton x:Name="UnreadNotificationToggleButton" Click="NotificationToggleButton_Click" Tag="unread" Content="Unread" FontWeight="SemiBold" Padding="12 8 12 8" CornerRadius="16" BorderThickness="0" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                        <Line Stroke="Gray" X1="0" Y1="0" X2="400" Y2="0" StrokeThickness="1" Margin="0 16 0 8"/>
+                                        <ListView x:Name="NotificationListView" MaxHeight="500" ItemsSource="{x:Bind ViewModel.Notifications}">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate x:DataType="models:Notification">
+                                                    <Grid Margin="0,8,0,8" >
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="140"/>
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Image MaxHeight="100" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                            <Image.Source>
+                                                                <BitmapImage UriSource="{x:Bind ImagePath}" DecodePixelHeight="200"/>
+                                                            </Image.Source>
+                                                        </Image>
+                                                        <StackPanel Margin="12,0,0,0" Grid.Column="1" Spacing="4">
+                                                            <TextBlock Text="{x:Bind SenderName}" FontWeight="Bold" Style="{ThemeResource DetailBodyStyle}" MaxLines="1"/>
+                                                            <TextBlock Text="{x:Bind Title}" FontWeight="SemiBold" Style="{ThemeResource BaseTextBlockStyle}" MaxLines="1"/>
+                                                            <TextBlock Text="{x:Bind Message}" Style="{ThemeResource BodyTextBlockStyle}" TextTrimming="CharacterEllipsis" MaxLines="2"/>
+                                                            <TextBlock Text="{x:Bind DateSent}" FontSize="12" Margin="0 2 0 0" Style="{ThemeResource BodyTextBlockStyle}"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                    </StackPanel>
+                                </Grid>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                </Grid>
                 <Button x:Name="btnUser" Background="Transparent" BorderThickness="0" CornerRadius="24" 
                         HorizontalContentAlignment="Left" VerticalAlignment="Stretch"
                         ToolTipService.ToolTip="Account">
@@ -100,6 +149,14 @@
                         </NavigationViewItem>
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_Notification" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.NotificationViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA8F;"/>
+                    </NavigationViewItem.Icon>
+                    <NavigationViewItem.InfoBadge>
+                        <InfoBadge x:Name="NavigationViewNotificationInfoBadge" Value="5" Style="{StaticResource CriticalIconInfoBadgeStyle}"/>
+                    </NavigationViewItem.InfoBadge>
+                </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_FAQ" Icon="Flag" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.FAQViewModel"/>
             </NavigationView.MenuItems>
 
@@ -108,7 +165,7 @@
                     <Image Source="/Assets/Square44x44Logo.targetsize-48.png" Width="30" Height="30" Stretch="Fill"/>
                     <Image Source="/Assets/arrival-bio-resize-75.png" Height="30" Margin="6 0 0 0" Stretch="Fill"/>
                 </StackPanel>
-            </NavigationView.PaneHeader>           
+            </NavigationView.PaneHeader>
             <Grid>
                 <Frame x:Name="NavigationFrame" />
             </Grid>
@@ -120,7 +177,7 @@
                                 SuggestionChosen="MenuAutoSuggestBox_SuggestionChosen"
                                 AutomationProperties.Name="Menu AutoSuggestBox" />
             </NavigationView.AutoSuggestBox>
-            
+
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem x:Uid="Shell_Admin" Icon="GoToStart" AutomationProperties.Name="Administrator" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Administrator.AdministratorViewModel" />
             </NavigationView.FooterMenuItems>
