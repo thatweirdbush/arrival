@@ -65,9 +65,9 @@
                                                             <ColumnDefinition Width="140"/>
                                                             <ColumnDefinition Width="*" />
                                                         </Grid.ColumnDefinitions>
-                                                        <Image MaxHeight="100" Stretch="UniformToFill">
+                                                        <Image MaxHeight="100" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center">
                                                             <Image.Source>
-                                                                <BitmapImage UriSource="{x:Bind ImagePath}" DecodePixelHeight="100"/>
+                                                                <BitmapImage UriSource="{x:Bind ImagePath}" DecodePixelHeight="200"/>
                                                             </Image.Source>
                                                         </Image>
                                                         <StackPanel Margin="12,0,0,0" Grid.Column="1" Spacing="4">

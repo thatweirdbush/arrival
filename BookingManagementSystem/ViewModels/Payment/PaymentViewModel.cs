@@ -108,6 +108,14 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
         // Add the booking to the database
         await AddBookingAsync(booking);
 
+        // Add a notification to the user
+        await _paymentFacade.AddNotificationAsync(new Notification
+        {
+            Title = "Booking Confirmed",
+            Message = $"Your booking to {Item.Name} has been confirmed, we are looking forward to welcoming you!",
+            ImagePath= Item.ImageThumbnail
+        });
+
         // Simulate network delay
         await Task.Delay(400);
 
