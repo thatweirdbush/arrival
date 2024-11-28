@@ -39,7 +39,7 @@ public class Notification : INotifyPropertyChanged
     public DateTime DateSent
     {
         get; set;
-    }
+    } = DateTime.Now;
     public bool IsRead
     {
         get; set;

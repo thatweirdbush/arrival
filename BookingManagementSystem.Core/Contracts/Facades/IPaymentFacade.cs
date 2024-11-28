@@ -12,5 +12,5 @@ public interface IPaymentFacade
     Task<Property?> GetPropertyByIdAsync(int id);
     Task<IEnumerable<Voucher>> GetVouchersAsync();
     Task AddBookingAsync(Booking booking);
-
+    Task AddNotificationAsync(Notification notification);
 }

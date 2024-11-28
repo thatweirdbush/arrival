@@ -78,6 +78,7 @@
                         x:Name="WishlistGridView"
                         ItemsSource="{x:Bind ViewModel.Properties}"
                         IsItemClickEnabled="True"
+                        ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
                         FlowDirection="LeftToRight"
                         StretchContentForSingleRow="False"
                         ItemContainerStyle="{ThemeResource GridViewItemExpanded}"

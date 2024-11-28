@@ -13,6 +13,7 @@ using BookingManagementSystem.Views.Account;
 using BookingManagementSystem.Views.Client;
 using BookingManagementSystem.ViewModels.Account;
 using BookingManagementSystem.Core.Models;
+using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace BookingManagementSystem.Views;
 
@@ -249,6 +250,39 @@ public partial class ShellPage : Page
                 default:
                     break;
             }
+        }
+    }
+
+    private void NotificationButton_Click(object sender, RoutedEventArgs e)
+    {
+        // Reset the InfoBadge
+        TitleBarNotificationInfoBadge.Visibility = Visibility.Collapsed;
+        NavigationViewNotificationInfoBadge.Visibility = Visibility.Collapsed;
+    }
+
+    private async void NotificationToggleButton_Click(object sender, RoutedEventArgs e)
+    {
+        var element = (sender as ToggleButton)!.Tag;
+        switch (element)
+        {
+            case "all":
+                {   // Uncheck the UnreadNotificationToggleButton
+                    UnreadNotificationToggleButton.IsChecked = false;
+                    AllNotificationToggleButton.IsChecked = true;
+
+                    // Reload the notification list
+                    await ViewModel.LoadNotificationData();
+                    break;
+                }
+            case "unread":
+                {   // Uncheck the AllNotificationToggleButton
+                    AllNotificationToggleButton.IsChecked = false;
+                    UnreadNotificationToggleButton.IsChecked = true;
+
+                    // Reload the notification list
+                    await ViewModel.LoadNotificationData(isUnreadFilter: true);
+                    break;
+                }
         }
     }
 }
