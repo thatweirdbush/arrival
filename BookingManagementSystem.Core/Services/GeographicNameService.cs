@@ -88,7 +88,6 @@ public class GeographicNameService
             var response = await _httpClient.GetStringAsync(apiUrl);
             var result = JsonSerializer.Deserialize<WikipediaSearchResponse>(response);
 
-            // Return the list of search results
             return result?.Results ?? [];
         }
         catch (Exception ex)
@@ -96,6 +95,31 @@ public class GeographicNameService
             Debug.WriteLine($"Error: {ex.Message}");
             return [];
         }
+    }
+
+    public async Task<List<CountryInfo>> GetAllCountryInfoAsync()
+    {
+        var apiUrl = $"http://api.geonames.org/countryInfoJSON?username={GeoNamesUsername}";
+
+        try
+        {
+            var response = await _httpClient.GetStringAsync(apiUrl);
+            var result = JsonSerializer.Deserialize<CountryInfoResponse>(response);
+
+            return result?.Countries ?? [];
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error: {ex.Message}");
+            return [];
+        }
+    }
+
+    // Get a list of country with format "CountryName - CountryCode" (e.g., "Vietnam - VN")
+    public async Task<List<string>> GetCountryNamesAndCodesAsync()
+    {
+        var countries = await GetAllCountryInfoAsync();
+        return countries.Select(country => $"{country.CountryName} - {country.CountryCode}").ToList();
     }
 
     public class GeographicNamesResponse
@@ -108,6 +132,24 @@ public class GeographicNameService
 
         [JsonPropertyName("geonames")]
         public List<GeographicName> GeographicNames
+        {
+            get; set;
+        }
+    }
+
+    public class WikipediaSearchResponse
+    {
+        [JsonPropertyName("geonames")]
+        public List<WikipediaSearchResult> Results
+        {
+            get; set;
+        }
+    }
+
+    public class CountryInfoResponse
+    {
+        [JsonPropertyName("geonames")]
+        public List<CountryInfo> Countries
         {
             get; set;
         }
@@ -175,10 +217,77 @@ public class GeographicNameService
         }
     }
 
-    public class WikipediaSearchResponse
+    public class CountryInfo
     {
-        [JsonPropertyName("geonames")]
-        public List<WikipediaSearchResult> Results
+        public string Continent
+        {
+            get; set;
+        }
+        public string Capital
+        {
+            get; set;
+        }
+        public string Languages
+        {
+            get; set;
+        }
+        public int GeoNameId
+        {
+            get; set;
+        }
+        public double South
+        {
+            get; set;
+        }
+        public string IsoAlpha3
+        {
+            get; set;
+        }
+        public double North
+        {
+            get; set;
+        }
+        public string FipsCode
+        {
+            get; set;
+        }
+        public long Population
+        {
+            get; set;
+        }
+        public double East
+        {
+            get; set;
+        }
+        public string IsoNumeric
+        {
+            get; set;
+        }
+        public double AreaInSqKm
+        {
+            get; set;
+        }
+        public string CountryCode
+        {
+            get; set;
+        }
+        public double West
+        {
+            get; set;
+        }
+        public string CountryName
+        {
+            get; set;
+        }
+        public string PostalCodeFormat
+        {
+            get; set;
+        }
+        public string ContinentName
+        {
+            get; set;
+        }
+        public string CurrencyCode
         {
             get; set;
         }
