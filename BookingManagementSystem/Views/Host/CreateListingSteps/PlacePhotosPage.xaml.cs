@@ -160,15 +160,11 @@ public sealed partial class PlacePhotosPage : Page
 
     private void PhotosListView_DragItemsCompleted(ListViewBase sender, DragItemsCompletedEventArgs args)
     {
-        if (ViewModel == null)
-        {
-            return;
-        }
         // Get the reordered photos
         var reorderedPhotos = PhotosListView.Items.Cast<StorageFile>().ToList();
 
         // Update the ViewModel's Photos list
-        ViewModel.Photos.Clear();
+        ViewModel!.Photos.Clear();
         foreach (var photo in reorderedPhotos)
         {
             ViewModel.Photos.Add(photo);

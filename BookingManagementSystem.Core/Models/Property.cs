@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using BookingManagementSystem.Core.Services;
 
 namespace BookingManagementSystem.Core.Models;
 
@@ -130,8 +131,47 @@ public class Property : INotifyPropertyChanged
 
     public string Location
     {
+        get
+        {
+            if (Country == null && string.IsNullOrEmpty(StateOrProvince))
+            {
+                return DEFAULT_PROPERTY_LOCATION;
+            }
+            return $"{StateOrProvince}, {Country.CountryName}";
+        }
+    }
+    public string FullLocation
+    {
+        get
+        {
+            if (Country == null && string.IsNullOrEmpty(StreetAddress) &&
+                string.IsNullOrEmpty(CityOrDistrict) && string.IsNullOrEmpty(StateOrProvince))
+            {
+                return DEFAULT_PROPERTY_LOCATION;
+            }
+            return $"{StreetAddress}, {CityOrDistrict}, {StateOrProvince}, {Country.CountryName}";
+        }
+    }
+    public CountryInfo Country
+    {
         get; set;
-    } = DEFAULT_PROPERTY_LOCATION;
+    }
+    public string StateOrProvince
+    {
+        get; set;
+    }
+    public string CityOrDistrict
+    {
+        get; set;
+    }
+    public string StreetAddress
+    {
+        get; set;
+    }
+    public string PostalCode
+    {
+        get; set;
+    }
     public int Capacity
     {
         get; set;

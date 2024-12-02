@@ -6,6 +6,7 @@ using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.Input;
 using BookingManagementSystem.Core.Contracts.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -126,12 +127,13 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
             return;
         }
         var results = await _roomService.GetAvailableRoomsAsync(CheckInDate, CheckOutDate);
+        var listedProperties = results.Where(x => x.Status == PropertyStatus.Listed);
 
         // Simulate network delay
         await Task.Delay(600);
 
         Properties.Clear();
-        foreach (var room in results)
+        foreach (var room in listedProperties)
         {
             Properties.Add((Property)room);
         }

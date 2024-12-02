@@ -92,7 +92,6 @@ public partial class App : Application
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Core Services
-            services.AddSingleton<IDao, MockDao>();
             services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<PropertyImagesActivationHandler>();
 

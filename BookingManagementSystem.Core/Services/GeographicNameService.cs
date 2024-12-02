@@ -6,7 +6,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using BookingManagementSystem.Core.Models;
 
 namespace BookingManagementSystem.Core.Services;
 public class GeographicNameService
@@ -49,30 +48,33 @@ public class GeographicNameService
         return []; // Return an empty list if no results
     }
 
-    public async Task<string> FindNearbyPlaceAsync(double latitude, double longitude)
+    public async Task<GeographicName> FindNearbyPlaceAsync(double latitude, double longitude)
     {
         var apiUrl = $"http://api.geonames.org/findNearbyPlaceNameJSON?lat={latitude}&lng={longitude}&lang={Language}&username={GeoNamesUsername}";
-        var response = await _httpClient.GetStringAsync(apiUrl);
 
         try
         {
+            var response = await _httpClient.GetStringAsync(apiUrl);
             var result = JsonSerializer.Deserialize<GeographicNamesResponse>(response);
 
             // Get the nearest place
             var nearestPlace = result?.GeographicNames?.FirstOrDefault();
 
-            if (nearestPlace != null)
-            {
-                return $"{nearestPlace.Name}, {nearestPlace.CountryName}";
-            }
-            return Property.DEFAULT_PROPERTY_LOCATION;
+            // Return the nearest place or null if no results found
+            return nearestPlace;
         }
         catch (JsonException ex)
         {
             Debug.WriteLine($"JSON Parsing Error: {ex.Message}");
-            return "Error parsing JSON response.";
+            return null; // Indicate an error by returning null
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error: {ex.Message}");
+            return null; // Handle other unexpected exceptions
         }
     }
+
 
     public async Task<List<WikipediaSearchResult>> SearchWikipediaAsync(string query, int maxRows = 10)
     {
@@ -115,13 +117,6 @@ public class GeographicNameService
         }
     }
 
-    // Get a list of country with format "CountryName - CountryCode" (e.g., "Vietnam - VN")
-    public async Task<List<string>> GetCountryNamesAndCodesAsync()
-    {
-        var countries = await GetAllCountryInfoAsync();
-        return countries.Select(country => $"{country.CountryName} - {country.CountryCode}").ToList();
-    }
-
     public class GeographicNamesResponse
     {
         [JsonPropertyName("totalResultsCount")]
@@ -154,143 +149,177 @@ public class GeographicNameService
             get; set;
         }
     }
+}
 
-    public class GeographicName
+public class GeographicName
+{
+    [JsonPropertyName("name")]
+    public string Name
     {
-        [JsonPropertyName("name")]
-        public string Name
-        {
-            get; set;
-        }
-
-        [JsonPropertyName("lat")]
-        public string Latitude
-        {
-            get; set;
-        }
-
-        [JsonPropertyName("lng")]
-        public string Longitude
-        {
-            get; set;
-        }
-
-        [JsonPropertyName("countryName")]
-        public string CountryName
-        {
-            get; set;
-        }
-
-        [JsonPropertyName("population")]
-        public int Population
-        {
-            get; set;
-        }
+        get; set;
     }
 
-    public class WikipediaSearchResult
+    [JsonPropertyName("lat")]
+    public string Latitude
     {
-        [JsonPropertyName("title")]
-        public string Title
-        {
-            get; set;
-        }
-        [JsonPropertyName("summary")]
-        public string Summary
-        {
-            get; set;
-        }
-        [JsonPropertyName("wikipediaUrl")]
-        public string WikipediaUrl
-        {
-            get; set;
-        }
-        [JsonPropertyName("lat")]
-        public decimal Latitude
-        {
-            get; set;
-        }
-        [JsonPropertyName("lng")]
-        public decimal Longitude
-        {
-            get; set;
-        }
+        get; set;
     }
 
-    public class CountryInfo
+    [JsonPropertyName("lng")]
+    public string Longitude
     {
-        public string Continent
-        {
-            get; set;
-        }
-        public string Capital
-        {
-            get; set;
-        }
-        public string Languages
-        {
-            get; set;
-        }
-        public int GeoNameId
-        {
-            get; set;
-        }
-        public double South
-        {
-            get; set;
-        }
-        public string IsoAlpha3
-        {
-            get; set;
-        }
-        public double North
-        {
-            get; set;
-        }
-        public string FipsCode
-        {
-            get; set;
-        }
-        public long Population
-        {
-            get; set;
-        }
-        public double East
-        {
-            get; set;
-        }
-        public string IsoNumeric
-        {
-            get; set;
-        }
-        public double AreaInSqKm
-        {
-            get; set;
-        }
-        public string CountryCode
-        {
-            get; set;
-        }
-        public double West
-        {
-            get; set;
-        }
-        public string CountryName
-        {
-            get; set;
-        }
-        public string PostalCodeFormat
-        {
-            get; set;
-        }
-        public string ContinentName
-        {
-            get; set;
-        }
-        public string CurrencyCode
-        {
-            get; set;
-        }
+        get; set;
     }
 
+    [JsonPropertyName("countryName")]
+    public string CountryName
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("population")]
+    public int Population
+    {
+        get; set;
+    }
+}
+
+public class WikipediaSearchResult
+{
+    [JsonPropertyName("title")]
+    public string Title
+    {
+        get; set;
+    }
+    [JsonPropertyName("summary")]
+    public string Summary
+    {
+        get; set;
+    }
+    [JsonPropertyName("wikipediaUrl")]
+    public string WikipediaUrl
+    {
+        get; set;
+    }
+    [JsonPropertyName("lat")]
+    public decimal Latitude
+    {
+        get; set;
+    }
+    [JsonPropertyName("lng")]
+    public decimal Longitude
+    {
+        get; set;
+    }
+}
+
+public class CountryInfo
+{
+    [JsonPropertyName("continent")]
+    public string Continent
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("capital")]
+    public string Capital
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("languages")]
+    public string Languages
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("geonameId")]
+    public int GeoNameId
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("south")]
+    public double South
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("isoAlpha3")]
+    public string IsoAlpha3
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("north")]
+    public double North
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("fipsCode")]
+    public string FipsCode
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("population")]
+    public string Population
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("east")]
+    public double East
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("isoNumeric")]
+    public string IsoNumeric
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("areaInSqKm")]
+    public string AreaInSqKm
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("countryCode")]
+    public string CountryCode
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("west")]
+    public double West
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("countryName")]
+    public string CountryName
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("postalCodeFormat")]
+    public string PostalCodeFormat
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("continentName")]
+    public string ContinentName
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("currencyCode")]
+    public string CurrencyCode
+    {
+        get; set;
+    }
 }
