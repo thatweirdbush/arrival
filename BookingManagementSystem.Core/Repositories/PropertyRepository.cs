@@ -34,6 +34,17 @@ public class PropertyRepository : Repository<Property>
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
                 ],
+                DestinationTypes = 
+                [
+                    DestinationType.AmazingPools, 
+                    DestinationType.AmazingViews, 
+                    DestinationType.Beach, 
+                    DestinationType.City, 
+                    DestinationType.TopCities, 
+                    DestinationType.Luxe, 
+                    DestinationType.Room, 
+                    DestinationType.NationalParks
+                ],
                 Country = new CountryInfo
                 {
                     CountryName = "France",
@@ -72,6 +83,16 @@ public class PropertyRepository : Repository<Property>
                     "hidden-bamboo-bali/hidden-bamboo-bali-9.jpg",
                     "hidden-bamboo-bali/hidden-bamboo-bali-10.jpg"
                 ],
+                DestinationTypes =
+                [
+                    DestinationType.AmazingViews,
+                    DestinationType.Countryside,
+                    DestinationType.Farm,
+                    DestinationType.Treehouses,
+                    DestinationType.Lakefront,
+                    DestinationType.Tropical,
+                    DestinationType.Room,
+                ],
                 Country = new CountryInfo
                 {
                     CountryName = "Indonesia",
@@ -105,6 +126,14 @@ public class PropertyRepository : Repository<Property>
                     "nature-stone-house-siquijor/nature-stone-house-siquijor-4.jpg",
                     "nature-stone-house-siquijor/nature-stone-house-siquijor-5.jpg",
                     "nature-stone-house-siquijor/nature-stone-house-siquijor-6.jpg"
+                ],
+                DestinationTypes =
+                [
+                    DestinationType.Countryside,
+                    DestinationType.Tropical,
+                    DestinationType.Room,
+                    DestinationType.Farm,
+                    DestinationType.TinyHomes,
                 ],
                 Country = new CountryInfo
                 {
@@ -149,6 +178,16 @@ public class PropertyRepository : Repository<Property>
                     "abong-2-a-frame-house-great-view/abong-2-a-frame-house-great-view-15.jpg",
                     "abong-2-a-frame-house-great-view/abong-2-a-frame-house-great-view-16.jpg"
                 ],
+                DestinationTypes =
+                [
+                    DestinationType.AmazingViews,
+                    DestinationType.Beach,
+                    DestinationType.City,
+                    DestinationType.TopCities,
+                    DestinationType.Luxe,
+                    DestinationType.Room,
+                    DestinationType.TinyHomes
+                ],
                 Country = new CountryInfo
                 {
                     CountryName = "Philippines",
@@ -188,6 +227,13 @@ public class PropertyRepository : Repository<Property>
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
                 ],
+                DestinationTypes =
+                [
+                    DestinationType.City,
+                    DestinationType.Room,
+                    DestinationType.TinyHomes,
+                    DestinationType.Mansions
+                ],
                 Country = new CountryInfo
                 {
                     CountryName = "Italy",
@@ -225,6 +271,13 @@ public class PropertyRepository : Repository<Property>
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                ],
+                DestinationTypes =
+                [
+                    DestinationType.City,
+                    DestinationType.Room,
+                    DestinationType.TinyHomes,
+                    DestinationType.Mansions
                 ],
                 Country = new CountryInfo
                 {
@@ -265,6 +318,15 @@ public class PropertyRepository : Repository<Property>
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
                 ],
+                DestinationTypes =
+                [
+                    DestinationType.AmazingPools,
+                    DestinationType.City,
+                    DestinationType.TopCities,
+                    DestinationType.Luxe,
+                    DestinationType.Room,
+                    DestinationType.TinyHomes
+                ],
                 Country = new CountryInfo
                 {
                     CountryName = "United Kingdom",
@@ -303,6 +365,14 @@ public class PropertyRepository : Repository<Property>
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
                 ],
+                DestinationTypes =
+                [
+                    DestinationType.AmazingViews,
+                    DestinationType.City,
+                    DestinationType.Luxe,
+                    DestinationType.Room,
+                    DestinationType.Mansions
+                ],
                 Country = new CountryInfo
                 {
                     CountryName = "South Africa",
@@ -340,6 +410,15 @@ public class PropertyRepository : Repository<Property>
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                ],
+                DestinationTypes =
+                [
+                    DestinationType.AmazingViews,
+                    DestinationType.City,
+                    DestinationType.Room,
+                    DestinationType.TinyHomes,
+                    DestinationType.Mansions,
+                    DestinationType.Lakefront,
                 ],
                 Country = new CountryInfo
                 {
@@ -384,6 +463,15 @@ public class PropertyRepository : Repository<Property>
                     CountryName = "New Zealand",
                     CountryCode = "NZ"
                 },
+                DestinationTypes =
+                [
+                    DestinationType.AmazingPools,
+                    DestinationType.Countryside,
+                    DestinationType.Farm,
+                    DestinationType.Treehouses,
+                    DestinationType.Tropical,
+                    DestinationType.Room,
+                ],
                 StateOrProvince = "Auckland",
                 CityOrDistrict = "Kumeū",
                 StreetAddress = "212 Access Road",
@@ -416,6 +504,14 @@ public class PropertyRepository : Repository<Property>
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-8.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                ],
+                DestinationTypes =
+                [
+                    DestinationType.AmazingViews,
+                    DestinationType.Farm,
+                    DestinationType.Beach,
+                    DestinationType.Tropical,
+                    DestinationType.Room,
                 ],
                 Country = new CountryInfo
                 {
@@ -456,6 +552,15 @@ public class PropertyRepository : Repository<Property>
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg"
                 ],
+                DestinationTypes =
+                [
+                    DestinationType.AmazingViews,
+                    DestinationType.Countryside,
+                    DestinationType.Treehouses,
+                    DestinationType.Lakefront,
+                    DestinationType.Tropical,
+                    DestinationType.Room,
+                ],
                 Country = new CountryInfo
                 {
                     CountryName = "Cyprus",
@@ -493,6 +598,15 @@ public class PropertyRepository : Repository<Property>
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                ],
+                DestinationTypes =
+                [
+                    DestinationType.AmazingViews,
+                    DestinationType.Countryside,
+                    DestinationType.Treehouses,
+                    DestinationType.Lakefront,
+                    DestinationType.Tropical,
+                    DestinationType.Room,
                 ],
                 Country = new CountryInfo
                 {
@@ -533,6 +647,16 @@ public class PropertyRepository : Repository<Property>
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
                 ],
+                DestinationTypes =
+                [
+                    DestinationType.AmazingViews,
+                    DestinationType.Countryside,
+                    DestinationType.Farm,
+                    DestinationType.Treehouses,
+                    DestinationType.Lakefront,
+                    DestinationType.Tropical,
+                    DestinationType.Room,
+                ],
                 Country = new CountryInfo
                 {
                     CountryName = "Thailand",
@@ -570,6 +694,15 @@ public class PropertyRepository : Repository<Property>
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-9.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
+                ],
+                DestinationTypes =
+                [
+                    DestinationType.AmazingViews,
+                    DestinationType.Countryside,
+                    DestinationType.Treehouses,
+                    DestinationType.Lakefront,
+                    DestinationType.Tropical,
+                    DestinationType.Room,
                 ],
                 Country = new CountryInfo
                 {
