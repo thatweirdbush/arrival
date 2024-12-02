@@ -19,6 +19,36 @@ public class GeographicNameService
         _httpClient = new HttpClient();
     }
 
+    public async Task<List<GeographicName>> SearchLocationsOriginalAsync(string query, int maxRows = 10)
+    {
+        if (string.IsNullOrEmpty(query))
+        {
+            return [];
+        }
+
+        var apiUrl = $"http://api.geonames.org/searchJSON?q={query}&maxRows={maxRows}&username={GeoNamesUsername}";
+
+        try
+        {
+            var response = await _httpClient.GetStringAsync(apiUrl);
+
+            // Deserialize JSON into GeographicNamesResponse
+            var searchResult = JsonSerializer.Deserialize<GeographicNamesResponse>(response);
+
+            if (searchResult?.GeographicNames != null && searchResult.GeographicNames.Count != 0)
+            {
+                // Return the list of GeographicName objects
+                return searchResult.GeographicNames;
+            }
+        }
+        catch (JsonException ex)
+        {
+            Debug.WriteLine($"JSON Parsing Error: {ex.Message}");
+        }
+
+        return []; // Return an empty list if no results or an error occurs
+    }
+
     public async Task<List<string>> SearchLocationsAsync(string query, int maxRows = 10)
     {
         if (string.IsNullOrEmpty(query))

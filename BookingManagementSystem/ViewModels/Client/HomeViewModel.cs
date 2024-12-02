@@ -5,34 +5,47 @@ using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.Input;
 using BookingManagementSystem.Core.Contracts.Facades;
+using BookingManagementSystem.Core.Contracts.Services;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
 public partial class HomeViewModel : ObservableRecipient, INavigationAware
 {
     private readonly INavigationService _navigationService;
-    private readonly IHomeFacade _homeFacade;
+    private readonly IRoomService _roomService;
 
-    // Filtered destination data
-    public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = [];
+    [ObservableProperty]
+    private bool isPropertyListEmpty;
+
+    [ObservableProperty]
+    private string? destination;
+
+    [ObservableProperty]
+    private int numberOfAdults;
+
+    [ObservableProperty]
+    private int numberOfChildren;
+
+    [ObservableProperty]
+    private int numberOfPets;
+    public DateTimeOffset? CheckInDate { get; set; }
+    public DateTimeOffset? CheckOutDate { get; set; }
 
     // List of items for the AdaptiveGridView
     public ObservableCollection<Property> Properties { get; set; } = [];
 
-    [ObservableProperty]
-    private bool isPropertyListEmpty;
-    public DateTimeOffset? CheckInDate { get; set; }
-    public DateTimeOffset? CheckOutDate { get; set; }
+    // Filtered destination data
+    public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = [];
 
     public IAsyncRelayCommand SearchAvailableRoomsCommand
     {
         get;
     }
 
-    public HomeViewModel(INavigationService navigationService, IHomeFacade homeFacade)
+    public HomeViewModel(INavigationService navigationService, IRoomService roomService)
     {
         _navigationService = navigationService;
-        _homeFacade = homeFacade;
+        _roomService = roomService;
 
         // Subscribe to CollectionChanged event
         Properties.CollectionChanged += (s, e) => CheckPropertyListCount();
@@ -47,10 +60,15 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     public async void OnNavigatedTo(object parameter)
     {
         // Load DestinationTypeSymbols data
-        DestinationTypeSymbols = await _homeFacade.GetAllDestinationTypeSymbolsAsync();
+        DestinationTypeSymbols = await _roomService.GetAllDestinationTypeSymbolsAsync();
 
         // Load Properties data
         LoadAllProperties();
+
+        // Initialize observable properties
+        NumberOfAdults = 0;
+        NumberOfChildren = 0;
+        NumberOfPets = 0;
     }
 
     public void OnNavigatedFrom()
@@ -75,7 +93,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     public async void LoadAllProperties()
     {
         Properties.Clear();
-        var data = await _homeFacade.GetAllPropertiesAsync();
+        var data = await _roomService.GetAllPropertiesAsync();
         var listedProperties = data.Where(x => x.Status == PropertyStatus.Listed);
 
         foreach (var item in listedProperties)
@@ -102,7 +120,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
         // Reload all properties before filtering
         Properties.Clear();
-        var data = await _homeFacade.GetAllPropertiesAsync();
+        var data = await _roomService.GetAllPropertiesAsync();
 
         // Prepare Trending properties data by filtering based on IsPriority or IsFavourtie
         if (destinationTypeSymbol.DestinationType.Equals(DestinationType.Trending))
@@ -123,9 +141,10 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     {
         if (CheckInDate == null || CheckOutDate == null)
         {
-            return;
+            return; // Check-in and check-out dates are required
         }
-        var results = await _homeFacade.GetAvailableRoomsAsync(CheckInDate, CheckOutDate);
+
+        var results = await _roomService.GetAvailableRoomsAsync(CheckInDate, CheckOutDate, Destination, NumberOfAdults + NumberOfChildren, NumberOfPets);
         var listedProperties = results.Where(x => x.Status == PropertyStatus.Listed);
 
         // Simulate network delay
@@ -140,6 +159,6 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
 
     public Task<List<string>> SearchLocationsAsync(string query)
     {
-        return _homeFacade.SearchLocationsAsync(query);
+        return _roomService.SearchLocationsAsync(query);
     }
 }

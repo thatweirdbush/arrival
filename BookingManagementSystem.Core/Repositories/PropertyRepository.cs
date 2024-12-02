@@ -49,7 +49,9 @@ public class PropertyRepository : Repository<Property>
                 IsAvailable = true,
                 Latitude = 48.864716,
                 Longitude = 2.349014,
-                IsPriority = true
+                IsPriority = true,
+                IsPetFriendly = true,
+                MaxGuests = 2
             },
             new()
             {
@@ -86,7 +88,9 @@ public class PropertyRepository : Repository<Property>
                 IsAvailable = true,
                 Latitude = -8.409518,
                 Longitude = 115.188919,
-                IsPriority = true
+                IsPriority = true,
+                IsPetFriendly = true,
+                MaxGuests = 4
             },
             new()
             {
@@ -118,7 +122,9 @@ public class PropertyRepository : Repository<Property>
                 IsFavourite = true,
                 IsAvailable = true,
                 Latitude = 9.2219739,
-                Longitude = 123.5347378
+                Longitude = 123.5347378,
+                IsPetFriendly = true,
+                MaxGuests = 6
             },
             new()
             {
@@ -161,7 +167,9 @@ public class PropertyRepository : Repository<Property>
                 IsAvailable = true,
                 Latitude = 16.41639,
                 Longitude = 120.59306,
-                IsPriority = true
+                IsPriority = true,
+                IsPetFriendly = false,
+                MaxGuests = 2
             },
             new()
             {
@@ -198,7 +206,9 @@ public class PropertyRepository : Repository<Property>
                 IsFavourite = false,
                 IsAvailable = true,
                 Latitude = 37.6062,
-                Longitude = -50.3321
+                Longitude = -50.3321,
+                IsPetFriendly = false,
+                MaxGuests = 2
             },
             new()
             {
@@ -236,7 +246,9 @@ public class PropertyRepository : Repository<Property>
                 IsAvailable = true,
                 Latitude = 57.6062,
                 Longitude = -42.3321,
-                IsPriority = true
+                IsPriority = true,
+                IsPetFriendly = true,
+                MaxGuests = 2
             },
             new()
             {
@@ -273,7 +285,9 @@ public class PropertyRepository : Repository<Property>
                 IsAvailable = true,
                 Latitude = 77.6062,
                 Longitude = -32.3321,
-                IsPriority = true
+                IsPriority = true,
+                IsPetFriendly = false,
+                MaxGuests = 8
             },
             new()
             {
@@ -310,7 +324,9 @@ public class PropertyRepository : Repository<Property>
                 IsFavourite = true,
                 IsAvailable = true,
                 Latitude = 87.6062,
-                Longitude = -12.3321
+                Longitude = -12.3321,
+                IsPetFriendly = false,
+                MaxGuests = 10
             },
             new()
             {
@@ -347,7 +363,9 @@ public class PropertyRepository : Repository<Property>
                 IsFavourite = false,
                 IsAvailable = true,
                 Latitude = 30.6062,
-                Longitude = -22.3321
+                Longitude = -22.3321,
+                IsPetFriendly = false,
+                MaxGuests = 4
             },
             new()
             {
@@ -384,7 +402,9 @@ public class PropertyRepository : Repository<Property>
                 IsFavourite = true,
                 IsAvailable = true,
                 Latitude = 72.6062,
-                Longitude = 32.3321
+                Longitude = 32.3321,
+                IsPetFriendly = true,
+                MaxGuests = 6
             },
             new()
             {
@@ -422,7 +442,9 @@ public class PropertyRepository : Repository<Property>
                 IsAvailable = true,
                 Latitude = 17.6062,
                 Longitude = -42.3321,
-                IsPriority = true
+                IsPriority = true,
+                IsPetFriendly = false,
+                MaxGuests = 4
             },
             new()
             {
@@ -459,7 +481,9 @@ public class PropertyRepository : Repository<Property>
                 IsFavourite = true,
                 IsAvailable = true,
                 Latitude = 0.6062,
-                Longitude = -2.3321
+                Longitude = -2.3321,
+                IsPetFriendly = true,
+                MaxGuests = 2
             },
             new()
             {
@@ -497,7 +521,9 @@ public class PropertyRepository : Repository<Property>
                 IsAvailable = true,
                 Latitude = 50.6062,
                 Longitude = 42.3321,
-                IsPriority = true
+                IsPriority = true,
+                IsPetFriendly = true,
+                MaxGuests = 2
             },
             new()
             {
@@ -534,7 +560,9 @@ public class PropertyRepository : Repository<Property>
                 IsFavourite = true,
                 IsAvailable = true,
                 Latitude = 6.6062,
-                Longitude = -72.3321
+                Longitude = -72.3321,
+                IsPetFriendly = false,
+                MaxGuests = 4
             },
             new()
             {
@@ -572,7 +600,9 @@ public class PropertyRepository : Repository<Property>
                 IsAvailable = true,
                 Latitude = 57.6062,
                 Longitude = -82.3321,
-                IsPriority = true
+                IsPriority = true,
+                IsPetFriendly = true,
+                MaxGuests = 2
             }
         ]);
     }

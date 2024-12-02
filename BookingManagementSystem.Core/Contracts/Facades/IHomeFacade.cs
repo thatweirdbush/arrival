@@ -10,6 +10,6 @@ public interface IHomeFacade
 {
     Task<IEnumerable<DestinationTypeSymbol>> GetAllDestinationTypeSymbolsAsync();
     Task<IEnumerable<Property>> GetAllPropertiesAsync();
-    Task<IEnumerable<Property>> GetAvailableRoomsAsync(DateTimeOffset? checkIn, DateTimeOffset? checkOut);
-    Task<List<string>> SearchLocationsAsync(string query, int maxRows = 10);
+#nullable enable
+    Task<IEnumerable<Property>> GetAvailableRoomsAsync(DateTimeOffset? checkIn, DateTimeOffset? checkOut, string? destination = null, int? guests = null, int? pets = null);
 }

@@ -19,19 +19,14 @@ public class HomeFacade : IHomeFacade
     // Properties nessesary for Schedule searching
     private readonly IRoomService _roomService;
 
-    // Properties nessesary for Geographic Names searching
-    private readonly GeographicNameService _geographicNamesService;
-
     public HomeFacade(
         IRepository<Property> propertyRepository,
         IRepository<DestinationTypeSymbol> destinationTypeSymbolRepository,
-        IRoomService roomService,
-        GeographicNameService geographicNamesService)
+        IRoomService roomService)
     {
         _propertyRepository = propertyRepository;
         _destinationTypeSymbolRepository = destinationTypeSymbolRepository;
         _roomService = roomService;
-        _geographicNamesService = geographicNamesService;
     }
 
     public Task<IEnumerable<DestinationTypeSymbol>> GetAllDestinationTypeSymbolsAsync()
@@ -47,8 +42,9 @@ public class HomeFacade : IHomeFacade
         return await _roomService.GetAvailableRoomsAsync(checkIn, checkOut);
     }
 
-    public async Task<List<string>> SearchLocationsAsync(string query, int maxRows = 10)
+#nullable enable
+    public async Task<IEnumerable<Property>> GetAvailableRoomsAsync(DateTimeOffset? checkIn, DateTimeOffset? checkOut, string? destination = null, int? guests = null, int? pets = null)
     {
-        return await _geographicNamesService.SearchLocationsAsync(query, maxRows);
+        return await _roomService.GetAvailableRoomsAsync(checkIn, checkOut, destination, guests, pets);
     }
 }

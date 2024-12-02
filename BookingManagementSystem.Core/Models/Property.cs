@@ -221,7 +221,14 @@ public class Property : INotifyPropertyChanged
     {
         get; set;
     } = false;
-
+    public bool IsPetFriendly
+    {
+        get; set;
+    } = false;
+    public int MaxGuests
+    {
+        get; set;
+    } = 1;
     public int LastEditedStep
     {
         get; set;

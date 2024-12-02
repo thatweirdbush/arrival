@@ -107,12 +107,12 @@
                                 <StackPanel>
                                     <TextBlock Text="Where" FontWeight="SemiBold" Margin="10 0 0 0" FontSize="12.5"/>
                                     <AutoSuggestBox x:Name="DestinationAutoSuggestBox" 
-                                                PlaceholderText="Search destinations" 
-                                                BorderThickness="0" Background="Transparent" 
-                                                MinHeight="0" MinWidth="200" CornerRadius="12" 
-                                                Foreground="Gray" Margin="0 0 0 -9"
-                                                TextChanged="DestinationAutoSuggestBox_TextChanged"
-                                                AutomationProperties.Name="Destination AutoSuggestBox">
+                                                    PlaceholderText="Search destinations" 
+                                                    BorderThickness="0" Background="Transparent" 
+                                                    MinHeight="0" MinWidth="200" CornerRadius="12" 
+                                                    Foreground="Gray" Margin="0 0 0 -9"
+                                                    TextChanged="DestinationAutoSuggestBox_TextChanged"
+                                                    Text="{x:Bind ViewModel.Destination, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
                                         <AutoSuggestBox.Resources>
                                             <Style TargetType="FlyoutPresenter">
                                                 <Setter Property="MinWidth" Value="500"/>
@@ -160,9 +160,9 @@
                                                 </StackPanel>
                                             </StackPanel>
                                             <StackPanel Grid.Column="1" Spacing="40" Margin="48 0 0 0">
-                                                <NumberBox x:Name="NumberBoxAdults" Value="0" SpinButtonPlacementMode="Compact" SmallChange="1" LargeChange="5" />
-                                                <NumberBox x:Name="NumberBoxChildren" Value="0" SpinButtonPlacementMode="Compact" SmallChange="1" LargeChange="5" />
-                                                <NumberBox x:Name="NumberBoxPets" Value="0" SpinButtonPlacementMode="Compact" SmallChange="1" LargeChange="5" />
+                                                <NumberBox x:Name="NumberBoxAdults" Value="{x:Bind ViewModel.NumberOfAdults, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" SpinButtonPlacementMode="Compact" SmallChange="1" LargeChange="5" />
+                                                <NumberBox x:Name="NumberBoxChildren" Value="{x:Bind ViewModel.NumberOfChildren, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" SpinButtonPlacementMode="Compact" SmallChange="1" LargeChange="5" />
+                                                <NumberBox x:Name="NumberBoxPets" Value="{x:Bind ViewModel.NumberOfPets, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" SpinButtonPlacementMode="Compact" SmallChange="1" LargeChange="5" />
                                             </StackPanel>
                                         </Grid>
                                     </Flyout>
