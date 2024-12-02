@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helper="using:BookingManagementSystem.Helpers"
-    xmlns:models="using:BookingManagementSystem.Core.Models"
+    xmlns:models="using:BookingManagementSystem.Core.Services"
     xmlns:vm="using:BookingManagementSystem.ViewModels"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
@@ -14,20 +14,6 @@
     mc:Ignorable="d">
 
     <ScrollView>
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="TitleTextBoxState">
-                <VisualState x:Name="TitleLengthGreaterThanMaxValue">
-                    <VisualState.StateTriggers>
-                        <triggers:CompareStateTrigger Comparison="GreaterThan" To="250" Value="{x:Bind ViewModel.CurrentLocation.Length, Mode=OneWay}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="LocationTextBox.BorderBrush" Value="Red" />
-                        <Setter Target="LocationInputError.Visibility" Value="Visible" />
-                        <Setter Target="LocationErrorText.Text" Value="The maximum number of characters allowed is 250." />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
         <Grid x:Name="ContentArea" VerticalAlignment="Center" MaxWidth="640" Margin="28 0 28 40">
             <Grid RowSpacing="32">
                 <Grid.RowDefinitions>
@@ -55,20 +41,32 @@
                                    Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
                     </StackPanel>
                     <StackPanel x:Name="DescriptionBody" Grid.Row="1" Spacing="12">
-                        <AutoSuggestBox x:Name="LocationTextBox" FontSize="20" Padding="18" CornerRadius="8" Height="100"
-                                        Text="{x:Bind ViewModel.CurrentLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        TextChanged="LocationTextBox_TextChanged"
-                                        QuerySubmitted="LocationTextBox_QuerySubmitted"
-                                        BorderBrush="{ThemeResource AcrylicInAppFillColorDefaultInverseBrush}"/>
-                        <Grid>
-                            <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Foreground="DimGray" HorizontalAlignment="Left">
-                                <Run Text="{x:Bind ViewModel.CurrentLocation.Length, Mode=OneWay}"/>/250
-                            </TextBlock>
-                            <StackPanel x:Name="LocationInputError" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" Visibility="Collapsed">
-                                <InfoBadge Style="{ThemeResource CriticalIconInfoBadgeStyle}"/>
-                                <TextBlock x:Name="LocationErrorText" Foreground="{ThemeResource SystemFillColorCriticalBrush}"/>
-                            </StackPanel>
-                        </Grid>
+                        <ComboBox x:Name="CountryListComboBox" PlaceholderText="Country / region" Padding="14" FontSize="20"
+                                  CornerRadius="8" Height="50" HorizontalAlignment="Stretch" BorderBrush="Gray"
+                                  ItemsSource="{x:Bind ViewModel.CountryList, Mode=OneWay}"
+                                  SelectedItem="{x:Bind ViewModel.SelectedCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="models:CountryInfo">
+                                    <TextBlock FontSize="20">
+                                    <Run Text="{x:Bind CountryName}"/> -
+                                    <Run Text="{x:Bind CountryCode}"/>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <StackPanel BorderBrush="Gray" Spacing="-1">
+                            <TextBox x:Name="StreetAddressTextBox" FontSize="20" Height="50" CornerRadius="8 8 0 0" BorderBrush="Gray" Padding="12" PlaceholderText="Street address"
+                                     TextChanged="PropertyTextBox_TextChanged"
+                                     Text="{x:Bind ViewModel.SelectedStreetAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox x:Name="CityOrDistrictTextBox" FontSize="20" Height="50" CornerRadius="0" BorderBrush="Gray" Padding="12" PlaceholderText="City / district / town"
+                                     TextChanged="PropertyTextBox_TextChanged"
+                                     Text="{x:Bind ViewModel.SelectedCityOrDistrict, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox x:Name="StateOrProvinceTextBox" FontSize="20" Height="50" CornerRadius="0" BorderBrush="Gray" Padding="12" PlaceholderText="State / province"
+                                     TextChanged="PropertyTextBox_TextChanged"
+                                     Text="{x:Bind ViewModel.SelectedStateOrProvince, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox x:Name="OptionalPostalCodeTextBox" FontSize="20" Height="50" CornerRadius="0 0 8 8" BorderBrush="Gray" Padding="12" PlaceholderText="Postal code (if applicable)"
+                                     Text="{x:Bind ViewModel.SelectedPostalCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
             </Grid>

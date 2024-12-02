@@ -123,7 +123,7 @@
                                     </Grid>
                                     <Grid Grid.Row="1" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}" MinHeight="12" MinWidth="12" Padding="20">
                                         <StackPanel Spacing="4" MaxWidth="300" HorizontalAlignment="Left">
-                                            <TextBlock Text="{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}" MaxLines="1"/>
+                                            <TextBlock Text="{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}" MaxLines="2"/>
                                             <TextBlock Text="{x:Bind Location}" Style="{ThemeResource DetailBodyStyle}" MaxLines="1"/>
                                             <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Foreground="Gray" VerticalAlignment="Bottom" Margin="0 2 0 0">  
                                                 <Run/>Created at
