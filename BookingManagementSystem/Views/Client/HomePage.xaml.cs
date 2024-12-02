@@ -138,7 +138,7 @@ public sealed partial class HomePage : Page
 
                 // After 400ms, call search API
                 var query = sender.Text;
-                var suggestions = await ViewModel.SearchLocationsAsync(query);
+                var suggestions = await ViewModel.SearchLocationsToStringAsync(query);
 
                 // Display list of suggestions
                 sender.ItemsSource = suggestions;

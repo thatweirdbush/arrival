@@ -95,7 +95,7 @@ public class Property : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
     public override string ToString() => $"{Name} ({Location}), {Description}, " +
-        $"Capacity: {Capacity}, Price: {PricePerNight:C}, Is Available: {IsAvailable}, " +
+        $"Price: {PricePerNight:C}, Is Available: {IsAvailable}, " +
         $"Created At: {CreatedAt}, Updated At: {UpdatedAt}";
     public int Id
     {
@@ -169,10 +169,6 @@ public class Property : INotifyPropertyChanged
         get; set;
     }
     public string PostalCode
-    {
-        get; set;
-    }
-    public int Capacity
     {
         get; set;
     }

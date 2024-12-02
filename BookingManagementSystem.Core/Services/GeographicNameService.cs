@@ -19,7 +19,7 @@ public class GeographicNameService
         _httpClient = new HttpClient();
     }
 
-    public async Task<List<GeographicName>> SearchLocationsOriginalAsync(string query, int maxRows = 10)
+    public async Task<List<GeographicName>> SearchLocationsAsync(string query, int maxRows = 10)
     {
         if (string.IsNullOrEmpty(query))
         {
@@ -49,33 +49,12 @@ public class GeographicNameService
         return []; // Return an empty list if no results or an error occurs
     }
 
-    public async Task<List<string>> SearchLocationsAsync(string query, int maxRows = 10)
+    public async Task<List<string>> GeographicNameToStringListAsync(string query, int maxRows = 10)
     {
-        if (string.IsNullOrEmpty(query))
-        {
-            return [];
-        }
-        var apiUrl = $"http://api.geonames.org/searchJSON?q={query}&maxRows={maxRows}&username={GeoNamesUsername}";
-        var response = await _httpClient.GetStringAsync(apiUrl);
+        var data = await SearchLocationsAsync(query, maxRows);
 
-        try
-        {
-            // Deserialize JSON into GeographicNamesResponse
-            var searchResult = JsonSerializer.Deserialize<GeographicNamesResponse>(response);
-
-            if (searchResult?.GeographicNames != null && searchResult.GeographicNames.Count > 0)
-            {
-                // Returns a list of location names (combining name and country)
-                return searchResult.GeographicNames.Select(location =>
-                    $"{location.Name}, {location.CountryName}").ToList();
-            }
-        }
-        catch (JsonException ex)
-        {
-            Debug.WriteLine($"JSON Parsing Error: {ex.Message}");
-        }
-
-        return []; // Return an empty list if no results
+        // Concatenate the `Name` and `CountryName` of the locations into a list of strings
+        return data.Select(location => $"{location.Name}, {location.CountryName}").ToList();
     }
 
     public async Task<GeographicName> FindNearbyPlaceAsync(double latitude, double longitude)

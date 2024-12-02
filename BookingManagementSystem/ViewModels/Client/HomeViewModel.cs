@@ -148,7 +148,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         var listedProperties = results.Where(x => x.Status == PropertyStatus.Listed);
 
         // Simulate network delay
-        await Task.Delay(600);
+        await Task.Delay(500);
 
         Properties.Clear();
         foreach (var room in listedProperties)
@@ -157,8 +157,8 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
     }
 
-    public Task<List<string>> SearchLocationsAsync(string query)
+    public Task<List<string>> SearchLocationsToStringAsync(string query)
     {
-        return _roomService.SearchLocationsAsync(query);
+        return _roomService.SearchLocationsToStringAsync(query);
     }
 }

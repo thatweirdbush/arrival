@@ -47,7 +47,7 @@ public partial class PlaceLocationViewModel : BaseStepViewModel
     }
 
     public async Task<GeographicName> FindNearbyPlaceAsync() => await _geographicNamesService.FindNearbyPlaceAsync(CurrentLatitude, CurrentLongitude);
-    public async Task<List<string>> SearchLocationsAsync(string query) => await _geographicNamesService.SearchLocationsAsync(query);
+    public async Task<List<string>> SearchLocationsAsync(string query) => await _geographicNamesService.GeographicNameToStringListAsync(query);
     public async Task<List<WikipediaSearchResult>> SearchWikipediaAsync(string query, int maxRows) => await _geographicNamesService.SearchWikipediaAsync(query, maxRows);
 
     public override void SaveProcess()
