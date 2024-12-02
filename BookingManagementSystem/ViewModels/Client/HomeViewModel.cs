@@ -2,19 +2,16 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
-using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.Input;
-using BookingManagementSystem.Core.Contracts.Services;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using BookingManagementSystem.Core.Contracts.Facades;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
 public partial class HomeViewModel : ObservableRecipient, INavigationAware
 {
     private readonly INavigationService _navigationService;
-    private readonly IRepository<Property> _propertyRepository;
-    private readonly IRepository<DestinationTypeSymbol> _destinationTypeSymbolRepository;
+    private readonly IHomeFacade _homeFacade;
 
     // Filtered destination data
     public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = [];
@@ -24,21 +21,18 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
 
     [ObservableProperty]
     private bool isPropertyListEmpty;
-
-    // Properties nessesary for Schedule searching
-    private readonly IRoomService _roomService;
     public DateTimeOffset? CheckInDate { get; set; }
     public DateTimeOffset? CheckOutDate { get; set; }
 
-    public HomeViewModel(INavigationService navigationService, 
-                        IRepository<Property> propertyRepository, 
-                        IRepository<DestinationTypeSymbol> destinationTypeSymbolRepository,
-                        IRoomService roomService)
+    public IAsyncRelayCommand SearchAvailableRoomsCommand
+    {
+        get;
+    }
+
+    public HomeViewModel(INavigationService navigationService, IHomeFacade homeFacade)
     {
         _navigationService = navigationService;
-        _propertyRepository = propertyRepository;
-        _destinationTypeSymbolRepository = destinationTypeSymbolRepository;
-        _roomService = roomService;
+        _homeFacade = homeFacade;
 
         // Subscribe to CollectionChanged event
         Properties.CollectionChanged += (s, e) => CheckPropertyListCount();
@@ -46,18 +40,14 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         // Initial check
         CheckPropertyListCount();
 
+        // Async relay command for searching available rooms
         SearchAvailableRoomsCommand = new AsyncRelayCommand(SearchRoomsAsync);
-    }
-
-    private void CheckPropertyListCount()
-    {
-        IsPropertyListEmpty = Properties.Count == 0;
     }
 
     public async void OnNavigatedTo(object parameter)
     {
         // Load DestinationTypeSymbols data
-        DestinationTypeSymbols = await _destinationTypeSymbolRepository.GetAllAsync();
+        DestinationTypeSymbols = await _homeFacade.GetAllDestinationTypeSymbolsAsync();
 
         // Load Properties data
         LoadAllProperties();
@@ -67,16 +57,9 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     {
     }
 
-    public async void LoadAllProperties()
+    private void CheckPropertyListCount()
     {
-        Properties.Clear();
-        var data = await _propertyRepository.GetAllAsync();
-        var listedProperties = data.Where(x => x.Status == PropertyStatus.Listed);
-
-        foreach (var item in listedProperties)
-        {
-            Properties.Add(item);
-        }
+        IsPropertyListEmpty = Properties.Count == 0;
     }
 
     [RelayCommand]
@@ -89,9 +72,25 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
     }
 
-    public IAsyncRelayCommand SearchAvailableRoomsCommand
+    public async void LoadAllProperties()
     {
-        get;
+        Properties.Clear();
+        var data = await _homeFacade.GetAllPropertiesAsync();
+        var listedProperties = data.Where(x => x.Status == PropertyStatus.Listed);
+
+        foreach (var item in listedProperties)
+        {
+            Properties.Add(item);
+        }
+    }
+
+    public void ToggleDisplayPropertiesPriceWithTax(bool isTaxIncluded = false)
+    {
+        var taxAmount = 9.90m;
+        foreach (var property in Properties)
+        {
+            property.PricePerNight += isTaxIncluded ? taxAmount : -taxAmount;
+        }
     }
 
     public async void FilterProperties(DestinationTypeSymbol destinationTypeSymbol)
@@ -103,7 +102,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
         // Reload all properties before filtering
         Properties.Clear();
-        var data = await _propertyRepository.GetAllAsync();
+        var data = await _homeFacade.GetAllPropertiesAsync();
 
         // Prepare Trending properties data by filtering based on IsPriority or IsFavourtie
         if (destinationTypeSymbol.DestinationType.Equals(DestinationType.Trending))
@@ -126,7 +125,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         {
             return;
         }
-        var results = await _roomService.GetAvailableRoomsAsync(CheckInDate, CheckOutDate);
+        var results = await _homeFacade.GetAvailableRoomsAsync(CheckInDate, CheckOutDate);
         var listedProperties = results.Where(x => x.Status == PropertyStatus.Listed);
 
         // Simulate network delay
@@ -137,5 +136,10 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         {
             Properties.Add((Property)room);
         }
+    }
+
+    public Task<List<string>> SearchLocationsAsync(string query)
+    {
+        return _homeFacade.SearchLocationsAsync(query);
     }
 }

@@ -2,14 +2,12 @@
 using Microsoft.UI.Xaml.Controls;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.Core.Services;
 
 namespace BookingManagementSystem.Views.Client;
 public sealed partial class HomePage : Page
 {
     // Properties nessesary for Geographic Names searching
     private CancellationTokenSource _debounceTokenSource = new();
-    private readonly GeographicNameService _geographicNamesService;
 
     public HomeViewModel ViewModel
     {
@@ -20,7 +18,6 @@ public sealed partial class HomePage : Page
     {
         InitializeComponent();
         ViewModel = App.GetService<HomeViewModel>();
-        _geographicNamesService = App.GetService<GeographicNameService>();
     }
 
     private void btnToggleSwitchWrapper_Click(object sender, RoutedEventArgs e)
@@ -136,12 +133,12 @@ public sealed partial class HomePage : Page
 
             try
             {
-                // Wait 300ms to debounce
-                await Task.Delay(300, _debounceTokenSource.Token);
+                // Wait 400ms to debounce
+                await Task.Delay(400, _debounceTokenSource.Token);
 
-                // After 300ms, call search API
+                // After 400ms, call search API
                 var query = sender.Text;
-                var suggestions = await _geographicNamesService.SearchLocationsAsync(query);
+                var suggestions = await ViewModel.SearchLocationsAsync(query);
 
                 // Display list of suggestions
                 sender.ItemsSource = suggestions;
@@ -164,21 +161,6 @@ public sealed partial class HomePage : Page
 
     private void ToggleSwitchDisplayTax_Toggled(object sender, RoutedEventArgs e)
     {
-        // Kiểm tra trạng thái của ToggleSwitch
-        var isOn = ToggleSwitchDisplayTax.IsOn;
-
-        // Duyệt qua tất cả các Property trong ViewModel
-        foreach (var property in ViewModel.Properties)
-        {
-            // Điều chỉnh giá dựa trên trạng thái ToggleSwitch
-            if (isOn)
-            {
-                property.PricePerNight += 9.90m; // Thêm thuế
-            }
-            else
-            {
-                property.PricePerNight -= 9.90m; // Bỏ thuế
-            }
-        }
+        ViewModel.ToggleDisplayPropertiesPriceWithTax(ToggleSwitchDisplayTax.IsOn);
     }
 }
