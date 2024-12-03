@@ -13,7 +13,7 @@
   <Identity
     Name="Arrival"
     Publisher="CN=huyph"
-    Version="1.2.120.0" />
+    Version="1.2.140.0" />
     
   <mp:PhoneIdentity PhoneProductId="293895ac-a4c8-48df-9cf9-ed79cc96a67f" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
     

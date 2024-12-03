@@ -17,35 +17,35 @@ Created with WinUI and the latest design ideologies, Arrival is modern while kee
 We use all of your favourite material: Acrylic. We use Microsoft's icons and controls as well as some of our own to create a generally native feeling experience. Our own controls and icons give users a truly personalised experience, being able to choose their own icon packs and with features like compact mode, you can use it on any Windows device!
 
 ### Demo Video
-
+Upcoming...
 
 ### Main Feature Screenshot
 <table>
-  <image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Home%20Page.png'/>
+  <image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Home%20Page.webp'/>
   <tr>
-    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Rental%20Details%20Page.png'/></td>
-    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Payment%20Page.png'/></td>
+    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Rental%20Details%20Page.webp'/></td>
+    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Payment%20Page.webp'/></td>
   </tr>
   <tr>
-    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Signin%20Page.png'/></td>
-    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Listing%20Requests%20Page.png'/></td>
+    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Signin%20Page.webp'/></td>
+    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Listing%20Requests%20Page.webp'/></td>
   </tr>
   <tr>
-    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Notification%20Page.png'/></td>
-    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20FAQ%20Page.png'/></td>
+    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Notification%20Page.webp'/></td>
+    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20FAQ%20Page.webp'/></td>
   </tr>
 </table>
 
 ### Create Listing Step Screenshot
 <table>
-  <image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Create%20Listing%20Begin.png'/>
+  <image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Create%20Listing%20Begin.webp'/>
   <tr>
-    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Create%20Listing%20Location.png'/></td>
-    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Create%20Listing%20Amenity.png'/></td>
+    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Create%20Listing%20Location.webp'/></td>
+    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Create%20Listing%20Amenity.webp'/></td>
   </tr>
   <tr>
-    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Create%20Listing%20Photo.png'/></td>
-    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Create%20Listing%20Price.png'/></td>
+    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Create%20Listing%20Photo.webp'/></td>
+    <td width="50%"><image src='./BookingManagementSystem/Assets/Screenshots/Screenshot%20Create%20Listing%20Price.webp'/></td>
   </tr>
 </table>
       
@@ -202,18 +202,18 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
 
 ## Teamwork - Git Flow
 ### Project Management With Trello
-![Project Management With Trello.](./BookingManagementSystem/Assets/Screenshots/Screenshot%20Project%20Management%20Trello.png)
+![Project Management With Trello.](./BookingManagementSystem/Assets/Screenshots/Screenshot%20Project%20Management%20Trello.webp)
 
 ### Git Flow
-![Git Flow.](./BookingManagementSystem/Assets/Screenshots/Screenshot%20Git%20Flow.png)
+![Git Flow.](./BookingManagementSystem/Assets/Screenshots/Screenshot%20Git%20Flow.webp)
  
 > [!NOTE]
 > ### Self-Assessment: 10/10 (%)
 
 ## Quality Assurance
 ### Source Code Review & Merg Into Main Process
-![Source Code Review & Merg Into Main Process.](./BookingManagementSystem/Assets/Screenshots/Screenshot%20Pull%20Requests.png)
-![Source Code Review & Merg Into Main Process.](./BookingManagementSystem/Assets/Screenshots/Screenshot%20Pull%20Requests%202.png)
+![Source Code Review & Merg Into Main Process.](./BookingManagementSystem/Assets/Screenshots/Screenshot%20Pull%20Requests.webp)
+![Source Code Review & Merg Into Main Process.](./BookingManagementSystem/Assets/Screenshots/Screenshot%20Pull%20Requests%202.webp)
  
 > [!NOTE]
 > ### Self-Assessment: 15/20 (%)
