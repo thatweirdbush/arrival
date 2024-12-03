@@ -7,6 +7,7 @@ using BookingManagementSystem.Views;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
 using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace BookingManagementSystem.ViewModels;
 
@@ -17,6 +18,15 @@ public partial class ShellViewModel : ObservableRecipient
 
     [ObservableProperty]
     private object? selected;
+
+    [ObservableProperty]
+    private int unreadNotificationCount;
+
+    [ObservableProperty]
+    private bool isNotificationListEmpty;
+
+    [ObservableProperty]
+    private bool isUnreadNotificationListEmpty;
     public INavigationService NavigationService { get; }
     public INavigationViewService NavigationViewService { get; }
     public IRepository<Notification> NotificationRepository { get; }
@@ -48,6 +58,14 @@ public partial class ShellViewModel : ObservableRecipient
 
         // Get notification data list
         await LoadNotificationData();
+        UpdateObservableProperties();
+    }
+
+    public void UpdateObservableProperties()
+    {
+        UnreadNotificationCount = Notifications.Count(n => !n.IsRead);
+        IsNotificationListEmpty = Notifications.Count == 0;
+        IsUnreadNotificationListEmpty = !Notifications.Any(n => !n.IsRead);
     }
 
     public async Task LoadNotificationData(bool isUnreadFilter = false)
@@ -66,5 +84,12 @@ public partial class ShellViewModel : ObservableRecipient
         {
             Notifications.Add(notification);
         }
+        UpdateObservableProperties();
+    }
+
+    public void MarkAsReadSingleItem(Notification notification)
+    {
+        notification.IsRead = true;
+        UpdateObservableProperties();
     }
 }

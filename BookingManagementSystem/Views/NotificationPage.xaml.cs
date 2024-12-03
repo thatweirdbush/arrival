@@ -97,6 +97,12 @@ public sealed partial class NotificationPage : Page
         }
     }
 
+    private void MarkAllAsRead_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.MarkAllNotificationsAsRead();
+    }
+
+
     private void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
     {
         var element = (sender as AppBarButton)!.Tag;
@@ -113,6 +119,9 @@ public sealed partial class NotificationPage : Page
                 break;
             case "remove-all":
                 RemoveAll_Click(sender, e);
+                break;
+            case "mark-all-as-read":
+                MarkAllAsRead_Click(sender, e);
                 break;
         }
     }
