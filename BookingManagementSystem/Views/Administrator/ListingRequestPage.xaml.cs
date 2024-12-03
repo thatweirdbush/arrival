@@ -3,6 +3,9 @@ using BookingManagementSystem.Core.Models;
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.ViewModels;
+using System.Diagnostics;
 
 namespace BookingManagementSystem.Views.Administrator;
 
@@ -27,143 +30,52 @@ public sealed partial class ListingRequestPage : Page
         switch (selectedValue)
         {
             case "Current":
-                EditOptionMenuFlyoutItem_AddToPriority.Visibility = Visibility.Collapsed;
+                btnAdd.Visibility = Visibility.Collapsed;
                 ViewModel.GetPriorityPropertyListDataAsync();
                 break;
             case "Elites":
-                EditOptionMenuFlyoutItem_AddToPriority.Visibility = Visibility.Collapsed;
+                btnAdd.Visibility = Visibility.Collapsed;
                 ViewModel.GetElitePropertyListDataAsync();
                 break;
             case "Trendings":
-                EditOptionMenuFlyoutItem_AddToPriority.Visibility = Visibility.Collapsed;
+                btnAdd.Visibility = Visibility.Collapsed;
                 ViewModel.GetTrendingPropertyListDataAsync();
                 break;
             case "Requests":
                 ViewModel.GetRequestedPropertyListDataAsync();
-                EditOptionMenuFlyoutItem_AddToPriority.Visibility = Visibility.Visible;
+                btnAdd.Visibility = Visibility.Visible;
                 break;
             default:
-                EditOptionMenuFlyoutItem_AddToPriority.Visibility = Visibility.Collapsed;
+                btnAdd.Visibility = Visibility.Collapsed;
                 ViewModel.GetPriorityPropertyListDataAsync();
                 break;
         }
     }
 
-    private void btnEditList_Click(object sender, RoutedEventArgs e)
+    private void Edit_Click(object sender, RoutedEventArgs e)
     {
         PriorityPropertyListView.IsItemClickEnabled = false;
         PriorityPropertyListView.SelectionMode = ListViewSelectionMode.Multiple;
-        btnEditList.Visibility = Visibility.Collapsed;
-        btnCancelEditingList.Visibility = Visibility.Visible;
-        btnEditOptions.Visibility = Visibility.Visible;
+        btnEdit.Visibility = Visibility.Collapsed;
+        btnCancel.Visibility = Visibility.Visible;
     }
 
-    private void btnCancelEditingList_Click(object sender, RoutedEventArgs e)
+    private void CancelEditing_Click(object sender, RoutedEventArgs e)
     {
         PriorityPropertyListView.IsItemClickEnabled = true;
         PriorityPropertyListView.SelectionMode = ListViewSelectionMode.Single;
-        btnCancelEditingList.Visibility = Visibility.Collapsed;
-        btnEditOptions.Visibility = Visibility.Collapsed;
-        btnEditList.Visibility = Visibility.Visible;
+        btnCancel.Visibility = Visibility.Collapsed;
+        btnEdit.Visibility = Visibility.Visible;
     }
 
-    private void btnEditOptions_Click(object sender, RoutedEventArgs e)
+    private void Deselect_Click(object sender, RoutedEventArgs e)
     {
-        var clickedItem = sender as MenuFlyoutItem;
+        PriorityPropertyListView.SelectedItem = null;
+    }
 
-        if (clickedItem?.Tag?.ToString() == "priority")
-        {
-            // Get selected items from the priority list
-            var selectedItems = PriorityPropertyListView.SelectedItems;
-            var selectedItemsList = selectedItems.ToList();
-
-            // Check empty selection
-            if (selectedItemsList.Count == 0)
-            {
-                return;
-            }
-
-            // Modify the selected items' properties
-            foreach (var item in selectedItemsList)
-            {
-                if (item is Property property)
-                {
-                    property.IsPriority = true;
-                    property.IsFavourite = false;
-                }
-            }
-            // Reload the priority list
-            ViewModel.GetRequestedPropertyListDataAsync();
-
-            // Show the successful dialog
-            _ = new ContentDialog
-            {
-                XamlRoot = XamlRoot,
-                Title = "Added to list",
-                Content = "Items added to priority list successfully!",
-                CloseButtonText = "Ok",
-                DefaultButton = ContentDialogButton.Close
-            }.ShowAsync();
-        }
-        else if (clickedItem?.Tag?.ToString() == "delete")
-        {
-            // Get selected items from the priority list
-            var selectedItems = PriorityPropertyListView.SelectedItems;
-            var selectedItemsList = selectedItems.ToList();
-
-            // Check empty selection
-            if (selectedItemsList.Count == 0)
-            {
-                return;
-            }
-
-            // Modify the selected items' properties
-            foreach (var item in selectedItemsList)
-            {
-                if (item is Property property)
-                {
-                    property.IsPriority = false;
-                    property.IsFavourite = false;
-                }
-            }
-            // Get selected filter mode from combobox
-            var selectedValueComboBox = ListingItemStatusComboBox.SelectedItem.ToString();
-
-            // Reload the list
-            switch (selectedValueComboBox)
-            {
-                case "Current":
-                    ViewModel.GetPriorityPropertyListDataAsync();
-                    break;
-                case "Elites":
-                    ViewModel.GetElitePropertyListDataAsync();
-                    break;
-                case "Trendings":
-                    ViewModel.GetTrendingPropertyListDataAsync();
-                    break;
-                case "Requests":
-                    ViewModel.GetRequestedPropertyListDataAsync();
-                    break;
-                default:
-                    ViewModel.GetPriorityPropertyListDataAsync();
-                    break;
-            }
-
-            // Show the successful dialog
-            _ = new ContentDialog
-            {
-                XamlRoot = XamlRoot,
-                Title = "Deleted from list",
-                Content = "Items deleted from list successfully!",
-                CloseButtonText = "Ok",
-                DefaultButton = ContentDialogButton.Close
-            }.ShowAsync();
-        }
-        else if (clickedItem?.Tag?.ToString() == "deselect")
-        {
-            PriorityPropertyListView.SelectedItems.Clear();
-        }
-        else if (clickedItem?.Tag?.ToString() == "invert")
+    private void SelectInverse_Click(object sender, RoutedEventArgs e)
+    {
+        if (PriorityPropertyListView.SelectionMode == ListViewSelectionMode.Multiple)
         {
             foreach (var item in PriorityPropertyListView.Items)
             {
@@ -172,6 +84,122 @@ public sealed partial class ListingRequestPage : Page
                     PriorityPropertyListView.SelectedItems.Add(item); // Select if not selected
                 }
             }
+        }
+    }
+
+    private void Remove_Click(object sender, RoutedEventArgs e)
+    {
+        // Get selected items from the priority list
+        var selectedItems = PriorityPropertyListView.SelectedItems;
+        var selectedItemsList = selectedItems.ToList();
+
+        // Check empty selection
+        if (selectedItemsList.Count == 0)
+        {
+            return;
+        }
+
+        // Modify the selected items' properties
+        foreach (var item in selectedItemsList)
+        {
+            if (item is Property property)
+            {
+                property.IsPriority = false;
+                property.IsFavourite = false;
+            }
+        }
+        // Get selected filter mode from combobox
+        var selectedValueComboBox = ListingItemStatusComboBox.SelectedItem.ToString();
+
+        // Reload the list
+        switch (selectedValueComboBox)
+        {
+            case "Current":
+                ViewModel.GetPriorityPropertyListDataAsync();
+                break;
+            case "Elites":
+                ViewModel.GetElitePropertyListDataAsync();
+                break;
+            case "Trendings":
+                ViewModel.GetTrendingPropertyListDataAsync();
+                break;
+            case "Requests":
+                ViewModel.GetRequestedPropertyListDataAsync();
+                break;
+            default:
+                ViewModel.GetPriorityPropertyListDataAsync();
+                break;
+        }
+
+        // Show the successful dialog
+        _ = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = "Deleted from list",
+            Content = "Items deleted from list successfully!",
+            CloseButtonText = "Ok",
+            DefaultButton = ContentDialogButton.Close
+        }.ShowAsync();
+    }
+
+    private void AddToPriority_Click(object sender, RoutedEventArgs e)
+    {
+        // Get selected items from the priority list
+        var selectedItems = PriorityPropertyListView.SelectedItems;
+        var selectedItemsList = selectedItems.ToList();
+
+        // Check empty selection
+        if (selectedItemsList.Count == 0)
+        {
+            return;
+        }
+
+        // Modify the selected items' properties
+        foreach (var item in selectedItemsList)
+        {
+            if (item is Property property)
+            {
+                property.IsPriority = true;
+                property.IsFavourite = false;
+            }
+        }
+        // Reload the priority list
+        ViewModel.GetRequestedPropertyListDataAsync();
+
+        // Show the successful dialog
+        _ = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = "Added to list",
+            Content = "Items added to priority list successfully!",
+            CloseButtonText = "Ok",
+            DefaultButton = ContentDialogButton.Close
+        }.ShowAsync();
+    }
+
+    private void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
+    {
+        var elementTag = (sender as AppBarButton)?.Tag ?? (sender as MenuFlyoutItem)?.Tag;
+        switch (elementTag)
+        {
+            case "add":
+                AddToPriority_Click(sender, e);
+                break;
+            case "edit":
+                Edit_Click(sender, e);
+                break;
+            case "cancel":
+                CancelEditing_Click(sender, e);
+                break;
+            case "remove":
+                Remove_Click(sender, e);
+                break;
+            case "deselect":
+                Deselect_Click(sender, e);
+                break;
+            case "inverse":
+                SelectInverse_Click(sender, e);
+                break;
         }
     }
 
