@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using BookingManagementSystem.Core.Services;
 
 namespace BookingManagementSystem.Core.Models;
 
@@ -94,7 +95,7 @@ public class Property : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
     public override string ToString() => $"{Name} ({Location}), {Description}, " +
-        $"Capacity: {Capacity}, Price: {PricePerNight:C}, Is Available: {IsAvailable}, " +
+        $"Price: {PricePerNight:C}, Is Available: {IsAvailable}, " +
         $"Created At: {CreatedAt}, Updated At: {UpdatedAt}";
     public int Id
     {
@@ -130,9 +131,44 @@ public class Property : INotifyPropertyChanged
 
     public string Location
     {
+        get
+        {
+            if (Country == null && string.IsNullOrEmpty(StateOrProvince))
+            {
+                return DEFAULT_PROPERTY_LOCATION;
+            }
+            return $"{StateOrProvince}, {Country.CountryName}";
+        }
+    }
+    public string FullLocation
+    {
+        get
+        {
+            if (Country == null && string.IsNullOrEmpty(StreetAddress) &&
+                string.IsNullOrEmpty(CityOrDistrict) && string.IsNullOrEmpty(StateOrProvince))
+            {
+                return DEFAULT_PROPERTY_LOCATION;
+            }
+            return $"{StreetAddress}, {CityOrDistrict}, {StateOrProvince}, {Country.CountryName}";
+        }
+    }
+    public CountryInfo Country
+    {
         get; set;
-    } = DEFAULT_PROPERTY_LOCATION;
-    public int Capacity
+    }
+    public string StateOrProvince
+    {
+        get; set;
+    }
+    public string CityOrDistrict
+    {
+        get; set;
+    }
+    public string StreetAddress
+    {
+        get; set;
+    }
+    public string PostalCode
     {
         get; set;
     }
@@ -181,7 +217,14 @@ public class Property : INotifyPropertyChanged
     {
         get; set;
     } = false;
-
+    public bool IsPetFriendly
+    {
+        get; set;
+    } = false;
+    public int MaxGuests
+    {
+        get; set;
+    } = 1;
     public int LastEditedStep
     {
         get; set;

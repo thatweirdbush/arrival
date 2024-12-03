@@ -9,11 +9,16 @@ namespace BookingManagementSystem.ViewModels;
 
 public partial class NotificationViewModel : ObservableRecipient, INavigationAware
 {
-
     [ObservableProperty]
     private bool isNotificationListEmpty;
-    public INavigationService NavigationService { get; }
-    public IRepository<Notification> NotificationRepository { get; }
+    public INavigationService NavigationService
+    {
+        get;
+    }
+    public IRepository<Notification> NotificationRepository
+    {
+        get;
+    }
     public ObservableCollection<Notification> Notifications { get; } = [];
 
     public NotificationViewModel(INavigationService navigationService, IRepository<Notification> notificationRepository)
@@ -73,5 +78,13 @@ public partial class NotificationViewModel : ObservableRecipient, INavigationAwa
             await NotificationRepository.DeleteAsync(notification.Id);
         }
         Notifications.Clear();
+    }
+
+    public void MarkAllNotificationsAsRead()
+    {
+        foreach (var notification in Notifications)
+        {
+            notification.IsRead = true;
+        }
     }
 }

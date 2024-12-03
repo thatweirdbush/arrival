@@ -10,6 +10,11 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     Loaded="OnLoaded">
 
+    <Page.Resources>
+        <helpers:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
+        <helpers:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Page.Resources>
+
     <Grid>
         <Grid x:Name="AppTitleBar"
               Canvas.ZIndex="1"
@@ -39,11 +44,15 @@
                     </Button.Flyout>
                 </Button>
                 <Grid>
-                    <InfoBadge x:Name="TitleBarNotificationInfoBadge" Value="5" Style="{StaticResource CriticalIconInfoBadgeStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 6 2 0" Canvas.ZIndex="1"/>
-                    <Button x:Name="NotificationButton" Click="NotificationButton_Click" 
-                        Background="Transparent" BorderThickness="0" Width="48" 
-                        CornerRadius="80" VerticalAlignment="Stretch"
-                        ToolTipService.ToolTip="Click to see recent notifications">
+                    <InfoBadge x:Name="TitleBarNotificationInfoBadge"
+                               Value="{x:Bind ViewModel.UnreadNotificationCount, Mode=OneWay}"
+                               Style="{StaticResource CriticalIconInfoBadgeStyle}"
+                               Visibility="{x:Bind ViewModel.IsUnreadNotificationListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"
+                               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 6 2 0" Canvas.ZIndex="1"/>
+                    <Button x:Name="NotificationButton" Background="Transparent"
+                            BorderThickness="0" Width="48" 
+                            CornerRadius="80" VerticalAlignment="Stretch"
+                            ToolTipService.ToolTip="Click to see recent notifications">
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEA8F;"/>
                         <Button.Flyout>
                             <Flyout>
@@ -57,29 +66,44 @@
                                             </StackPanel>
                                         </Grid>
                                         <Line Stroke="Gray" X1="0" Y1="0" X2="400" Y2="0" StrokeThickness="1" Margin="0 16 0 8"/>
-                                        <ListView x:Name="NotificationListView" MaxHeight="500" ItemsSource="{x:Bind ViewModel.Notifications}">
-                                            <ListView.ItemTemplate>
-                                                <DataTemplate x:DataType="models:Notification">
-                                                    <Grid Margin="0,8,0,8" >
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="140"/>
-                                                            <ColumnDefinition Width="*" />
-                                                        </Grid.ColumnDefinitions>
-                                                        <Image MaxHeight="100" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                            <Image.Source>
-                                                                <BitmapImage UriSource="{x:Bind ImagePath}" DecodePixelHeight="200"/>
-                                                            </Image.Source>
-                                                        </Image>
-                                                        <StackPanel Margin="12,0,0,0" Grid.Column="1" Spacing="4">
-                                                            <TextBlock Text="{x:Bind SenderName}" FontWeight="Bold" Style="{ThemeResource DetailBodyStyle}" MaxLines="1"/>
-                                                            <TextBlock Text="{x:Bind Title}" FontWeight="SemiBold" Style="{ThemeResource BaseTextBlockStyle}" MaxLines="1"/>
-                                                            <TextBlock Text="{x:Bind Message}" Style="{ThemeResource BodyTextBlockStyle}" TextTrimming="CharacterEllipsis" MaxLines="2"/>
-                                                            <TextBlock Text="{x:Bind DateSent}" FontSize="12" Margin="0 2 0 0" Style="{ThemeResource BodyTextBlockStyle}"/>
-                                                        </StackPanel>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ListView.ItemTemplate>
-                                        </ListView>
+                                        <Grid>
+                                            <Grid x:Name="EmptyListMessageGrid" Visibility="{x:Bind ViewModel.IsNotificationListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="360">
+                                                    <Image Source="/Assets/modern-european-house.png" Width="240" Height="240" Stretch="Fill" Margin="0 0 0 -12"/>
+                                                    <TextBlock Text="Your notifications live here" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center"/>
+                                                    <TextBlock Text="You will be notified when your booking is approved." FontSize="16" Style="{ThemeResource DetailSubTitleStyle}"  HorizontalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Grid>
+                                            <ListView x:Name="NotificationListView" MaxHeight="500"
+                                                ItemsSource="{x:Bind ViewModel.Notifications, Mode=OneWay}"
+                                                Visibility="{x:Bind ViewModel.IsNotificationListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"
+                                                ItemClick="NotificationListView_ItemClick" IsItemClickEnabled="True">
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate x:DataType="models:Notification">
+                                                        <Grid Margin="0,8,0,8" >
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="140"/>
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Image MaxHeight="100" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                                <Image.Source>
+                                                                    <BitmapImage UriSource="{x:Bind ImagePath, Mode=OneWay}" DecodePixelHeight="200"/>
+                                                                </Image.Source>
+                                                            </Image>
+                                                            <StackPanel Margin="12,0,0,0" Grid.Column="1" Spacing="4">
+                                                                <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                                                                    <TextBlock Text="{x:Bind SenderName, Mode=OneWay}" FontWeight="Bold" Style="{ThemeResource DetailBodyStyle}" MaxLines="1"/>
+                                                                    <InfoBadge Width="8" Height="8" Visibility="{x:Bind IsRead, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"/>
+                                                                </StackPanel>
+                                                                <TextBlock Text="{x:Bind Title, Mode=OneWay}" FontWeight="SemiBold" Style="{ThemeResource BaseTextBlockStyle}" MaxLines="1"/>
+                                                                <TextBlock Text="{x:Bind Message, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" TextTrimming="CharacterEllipsis" MaxLines="2"/>
+                                                                <TextBlock Text="{x:Bind DateSent, Mode=OneWay}" FontSize="12" Margin="0 2 0 0" Style="{ThemeResource BodyTextBlockStyle}"/>
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+                                        </Grid>
                                     </StackPanel>
                                 </Grid>
                             </Flyout>
@@ -112,7 +136,7 @@
                             </MenuFlyoutItem>
                             <MenuFlyoutSeparator x:Name="LoggedInSeparator" Visibility="Collapsed"/>
 
-                            <MenuFlyoutItem x:Name="AccountMenuItem" Text="Account" Icon="Contact" Visibility="Collapsed" Click="UserMenuFlyoutItem_Click" Tag="account" Width="240" Height="40"/>
+                            <!--<MenuFlyoutItem x:Name="AccountMenuItem" Text="Account" Icon="Contact" Visibility="Collapsed" Click="UserMenuFlyoutItem_Click" Tag="account" Width="240" Height="40"/>-->
                             <MenuFlyoutItem x:Name="SettingMenuItem" Text="Setting" Icon="Setting" Click="UserMenuFlyoutItem_Click" Tag="setting" Width="240" Height="40"/>
                             <MenuFlyoutItem x:Name="LogoutMenuItem" Text="Log out" Visibility="Collapsed" Click="UserMenuFlyoutItem_Click" Tag="logout" Width="240" Height="40">
                                 <MenuFlyoutItem.Icon>
@@ -138,15 +162,15 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Uid="Shell_Home" Icon="Home" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.HomeViewModel"/>
                 <NavigationViewItem x:Uid="Shell_Map" Icon="World" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.MapViewModel"/>
-                <NavigationViewItem x:Uid="Shell_Host" Icon="Street" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Host.HostViewModel">
+                <NavigationViewItem x:Uid="Shell_Host" Icon="Street">
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem x:Uid="Shell_Listing" Icon="List" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Host.ListingViewModel"/>
                         <NavigationViewItem x:Uid="Shell_CreateListing" Icon="NewFolder" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.CreateListingViewModel"/>
-                        <NavigationViewItem x:Uid="Shell_LoyaltyProgram" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.LoyaltyProgramViewModel">
+                        <!--<NavigationViewItem x:Uid="Shell_LoyaltyProgram" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.LoyaltyProgramViewModel">
                             <NavigationViewItem.Icon>
                                 <FontIcon Glyph="&#xE7E3;"/>
                             </NavigationViewItem.Icon>
-                        </NavigationViewItem>
+                        </NavigationViewItem>-->
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Notification" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.NotificationViewModel">
@@ -154,10 +178,19 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA8F;"/>
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.InfoBadge>
-                        <InfoBadge x:Name="NavigationViewNotificationInfoBadge" Value="5" Style="{StaticResource CriticalIconInfoBadgeStyle}"/>
+                        <InfoBadge x:Name="NavigationViewNotificationInfoBadge"
+                                   Value="{x:Bind ViewModel.UnreadNotificationCount, Mode=OneWay}"
+                                   Style="{StaticResource CriticalIconInfoBadgeStyle}"
+                                   Visibility="{x:Bind ViewModel.IsUnreadNotificationListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"/>
                     </NavigationViewItem.InfoBadge>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_FAQ" Icon="Flag" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.FAQViewModel"/>
+                <NavigationViewItem x:Uid="Shell_Admin" Icon="GoToStart" AutomationProperties.Name="Administrator">
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem x:Uid="Shell_ListingRequest" Icon="Library" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Administrator.ListingRequestViewModel"/>
+                        <NavigationViewItem x:Uid="Shell_Report" Icon="ReportHacked" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Administrator.ReportViewModel"/>
+                    </NavigationViewItem.MenuItems>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
 
             <NavigationView.PaneHeader>
@@ -177,10 +210,6 @@
                                 SuggestionChosen="MenuAutoSuggestBox_SuggestionChosen"
                                 AutomationProperties.Name="Menu AutoSuggestBox" />
             </NavigationView.AutoSuggestBox>
-
-            <NavigationView.FooterMenuItems>
-                <NavigationViewItem x:Uid="Shell_Admin" Icon="GoToStart" AutomationProperties.Name="Administrator" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Administrator.AdministratorViewModel" />
-            </NavigationView.FooterMenuItems>
         </NavigationView>
     </Grid>
 </Page>

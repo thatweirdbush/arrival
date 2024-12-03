@@ -92,7 +92,6 @@ public partial class App : Application
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Core Services
-            services.AddSingleton<IDao, MockDao>();
             services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<PropertyImagesActivationHandler>();
 
@@ -105,6 +104,7 @@ public partial class App : Application
             services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
             services.AddSingleton<IRentalDetailFacade, RentalDetailFacade>();
             services.AddSingleton<IPaymentFacade, PaymentFacade>();
+            services.AddSingleton<IHomeFacade, HomeFacade>();
             services.AddSingleton<IRepository<Amenity>, AmenityRepository>();
             services.AddSingleton<IRepository<BadReport>, BadReportRepository>();
             services.AddSingleton<IRepository<Booking>, BookingRepository>();

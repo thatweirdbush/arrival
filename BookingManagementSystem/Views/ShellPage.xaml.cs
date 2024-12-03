@@ -175,7 +175,7 @@ public partial class ShellPage : Page
                     OnUserLoggedOut();
                     break;
                 case "host":
-                    NavigationFrame.Navigate(typeof(HostPage));
+                    NavigationFrame.Navigate(typeof(ListingPage));
                     break;
                 case "setting":
                     NavigationFrame.Navigate(typeof(SettingsPage));
@@ -221,7 +221,7 @@ public partial class ShellPage : Page
         WishlistsMenuItem.Visibility = isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
         NoAccountSeparator.Visibility = !isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
         LoggedInSeparator.Visibility = isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
-        AccountMenuItem.Visibility = isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
+        //AccountMenuItem.Visibility = isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
         LogoutMenuItem.Visibility = isLoggedIn ? Visibility.Visible : Visibility.Collapsed;
 
         // Hide items for non-logged in users
@@ -253,13 +253,6 @@ public partial class ShellPage : Page
         }
     }
 
-    private void NotificationButton_Click(object sender, RoutedEventArgs e)
-    {
-        // Reset the InfoBadge
-        TitleBarNotificationInfoBadge.Visibility = Visibility.Collapsed;
-        NavigationViewNotificationInfoBadge.Visibility = Visibility.Collapsed;
-    }
-
     private async void NotificationToggleButton_Click(object sender, RoutedEventArgs e)
     {
         var element = (sender as ToggleButton)!.Tag;
@@ -284,5 +277,10 @@ public partial class ShellPage : Page
                     break;
                 }
         }
+    }
+
+    private void NotificationListView_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        ViewModel.MarkAsReadSingleItem((Notification)e.ClickedItem);
     }
 }
