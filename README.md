@@ -17,7 +17,7 @@ Created with WinUI and the latest design ideologies, Arrival is modern while kee
 We use all of your favourite material: Acrylic. We use Microsoft's icons and controls as well as some of our own to create a generally native feeling experience. Our own controls and icons give users a truly personalised experience, being able to choose their own icon packs and with features like compact mode, you can use it on any Windows device!
 
 ### Demo Video
-Upcoming...
+[Arrival - Booking Management System | Milestone II | Demo Usage](https://youtu.be/z_Q4snTzEYY)
 
 ### Main Feature Screenshot
 <table>
