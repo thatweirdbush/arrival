@@ -54,64 +54,188 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
 
 ## All Features
 ### **Basics**
-- [x] **User Registration/Login/Password Recovery [3h] [21120060]** 
-  - Allows users to create accounts, log in, and recover passwords for managing personal information and accessing services.
-  - You can try signing in with this example account:
-    - **Username:** `janesmith`
-    - **Password:** `password`
-  - You can try signing up following these **Regex Patterns:**
-    - **Email:** `^[^@\s]+@[^@\s]+\.[^@\s]+$`
-    - **Phone Number:** At least 10 digits
-    - **Password:** At least 8 characters
-- [x] **Booking/Cancellation of Accommodation [2h] [21120082]**  
-  - Diverse booking options for private homes, apartments, and hotels ranging from budget to premium.
-- [x] **Search for Rooms/Apartment by Schedule [2h] [21120082]**  
-  - Enables users to search for hotels and apartments by location, travel dates, and number of guests.
-- [x] **Preset Filters [1h] [21120082]**  
-  - Filters based on destination types, including Amazing Views, Beach, Farms, Islands, etc.
-  - Currently only the `All` & `Trending` filters are available
-- [ ] **Advanced Filters [2h]**  
-  - Filters by price, room type, guest capacity, amenities (Wi-Fi, air conditioning, pool), reviews, free cancellation, etc.
-- [x] **Discount Voucher Management [1h] [21120060]**  
-  - Allows discounts to be applied to the final payment amount.
-- [x] **User Review Management [1h] [21120082]**  
-  - Customers can leave a review about rooms/accommodations, helping improve service quality
-  - You can leave a review in **Rental Details Page**
-- [x] **Question and FAQ Management [2h] [21120082]**  
-  - Handles user questions about rooms/accommodations and a FAQ section for common booking, payment, and cancellation inquiries.
-  - You can leave a question in **Rental Details Page**
-- [x] **Booking History Management [1h] [21120060]**  
-  - Stores user's past booking history.
-- [ ] **Booking Confirmation via Email [2h]**  
-  - Sends booking confirmations through email or in-app notifications.
-- [x] **Report Abuse Management [1h] [21120082]**  
-  - Allows users to report inappropriate behavior or accommodations that do not meet standards or match descriptions.
-  - You can make a report in **Rental Details Page**
-  - The **Management** feature is integrated in **Administrator Page > Subcriptions**
-- [ ] **Loyalty Member Management [2h]**  
-  - Loyalty program offering exclusive benefits such as vouchers and priority listings.
-- [x] **Amenity and Facility Tag Setup for Hosts [2h] [21120082]**  
-  - Hosts can create lists of tags for services and amenities their accommodations offer.
-- [x] **Email/App Notifications [2h] [21120060]**  
-  - Sends notifications for successful bookings, upcoming check-ins, and booking changes.
-- [x] **Trending/Priority Listing Management [2h] [21120082]**  
-  - Lists popular accommodations or those requested to be prioritized for a certain period.
-  -  You can perform multiple selection, delete items, deselect & invert item selection.
-  - With the `Requests` filter, you can add items to the priority list with the `Add to Priority` Edit Option 
-  - This feature is integrated in **Administrator Page > Listing Requests**
-- [ ] **Multilingual Support [2h]**
-    - Allows users to select the application language.
-- [x] **Favourite List Management [1h] [21120060]**
-    - Allows users to save and manage a list of favorite rooms/apartments.
+
+<table>
+  <thead>
+    <tr>
+      <th style="width: 20%;">Feature</th>
+      <th style="width: 40%;">Details</th>
+      <th style="width: 10%;">Work Hours</th>
+      <th style="width: 20%;">Contributor</th>
+      <th style="width: 10%;">Is Ready</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>User Registration / Login / Password Recovery</strong></td>
+      <td>Allows users to create accounts, log in, and recover passwords for managing personal information and accessing services.
+      <br>You can try signing in with this example account:
+      <li><strong>Username:</strong> <code>janesmith</code>
+      <li><strong>Password:</strong> <code>password</code>
+      <br>You can try signing up following these <strong>Regex Patterns</strong>:
+      <li><strong>Email:</strong> <code>^[^@\s]+@[^@\s]+\.[^@\s]+$</code>
+      <li><strong>Phone Number:</strong> At least 10 digits
+      <li><strong>Password:</strong> At least 8 characters.</td>
+      <td style="text-align: center;">3h</td>
+      <td style="text-align: center;">Nguyen Long Giang<br>21120060</td>
+      <td style="text-align: center;">✅</td>
+    </tr>
+    <tr>
+      <td><strong>Booking/Cancellation of Accommodation</strong></td>
+      <td>Diverse booking options for private homes, apartments, and hotels ranging from budget to premium.</td>
+      <td style="text-align: center;">2h</td>
+      <td style="text-align: center;">Phan Quoc Huy<br>21120082</td>
+      <td style="text-align: center;">✅</td>
+    </tr>
+    <tr>
+      <td><strong>Search for Rooms/Apartment by Schedule</strong></td>
+      <td>Enables users to search for hotels and apartments by location, travel dates, and number of guests.</td>
+      <td style="text-align: center;">2h</td>
+      <td style="text-align: center;">Phan Quoc Huy<br>21120082</td>
+      <td style="text-align: center;">✅</td>
+    </tr>
+    <tr>
+      <td><strong>Preset Filters</strong></td>
+      <td>Filters based on destination types, including Amazing Views, Beach, Farms, Islands, etc. Currently only the <code>All</code> & <code>Trending</code> filters are available.</td>
+      <td style="text-align: center;">1h</td>
+      <td style="text-align: center;">Phan Quoc Huy<br>21120082</td>
+      <td style="text-align: center;">✅</td>
+    </tr>
+    <tr>
+      <td><strong>Advanced Filters</strong></td>
+      <td>Filters by price, room type, guest capacity, amenities (Wi-Fi, air conditioning, pool), reviews, free cancellation, etc.</td>
+      <td style="text-align: center;">2h</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><strong>Discount Voucher Management</strong></td>
+      <td>Allows discounts to be applied to the final payment amount.</td>
+      <td style="text-align: center;">1h</td>
+      <td style="text-align: center;">Nguyen Long Giang<br>21120060</td>
+      <td style="text-align: center;">✅</td>
+    </tr>
+    <tr>
+      <td><strong>User Review Management</strong></td>
+      <td>Customers can leave a review about rooms/accommodations, helping improve service quality. You can leave a review in <strong>Rental Details Page</strong>.</td>
+      <td style="text-align: center;">1h</td>
+      <td style="text-align: center;">Phan Quoc Huy<br>21120082</td>
+      <td style="text-align: center;">✅</td>
+    </tr>
+    <tr>
+      <td><strong>Question and FAQ Management</strong></td>
+      <td>Handles user questions about rooms/accommodations and a FAQ section for common booking, payment, and cancellation inquiries. You can leave a question in <strong>Rental Details Page</strong>.</td>
+      <td style="text-align: center;">2h</td>
+      <td style="text-align: center;">Phan Quoc Huy<br>21120082</td>
+      <td style="text-align: center;">✅</td>
+    </tr>
+    <tr>
+      <td><strong>Booking History Management</strong></td>
+      <td>Stores user's past booking history.</td>
+      <td style="text-align: center;">1h</td>
+      <td style="text-align: center;">Nguyen Long Giang<br>21120060</td>
+      <td style="text-align: center;">✅</td>
+    </tr>
+    <tr>
+      <td><strong>Booking Confirmation via Email</strong></td>
+      <td>Sends booking confirmations through email or in-app notifications.</td>
+      <td style="text-align: center;">2h</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><strong>Report Abuse Management</strong></td>
+      <td>Allows users to report inappropriate behavior or accommodations that do not meet standards or match descriptions.
+      <br>You can make a report in <strong>Rental Details Page</strong>.
+      <br>The <strong>Management</strong> feature is integrated in <strong>Administrator Page > Subscriptions</strong>.</td>
+      <td style="text-align: center;">1h</td>
+      <td style="text-align: center;">Phan Quoc Huy<br>21120082</td>
+      <td style="text-align: center;">✅</td>
+    </tr>
+    <tr>
+      <td><strong>Loyalty Member Management</strong></td>
+      <td>Loyalty program offering exclusive benefits such as vouchers and priority listings.</td>
+      <td style="text-align: center;">2h</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><strong>Amenity and Facility Tag Setup for Hosts</strong></td>
+      <td>Hosts can create lists of tags for services and amenities their accommodations offer.</td>
+      <td style="text-align: center;">2h</td>
+      <td style="text-align: center;">Phan Quoc Huy<br>21120082</td>
+      <td style="text-align: center;">✅</td>
+    </tr>
+    <tr>
+      <td><strong>Email/App Notifications</strong></td>
+      <td>Sends notifications for successful bookings, upcoming check-ins, and booking changes.</td>
+      <td style="text-align: center;">2h</td>
+      <td style="text-align: center;">Nguyen Long Giang<br>21120060</td>
+      <td style="text-align: center;">✅</td>
+    </tr>
+    <tr>
+      <td><strong>Trending/Priority Listing Management</strong></td>
+      <td>Lists popular accommodations or those requested to be prioritized for a certain period.
+      <br>You can perform multiple selection, delete items, deselect & invert item selection.
+      <br>With the <code>Requests</code> filter, you can add items to the priority list with the <code>Add to Priority</code> Edit Option.
+      <br>This feature is integrated in <strong>Administrator Page > Listing Requests</strong>.</td>
+      <td style="text-align: center;">2h</td>
+      <td style="text-align: center;">Phan Quoc Huy<br>21120082</td>
+      <td style="text-align: center;">✅</td>
+    </tr>
+    <tr>
+      <td><strong>Multilingual Support</strong></td>
+      <td>Allows users to select the application language.</td>
+      <td style="text-align: center;">2h</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><strong>Favourite List Management</strong></td>
+      <td>Allows users to save and manage a list of favorite rooms/apartments.</td>
+      <td style="text-align: center;">1h</td>
+      <td style="text-align: center;">Nguyen Long Giang<br>21120060</td>
+      <td style="text-align: center;">✅</td>
+    </tr>
+  </tbody>
+</table>
 
 ### **Advance**
-- [ ] **Live Chat with Host/Staff/Bot [1h]** 
-  - Chat system supports live chat with host, hotel staff or bot before booking.
-- [ ] **Travel Suggestions [1h]** 
-  - Personalized travel suggestions by AI.
-- [x] **Map integration [1h] [21120082]** 
-  - Display room/apartment location on map, helps it easy to locate.
-  - This feature is integrated in **Rental Details Page** & **Map Services Page**
+<table>
+  <thead>
+    <tr>
+      <th style="width: 20%;">Feature</th>
+      <th style="width: 40%;">Details</th>
+      <th style="width: 10%;">Work Hours</th>
+      <th style="width: 20%;">Contributor</th>
+      <th style="width: 10%;">Is Ready</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+      <td><strong>Live Chat with Host/Staff/Bot</strong></td>
+      <td>Chat system supports live chat with host, hotel staff or bot before booking.</td>
+      <td style="text-align: center;">1h</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><strong>Travel Suggestions</strong></td>
+      <td>Personalized travel suggestions by AI.</td>
+      <td style="text-align: center;">1h</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><strong>Map Integration</strong></td>
+      <td>Display room/apartment location on map, helps it easy to locate.
+      <br>This feature is integrated in <strong>Rental Details Page</strong> & <strong>Map Services Page</strong>.</td>
+      <td style="text-align: center;">1h</td>
+      <td style="text-align: center;">Phan Quoc Huy<br>21120082</td>
+      <td style="text-align: center;">✅</td>
+    </tr>
+  </tbody>
+</table>
 
 > [!IMPORTANT]
 > ## Milestone II
@@ -202,7 +326,7 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
 
 ## Teamwork - Git Flow
 ### Project Management With Trello
-![Project Management With Trello.](./BookingManagementSystem/Assets/Screenshots/Screenshot%20Project%20Management%20Trello.webp)
+![Project Management With Trello.](./BookingManagementSystem/Assets/Screenshots/Screenshot%20Project%20Management%20Trello.jpg)
 
 ### Git Flow
 ![Git Flow.](./BookingManagementSystem/Assets/Screenshots/Screenshot%20Git%20Flow.webp)

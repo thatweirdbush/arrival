@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Contracts.Repositories;
-using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels.Client;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -76,7 +75,7 @@ public partial class ListingRequestViewModel : ObservableRecipient
         PriorityProperties.Clear();
 
         var data = await _propertyRepository.GetAllAsync();
-        var requestProperties = data.Where(p => !p.IsPriority && !p.IsFavourite);
+        var requestProperties = data.Where(p => p.IsRequested);
 
         foreach (var item in requestProperties)
         {

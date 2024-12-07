@@ -1,11 +1,7 @@
 ﻿using BookingManagementSystem.ViewModels.Administrator;
 using BookingManagementSystem.Core.Models;
-
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.ViewModels;
-using System.Diagnostics;
 
 namespace BookingManagementSystem.Views.Administrator;
 
@@ -89,10 +85,13 @@ public sealed partial class ListingRequestPage : Page
 
     private void Remove_Click(object sender, RoutedEventArgs e)
     {
+        // Get selected filter mode from combobox
+        var selectedValueComboBox = ListingItemStatusComboBox.SelectedItem.ToString();
+
         // Get selected items from the priority list
         var selectedItems = PriorityPropertyListView.SelectedItems;
         var selectedItemsList = selectedItems.ToList();
-
+        
         // Check empty selection
         if (selectedItemsList.Count == 0)
         {
@@ -100,16 +99,27 @@ public sealed partial class ListingRequestPage : Page
         }
 
         // Modify the selected items' properties
-        foreach (var item in selectedItemsList)
+        if (selectedValueComboBox == "Requests")
         {
-            if (item is Property property)
+            foreach (var item in selectedItemsList)
             {
-                property.IsPriority = false;
-                property.IsFavourite = false;
+                if (item is Property property)
+                {
+                    property.IsRequested = false;
+                }
             }
         }
-        // Get selected filter mode from combobox
-        var selectedValueComboBox = ListingItemStatusComboBox.SelectedItem.ToString();
+        else
+        {
+            foreach (var item in selectedItemsList)
+            {
+                if (item is Property property)
+                {
+                    property.IsPriority = false;
+                    property.IsFavourite = false;
+                }
+            }
+        }
 
         // Reload the list
         switch (selectedValueComboBox)
@@ -160,7 +170,7 @@ public sealed partial class ListingRequestPage : Page
             if (item is Property property)
             {
                 property.IsPriority = true;
-                property.IsFavourite = false;
+                property.IsRequested = false;
             }
         }
         // Reload the priority list
