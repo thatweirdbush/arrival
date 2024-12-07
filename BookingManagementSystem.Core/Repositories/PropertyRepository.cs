@@ -149,6 +149,7 @@ public class PropertyRepository : Repository<Property>
                 IsAvailable = true,
                 Latitude = 9.2219739,
                 Longitude = 123.5347378,
+                IsRequested = true,
                 IsPetFriendly = true,
                 MaxGuests = 6
             },
@@ -248,6 +249,7 @@ public class PropertyRepository : Repository<Property>
                 IsAvailable = true,
                 Latitude = 37.6062,
                 Longitude = -50.3321,
+                IsRequested = true,
                 IsPetFriendly = false,
                 MaxGuests = 2
             },
@@ -387,6 +389,7 @@ public class PropertyRepository : Repository<Property>
                 IsAvailable = true,
                 Latitude = 87.6062,
                 Longitude = -12.3321,
+                IsRequested = true,
                 IsPetFriendly = false,
                 MaxGuests = 10
             },
@@ -434,6 +437,7 @@ public class PropertyRepository : Repository<Property>
                 IsAvailable = true,
                 Latitude = 30.6062,
                 Longitude = -22.3321,
+                IsRequested = true,
                 IsPetFriendly = false,
                 MaxGuests = 4
             },
@@ -481,6 +485,7 @@ public class PropertyRepository : Repository<Property>
                 IsAvailable = true,
                 Latitude = 72.6062,
                 Longitude = 32.3321,
+                IsRequested = true,
                 IsPetFriendly = true,
                 MaxGuests = 6
             },
@@ -575,6 +580,7 @@ public class PropertyRepository : Repository<Property>
                 IsAvailable = true,
                 Latitude = 0.6062,
                 Longitude = -2.3321,
+                IsRequested = true,
                 IsPetFriendly = true,
                 MaxGuests = 2
             },

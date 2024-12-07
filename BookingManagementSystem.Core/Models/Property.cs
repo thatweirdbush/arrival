@@ -217,6 +217,10 @@ public class Property : INotifyPropertyChanged
     {
         get; set;
     } = false;
+    public bool IsRequested
+    {
+        get; set;
+    } = false;
     public bool IsPetFriendly
     {
         get; set;
