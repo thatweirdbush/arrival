@@ -21,12 +21,12 @@ public class PropertyRepository : Repository<Property>
     }
     public CountryInfo GetCountryByCode(string countryCode)
     {
-        return CountryList.FirstOrDefault(c => c.CountryCode == countryCode);
+        return CountryList.FirstOrDefault(c => c.CountryCode.Equals(countryCode));
     }
     public PropertyRepository()
     {
         // Load country list for querying below 
-        _ = LoadCountriesAsync();
+        LoadCountriesAsync().Wait();
 
         _entities.AddRange(
         [
@@ -53,13 +53,13 @@ public class PropertyRepository : Repository<Property>
                 ],
                 DestinationTypes = 
                 [
-                    DestinationType.AmazingPools, 
-                    DestinationType.AmazingViews, 
-                    DestinationType.Beach, 
-                    DestinationType.City, 
-                    DestinationType.TopCities, 
-                    DestinationType.Luxe, 
-                    DestinationType.Room, 
+                    DestinationType.AmazingPools,
+                    DestinationType.AmazingViews,
+                    DestinationType.Beach,
+                    DestinationType.City,
+                    DestinationType.TopCities,
+                    DestinationType.Luxe,
+                    DestinationType.Room,
                     DestinationType.NationalParks
                 ],
                 Country = GetCountryByCode("FR"),
