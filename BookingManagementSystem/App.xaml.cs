@@ -7,7 +7,6 @@ using BookingManagementSystem.Core.Facades;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Repositories;
 using BookingManagementSystem.Core.Services;
-using BookingManagementSystem.Helpers;
 using BookingManagementSystem.Models;
 using BookingManagementSystem.Notifications;
 using BookingManagementSystem.Services;
@@ -25,7 +24,6 @@ using BookingManagementSystem.Views.Client;
 using BookingManagementSystem.Views.Host;
 using BookingManagementSystem.Views.Host.CreateListingSteps;
 using BookingManagementSystem.Views.Payment;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;

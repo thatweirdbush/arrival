@@ -20,12 +20,6 @@ public partial class PlaceDescriptionViewModel : BaseStepViewModel
         SelectedDescription = PropertyOnCreating.Description;
     }
 
-    //public void TryInitializeStrings()
-    //{
-    //    SelectedTitle = PropertyOnCreating.Name.ToString();
-    //    SelectedDescription = PropertyOnCreating.Description.ToString();
-    //}
-
     public override void ValidateProcess()
     {
         IsStepCompleted = (!string.IsNullOrWhiteSpace(SelectedTitle) &&
