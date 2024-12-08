@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace BookingManagementSystem.Core.Models;
 public class ApplicationDbContext : DbContext
@@ -25,10 +24,30 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Voucher> Vouchers { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    : base(options) {}
+}
+
+/// <summary>
+/// A design-time factory can be especially useful if you need to configure the DbContext differently for design time than at run time.
+/// Use when Entity Framework needs to create a DbContext at design time without starting the entire application.
+/// </summary>
+public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+{
+    public ApplicationDbContext CreateDbContext(string[] args)
     {
-        base.OnConfiguring(optionsBuilder);
-        var connectionString = "YOUR_CONNECTION_STRING";
+        // Load configuration from appsettings.json or User Secrets
+        IConfigurationRoot configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: true)
+            .AddUserSecrets<ApplicationDbContextFactory>()
+            .Build();
+
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+        var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
         optionsBuilder.UseNpgsql(connectionString);
+
+        return new ApplicationDbContext(optionsBuilder.Options);
     }
 }

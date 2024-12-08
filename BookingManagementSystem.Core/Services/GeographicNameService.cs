@@ -245,7 +245,7 @@ public class CountryInfo
 
     [Key]
     [JsonPropertyName("geonameId")]
-    public int GeoNameId
+    public int Id
     {
         get; set;
     }

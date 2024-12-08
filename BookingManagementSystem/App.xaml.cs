@@ -24,6 +24,8 @@ using BookingManagementSystem.Views.Client;
 using BookingManagementSystem.Views.Host;
 using BookingManagementSystem.Views.Host.CreateListingSteps;
 using BookingManagementSystem.Views.Payment;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
@@ -70,8 +72,16 @@ public partial class App : Application
         Host = Microsoft.Extensions.Hosting.Host.
         CreateDefaultBuilder().
         UseContentRoot(AppContext.BaseDirectory).
+        ConfigureAppConfiguration((context, config) =>
+        {
+            // Integrate User Secrets
+            config.AddUserSecrets<App>();
+        }).
         ConfigureServices((context, services) =>
         {
+            // App Hosted Services
+            services.AddSingleton<IConfiguration>(context.Configuration);
+
             // Default Activation Handler
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
@@ -193,13 +203,15 @@ public partial class App : Application
             services.AddTransient<WishlistViewModel>();
             services.AddSingleton<WishlistPage>();
 
-            // Configuration
+            // Configurations
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
+
+            // This allows the application to use the ApplicationDbContext at runtime via DI.
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(context.Configuration.GetConnectionString("DefaultConnection")));
         }).
         Build();
-
         App.GetService<IAppNotificationService>().Initialize();
-
         UnhandledException += App_UnhandledException;
     }
 

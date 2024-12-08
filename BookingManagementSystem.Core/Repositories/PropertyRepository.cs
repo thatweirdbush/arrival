@@ -9,8 +9,25 @@ using BookingManagementSystem.Core.Services;
 namespace BookingManagementSystem.Core.Repositories;
 public class PropertyRepository : Repository<Property>
 {
+    public List<CountryInfo> CountryList { get; private set; } = [];
+    public async Task LoadCountriesAsync()
+    {
+        var geonamesService = new GeographicNameService();
+        var countries = await geonamesService.GetAllCountryInfoAsync();
+        foreach (var country in countries)
+        {
+            CountryList.Add(country);
+        }
+    }
+    public CountryInfo GetCountryByCode(string countryCode)
+    {
+        return CountryList.FirstOrDefault(c => c.CountryCode == countryCode);
+    }
     public PropertyRepository()
     {
+        // Load country list for querying below 
+        _ = LoadCountriesAsync();
+
         _entities.AddRange(
         [
             new()
@@ -45,11 +62,7 @@ public class PropertyRepository : Repository<Property>
                     DestinationType.Room, 
                     DestinationType.NationalParks
                 ],
-                Country = new CountryInfo
-                {
-                    CountryName = "France",
-                    CountryCode = "FR"
-                },
+                Country = GetCountryByCode("FR"),
                 StateOrProvince = "Paris",
                 CityOrDistrict = "Montmartre",
                 StreetAddress = "Rue de la Bonne",
@@ -93,11 +106,7 @@ public class PropertyRepository : Repository<Property>
                     DestinationType.Tropical,
                     DestinationType.Room,
                 ],
-                Country = new CountryInfo
-                {
-                    CountryName = "Indonesia",
-                    CountryCode = "ID"
-                },
+                Country = GetCountryByCode("ID"),
                 StateOrProvince = "Bali",
                 CityOrDistrict = "Tampaksiring",
                 StreetAddress = "4394E Jalan Raya",
@@ -135,11 +144,7 @@ public class PropertyRepository : Repository<Property>
                     DestinationType.Farm,
                     DestinationType.TinyHomes,
                 ],
-                Country = new CountryInfo
-                {
-                    CountryName = "Philippines",
-                    CountryCode = "PH"
-                },
+                Country = GetCountryByCode("PH"),
                 StateOrProvince = "Central Visayas",
                 CityOrDistrict = "Siquijor",
                 StreetAddress = "Lazi",
@@ -189,11 +194,7 @@ public class PropertyRepository : Repository<Property>
                     DestinationType.Room,
                     DestinationType.TinyHomes
                 ],
-                Country = new CountryInfo
-                {
-                    CountryName = "Philippines",
-                    CountryCode = "PH"
-                },
+                Country = GetCountryByCode("PH"),
                 StateOrProvince = "Cordillera",
                 CityOrDistrict = "Baguio",
                 StreetAddress = "29 Francisco St.",
@@ -235,11 +236,7 @@ public class PropertyRepository : Repository<Property>
                     DestinationType.TinyHomes,
                     DestinationType.Mansions
                 ],
-                Country = new CountryInfo
-                {
-                    CountryName = "Italy",
-                    CountryCode = "IT"
-                },
+                Country = GetCountryByCode("IT"),
                 StateOrProvince = "Tuscany",
                 CityOrDistrict = "Florence",
                 StreetAddress = "Via dei Serragli",
@@ -281,11 +278,7 @@ public class PropertyRepository : Repository<Property>
                     DestinationType.TinyHomes,
                     DestinationType.Mansions
                 ],
-                Country = new CountryInfo
-                {
-                    CountryName = "Germany",
-                    CountryCode = "DE"
-                },
+                Country = GetCountryByCode("DE"),
                 StateOrProvince = "Hamburg",
                 CityOrDistrict = "St. Georg",
                 StreetAddress = "Langen Reihe",
@@ -329,11 +322,7 @@ public class PropertyRepository : Repository<Property>
                     DestinationType.Room,
                     DestinationType.TinyHomes
                 ],
-                Country = new CountryInfo
-                {
-                    CountryName = "United Kingdom",
-                    CountryCode = "GB"
-                },
+                Country = GetCountryByCode("GB"),
                 StateOrProvince = "Colchester",
                 CityOrDistrict = "Essex",
                 StreetAddress = "Colchester Town centre",
@@ -375,11 +364,7 @@ public class PropertyRepository : Repository<Property>
                     DestinationType.Room,
                     DestinationType.Mansions
                 ],
-                Country = new CountryInfo
-                {
-                    CountryName = "South Africa",
-                    CountryCode = "ZA"
-                },
+                Country = GetCountryByCode("ZA"),
                 StateOrProvince = "Western Cape",
                 CityOrDistrict = "Cape Town",
                 StreetAddress = "7th Floor, 106 Adderley Street",
@@ -423,11 +408,7 @@ public class PropertyRepository : Repository<Property>
                     DestinationType.Mansions,
                     DestinationType.Lakefront,
                 ],
-                Country = new CountryInfo
-                {
-                    CountryName = "Denmark",
-                    CountryCode = "DK"
-                },
+                Country = GetCountryByCode("DK"),
                 StateOrProvince = "Copenhagen",
                 CityOrDistrict = "Vesterbro",
                 StreetAddress = "119 Vesterbrogade",
@@ -462,11 +443,7 @@ public class PropertyRepository : Repository<Property>
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-10.jpg",
                     "cozy-room-in-montmartre/cozy-room-in-montmartre-11.jpg"
                 ],
-                Country = new CountryInfo
-                {
-                    CountryName = "New Zealand",
-                    CountryCode = "NZ"
-                },
+                Country = GetCountryByCode("NZ"),
                 DestinationTypes =
                 [
                     DestinationType.AmazingPools,
@@ -518,11 +495,7 @@ public class PropertyRepository : Repository<Property>
                     DestinationType.Tropical,
                     DestinationType.Room,
                 ],
-                Country = new CountryInfo
-                {
-                    CountryName = "Austria",
-                    CountryCode = "AT"
-                },
+                Country = GetCountryByCode("AT"),
                 StateOrProvince = "Vienna",
                 CityOrDistrict = "Reumannplatz",
                 StreetAddress = "1100 Favoritenstraße",
@@ -566,11 +539,7 @@ public class PropertyRepository : Repository<Property>
                     DestinationType.Tropical,
                     DestinationType.Room,
                 ],
-                Country = new CountryInfo
-                {
-                    CountryName = "Cyprus",
-                    CountryCode = "CY"
-                },
+                Country = GetCountryByCode("CY"),
                 StateOrProvince = "Nicosia",
                 CityOrDistrict = "Nicosia",
                 StreetAddress = "Pangea",
@@ -614,11 +583,7 @@ public class PropertyRepository : Repository<Property>
                     DestinationType.Tropical,
                     DestinationType.Room,
                 ],
-                Country = new CountryInfo
-                {
-                    CountryName = "Türkiye",
-                    CountryCode = "TR"
-                },
+                Country = GetCountryByCode("TR"),
                 StateOrProvince = "Istanbul",
                 CityOrDistrict = "Kadıköy",
                 StreetAddress = "Kad ı Neyy",
@@ -663,11 +628,7 @@ public class PropertyRepository : Repository<Property>
                     DestinationType.Tropical,
                     DestinationType.Room,
                 ],
-                Country = new CountryInfo
-                {
-                    CountryName = "Thailand",
-                    CountryCode = "TH"
-                },
+                Country = GetCountryByCode("TH"),
                 StateOrProvince = "Phuket",
                 CityOrDistrict = "Kamala",
                 StreetAddress = "Citygate Condo",
@@ -710,11 +671,7 @@ public class PropertyRepository : Repository<Property>
                     DestinationType.Tropical,
                     DestinationType.Room,
                 ],
-                Country = new CountryInfo
-                {
-                    CountryName = "Vietnam",
-                    CountryCode = "VN"
-                },
+                Country = GetCountryByCode("VN"),
                 StateOrProvince = "Khanh Hoa",
                 CityOrDistrict = "Nha Trang",
                 StreetAddress = "28 Trần Phú",
