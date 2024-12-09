@@ -16,35 +16,35 @@ public class VoucherRepository : Repository<Voucher>
                     Code = "Voucher 1",
                     Quantity = 10,
                     DiscountPercentage = 10,
-                    ValidUntil = DateTime.Now.AddDays(30),
+                    ValidUntil = DateTime.Now.ToUniversalTime().AddDays(30),
                     IsUsed = true
             },
             new() { Id = 2,
                     Code = "Voucher 2",
                     Quantity = 10,
                     DiscountPercentage = 20,
-                    ValidUntil = DateTime.Now.AddDays(60),
+                    ValidUntil = DateTime.Now.ToUniversalTime().AddDays(60),
                     IsUsed = false
             },
             new() { Id = 3,
                     Code = "Voucher 3",
                     Quantity = 10,
                     DiscountPercentage = 30,
-                    ValidUntil = DateTime.Now.AddDays(90),
+                    ValidUntil = DateTime.Now.ToUniversalTime().AddDays(90),
                     IsUsed = false
             },
             new() { Id = 4,
                     Code = "Voucher 4",
                     Quantity = 5,
                     DiscountPercentage = 40,
-                    ValidUntil = DateTime.Now.AddDays(120),
+                    ValidUntil = DateTime.Now.ToUniversalTime().AddDays(120),
                     IsUsed = false
             },
             new() { Id = 5,
                     Code = "Voucher 5",
                     Quantity = 1,
                     DiscountPercentage = 50,
-                    ValidUntil = DateTime.Now.AddDays(150),
+                    ValidUntil = DateTime.Now.ToUniversalTime().AddDays(150),
                     IsUsed = true
             }
         ]);

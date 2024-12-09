@@ -64,7 +64,7 @@ public class Voucher : INotifyPropertyChanged
     public DateTime ValidFrom
     {
         get; set;
-    } = DateTime.Now;   // Default valid from the current date and time
+    } = DateTime.Now.ToUniversalTime();   // Default valid from the current date and time
 
     // Date when the voucher expires
     // Nullable if the voucher does not expire

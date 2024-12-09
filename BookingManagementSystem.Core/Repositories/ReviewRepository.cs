@@ -16,36 +16,31 @@ public class ReviewRepository : Repository<Review>
                     PropertyId = 1,
                     UserId = 1,
                     Rating = 5,
-                    Comment = "Excellent property",
-                    CreatedAt = DateTime.Now
+                    Comment = "Excellent property"
             },
             new() { Id = 2,
                     PropertyId = 2,
                     UserId = 2,
                     Rating = 4,
-                    Comment = "Great property",
-                    CreatedAt = DateTime.Now
+                    Comment = "Great property"
             },
             new() { Id = 3,
                     PropertyId = 3,
                     UserId = 3,
                     Rating = 3,
-                    Comment = "Good property",
-                    CreatedAt = DateTime.Now
+                    Comment = "Good property"
             },
             new() { Id = 4,
                     PropertyId = 4,
                     UserId = 4,
                     Rating = 2,
-                    Comment = "Average property",
-                    CreatedAt = DateTime.Now
+                    Comment = "Average property"
             },
             new() { Id = 5,
                     PropertyId = 5,
                     UserId = 5,
                     Rating = 1,
-                    Comment = "Poor property",
-                    CreatedAt = DateTime.Now
+                    Comment = "Poor property"
             }
         ]);
     }

@@ -257,7 +257,17 @@ public partial class App : Application
         );
 
         var db = App.GetService<ApplicationDbContext>();
-        await db.AddUsersDB();
-
+        //await db.AddUsersDB();
+        //await db.AddQnADB();
+        //await db.AddReviewDB();
+        //await db.AddPropertyDB();
+        //await db.AddPropertyPolicyDB();
+        //await db.AddVoucherDB();
+        //await db.AddFAQDB();
+        //await db.AddAmenityDB();
+        //await db.AddBadReportDB();
+        //await db.AddBookingDB();
+        //await db.AddNotificationDB();
+        //await db.AddPaymentDB();
     }
 }

@@ -18,7 +18,6 @@ public class QnARepository : Repository<QnA>
                     PropertyId = 1,
                     CustomerId = 1,
                     HostId = 2,
-                    CreatedAt = DateTime.Now,
                     Status = QnAStatus.Answered
             },
             new() { Id = 2,
@@ -27,7 +26,6 @@ public class QnARepository : Repository<QnA>
                     PropertyId = 2,
                     CustomerId = 2,
                     HostId = 3,
-                    CreatedAt = DateTime.Now,
                     Status = QnAStatus.Answered
             },
             new() { Id = 3,
@@ -36,7 +34,6 @@ public class QnARepository : Repository<QnA>
                     PropertyId = 3,
                     CustomerId = 3,
                     HostId = 4,
-                    CreatedAt = DateTime.Now,
                     Status = QnAStatus.Answered
             },
             new() { Id = 4,
@@ -45,7 +42,6 @@ public class QnARepository : Repository<QnA>
                     PropertyId = 4,
                     CustomerId = 4,
                     HostId = 5,
-                    CreatedAt = DateTime.Now,
                     Status = QnAStatus.Answered
             },
             new() { Id = 5,
@@ -54,7 +50,6 @@ public class QnARepository : Repository<QnA>
                     PropertyId = 5,
                     CustomerId = 5,
                     HostId = 1,
-                    CreatedAt = DateTime.Now,
                     Status = QnAStatus.Answered
             },
             new() { Id = 6,
@@ -63,7 +58,6 @@ public class QnARepository : Repository<QnA>
                     PropertyId = 6,
                     CustomerId = 6,
                     HostId = 6,
-                    CreatedAt = DateTime.Now,
                     Status = QnAStatus.Answered
             }
         ]);

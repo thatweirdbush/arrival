@@ -41,7 +41,7 @@ public class QnA
     public DateTime CreatedAt
     {
         get; set;
-    } = DateTime.Now;
+    } = DateTime.Now.ToUniversalTime();
     public QnAStatus Status
     {
         get; set;

@@ -34,7 +34,7 @@ public class Review : INotifyPropertyChanged
     public DateTime CreatedAt
     {
         get; set;
-    } = DateTime.Now;
+    } = DateTime.Now.ToUniversalTime();
     public DateTime UpdatedAt
     {
         get; set;

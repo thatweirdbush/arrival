@@ -42,7 +42,7 @@ public class BadReport : INotifyPropertyChanged
     public DateTime ReportDate
     {
         get; set;
-    } = DateTime.Now;  // Default report date is the current date and time
+    } = DateTime.Now.ToUniversalTime();  // Default report date is the current date and time
 
     // The reason or category of the report (e.g., "Spam", "Inappropriate Content", "Harassment")
     public string ReportReason

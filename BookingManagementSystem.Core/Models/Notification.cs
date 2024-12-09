@@ -39,7 +39,7 @@ public class Notification : INotifyPropertyChanged
     public DateTime DateSent
     {
         get; set;
-    } = DateTime.Now;
+    } = DateTime.Now.ToUniversalTime();
     public bool IsRead
     {
         get; set;

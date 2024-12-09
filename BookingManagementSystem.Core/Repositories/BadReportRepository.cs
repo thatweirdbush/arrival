@@ -30,7 +30,7 @@ public class BadReportRepository : Repository<BadReport>
                 Status = ReportStatus.Approved,
                 EntityType = EntityType.Review,
                 HandledByAdminId = 2001,
-                HandledDate = DateTime.Now.AddDays(-2),
+                HandledDate = DateTime.Now.ToUniversalTime().AddDays(-2),
                 AdminNotes = "The user repeatedly messaged another user on our platform, making them feel uncomfortable with unsolicited personal questions. Despite being politely asked to stop, the user continued to contact the reporting party through our messaging system. \r\nIn one instance, the user made unwelcome comments about the reporting user’s photos on their profile, which escalated into making remarks that were perceived as threatening. This behavior directly violates our platform’s code of conduct, which promotes a safe and respectful environment. \r\nAs the messages were not related to the property booking or related queries, they are considered harassment under our community guidelines. The reporting user blocked the offender and raised this report with screenshots as evidence. \r\nGiven the severity of the messages, it was escalated for administrative review. Any form of harassment is taken seriously, and the reported messages are now being reviewed with the intent to enforce consequences that align with our anti-harassment policy."
             },
             new() {
@@ -42,7 +42,7 @@ public class BadReportRepository : Repository<BadReport>
                 Status = ReportStatus.Rejected,
                 EntityType = EntityType.User,
                 HandledByAdminId = 2002,
-                HandledDate = DateTime.Now.AddDays(-5),
+                HandledDate = DateTime.Now.ToUniversalTime().AddDays(-5),
                 AdminNotes = "Insufficient evidence for harassment. Report rejected."
             },
             new() {
@@ -63,7 +63,7 @@ public class BadReportRepository : Repository<BadReport>
                 Status = ReportStatus.Approved,
                 EntityType = EntityType.User,
                 HandledByAdminId = 2003,
-                HandledDate = DateTime.Now.AddDays(-1),
+                HandledDate = DateTime.Now.ToUniversalTime().AddDays(-1),
                 AdminNotes = "User account suspended for 3 days."
             },
             new() {
@@ -84,7 +84,7 @@ public class BadReportRepository : Repository<BadReport>
                 Status = ReportStatus.Approved,
                 EntityType = EntityType.User,
                 HandledByAdminId = 2004,
-                HandledDate = DateTime.Now.AddDays(-3),
+                HandledDate = DateTime.Now.ToUniversalTime().AddDays(-3),
                 AdminNotes = "The user repeatedly messaged another user on our platform, making them feel uncomfortable with unsolicited personal questions. Despite being politely asked to stop, the user continued to contact the reporting party through our messaging system. \r\nIn one instance, the user made unwelcome comments about the reporting user’s photos on their profile, which escalated into making remarks that were perceived as threatening. This behavior directly violates our platform’s code of conduct, which promotes a safe and respectful environment. \r\nAs the messages were not related to the property booking or related queries, they are considered harassment under our community guidelines. The reporting user blocked the offender and raised this report with screenshots as evidence. \r\nGiven the severity of the messages, it was escalated for administrative review. Any form of harassment is taken seriously, and the reported messages are now being reviewed with the intent to enforce consequences that align with our anti-harassment policy."
             },
             new() {
@@ -105,7 +105,7 @@ public class BadReportRepository : Repository<BadReport>
                 Status = ReportStatus.Rejected,
                 EntityType = EntityType.Review,
                 HandledByAdminId = 2005,
-                HandledDate = DateTime.Now.AddDays(-7),
+                HandledDate = DateTime.Now.ToUniversalTime().AddDays(-7),
                 AdminNotes = "Review flagged but deemed non-disruptive."
             },
             new() {
@@ -117,7 +117,7 @@ public class BadReportRepository : Repository<BadReport>
                 Status = ReportStatus.Approved,
                 EntityType = EntityType.Property,
                 HandledByAdminId = 2006,
-                HandledDate = DateTime.Now.AddDays(-4),
+                HandledDate = DateTime.Now.ToUniversalTime().AddDays(-4),
                 AdminNotes = "Description edited to remove offensive terms."
             }
         ]);

@@ -17,8 +17,8 @@ public class BookingRepository : Repository<Booking>
                 Id = 1,
                 PropertyId = 1,
                 UserId = 1,
-                CheckInDate = DateTime.Now,
-                CheckOutDate = DateTime.Now.AddDays(3),
+                CheckInDate = DateTime.Now.ToUniversalTime(),
+                CheckOutDate = DateTime.Now.ToUniversalTime().AddDays(3),
                 TotalPrice = 299.9M
             },
             new()
@@ -26,8 +26,8 @@ public class BookingRepository : Repository<Booking>
                 Id = 2,
                 PropertyId = 2,
                 UserId = 2,
-                CheckInDate = DateTime.Now,
-                CheckOutDate = DateTime.Now.AddDays(2),
+                CheckInDate = DateTime.Now.ToUniversalTime(),
+                CheckOutDate = DateTime.Now.ToUniversalTime().AddDays(2),
                 TotalPrice = 199.9M
             },
             new()
@@ -35,8 +35,8 @@ public class BookingRepository : Repository<Booking>
                 Id = 3,
                 PropertyId = 3,
                 UserId = 3,
-                CheckInDate = DateTime.Now,
-                CheckOutDate = DateTime.Now.AddDays(1),
+                CheckInDate = DateTime.Now.ToUniversalTime(),
+                CheckOutDate = DateTime.Now.ToUniversalTime().AddDays(1),
                 TotalPrice = 49.9M
             },
             new()
@@ -44,8 +44,8 @@ public class BookingRepository : Repository<Booking>
                 Id = 4,
                 PropertyId = 4,
                 UserId = 4,
-                CheckInDate = DateTime.Now,
-                CheckOutDate = DateTime.Now.AddDays(4),
+                CheckInDate = DateTime.Now.ToUniversalTime(),
+                CheckOutDate = DateTime.Now.ToUniversalTime().AddDays(4),
                 TotalPrice = 99.9M
             },
             new()
@@ -53,8 +53,8 @@ public class BookingRepository : Repository<Booking>
                 Id = 5,
                 PropertyId = 5,
                 UserId = 5,
-                CheckInDate = DateTime.Now,
-                CheckOutDate = DateTime.Now.AddDays(5),
+                CheckInDate = DateTime.Now.ToUniversalTime(),
+                CheckOutDate = DateTime.Now.ToUniversalTime().AddDays(5),
                 TotalPrice = 69.9M
             }
         ]);
