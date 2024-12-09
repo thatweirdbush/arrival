@@ -1,13 +1,11 @@
 ﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.Core.Repositories;
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.ViewModels.Host;
 using BookingManagementSystem.Views.Forms;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Windows.ApplicationModel.Contacts;
 
 namespace BookingManagementSystem.Views.Host;
 

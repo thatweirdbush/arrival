@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using BookingManagementSystem.Core.Models;
 
 namespace BookingManagementSystem.Core.Repositories;
-public class DestinationTypeSymbolRepository : Repository<DestinationTypeSymbol>
+public class DestinationTypeSymbolRepository
 {
+    private readonly List<DestinationTypeSymbol> _icons;
     public DestinationTypeSymbolRepository()
     {
-        _entities.AddRange(
+        _icons = new List<DestinationTypeSymbol>(
         [
             new(){
                 Name = "All",
@@ -98,5 +99,9 @@ public class DestinationTypeSymbolRepository : Repository<DestinationTypeSymbol>
                 ImagePath = "tropical.jpg"
             }
         ]);
+    }
+    public Task<IEnumerable<DestinationTypeSymbol>> GetAllAsync()
+    {
+        return Task.FromResult(_icons.AsEnumerable());
     }
 }

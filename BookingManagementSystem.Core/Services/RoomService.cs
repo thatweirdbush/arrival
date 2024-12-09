@@ -7,7 +7,7 @@ namespace BookingManagementSystem.Core.Services;
 public class RoomService : IRoomService
 {
     // Properties nessesary for UI data binding
-    private readonly IRepository<DestinationTypeSymbol> _destinationTypeSymbolRepository;
+    private readonly DestinationTypeSymbolRepository _destinationTypeSymbolRepository;
 
     // Properties nessesary for Schedule searching
     private readonly IRepository<Property> _roomRepository;
@@ -19,7 +19,7 @@ public class RoomService : IRoomService
     public RoomService(
         IRepository<Property> roomRepository,
         IRepository<Booking> bookingRepository,
-        IRepository<DestinationTypeSymbol> destinationTypeSymbolRepository,
+        DestinationTypeSymbolRepository destinationTypeSymbolRepository,
         GeographicNameService geographicNamesService)
     {
         _roomRepository = roomRepository;
@@ -128,6 +128,4 @@ public class RoomService : IRoomService
         var locations = await _geographicNamesService.SearchLocationsAsync(locationName);
         return locations.FirstOrDefault();
     }
-
-
 }

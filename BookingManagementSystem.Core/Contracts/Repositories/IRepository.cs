@@ -13,6 +13,7 @@ public interface IRepository<T>
     Task AddAsync(T entity);
     Task UpdateAsync(T entity);
     Task DeleteAsync(int id);
+    Task SaveChangesAsync();
     Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize);
     Task<IEnumerable<T>> GetFilteredAsync(Expression<Func<T, bool>> predicate);
     Task<IEnumerable<T>> GetSortedAsync<TKey>(Expression<Func<T, TKey>> keySelector, bool sortDescending);

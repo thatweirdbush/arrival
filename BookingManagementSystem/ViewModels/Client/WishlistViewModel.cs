@@ -6,29 +6,38 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel;
 using BookingManagementSystem.ViewModels.Account;
 using CommunityToolkit.Mvvm.Input;
+using BookingManagementSystem.Contracts.ViewModels;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
-public partial class WishlistViewModel : ObservableRecipient 
+public partial class WishlistViewModel : ObservableRecipient, INavigationAware
 {
     private readonly INavigationService _navigationService;
     private readonly IRepository<Property> _propertyRepository;
-
-    // List of content items
-    public ObservableCollection<Property> Properties { get; set; } = [];
 
     [ObservableProperty]
     private bool isPropertyListEmpty;
     public int CurrentUserID = LoginViewModel.CurrentUser?.Id ?? 0;
 
+    // List of content items
+    public ObservableCollection<Property> Properties { get; set; } = [];
     public WishlistViewModel(INavigationService navigationService, IRepository<Property> propertyRepository)
     {
         _navigationService = navigationService;
         _propertyRepository = propertyRepository;
+    }
+
+    public async void OnNavigatedTo(object parameter)
+    {
+        // Load Property data list
+        await LoadPropertyList();
+
+        // Initial check
         CheckPropertyListCount();
 
         // Subscribe to CollectionChanged event
-        Properties.CollectionChanged += (s, e) => {
+        Properties.CollectionChanged += (s, e) =>
+        {
             if (e.NewItems != null)
             {
                 foreach (Property property in e.NewItems)
@@ -45,9 +54,10 @@ public partial class WishlistViewModel : ObservableRecipient
             }
             CheckPropertyListCount();
         };
+    }
 
-        // Initial check
-        LoadPropertyList();
+    public void OnNavigatedFrom()
+    {
     }
 
     [RelayCommand]
@@ -71,18 +81,15 @@ public partial class WishlistViewModel : ObservableRecipient
         }
     }
 
-    public async void LoadPropertyList()
+    public async Task LoadPropertyList()
     {
         // Load Property data list filtered by User/Host Id
         var properties = await _propertyRepository.GetAllAsync();
-        foreach (var item in properties.Where(p => p.IsFavourite))
+        properties = properties.Where(p => p.IsFavourite);
+        foreach (var item in properties)
         {
             Properties.Add(item);
         }
-    }
-
-    public void OnNavigatedFrom()
-    {
     }
 
     private void CheckPropertyListCount()

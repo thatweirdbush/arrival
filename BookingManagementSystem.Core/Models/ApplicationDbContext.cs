@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookingManagementSystem.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Amenity> Amenities { get; set; }
     public DbSet<BadReport> BadReports { get; set; }
     public DbSet<Booking> Bookings { get; set; }
+    public DbSet<CountryInfo> CountryInfo { get; set; }
     public DbSet<FAQ> FAQs { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<Payment> Payments { get; set; }
@@ -46,7 +48,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        optionsBuilder.UseNpgsql(connectionString);
+        optionsBuilder.UseNpgsql(connectionString).UseLazyLoadingProxies();
 
         return new ApplicationDbContext(optionsBuilder.Options);
     }

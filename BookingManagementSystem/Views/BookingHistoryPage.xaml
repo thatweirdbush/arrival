@@ -44,7 +44,7 @@
                 <Grid x:Name="BodyHeaderGrid">
                     <TextBlock Text="Your Trips" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
                 </Grid>
-                <StackPanel x:Name="BodyGridAllListEmpty" Spacing="18" Visibility="{x:Bind ViewModel.IsBookingListEmpty, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel x:Name="BodyGridAllListEmpty" Spacing="18" Visibility="{x:Bind ViewModel.IsBookingListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Line Stroke="Gray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 0 0 0"/>
                     <TextBlock Text="No trips booked...yet!" Style="{ThemeResource TitleTextBlockStyle}" FontFamily="Arial" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     <TextBlock Text="Time to dust off your bags and start planning your next adventure." Style="{ThemeResource BodyTextBlockStyle}" FontFamily="Arial" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 -12 0 0"/>
@@ -55,7 +55,7 @@
                         <Hyperlink NavigateUri="https://www.example.com" FontWeight="SemiBold">Visit the Help Center</Hyperlink>
                     </TextBlock>
                 </StackPanel>
-                <StackPanel x:Name="BodyGrid" Spacing="40" Visibility="{x:Bind ViewModel.IsBookingListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                <StackPanel x:Name="BodyGrid" Spacing="40" Visibility="{x:Bind ViewModel.IsBookingListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
                     <StackPanel x:Name="TripsStackPanel" Spacing="12">
                         <Grid>
                             <TextBlock Text="Upcoming plans" Style="{ThemeResource TitleTextBlockStyle}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -89,7 +89,7 @@
                                 DesiredWidth="500"
                                 ItemHeight="400"                
                                 x:Name="TripsGridView"
-                                ItemsSource="{x:Bind ViewModel.Bookings}"
+                                ItemsSource="{x:Bind ViewModel.Bookings, Mode=OneWay}"
                                 ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
                                 IsItemClickEnabled="True"
                                 FlowDirection="LeftToRight"
@@ -112,7 +112,7 @@
                                         <Grid>
                                             <Image Stretch = "UniformToFill" VerticalAlignment="Center">
                                                 <Image.Source>
-                                                    <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="900"/>
+                                                    <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="900"/>
                                                 </Image.Source>
                                             </Image>
                                             <Border x:Name="BorderVipMember" Visibility="{x:Bind IsPriority}" CornerRadius="18" Width="82" Height="36" Background="WhiteSmoke" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
@@ -177,7 +177,7 @@
                                         <Grid>
                                             <Image Stretch = "UniformToFill" VerticalAlignment="Center">
                                                 <Image.Source>
-                                                    <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="360"/>
+                                                    <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="360"/>
                                                 </Image.Source>
                                             </Image>
                                             <Border x:Name="BorderVipMember" Visibility="{x:Bind IsPriority}" CornerRadius="15" Width="64" Height="32" Background="WhiteSmoke" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">

@@ -9,12 +9,12 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI.UI"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled"
+    CacheMode="BitmapCache">
 
     <Page.Resources>
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
-        <helper:IsFavouriteToImagePathConverter x:Key="IsFavouriteToImagePathConverter"/>
-        <helper:DateToShortDateFormatConverter x:Key="DateToShortDateFormatConverter"/>
         <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
         <helper:PropertyStatusToStringConverter x:Key="PropertyStatusToStringConverter"/>
@@ -81,14 +81,14 @@
                     <TextBlock Text="Create a listing with Arrival Setup and start getting booked." Style="{ThemeResource BodyTextBlockStyle}" FontFamily="Arial" FontSize="18" Foreground="Gray" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 -12 0 0"/>
                     <Button x:Name="btnGetStarted" Content="Get started" FontWeight="SemiBold" FontSize="18" Height="48" Width="180" CornerRadius="12" BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" Click="btnGetStarted_Click" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
-                <StackPanel x:Name="BodyGrid" Spacing="40" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                <StackPanel x:Name="BodyGrid" Spacing="40" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
                     <controls:AdaptiveGridView
                         animations:Connected.ListItemElementName="itemThumbnail"
                         animations:Connected.ListItemKey="animationKeyContentGrid"
                         DesiredWidth="500"
                         ItemHeight="400"                
                         x:Name="ListingsGridView"
-                        ItemsSource="{x:Bind ViewModel.Properties}"
+                        ItemsSource="{x:Bind ViewModel.Properties, Mode=OneWay}"
                         ItemClick="ListingsGridView_ItemClick"
                         IsItemClickEnabled="True"
                         FlowDirection="LeftToRight"
@@ -110,14 +110,14 @@
                                     <Grid>
                                         <Image Stretch = "UniformToFill" VerticalAlignment="Center">
                                             <Image.Source>
-                                                <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="900"/>
+                                                <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="900"/>
                                             </Image.Source>
                                         </Image>
                                         <StackPanel Orientation="Horizontal" Spacing="6" CornerRadius="20" HorizontalAlignment="Left" VerticalAlignment="Top" 
                                                     Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}" Margin="12" Padding="12">
                                             <InfoBadge x:Name="ListingStatusInfoBadge" Width="8" Height="8"
                                                        Style="{Binding Status, Converter={StaticResource PropertyStatusToStyleConverter}, Mode=OneWay}"/>
-                                            <TextBlock Text="{x:Bind Status, Converter={StaticResource PropertyStatusToStringConverter}}"
+                                            <TextBlock Text="{x:Bind Status, Mode=OneWay, Converter={StaticResource PropertyStatusToStringConverter}}"
                                                        Style="{ThemeResource BaseTextBlockStyle}" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </Grid>
@@ -130,7 +130,7 @@
                                                 <Run Text="{x:Bind CreatedAt.ToShortDateString()}"/>
                                             </TextBlock>
                                         </StackPanel>
-                                        <TextBlock Text="{x:Bind PricePerNight, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}"
+                                        <TextBlock Text="{x:Bind PricePerNight, Converter={StaticResource NumberToCurencyConverter}}"
                                                    Style="{ThemeResource ListTitleStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="20"/>
                                     </Grid>
                                 </Grid>

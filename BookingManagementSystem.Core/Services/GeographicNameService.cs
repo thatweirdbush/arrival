@@ -243,7 +243,6 @@ public class CountryInfo
         get; set;
     }
 
-    [Key]
     [JsonPropertyName("geonameId")]
     public int Id
     {

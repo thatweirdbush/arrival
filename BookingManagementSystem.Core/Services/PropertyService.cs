@@ -30,11 +30,13 @@ public class PropertyService : IPropertyService
         {
             // Update the existing property
             await _propertyRepository.UpdateAsync(property);
+            await _propertyRepository.SaveChangesAsync();
         }
         else
         {
             // Add new property
             await _propertyRepository.AddAsync(property);
+            await _propertyRepository.SaveChangesAsync();
         }
     }
 

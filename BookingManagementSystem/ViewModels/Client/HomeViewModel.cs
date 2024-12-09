@@ -4,7 +4,6 @@ using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.Input;
-using BookingManagementSystem.Core.Contracts.Facades;
 using BookingManagementSystem.Core.Contracts.Services;
 
 namespace BookingManagementSystem.ViewModels.Client;
@@ -63,7 +62,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         DestinationTypeSymbols = await _roomService.GetAllDestinationTypeSymbolsAsync();
 
         // Load Properties data
-        LoadAllProperties();
+        await LoadAllProperties();
 
         // Initialize observable properties
         NumberOfAdults = 0;
@@ -90,12 +89,12 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
     }
 
-    public async void LoadAllProperties()
+    public async Task LoadAllProperties()
     {
-        Properties.Clear();
         var data = await _roomService.GetAllPropertiesAsync();
         var listedProperties = data.Where(x => x.Status == PropertyStatus.Listed);
 
+        Properties.Clear();
         foreach (var item in listedProperties)
         {
             Properties.Add(item);
@@ -115,11 +114,10 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     {
         if (destinationTypeSymbol.DestinationType.Equals(DestinationType.All))
         {
-            LoadAllProperties();
+            await LoadAllProperties();
             return;
         }
         // Reload all properties before filtering
-        Properties.Clear();
         var data = await _roomService.GetAllPropertiesAsync();
 
         // Prepare Trending properties data by filtering based on IsPriority or IsFavourtie
@@ -131,6 +129,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         {
             data = data.Where(p => p.DestinationTypes.Contains(destinationTypeSymbol.DestinationType)).ToList();
         }
+        Properties.Clear();
         foreach (var item in data)
         {
             Properties.Add(item);

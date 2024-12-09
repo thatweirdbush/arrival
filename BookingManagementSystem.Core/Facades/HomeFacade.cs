@@ -7,21 +7,21 @@ using BookingManagementSystem.Core.Contracts.Facades;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.Core.Services;
+using BookingManagementSystem.Core.Repositories;
 
 namespace BookingManagementSystem.Core.Facades;
 public class HomeFacade : IHomeFacade
 {
     // Properties nessesary for UI data binding
     private readonly IRepository<Property> _propertyRepository;
-    private readonly IRepository<DestinationTypeSymbol> _destinationTypeSymbolRepository;
+    private readonly DestinationTypeSymbolRepository _destinationTypeSymbolRepository;
 
     // Properties nessesary for Schedule searching
     private readonly IRoomService _roomService;
 
     public HomeFacade(
         IRepository<Property> propertyRepository,
-        IRepository<DestinationTypeSymbol> destinationTypeSymbolRepository,
+        DestinationTypeSymbolRepository destinationTypeSymbolRepository,
         IRoomService roomService)
     {
         _propertyRepository = propertyRepository;

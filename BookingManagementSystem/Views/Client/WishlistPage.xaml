@@ -61,22 +61,22 @@
                         </CommandBar.SecondaryCommands>
                     </CommandBar>
                 </Grid>
-                
+
                 <StackPanel x:Name="BodyGridAllListEmpty" Spacing="18" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Image Source="/Assets/modern-european-house.png" Width="240" Height="240" Stretch="Fill" Margin="0 -18 0 -24"/>
                     <TextBlock Text="You don’t have any wishlist yet" Style="{ThemeResource SubtitleTextBlockStyle}" FontFamily="Arial" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <TextBlock Text="Create a wishlist by giving Homes &amp; Apartments a heart." Style="{ThemeResource BodyTextBlockStyle}" FontFamily="Arial" FontSize="18" Foreground="Gray" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 -12 0 0"/>
                     <Button x:Name="btnGetStarted" Content="Get started" FontWeight="SemiBold" FontSize="18" Height="48" Width="180" CornerRadius="12" BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" Click="btnGetStarted_Click" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
-                
-                <StackPanel x:Name="BodyGrid" Spacing="40" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+
+                <StackPanel x:Name="BodyGrid" Spacing="40" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
                     <controls:AdaptiveGridView
                         animations:Connected.ListItemElementName="itemThumbnail"
                         animations:Connected.ListItemKey="animationKeyBodyGrid"
                         DesiredWidth="500"
                         ItemHeight="400"                
                         x:Name="WishlistGridView"
-                        ItemsSource="{x:Bind ViewModel.Properties}"
+                        ItemsSource="{x:Bind ViewModel.Properties, Mode=OneWay}"
                         IsItemClickEnabled="True"
                         ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
                         FlowDirection="LeftToRight"
@@ -98,7 +98,7 @@
                                     <Grid>
                                         <Image Stretch = "UniformToFill" VerticalAlignment="Center">
                                             <Image.Source>
-                                                <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="900"/>
+                                                <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="900"/>
                                             </Image.Source>
                                         </Image>
                                         <Button x:Name="btnFavourite" Click="btnFavourite_Click" CornerRadius="48" Width="48" Height="48" Background="Transparent" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="4">

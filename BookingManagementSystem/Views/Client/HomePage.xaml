@@ -267,15 +267,15 @@
             </StackPanel>
         </Grid>
         <Grid x:Name="ListContentGrid" Grid.Row="2" Background="Transparent" 
-              Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+              Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
             <controls:AdaptiveGridView
                 animations:Connected.ListItemElementName="itemThumbnail"
                 animations:Connected.ListItemKey="animationKeyContentGrid"
                 DesiredWidth="380"
                 ItemHeight="380"                
                 x:Name="ContentGridView"
-                ItemsSource="{x:Bind ViewModel.Properties}"
-                ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
+                ItemsSource="{x:Bind ViewModel.Properties, Mode=OneWay}"
+                ItemClickCommand="{x:Bind ViewModel.ItemClickCommand, Mode=OneWay}"
                 IsItemClickEnabled="True"
                 CanDragItems="True"
                 AllowDrop="True"
@@ -295,13 +295,18 @@
                     select from the options on the right. The currently selected DataTemplate is: -->
                     <!-- ImageTextTemplate: -->
                     <DataTemplate x:DataType="models:Property">
-                        <Grid x:Name="itemThumbnail" AutomationProperties.Name="{x:Bind Name, Mode=OneWay}">
+                        <Grid x:Name="itemThumbnail">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="3*"/>
                                 <RowDefinition Height="2*"/>
                             </Grid.RowDefinitions>
                             <Grid>
-                                <FlipView ItemsSource="{x:Bind ImagePaths, Mode=OneWay}">
+                                <Image Stretch = "UniformToFill" VerticalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="800"/>
+                                    </Image.Source>
+                                </Image>
+                                <!--<FlipView ItemsSource="{x:Bind ImagePaths, Mode=OneWay}">
                                     <FlipView.ItemTemplate>
                                         <DataTemplate x:DataType="x:String">
                                             <Image Stretch = "UniformToFill" VerticalAlignment="Center">
@@ -311,7 +316,7 @@
                                             </Image>
                                         </DataTemplate>
                                     </FlipView.ItemTemplate>
-                                </FlipView>
+                                </FlipView>-->
                                 <Border x:Name="BorderVipMember" Visibility="{x:Bind IsPriority, Mode=OneWay}" CornerRadius="18" Width="82" Height="36" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
                                     <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Image Width="18" Height="18">
@@ -344,12 +349,12 @@
                                     </StackPanel>
                                 </StackPanel>
                                 <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Spacing="8">
-                                    <!--<StackPanel x:Name="MoreInfo_StackPanel" Orientation="Horizontal" Spacing="3" HorizontalAlignment="Right" VerticalAlignment="Center">-->
-                                    <!--<TextBlock Text = "2" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <TextBlock Text = "nights" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Center"/>-->
-                                    <!--
-                                    <TextBlock Text = "{x:Bind Price, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style = "{ThemeResource DetailSubTitleStyle}" TextDecorations="Strikethrough" Foreground="#D2042D" FontSize="16"/>
-                                </StackPanel>-->
+                                    <!--<StackPanel x:Name="MoreInfo_StackPanel" Orientation="Horizontal" Spacing="3" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                        <TextBlock Text = "2" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        <TextBlock Text = "nights" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                                        <TextBlock Text = "{x:Bind Price, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style = "{ThemeResource DetailSubTitleStyle}" TextDecorations="Strikethrough" Foreground="#D2042D" FontSize="16"/>
+                                    </StackPanel>-->
                                     <TextBlock Text = "{x:Bind PricePerNight, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style = "{ThemeResource ListTitleStyle}" HorizontalAlignment="Right" FontSize="20"/>
                                 </StackPanel>
                             </Grid>

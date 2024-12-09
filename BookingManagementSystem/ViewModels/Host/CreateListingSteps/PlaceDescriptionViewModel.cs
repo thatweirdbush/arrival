@@ -18,6 +18,7 @@ public partial class PlaceDescriptionViewModel : BaseStepViewModel
         // Initialize core properties
         SelectedTitle = PropertyOnCreating.Name;
         SelectedDescription = PropertyOnCreating.Description;
+        ValidateProcess();
     }
 
     public override void ValidateProcess()

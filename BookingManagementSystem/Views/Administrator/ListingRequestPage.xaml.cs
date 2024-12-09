@@ -27,7 +27,7 @@ public sealed partial class ListingRequestPage : Page
         {
             case "Current":
                 btnAdd.Visibility = Visibility.Collapsed;
-                ViewModel.GetPriorityPropertyListDataAsync();
+                ViewModel.LoadPriorityListDataAsync();
                 break;
             case "Elites":
                 btnAdd.Visibility = Visibility.Collapsed;
@@ -43,7 +43,7 @@ public sealed partial class ListingRequestPage : Page
                 break;
             default:
                 btnAdd.Visibility = Visibility.Collapsed;
-                ViewModel.GetPriorityPropertyListDataAsync();
+                ViewModel.LoadPriorityListDataAsync();
                 break;
         }
     }
@@ -125,7 +125,7 @@ public sealed partial class ListingRequestPage : Page
         switch (selectedValueComboBox)
         {
             case "Current":
-                ViewModel.GetPriorityPropertyListDataAsync();
+                ViewModel.LoadPriorityListDataAsync();
                 break;
             case "Elites":
                 ViewModel.GetElitePropertyListDataAsync();
@@ -137,7 +137,7 @@ public sealed partial class ListingRequestPage : Page
                 ViewModel.GetRequestedPropertyListDataAsync();
                 break;
             default:
-                ViewModel.GetPriorityPropertyListDataAsync();
+                ViewModel.LoadPriorityListDataAsync();
                 break;
         }
 
