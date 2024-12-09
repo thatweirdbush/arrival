@@ -21,7 +21,6 @@ public class UserRepository : Repository<User>
                     Address = "123 Main St",
                     GovernmentId = "1234567890",
                     Role = Role.Host,
-                    CreatedAt = DateTime.Now,
                     Username = "johndoe",
                     Password = "password"
             },
@@ -34,7 +33,6 @@ public class UserRepository : Repository<User>
                     Address = "234 Main St",
                     GovernmentId = "2345678901",
                     Role = Role.Guest,
-                    CreatedAt = DateTime.Now,
                     Username = "janesmith",
                     Password = "password"
                 },
@@ -47,7 +45,6 @@ public class UserRepository : Repository<User>
                     Address = "345 Main St",
                     GovernmentId = "3456789012",
                     Role = Role.Host,
-                    CreatedAt = DateTime.Now,
                     Username = "alicejohnson",
                     Password = "password"
                 },
@@ -60,7 +57,6 @@ public class UserRepository : Repository<User>
                     Address = "456 Main St",
                     GovernmentId = "4567890123",
                     Role = Role.Guest,
-                    CreatedAt = DateTime.Now,
                     Username = "bobbrown",
                     Password = "password"
                 },
@@ -73,7 +69,6 @@ public class UserRepository : Repository<User>
                     Address = "567 Main St",
                     GovernmentId = "5678901234",
                     Role = Role.Host,
-                    CreatedAt = DateTime.Now,
                     Username = "evewhite",
                     Password = "password"
                 },
@@ -86,7 +81,6 @@ public class UserRepository : Repository<User>
                     Address = "678 Main St",
                     GovernmentId = "6789012345",
                     Role = Role.Admin,
-                    CreatedAt = DateTime.Now,
                     Username = "admin",
                     Password = "password"
                 },
@@ -99,7 +93,6 @@ public class UserRepository : Repository<User>
                     Address = "789 Main St",
                     GovernmentId = "7890123456",
                     Role = Role.Host,
-                    CreatedAt = DateTime.Now,
                     Username = "host",
                     Password = "password"
                 },
@@ -112,7 +105,6 @@ public class UserRepository : Repository<User>
                     Address = "890 Main St",
                     GovernmentId = "8901234567",
                     Role = Role.Guest,
-                    CreatedAt = DateTime.Now,
                     Username = "guest",
                     Password = "password"
                 },
@@ -125,7 +117,6 @@ public class UserRepository : Repository<User>
                     Address = "901 Main St",
                     GovernmentId = "9012345678",
                     Role = Role.Host,
-                    CreatedAt = DateTime.Now,
                     Username = "elitehost",
                     Password = "password"
                 },
@@ -138,7 +129,6 @@ public class UserRepository : Repository<User>
                     Address = "012 Main St",
                     GovernmentId = "0123456789",
                     Role = Role.Host,
-                    CreatedAt = DateTime.Now,
                     Username = "elitehost2",
                     Password = "password"
                 }

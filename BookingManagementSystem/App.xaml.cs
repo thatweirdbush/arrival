@@ -255,5 +255,9 @@ public partial class App : Application
                 ("See details", "action=see-details")
             ]
         );
+
+        var db = App.GetService<ApplicationDbContext>();
+        await db.AddUsersDB();
+
     }
 }

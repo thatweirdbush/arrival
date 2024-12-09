@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookingManagementSystem.Core.Contracts.Repositories;
+using BookingManagementSystem.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -24,8 +26,19 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Voucher> Vouchers { get; set; }
 
+    public async Task AddUsersDB()
+    {
+        var userRepository = new UserRepository();
+        var users = await userRepository.GetAllAsync();
+
+        await Users.AddRangeAsync(users);
+        await SaveChangesAsync();
+    }
+
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
     : base(options) {}
+
 }
 
 /// <summary>
