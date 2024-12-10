@@ -11,22 +11,32 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IRepository<Property> _propertyRepository;
 
+    // List of content items
+    public ObservableCollection<Property> Properties { get; set; } = [];
+    public List<Property> CachedProperties { get; set; } = [];
+
+    // List of Property's Name & Location for searching
+    public List<string> PropertyNameAndLocationList { get; set; } = [];
+
     [ObservableProperty]
     private bool isPropertyListEmpty;
 
     [ObservableProperty]
     private bool isLoading;
 
+    [ObservableProperty]
+    private LoadingState currentLoadingState;
+
     // Other properties
     public int PropertyCountTotal;
     private int _currentPage = 1;
+    public int CurrentPage => _currentPage;
     private const int PageSize = 5; // Default page size
-
-    // List of content items
-    public ObservableCollection<Property> Properties { get; set; } = [];
-
-    // List of Property's Name & Location
-    public List<string> PropertyNameAndLocationList { get; set; } = [];
+    public enum LoadingState
+    {
+        Default,
+        Search
+    }
 
     public ListingViewModel(IRepository<Property> propertyRepository)
     {
@@ -35,20 +45,31 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
 
     public async void OnNavigatedTo(object parameter)
     {
-        // Load Listing data list
+        await InitializeCache();
         await LoadPropertyListAsync();
 
-        // Load Property Name and Location string data list
-        PropertyNameAndLocationList = Properties.Select(p => p.Name)
-                                                .Concat(Properties.Select(p => p.Location))
-                                                .ToList();
         // Initial check
         CheckPropertyListCount();
         Properties.CollectionChanged += (s, e) => CheckPropertyListCount();
+
+        // Set the default loading state
+        CurrentLoadingState = LoadingState.Default;
     }
 
     public void OnNavigatedFrom()
     {
+        Properties.CollectionChanged -= (s, e) => CheckPropertyListCount();
+    }
+
+    public async Task InitializeCache()
+    {
+        // Load all properties from the database
+        CachedProperties = (List<Property>)await _propertyRepository.GetAllAsync();
+
+        // Load Property Name and Location string data list
+        PropertyNameAndLocationList = CachedProperties.Select(p => p.Name)
+                                                        .Concat(CachedProperties.Select(p => p.Location))
+                                                        .ToList();
     }
 
     public async Task LoadPropertyListAsync()
@@ -59,8 +80,7 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
         try
         {
             IsLoading = true;
-            var allProperties = await _propertyRepository.GetAllAsync();
-            var paginatedProperties = allProperties
+            var paginatedProperties = CachedProperties
                 .OrderByDescending(p => p.CreatedAt) // Sort by CreatedAt time
                 .Skip((_currentPage - 1) * PageSize) // Skip those already loaded
                 .Take(PageSize); // Get next items
@@ -79,6 +99,7 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
         finally
         {
             IsLoading = false;
+            await Task.CompletedTask;
         }
     }
 
@@ -86,6 +107,9 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
     {
         await _propertyRepository.DeleteAsync(property.Id);
         await _propertyRepository.SaveChangesAsync();
+
+        // Update cache and UI
+        CachedProperties.Remove(property);
         Properties.Remove(property);
     }
 
@@ -96,6 +120,9 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
             await _propertyRepository.DeleteAsync(property.Id);
         }
         await _propertyRepository.SaveChangesAsync();
+
+        // Update cache and UI
+        CachedProperties.Clear();
         Properties.Clear();
     }
 
@@ -105,13 +132,41 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
         PropertyCountTotal = Properties.Count;
     }
 
-    public async void AddFilterProperties(string query)
+    public async Task SearchPropertiesAsync(string query)
     {
-        var data = await _propertyRepository.GetAllAsync();
-        var filteredProperties = data.Where(p => p.Name.Contains(query) || p.Location.Contains(query)).ToList();
+        // Set the current loading state
+        CurrentLoadingState = LoadingState.Search;
+
+        // Reset current pagination index & clear the list
+        ResetPaginationIndex();
+
+        // Start loading the search data
+        await LoadSearchedPropertiesAsync(query);
+    }
+
+    public async Task LoadSearchedPropertiesAsync(string query)
+    {
+        var filteredProperties = CachedProperties.Where(p => p.Name.Contains(query) || p.Location.Contains(query));
         foreach (var item in filteredProperties)
         {
             Properties.Add(item);
         }
+        await Task.CompletedTask;
+    }
+
+    public int GetSingleSearchedProperty(string query)
+    {
+        var filteredProperties = CachedProperties.Where(p => p.Name.Contains(query) || p.Location.Contains(query));
+        Properties.Clear();
+        foreach (var item in filteredProperties)
+        {
+            Properties.Add(item);
+        }
+        return Properties.FirstOrDefault()!.Id;
+    }
+
+    public void ResetPaginationIndex()
+    {
+        _currentPage = 1;
     }
 }

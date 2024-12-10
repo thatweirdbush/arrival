@@ -72,7 +72,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         await LoadPropertyListAsync();
 
         // Set the default loading state
-        CurrentLoadingState = LoadingState.Filtered;
+        CurrentLoadingState = LoadingState.Default;
 
         // Initialize observable properties for input fields
         NumberOfAdults = 0;

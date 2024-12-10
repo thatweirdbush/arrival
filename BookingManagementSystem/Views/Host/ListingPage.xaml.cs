@@ -6,11 +6,15 @@ using BookingManagementSystem.ViewModels.Host;
 using BookingManagementSystem.Views.Forms;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using static BookingManagementSystem.ViewModels.Host.ListingViewModel;
 
 namespace BookingManagementSystem.Views.Host;
 
 public sealed partial class ListingPage : Page
 {
+    // Properties nessesary for fuzzy searching
+    private CancellationTokenSource _debounceTokenSource = new();
+
     public ListingViewModel ViewModel
     {
         get;
@@ -151,49 +155,83 @@ public sealed partial class ListingPage : Page
         SearchBoxContent.Visibility = Visibility.Collapsed;
         btnSearch.Visibility = Visibility.Visible;
 
-        // Reload Property List
-        if (ViewModel.PropertyCountTotal != ViewModel.Properties.Count)
-        {
-            ViewModel.Properties.Clear();
-            await ViewModel.LoadPropertyListAsync();
-        }
-
         // Clear search box text
         SearchBox.Text = string.Empty;
+
+        // Set to default pagination index & loading state
+        ViewModel.ResetPaginationIndex();
+        ViewModel.CurrentLoadingState = LoadingState.Default;
+
+        // Reload Property List
+        ViewModel.Properties.Clear();
+        await ViewModel.LoadPropertyListAsync();
     }
 
-    private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    string currentQueryToken = string.Empty;
+
+    private async void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
         // Since selecting an item will also change the text,
         // only listen to changes caused by user entering text.
         if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
         {
-            ViewModel.Properties.Clear();
-            var suitableItems = new List<string>();
-            var splitText = sender.Text.ToLower().Split(" ");
-            foreach (var line in ViewModel.PropertyNameAndLocationList)
+            // Cancel previous token if any (if user continues typing)
+            _debounceTokenSource?.Cancel();
+            _debounceTokenSource = new CancellationTokenSource();
+            var token = _debounceTokenSource.Token;
+
+            try
             {
-                var found = splitText.All((key) =>
-                {
-                    return line.Contains(key, StringComparison.CurrentCultureIgnoreCase);
-                });
-                if (found)
-                {
-                    suitableItems.Add(line);
-                    ViewModel.AddFilterProperties(line);
-                }
-            }
-            if (suitableItems.Count == 0)
-            {
-                suitableItems.Add("No results found");
+                // Wait 400ms to debounce
+                await Task.Delay(400, token);
+
+                // Check if token is destroyed before continuing
+                token.ThrowIfCancellationRequested();
+
+                var suitableItems = new List<string>();
+                var splitText = sender.Text.ToLower().Split(" ");
                 ViewModel.Properties.Clear();
+
+                foreach (var line in ViewModel.PropertyNameAndLocationList)
+                {
+                    var found = splitText.All((key) =>
+                    {
+                        return line.Contains(key, StringComparison.CurrentCultureIgnoreCase);
+                    });
+                    if (found)
+                    {
+                        currentQueryToken = line;
+                        suitableItems.Add(currentQueryToken);
+                        await ViewModel.SearchPropertiesAsync(currentQueryToken);
+                    }
+                }
+                if (suitableItems.Count == 0)
+                {
+                    ViewModel.Properties.Clear();
+                    suitableItems.Add("No results found");
+                }
+                sender.ItemsSource = suitableItems;
             }
-            sender.ItemsSource = suitableItems;
+            catch (OperationCanceledException)
+            {
+                // Ignore the exception
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
         }
     }
 
     private void SearchBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
     {
+        // Get the Property and navigate to the Property Detail Page
+        if (args.SelectedItem is string query)
+        {
+            sender.Text = query;
+            var propertyId = ViewModel.GetSingleSearchedProperty(query);
+            App.GetService<INavigationService>().NavigateTo(typeof(RentalDetailViewModel).FullName!, propertyId);
+        }
     }
 
     private async void ListingsGridView_ItemClick(object sender, ItemClickEventArgs e)
@@ -238,7 +276,15 @@ public sealed partial class ListingPage : Page
         // Detect when scroll is near the end
         if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight - 10) // 10px from end of list
         {
-            await ViewModel.LoadPropertyListAsync();
+            // Check if loading default data or search data
+            if (ViewModel.CurrentLoadingState.Equals(LoadingState.Default))
+            {
+                await ViewModel.LoadPropertyListAsync(); // Load default data
+            }
+            else if (ViewModel.CurrentLoadingState.Equals(LoadingState.Search))
+            {
+                // Do nothing
+            }
         }
     }
 }
