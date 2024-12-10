@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.Core.Models;
+using static BookingManagementSystem.ViewModels.Client.HomeViewModel;
 
 namespace BookingManagementSystem.Views.Client;
 public sealed partial class HomePage : Page
@@ -174,15 +175,15 @@ public sealed partial class HomePage : Page
         if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight - 10) // 10px from end of list
         {
             // Check if loading default data, filter data or search data
-            if (ViewModel.IsDefaultLoading)
+            if (ViewModel.CurrentLoadingState.Equals(LoadingState.Default))
             {
                 await ViewModel.LoadPropertyListAsync(); // Load default data
             }
-            else if (ViewModel.IsFilteredLoading)
+            else if (ViewModel.CurrentLoadingState.Equals(LoadingState.Filtered))
             {
                 await ViewModel.LoadPropertyListFromPresetFilterAsync(); // Load filter data
             }
-            else if (ViewModel.IsSearchLoading)
+            else if (ViewModel.CurrentLoadingState.Equals(LoadingState.Search))
             {
                 await ViewModel.LoadPropertyListFromSearchAsync(); // Load search data
             }

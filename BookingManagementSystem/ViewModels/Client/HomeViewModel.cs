@@ -6,7 +6,6 @@ using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.Input;
 using BookingManagementSystem.Core.Contracts.Services;
 using Microsoft.UI.Dispatching;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -15,8 +14,17 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     private readonly INavigationService _navigationService;
     private readonly IRoomService _roomService;
 
+    // List of items for the AdaptiveGridView
+    public ObservableCollection<Property> Properties { get; set; } = [];
+
+    // Preset filter options for UI components
+    public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = [];
+
     [ObservableProperty]
     private bool isPropertyListEmpty;
+
+    [ObservableProperty]
+    private LoadingState currentLoadingState;
 
     [ObservableProperty]
     private bool isLoading;
@@ -32,33 +40,18 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
 
     [ObservableProperty]
     private int numberOfPets;
-    public DateTimeOffset? CheckInDate
-    {
-        get; set;
-    }
-    public DateTimeOffset? CheckOutDate
-    {
-        get; set;
-    }
-    public DestinationType SelectedPresetFilter { get; set; } = DestinationType.All;
 
     private int _currentPage = 1;
     private const int PageSize = 10; // Default page size
-
-    // Other data source state properties
-    public bool IsDefaultLoading = true; // Default data
-    public bool IsFilteredLoading = false; // Filter data
-    public bool IsSearchLoading = false; // Search data
-
-    // List of items for the AdaptiveGridView
-    public ObservableCollection<Property> Properties { get; set; } = [];
-
-    // Filtered destination data
-    public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = [];
-
-    public IAsyncRelayCommand SearchAvailableRoomsCommand
+    public DateTimeOffset? CheckInDate { get; set; }
+    public DateTimeOffset? CheckOutDate { get; set; }
+    public DestinationType SelectedPresetFilter { get; set; } = DestinationType.All;    
+    public IAsyncRelayCommand SearchAvailableRoomsCommand { get; }
+    public enum LoadingState
     {
-        get;
+        Default,
+        Filtered,
+        Search
     }
 
     public HomeViewModel(INavigationService navigationService, IRoomService roomService)
@@ -78,13 +71,13 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         // Load Properties data
         await LoadPropertyListAsync();
 
-        // Initialize observable properties
+        // Set the default loading state
+        CurrentLoadingState = LoadingState.Filtered;
+
+        // Initialize observable properties for input fields
         NumberOfAdults = 0;
         NumberOfChildren = 0;
         NumberOfPets = 0;
-
-        // Subscribe to CollectionChanged event
-        //Properties.CollectionChanged += (s, e) => CheckPropertyListCount();
     }
 
     public void OnNavigatedFrom()
@@ -106,28 +99,25 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
     }
 
-    public async Task LoadPropertyListAsync()
+    // Common method for loading properties data
+    private async Task LoadPropertiesAsync(Func<IEnumerable<Property>, IEnumerable<Property>> filterFunction)
     {
         // Avoid calling multiple times at the same time
         if (IsLoading) return;
 
         try
         {
-            // Set loading state
             IsLoading = true;
 
-            // Get all properties
+            // Get all properties & Filter the official listed
             var allProperties = await _roomService.GetAllPropertiesAsync();
-
-            // Filter the official listed properties
-            var listedProperties = allProperties.Where(x => x.Status == PropertyStatus.Listed);
+            var filteredProperties = filterFunction(allProperties.Where(x => x.Status == PropertyStatus.Listed));
 
             // Get the next page of items
-            var paginatedProperties = listedProperties
-                .Skip((_currentPage - 1) * PageSize) // Skip those already loaded
-                .Take(PageSize); // Get next items
+            var paginatedProperties = filteredProperties
+                .Skip((_currentPage - 1) * PageSize)
+                .Take(PageSize);
 
-            // Add the new items to the list
             DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
             {
                 foreach (var property in paginatedProperties)
@@ -137,7 +127,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
                 CheckPropertyListCount();
             });
 
-            _currentPage++; // Increment the current page
+            _currentPage++;
         }
         finally
         {
@@ -145,12 +135,47 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
     }
 
+    // Load default properties data
+    public async Task LoadPropertyListAsync()
+    {
+        await LoadPropertiesAsync(properties => properties);
+    }
+
+    // Load properties data based on the selected filter
+    public async Task LoadPropertyListFromPresetFilterAsync()
+    {
+        await LoadPropertiesAsync(properties =>
+        {
+            // Filter the data based on the preset filter
+            if (SelectedPresetFilter == DestinationType.All)
+            {
+                // Do nothing because the steps below already return the properties with DestinationType.All
+                return properties;
+            }
+            else if (SelectedPresetFilter == DestinationType.Trending)
+            {
+                // Prepare Trending properties data by filtering based on IsPriority or IsFavourtie
+                return properties.Where(p => p.IsPriority || p.IsFavourite);
+            }
+            else
+            {
+                return properties.Where(p => p.DestinationTypes.Contains(SelectedPresetFilter));
+            }
+        });
+    }
+
+    // Load properties data based on the search query
+    public async Task LoadPropertyListFromSearchAsync()
+    {
+        var searchResults = await _roomService.GetAvailableRoomsAsync(CheckInDate, CheckOutDate, Destination, NumberOfAdults + NumberOfChildren, NumberOfPets);
+
+        await LoadPropertiesAsync(properties => searchResults);
+    }
+
     public async Task FilterProperties()
     {
         // Set state to load only filter data
-        IsFilteredLoading = true;
-        IsDefaultLoading = false;
-        IsSearchLoading = false;
+        CurrentLoadingState = LoadingState.Filtered;
 
         // Reset when selecting new filter
         _currentPage = 1;
@@ -158,58 +183,6 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
 
         // Get filtered data
         await LoadPropertyListFromPresetFilterAsync();
-        CheckPropertyListCount();
-    }
-
-    public async Task LoadPropertyListFromPresetFilterAsync()
-    {
-        // Avoid calling multiple times at the same time
-        if (IsLoading) return;
-
-        try
-        {
-            // Set loading state
-            IsLoading = true;
-
-            var results = await _roomService.GetAllPropertiesAsync();
-            var listedProperties = results.Where(x => x.Status == PropertyStatus.Listed);
-
-            // Filter the data based on the preset filter
-            if (SelectedPresetFilter.Equals(DestinationType.All))
-            {
-                // Do nothing because the steps below already return the properties with DestinationType.All
-            }
-            else if (SelectedPresetFilter.Equals(DestinationType.Trending))
-            {
-                // Prepare Trending properties data by filtering based on IsPriority or IsFavourtie
-                listedProperties = listedProperties.Where(p => p.IsPriority || p.IsFavourite);
-            }
-            else
-            {
-                listedProperties = listedProperties.Where(p => p.DestinationTypes.Contains(SelectedPresetFilter));
-            }
-
-            // Get the next page of items
-            var paginatedProperties = listedProperties
-                .Skip((_currentPage - 1) * PageSize) // Skip those already loaded
-                .Take(PageSize); // Get next items
-
-            // Add the new items to the list
-            DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
-            {
-                foreach (var property in paginatedProperties)
-                {
-                    Properties.Add(property);
-                }
-                CheckPropertyListCount();
-            });
-
-            _currentPage++; // Increment the current page
-        }
-        finally
-        {
-            IsLoading = false;
-        }
     }
 
     public async Task SearchRoomsAsync()
@@ -220,9 +193,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
 
         // Set state to load only search data
-        IsSearchLoading = true;
-        IsFilteredLoading = false;
-        IsDefaultLoading = false;
+        CurrentLoadingState = LoadingState.Search;
 
         // Reset current pagination index & clear the list
         _currentPage = 1;
@@ -230,43 +201,6 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
 
         // Start loading the search data
         await LoadPropertyListFromSearchAsync();
-        CheckPropertyListCount();
-    }
-
-    public async Task LoadPropertyListFromSearchAsync()
-    {
-        // Avoid calling multiple times at the same time
-        if (IsLoading) return;
-
-        try
-        {
-            // Set loading state
-            IsLoading = true;
-
-            var results = await _roomService.GetAvailableRoomsAsync(CheckInDate, CheckOutDate, Destination, NumberOfAdults + NumberOfChildren, NumberOfPets);
-            var listedProperties = results.Where(x => x.Status == PropertyStatus.Listed);
-
-            // Get the next page of items
-            var paginatedProperties = listedProperties
-                .Skip((_currentPage - 1) * PageSize) // Skip those already loaded
-                .Take(PageSize); // Get next items
-
-            // Add the new items to the list
-            DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
-            {
-                foreach (var property in paginatedProperties)
-                {
-                    Properties.Add(property);
-                }
-                CheckPropertyListCount();
-            });
-
-            _currentPage++; // Increment the current page
-        }
-        finally
-        {
-            IsLoading = false;
-        }
     }
 
     public void ToggleDisplayPropertiesPriceWithTax(bool isTaxIncluded = false)

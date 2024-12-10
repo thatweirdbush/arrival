@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.Core.Repositories;
 
 namespace BookingManagementSystem.Core.Services;
 public class PropertyService : IPropertyService
