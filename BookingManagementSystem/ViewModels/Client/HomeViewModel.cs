@@ -5,6 +5,8 @@ using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.Input;
 using BookingManagementSystem.Core.Contracts.Services;
+using Microsoft.UI.Dispatching;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -17,6 +19,9 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     private bool isPropertyListEmpty;
 
     [ObservableProperty]
+    private bool isLoading;
+
+    [ObservableProperty]
     private string? destination;
 
     [ObservableProperty]
@@ -27,8 +32,23 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
 
     [ObservableProperty]
     private int numberOfPets;
-    public DateTimeOffset? CheckInDate { get; set; }
-    public DateTimeOffset? CheckOutDate { get; set; }
+    public DateTimeOffset? CheckInDate
+    {
+        get; set;
+    }
+    public DateTimeOffset? CheckOutDate
+    {
+        get; set;
+    }
+    public DestinationType SelectedPresetFilter { get; set; } = DestinationType.All;
+
+    private int _currentPage = 1;
+    private const int PageSize = 10; // Default page size
+
+    // Other data source state properties
+    public bool IsDefaultLoading = true; // Default data
+    public bool IsFilteredLoading = false; // Filter data
+    public bool IsSearchLoading = false; // Search data
 
     // List of items for the AdaptiveGridView
     public ObservableCollection<Property> Properties { get; set; } = [];
@@ -46,12 +66,6 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         _navigationService = navigationService;
         _roomService = roomService;
 
-        // Subscribe to CollectionChanged event
-        Properties.CollectionChanged += (s, e) => CheckPropertyListCount();
-
-        // Initial check
-        CheckPropertyListCount();
-
         // Async relay command for searching available rooms
         SearchAvailableRoomsCommand = new AsyncRelayCommand(SearchRoomsAsync);
     }
@@ -62,12 +76,15 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         DestinationTypeSymbols = await _roomService.GetAllDestinationTypeSymbolsAsync();
 
         // Load Properties data
-        await LoadAllProperties();
+        await LoadPropertyListAsync();
 
         // Initialize observable properties
         NumberOfAdults = 0;
         NumberOfChildren = 0;
         NumberOfPets = 0;
+
+        // Subscribe to CollectionChanged event
+        //Properties.CollectionChanged += (s, e) => CheckPropertyListCount();
     }
 
     public void OnNavigatedFrom()
@@ -89,50 +106,109 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
     }
 
-    public async Task LoadAllProperties()
+    public async Task LoadPropertyListAsync()
     {
-        var data = await _roomService.GetAllPropertiesAsync();
-        var listedProperties = data.Where(x => x.Status == PropertyStatus.Listed);
+        // Avoid calling multiple times at the same time
+        if (IsLoading) return;
 
-        Properties.Clear();
-        foreach (var item in listedProperties)
+        try
         {
-            Properties.Add(item);
+            // Set loading state
+            IsLoading = true;
+
+            // Get all properties
+            var allProperties = await _roomService.GetAllPropertiesAsync();
+
+            // Filter the official listed properties
+            var listedProperties = allProperties.Where(x => x.Status == PropertyStatus.Listed);
+
+            // Get the next page of items
+            var paginatedProperties = listedProperties
+                .Skip((_currentPage - 1) * PageSize) // Skip those already loaded
+                .Take(PageSize); // Get next items
+
+            // Add the new items to the list
+            DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
+            {
+                foreach (var property in paginatedProperties)
+                {
+                    Properties.Add(property);
+                }
+                CheckPropertyListCount();
+            });
+
+            _currentPage++; // Increment the current page
+        }
+        finally
+        {
+            IsLoading = false;
         }
     }
 
-    public void ToggleDisplayPropertiesPriceWithTax(bool isTaxIncluded = false)
+    public async Task FilterProperties()
     {
-        var taxAmount = 9.90m;
-        foreach (var property in Properties)
-        {
-            property.PricePerNight += isTaxIncluded ? taxAmount : -taxAmount;
-        }
+        // Set state to load only filter data
+        IsFilteredLoading = true;
+        IsDefaultLoading = false;
+        IsSearchLoading = false;
+
+        // Reset when selecting new filter
+        _currentPage = 1;
+        Properties.Clear();
+
+        // Get filtered data
+        await LoadPropertyListFromPresetFilterAsync();
+        CheckPropertyListCount();
     }
 
-    public async void FilterProperties(DestinationTypeSymbol destinationTypeSymbol)
+    public async Task LoadPropertyListFromPresetFilterAsync()
     {
-        if (destinationTypeSymbol.DestinationType.Equals(DestinationType.All))
-        {
-            await LoadAllProperties();
-            return;
-        }
-        // Reload all properties before filtering
-        var data = await _roomService.GetAllPropertiesAsync();
+        // Avoid calling multiple times at the same time
+        if (IsLoading) return;
 
-        // Prepare Trending properties data by filtering based on IsPriority or IsFavourtie
-        if (destinationTypeSymbol.DestinationType.Equals(DestinationType.Trending))
+        try
         {
-            data = data.Where(p => p.IsPriority || p.IsFavourite).ToList();
+            // Set loading state
+            IsLoading = true;
+
+            var results = await _roomService.GetAllPropertiesAsync();
+            var listedProperties = results.Where(x => x.Status == PropertyStatus.Listed);
+
+            // Filter the data based on the preset filter
+            if (SelectedPresetFilter.Equals(DestinationType.All))
+            {
+                // Do nothing because the steps below already return the properties with DestinationType.All
+            }
+            else if (SelectedPresetFilter.Equals(DestinationType.Trending))
+            {
+                // Prepare Trending properties data by filtering based on IsPriority or IsFavourtie
+                listedProperties = listedProperties.Where(p => p.IsPriority || p.IsFavourite);
+            }
+            else
+            {
+                listedProperties = listedProperties.Where(p => p.DestinationTypes.Contains(SelectedPresetFilter));
+            }
+
+            // Get the next page of items
+            var paginatedProperties = listedProperties
+                .Skip((_currentPage - 1) * PageSize) // Skip those already loaded
+                .Take(PageSize); // Get next items
+
+            // Add the new items to the list
+            DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
+            {
+                foreach (var property in paginatedProperties)
+                {
+                    Properties.Add(property);
+                }
+                CheckPropertyListCount();
+            });
+
+            _currentPage++; // Increment the current page
         }
-        else
+        finally
         {
-            data = data.Where(p => p.DestinationTypes.Contains(destinationTypeSymbol.DestinationType)).ToList();
-        }
-        Properties.Clear();
-        foreach (var item in data)
-        {
-            Properties.Add(item);
+            IsLoading = false;
         }
     }
 
@@ -143,16 +219,62 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
             return; // Check-in and check-out dates are required
         }
 
-        var results = await _roomService.GetAvailableRoomsAsync(CheckInDate, CheckOutDate, Destination, NumberOfAdults + NumberOfChildren, NumberOfPets);
-        var listedProperties = results.Where(x => x.Status == PropertyStatus.Listed);
+        // Set state to load only search data
+        IsSearchLoading = true;
+        IsFilteredLoading = false;
+        IsDefaultLoading = false;
 
-        // Simulate network delay
-        await Task.Delay(500);
-
+        // Reset current pagination index & clear the list
+        _currentPage = 1;
         Properties.Clear();
-        foreach (var room in listedProperties)
+
+        // Start loading the search data
+        await LoadPropertyListFromSearchAsync();
+        CheckPropertyListCount();
+    }
+
+    public async Task LoadPropertyListFromSearchAsync()
+    {
+        // Avoid calling multiple times at the same time
+        if (IsLoading) return;
+
+        try
         {
-            Properties.Add((Property)room);
+            // Set loading state
+            IsLoading = true;
+
+            var results = await _roomService.GetAvailableRoomsAsync(CheckInDate, CheckOutDate, Destination, NumberOfAdults + NumberOfChildren, NumberOfPets);
+            var listedProperties = results.Where(x => x.Status == PropertyStatus.Listed);
+
+            // Get the next page of items
+            var paginatedProperties = listedProperties
+                .Skip((_currentPage - 1) * PageSize) // Skip those already loaded
+                .Take(PageSize); // Get next items
+
+            // Add the new items to the list
+            DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
+            {
+                foreach (var property in paginatedProperties)
+                {
+                    Properties.Add(property);
+                }
+                CheckPropertyListCount();
+            });
+
+            _currentPage++; // Increment the current page
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    public void ToggleDisplayPropertiesPriceWithTax(bool isTaxIncluded = false)
+    {
+        var taxAmount = 9.90m;
+        foreach (var property in Properties)
+        {
+            property.PricePerNight += isTaxIncluded ? taxAmount : -taxAmount;
         }
     }
 

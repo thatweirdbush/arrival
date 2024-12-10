@@ -258,110 +258,117 @@
                 </Button>
             </StackPanel>
         </Grid>
-        <Grid x:Name="EmptyListMessageGrid" Grid.Row="2" 
-              Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0 0 0 140">
-                <Image Source="/Assets/modern-european-house.png" Width="240" Height="240" Stretch="Fill" Margin="0 0 0 -12"/>
-                <TextBlock Text="No exact matches" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center"/>
-                <TextBlock Text="Try changing or removing some of your filters or adjusting your search area." Style="{ThemeResource DetailSubTitleStyle}"  HorizontalAlignment="Center"/>
-            </StackPanel>
-        </Grid>
-        <Grid x:Name="ListContentGrid" Grid.Row="2" Background="Transparent" 
-              Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
-            <controls:AdaptiveGridView
-                animations:Connected.ListItemElementName="itemThumbnail"
-                animations:Connected.ListItemKey="animationKeyContentGrid"
-                DesiredWidth="380"
-                ItemHeight="380"                
-                x:Name="ContentGridView"
-                ItemsSource="{x:Bind ViewModel.Properties, Mode=OneWay}"
-                ItemClickCommand="{x:Bind ViewModel.ItemClickCommand, Mode=OneWay}"
-                IsItemClickEnabled="True"
-                CanDragItems="True"
-                AllowDrop="True"
-                CanReorderItems="True"
-                SelectionMode="Extended"
-                FlowDirection="LeftToRight"
-                StretchContentForSingleRow="False"
-                Padding="30"
-                CacheMode="BitmapCache">
-                <controls:AdaptiveGridView.ItemContainerTransitions>
-                    <TransitionCollection>
-                        <PaneThemeTransition Edge="Bottom"/>
-                    </TransitionCollection>
-                </controls:AdaptiveGridView.ItemContainerTransitions>
-                <controls:AdaptiveGridView.ItemTemplate>
-                    <!-- The data template bound to this AdaptiveGridView"s ItemTemplate property is based on which one you
-                    select from the options on the right. The currently selected DataTemplate is: -->
-                    <!-- ImageTextTemplate: -->
-                    <DataTemplate x:DataType="models:Property">
-                        <Grid x:Name="itemThumbnail">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="3*"/>
-                                <RowDefinition Height="2*"/>
-                            </Grid.RowDefinitions>
-                            <Grid>
-                                <Image Stretch = "UniformToFill" VerticalAlignment="Center">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="800"/>
-                                    </Image.Source>
-                                </Image>
-                                <!--<FlipView ItemsSource="{x:Bind ImagePaths, Mode=OneWay}">
-                                    <FlipView.ItemTemplate>
-                                        <DataTemplate x:DataType="x:String">
-                                            <Image Stretch = "UniformToFill" VerticalAlignment="Center">
-                                                <Image.Source>
-                                                    <BitmapImage UriSource="{x:Bind}" DecodePixelWidth="800"/>
-                                                </Image.Source>
-                                            </Image>
-                                        </DataTemplate>
-                                    </FlipView.ItemTemplate>
-                                </FlipView>-->
-                                <Border x:Name="BorderVipMember" Visibility="{x:Bind IsPriority, Mode=OneWay}" CornerRadius="18" Width="82" Height="36" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
-                                    <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <Image Width="18" Height="18">
+        <ScrollViewer Grid.Row="2" ViewChanged="ScrollViewer_ViewChanged">
+            <Grid>
+                <Grid x:Name="EmptyListMessageGrid"
+                  Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0 0 0 140">
+                        <Image Source="/Assets/modern-european-house.png" Width="240" Height="240" Stretch="Fill" Margin="0 0 0 -12"/>
+                        <TextBlock Text="No exact matches" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Try changing or removing some of your filters or adjusting your search area." Style="{ThemeResource DetailSubTitleStyle}"  HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+                <StackPanel x:Name="ListContentGrid" Spacing="12" Background="Transparent"
+                Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                    <controls:AdaptiveGridView
+                        animations:Connected.ListItemElementName="itemThumbnail"
+                        animations:Connected.ListItemKey="animationKeyContentGrid"
+                        DesiredWidth="380"
+                        ItemHeight="380"                
+                        x:Name="ContentGridView"
+                        ItemsSource="{x:Bind ViewModel.Properties, Mode=OneWay}"
+                        ItemClickCommand="{x:Bind ViewModel.ItemClickCommand, Mode=OneWay}"
+                        IsItemClickEnabled="True"
+                        CanDragItems="True"
+                        AllowDrop="True"
+                        CanReorderItems="True"
+                        SelectionMode="Extended"
+                        FlowDirection="LeftToRight"
+                        StretchContentForSingleRow="False"
+                        Padding="30"
+                        CacheMode="BitmapCache">
+                        <controls:AdaptiveGridView.ItemContainerTransitions>
+                            <TransitionCollection>
+                                <PaneThemeTransition Edge="Bottom"/>
+                            </TransitionCollection>
+                        </controls:AdaptiveGridView.ItemContainerTransitions>
+                        <controls:AdaptiveGridView.ItemTemplate>
+                            <!-- The data template bound to this AdaptiveGridView"s ItemTemplate property is based on which one you
+                            select from the options on the right. The currently selected DataTemplate is: -->
+                            <!-- ImageTextTemplate: -->
+                            <DataTemplate x:DataType="models:Property">
+                                <Grid x:Name="itemThumbnail">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="3*"/>
+                                        <RowDefinition Height="2*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid>
+                                        <Image Stretch = "UniformToFill" VerticalAlignment="Center">
                                             <Image.Source>
-                                                <BitmapImage UriSource="/Assets/three-body-a.png" DecodePixelHeight="18"/>
+                                                <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="800"/>
                                             </Image.Source>
                                         </Image>
-                                        <TextBlock Text="Elite" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Border>
-                                <Button x:Name="btnFavourite" Click="btnFavourite_Click" CornerRadius="48" Width="48" Height="48" Background="Transparent" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10">
-                                    <Image x:Name="imgFavourite" Width="20" Height="20" Source="{x:Bind IsFavourite, Mode=TwoWay, Converter={StaticResource IsFavouriteToImagePathConverter}}" Margin="0 2 0 0"/>
-                                </Button>
-                            </Grid>
-                            <Grid Grid.Row="1" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}" Padding="18">
-                                <StackPanel Spacing="4">
-                                    <TextBlock Text = "{x:Bind Name, Mode=OneWay}" Style = "{ThemeResource SubtitleTextBlockStyle}" MaxLines="2"/>
-                                    <TextBlock Text = "{x:Bind Location, Mode=OneWay}" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray"/>
-                                    <StackPanel Orientation = "Horizontal" Spacing="8" VerticalAlignment="Center">
-                                        <Border CornerRadius="4.5 4.5 4.5 0" Background="#00308F" Width="48" Height="24">
-                                            <StackPanel Orientation="Horizontal" Spacing="3" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <Image Width="12" Height="12" Source="/Assets/symbol-icons/white-star-icon.png" Stretch="Fill" Margin="0 0 0 3"/>
-                                                <TextBlock Text="4.9" Foreground="WhiteSmoke" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <!--<FlipView ItemsSource="{x:Bind ImagePaths, Mode=OneWay}">
+                                        <FlipView.ItemTemplate>
+                                            <DataTemplate x:DataType="x:String">
+                                                <Image Stretch = "UniformToFill" VerticalAlignment="Center">
+                                                    <Image.Source>
+                                                        <BitmapImage UriSource="{x:Bind}" DecodePixelWidth="800"/>
+                                                    </Image.Source>
+                                                </Image>
+                                            </DataTemplate>
+                                        </FlipView.ItemTemplate>
+                                    </FlipView>-->
+                                        <Border x:Name="BorderVipMember" Visibility="{x:Bind IsPriority, Mode=OneWay}" CornerRadius="18" Width="82" Height="36" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
+                                            <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Image Width="18" Height="18">
+                                                    <Image.Source>
+                                                        <BitmapImage UriSource="/Assets/three-body-a.png" DecodePixelHeight="18"/>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock Text="Elite" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Border>
-                                        <TextBlock Text = "Excellent" Style = "{ThemeResource BodyTextBlockStyle}" VerticalAlignment="Center"/>
-                                        <TextBlock Text = "•" Style = "{ThemeResource BodyTextBlockStyle}" FontSize="9" VerticalAlignment="Center" Margin="-2 0 -2 0"/>
-                                        <TextBlock Text = "136" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" VerticalAlignment="Center"/>
-                                        <TextBlock Text = "reviews" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" VerticalAlignment="Center" Margin="-4 0 0 0"/>
-                                    </StackPanel>
-                                </StackPanel>
-                                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Spacing="8">
-                                    <!--<StackPanel x:Name="MoreInfo_StackPanel" Orientation="Horizontal" Spacing="3" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                        <TextBlock Text = "2" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                        <TextBlock Text = "nights" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        <Button x:Name="btnFavourite" Click="btnFavourite_Click" CornerRadius="48" Width="48" Height="48" Background="Transparent" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10">
+                                            <Image x:Name="imgFavourite" Width="20" Height="20" Source="{x:Bind IsFavourite, Mode=TwoWay, Converter={StaticResource IsFavouriteToImagePathConverter}}" Margin="0 2 0 0"/>
+                                        </Button>
+                                    </Grid>
+                                    <Grid Grid.Row="1" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}" Padding="18">
+                                        <StackPanel Spacing="4">
+                                            <TextBlock Text = "{x:Bind Name, Mode=OneWay}" Style = "{ThemeResource SubtitleTextBlockStyle}" MaxLines="2"/>
+                                            <TextBlock Text = "{x:Bind Location, Mode=OneWay}" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray"/>
+                                            <StackPanel Orientation = "Horizontal" Spacing="8" VerticalAlignment="Center">
+                                                <Border CornerRadius="4.5 4.5 4.5 0" Background="#00308F" Width="48" Height="24">
+                                                    <StackPanel Orientation="Horizontal" Spacing="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <Image Width="12" Height="12" Source="/Assets/symbol-icons/white-star-icon.png" Stretch="Fill" Margin="0 0 0 3"/>
+                                                        <TextBlock Text="4.9" Foreground="WhiteSmoke" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+                                                <TextBlock Text = "Excellent" Style = "{ThemeResource BodyTextBlockStyle}" VerticalAlignment="Center"/>
+                                                <TextBlock Text = "•" Style = "{ThemeResource BodyTextBlockStyle}" FontSize="9" VerticalAlignment="Center" Margin="-2 0 -2 0"/>
+                                                <TextBlock Text = "136" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" VerticalAlignment="Center"/>
+                                                <TextBlock Text = "reviews" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" VerticalAlignment="Center" Margin="-4 0 0 0"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Spacing="8">
+                                            <!--<StackPanel x:Name="MoreInfo_StackPanel" Orientation="Horizontal" Spacing="3" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                                <TextBlock Text = "2" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                <TextBlock Text = "nights" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-                                        <TextBlock Text = "{x:Bind Price, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style = "{ThemeResource DetailSubTitleStyle}" TextDecorations="Strikethrough" Foreground="#D2042D" FontSize="16"/>
-                                    </StackPanel>-->
-                                    <TextBlock Text = "{x:Bind PricePerNight, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style = "{ThemeResource ListTitleStyle}" HorizontalAlignment="Right" FontSize="20"/>
-                                </StackPanel>
-                            </Grid>
-                        </Grid>
-                    </DataTemplate>
-                </controls:AdaptiveGridView.ItemTemplate>
-            </controls:AdaptiveGridView>
-        </Grid>
+                                                <TextBlock Text = "{x:Bind Price, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style = "{ThemeResource DetailSubTitleStyle}" TextDecorations="Strikethrough" Foreground="#D2042D" FontSize="16"/>
+                                            </StackPanel>-->
+                                            <TextBlock Text = "{x:Bind PricePerNight, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}" Style = "{ThemeResource ListTitleStyle}" HorizontalAlignment="Right" FontSize="20"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </controls:AdaptiveGridView.ItemTemplate>
+                    </controls:AdaptiveGridView>
+                    <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="60" Height="60"
+                              IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                              Visibility="{x:Bind ViewModel.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Page>

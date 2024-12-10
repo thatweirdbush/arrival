@@ -56,6 +56,7 @@ public class RoomService : IRoomService
 
         // Get all rooms from the database
         var rooms = await _roomRepository.GetAllAsync();
+        rooms = rooms.Where(x => x.Status == PropertyStatus.Listed);
 
         // Parse destination string into state/province and country
         string? stateOrProvince = null;
