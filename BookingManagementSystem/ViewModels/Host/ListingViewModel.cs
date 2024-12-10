@@ -1,13 +1,9 @@
-﻿using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.Core.Contracts.Repositories;
-using BookingManagementSystem.Core.DTOs;
+﻿using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Windows.ApplicationModel.Contacts;
-using BookingManagementSystem.ViewModels.Client;
-using CommunityToolkit.Mvvm.Input;
 using BookingManagementSystem.Contracts.ViewModels;
+using Microsoft.UI.Dispatching;
 
 namespace BookingManagementSystem.ViewModels.Host;
 
@@ -18,7 +14,13 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
     [ObservableProperty]
     private bool isPropertyListEmpty;
 
+    [ObservableProperty]
+    private bool isLoading;
+
+    // Other properties
     public int PropertyCountTotal;
+    private int _currentPage = 1;
+    private const int PageSize = 5; // Default page size
 
     // List of content items
     public ObservableCollection<Property> Properties { get; set; } = [];
@@ -34,14 +36,13 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
     public async void OnNavigatedTo(object parameter)
     {
         // Load Listing data list
-        await LoadPropertyList();
+        await LoadPropertyListAsync();
 
         // Load Property Name and Location string data list
         PropertyNameAndLocationList = Properties.Select(p => p.Name)
                                                 .Concat(Properties.Select(p => p.Location))
                                                 .ToList();
         // Initial check
-        PropertyCountTotal = Properties.Count;
         CheckPropertyListCount();
         Properties.CollectionChanged += (s, e) => CheckPropertyListCount();
     }
@@ -50,24 +51,41 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
     {
     }
 
-    public async Task LoadPropertyList()
+    public async Task LoadPropertyListAsync()
     {
-        // Load Property data list filtered by User/Host Id
-        var properties = await _propertyRepository.GetAllAsync();
+        // Avoid calling multiple times at the same time
+        if (IsLoading) return;
 
-        // Reorder the list by Created Date
-        properties = properties.OrderByDescending(p => p.CreatedAt);
-        Properties.Clear();
-
-        foreach (var item in properties)
+        try
         {
-            Properties.Add(item);
+            IsLoading = true;
+            var allProperties = await _propertyRepository.GetAllAsync();
+            var paginatedProperties = allProperties
+                .OrderByDescending(p => p.CreatedAt) // Sort by CreatedAt time
+                .Skip((_currentPage - 1) * PageSize) // Skip those already loaded
+                .Take(PageSize); // Get next items
+
+            // Add the new items to the list
+            DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
+            {
+                foreach (var property in paginatedProperties)
+                {
+                    Properties.Add(property);
+                }
+            });
+
+            _currentPage++; // Increment the current page
+        }
+        finally
+        {
+            IsLoading = false;
         }
     }
 
     public async Task RemoveBookingAsync(Property property)
     {
         await _propertyRepository.DeleteAsync(property.Id);
+        await _propertyRepository.SaveChangesAsync();
         Properties.Remove(property);
     }
 
@@ -76,14 +94,15 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
         foreach (var property in Properties)
         {
             await _propertyRepository.DeleteAsync(property.Id);
-            await _propertyRepository.SaveChangesAsync();
         }
+        await _propertyRepository.SaveChangesAsync();
         Properties.Clear();
     }
 
     private void CheckPropertyListCount()
     {
         IsPropertyListEmpty = Properties.Count == 0;
+        PropertyCountTotal = Properties.Count;
     }
 
     public async void AddFilterProperties(string query)

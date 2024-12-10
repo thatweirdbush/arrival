@@ -155,7 +155,7 @@ public sealed partial class ListingPage : Page
         if (ViewModel.PropertyCountTotal != ViewModel.Properties.Count)
         {
             ViewModel.Properties.Clear();
-            await ViewModel.LoadPropertyList();
+            await ViewModel.LoadPropertyListAsync();
         }
 
         // Clear search box text
@@ -227,6 +227,18 @@ public sealed partial class ListingPage : Page
                 App.GetService<INavigationService>().SetListDataItemForNextConnectedAnimation(property);
                 App.GetService<INavigationService>().NavigateTo(typeof(RentalDetailViewModel).FullName!, property.Id);
             }
+        }
+    }
+
+    private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+    {
+        var scrollViewer = sender as ScrollViewer;
+        if (scrollViewer == null) return;
+
+        // Detect when scroll is near the end
+        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight - 10) // 10px from end of list
+        {
+            await ViewModel.LoadPropertyListAsync();
         }
     }
 }

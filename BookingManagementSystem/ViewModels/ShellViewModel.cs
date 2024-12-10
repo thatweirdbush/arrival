@@ -42,7 +42,7 @@ public partial class ShellViewModel : ObservableRecipient
         IsBackEnabled = NavigationService.CanGoBack;
 
         // Get notification data list
-        _= LoadNotificationData();
+        _ = LoadNotificationData();
         UpdateObservableProperties();
     }
 

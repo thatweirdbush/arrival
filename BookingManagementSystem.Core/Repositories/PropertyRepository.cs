@@ -16,7 +16,7 @@ public class PropertyRepository : Repository<Property>
     public async override Task<IEnumerable<Property>> GetAllAsync()
     {
         return await _dbSet
-            .Include(p => p.Country) // Eager Load thuộc tính Country
+            .Include(p => p.Country)
             .ToListAsync();
     }
 }
