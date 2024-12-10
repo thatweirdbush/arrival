@@ -85,7 +85,7 @@ public partial class App : Application
             // This allows the application to use the ApplicationDbContext at runtime via DI.
             services.AddTransient<DbContext, ApplicationDbContext>();
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(context.Configuration.GetConnectionString("DefaultConnection")).UseLazyLoadingProxies());
+                options.UseNpgsql(context.Configuration.GetConnectionString("DefaultConnection")));
 
             // Default Activation Handler
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
@@ -244,7 +244,6 @@ public partial class App : Application
     {
         //await PropertyImagesActivationHandler.CopyPropertyImagesToLocalFolderAsync();
         //await PropertyImagesActivationHandler.BindingPropertyImagesWithLocalFolderAsync();
-
         await Task.Delay(100);
 
         // Create notification channel

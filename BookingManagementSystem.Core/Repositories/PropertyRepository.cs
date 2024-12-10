@@ -12,4 +12,11 @@ public class PropertyRepository : Repository<Property>
     public PropertyRepository(DbContext context) : base(context)
     {
     }
+
+    public async override Task<IEnumerable<Property>> GetAllAsync()
+    {
+        return await _dbSet
+            .Include(p => p.Country) // Eager Load thuộc tính Country
+            .ToListAsync();
+    }
 }

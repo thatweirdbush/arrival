@@ -20,29 +20,29 @@ public class Repository<T> : IRepository<T> where T : class
     }
 
     // Basic CRUD operations
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async virtual Task<IEnumerable<T>> GetAllAsync()
     {
         return await _dbSet.ToListAsync();
     }
 
-    public async Task<T> GetByIdAsync(int id)
+    public async virtual Task<T> GetByIdAsync(int id)
     {
         return await _dbSet.FindAsync(id);
     }
 
-    public async Task AddAsync(T entity)
+    public async virtual Task AddAsync(T entity)
     {
         // Check duplicate
         await _dbSet.AddAsync(entity);
     }
 
-    public async Task UpdateAsync(T entity)
+    public async virtual Task UpdateAsync(T entity)
     {
         _dbSet.Update(entity);
         await Task.CompletedTask;
     }
 
-    public async Task DeleteAsync(int id)
+    public async virtual Task DeleteAsync(int id)
     {
         var entity = await _dbSet.FindAsync(id);
         if (entity != null)
@@ -51,25 +51,25 @@ public class Repository<T> : IRepository<T> where T : class
         }
     }
 
-    public async Task SaveChangesAsync()
+    public async virtual Task SaveChangesAsync()
     {
         await _context.SaveChangesAsync();
     }
 
     // Pagination
-    public async Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize)
+    public async virtual Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize)
     {
         return await _dbSet.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
     }
 
     // Filtering
-    public async Task<IEnumerable<T>> GetFilteredAsync(Expression<Func<T, bool>> filter)
+    public async virtual Task<IEnumerable<T>> GetFilteredAsync(Expression<Func<T, bool>> filter)
     {
         return await _dbSet.AsQueryable().Where(filter).ToListAsync();
     }
 
     // Sorting, default ascending
-    public async Task<IEnumerable<T>> GetSortedAsync<TKey>(
+    public async virtual Task<IEnumerable<T>> GetSortedAsync<TKey>(
         Expression<Func<T, TKey>> keySelector,
         bool sortDescending = false)
     {
@@ -81,7 +81,7 @@ public class Repository<T> : IRepository<T> where T : class
     }
 
     // Filtering & Sorting
-    public async Task<IEnumerable<T>> GetFilteredAndSortedAsync<TKey>(
+    public async virtual Task<IEnumerable<T>> GetFilteredAndSortedAsync<TKey>(
         Expression<Func<T, bool>> filter,
         Expression<Func<T, TKey>> keySelector,
         bool sortDescending = false)
@@ -94,13 +94,13 @@ public class Repository<T> : IRepository<T> where T : class
 
     // Searching by name, using Fuzzy Search
     // TODO: Implement Fuzzy Search
-    public async Task<IEnumerable<T>> GetSearchedAsync(Expression<Func<T, bool>> search)
+    public async virtual Task<IEnumerable<T>> GetSearchedAsync(Expression<Func<T, bool>> search)
     {
         return await _dbSet.AsQueryable().Where(search).ToListAsync();
     }
 
     // Count total results when searching
-    public async Task<int> CountAsync(Expression<Func<T, bool>> filter)
+    public async virtual Task<int> CountAsync(Expression<Func<T, bool>> filter)
     {
         return await _dbSet.AsQueryable().CountAsync(filter);
     }
