@@ -6,6 +6,8 @@ using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.Input;
 using BookingManagementSystem.Core.Contracts.Services;
 using Microsoft.UI.Dispatching;
+using BookingManagementSystem.Core.Commons.Enums;
+using BookingManagementSystem.Core.Repositories;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -47,12 +49,6 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     public DateTimeOffset? CheckOutDate { get; set; }
     public DestinationType SelectedPresetFilter { get; set; } = DestinationType.All;    
     public IAsyncRelayCommand SearchAvailableRoomsCommand { get; }
-    public enum LoadingState
-    {
-        Default,
-        Filtered,
-        Search
-    }
 
     public HomeViewModel(INavigationService navigationService, IRoomService roomService)
     {
@@ -215,5 +211,10 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     public Task<List<string>> SearchLocationsToStringAsync(string query)
     {
         return _roomService.SearchLocationsToStringAsync(query);
+    }
+
+    public Task ToggleFavorite(Property property)
+    {
+        return _roomService.ToggleFavorite(property);
     }
 }

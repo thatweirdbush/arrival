@@ -1,4 +1,5 @@
 ﻿using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.Core.Commons.Enums;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.ViewModels.Client;
@@ -6,7 +7,6 @@ using BookingManagementSystem.ViewModels.Host;
 using BookingManagementSystem.Views.Forms;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using static BookingManagementSystem.ViewModels.Host.ListingViewModel;
 
 namespace BookingManagementSystem.Views.Host;
 

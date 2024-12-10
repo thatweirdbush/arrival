@@ -21,7 +21,7 @@
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
     </Page.Resources>
 
-    <ScrollViewer x:Name="MainScrollViewer">
+    <ScrollViewer x:Name="MainScrollViewer" ViewChanged="ScrollViewer_ViewChanged">
         <Grid x:Name="MainGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="240"/>
@@ -47,17 +47,18 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Your Wishlists" Style="{ThemeResource TitleLargeTextBlockStyle}"/>                   
+                    <TextBlock Text="Your Wishlists" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
                     <CommandBar x:Name="CollectionCommandBar" Grid.Column="2" DefaultLabelPosition="Right" HorizontalAlignment="Right">
-                        <AppBarButton x:Name="btnSelect" Icon="Bullets" Label="Select" Click="OnCommandBarElementClicked"/>
-                        <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
+                        <AppBarButton x:Name="btnSelect" Icon="Bullets" Label="Select" Tag="select" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Tag="remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
                             <AppBarButton.KeyboardAccelerators>
                                 <KeyboardAccelerator Key="Delete"/>
                             </AppBarButton.KeyboardAccelerators>
                         </AppBarButton>
-                        <AppBarButton x:Name="btnCancel" Icon="Cancel" Label="Cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnCancel" Icon="Cancel" Label="Cancel" Tag="cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
                         <CommandBar.SecondaryCommands>
-                            <AppBarButton x:Name="btnRemoveAll" Icon="ViewAll" Label="Remove all" Click="OnCommandBarElementClicked"/>
+                            <AppBarButton x:Name="btnRefresh" Icon="Refresh" Label="Refresh" Tag="refresh" Click="OnCommandBarElementClicked"/>
+                            <AppBarButton x:Name="btnRemoveAll" Icon="ViewAll" Label="Remove all" Tag="remove-all" Click="OnCommandBarElementClicked"/>
                         </CommandBar.SecondaryCommands>
                     </CommandBar>
                 </Grid>
@@ -105,7 +106,7 @@
                                             <Image x:Name="imgFavourite" Width="20" Height="20" Source="{x:Bind IsFavourite, Mode=TwoWay, Converter={StaticResource IsFavouriteToImagePathConverter}}" Margin="0 2 0 0"/>
                                         </Button>
                                     </Grid>
-                                    
+
                                     <Grid Grid.Row="1" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}" MinHeight="12" MinWidth="12" Padding="20">
                                         <StackPanel Spacing="4" MaxWidth="360" HorizontalAlignment="Left">
                                             <TextBlock Text="{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}" MaxLines="2"/>
@@ -119,6 +120,9 @@
                             </DataTemplate>
                         </controls:AdaptiveGridView.ItemTemplate>
                     </controls:AdaptiveGridView>
+                    <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="60" Height="60"
+                                  IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                                  Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </StackPanel>
             </StackPanel>
         </Grid>

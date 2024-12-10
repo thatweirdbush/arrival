@@ -28,6 +28,14 @@ public class RoomService : IRoomService
         _geographicNamesService = geographicNamesService;
     }
 
+    public Task ToggleFavorite(Property property)
+    {
+        property.IsFavourite = !property.IsFavourite;
+        property.UpdatedAt = DateTime.Now.ToUniversalTime();
+        _roomRepository.UpdateAsync(property);
+        return _roomRepository.SaveChangesAsync();
+    }
+
     public Task<IEnumerable<DestinationTypeSymbol>> GetAllDestinationTypeSymbolsAsync()
     {
         return _destinationTypeSymbolRepository.GetAllAsync();

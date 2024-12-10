@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using BookingManagementSystem.Contracts.ViewModels;
 using Microsoft.UI.Dispatching;
+using BookingManagementSystem.Core.Commons.Enums;
 
 namespace BookingManagementSystem.ViewModels.Host;
 
@@ -32,11 +33,6 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
     private int _currentPage = 1;
     public int CurrentPage => _currentPage;
     private const int PageSize = 5; // Default page size
-    public enum LoadingState
-    {
-        Default,
-        Search
-    }
 
     public ListingViewModel(IRepository<Property> propertyRepository)
     {
@@ -45,7 +41,7 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
 
     public async void OnNavigatedTo(object parameter)
     {
-        await InitializeCache();
+        await InitializeCacheAsync();
         await LoadPropertyListAsync();
 
         // Initial check
@@ -61,7 +57,7 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
         Properties.CollectionChanged -= (s, e) => CheckPropertyListCount();
     }
 
-    public async Task InitializeCache()
+    public async Task InitializeCacheAsync()
     {
         // Load all properties from the database
         CachedProperties = (List<Property>)await _propertyRepository.GetAllAsync();
@@ -174,7 +170,7 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
     {
         CurrentLoadingState = LoadingState.Default;
         ResetPaginationIndex();
-        await InitializeCache();
+        await InitializeCacheAsync();
         Properties.Clear();
         await LoadPropertyListAsync();
     }

@@ -2,7 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.Core.Models;
-using static BookingManagementSystem.ViewModels.Client.HomeViewModel;
+using BookingManagementSystem.Core.Commons.Enums;
 
 namespace BookingManagementSystem.Views.Client;
 public sealed partial class HomePage : Page
@@ -46,7 +46,7 @@ public sealed partial class HomePage : Page
         if (sender is FrameworkElement frameworkElement
             && frameworkElement.DataContext is Property property)
         {
-            property.IsFavourite = !property.IsFavourite;
+            ViewModel.ToggleFavorite(property);
         }
     }
 

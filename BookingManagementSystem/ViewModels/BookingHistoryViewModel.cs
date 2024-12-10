@@ -64,11 +64,13 @@ public partial class BookingHistoryViewModel : ObservableRecipient, INavigationA
 
     public void OnNavigatedFrom()
     {
+        Bookings.CollectionChanged -= (s, e) => CheckBookingListCount();
     }
 
     public void DeleteBookingAsync(BookingPropertyViewModel bookingPropertyViewModel)
     {
         _bookingRepository.DeleteAsync(bookingPropertyViewModel.Booking.Id);
+        _bookingRepository.SaveChangesAsync();
         Bookings.Remove(bookingPropertyViewModel);
     }
 
