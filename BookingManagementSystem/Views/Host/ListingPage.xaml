@@ -59,17 +59,18 @@
                         </Button>
                     </Grid>
                     <CommandBar x:Name="CollectionCommandBar" Grid.Column="2" DefaultLabelPosition="Right" HorizontalAlignment="Right">
-                        <AppBarButton x:Name="btnSearch" Icon="Find" Label="Search" Click="OnCommandBarElementClicked"/>
-                        <AppBarButton x:Name="btnAdd" Icon="Add" Label="Add" Click="OnCommandBarElementClicked"/>
-                        <AppBarButton x:Name="btnEdit" Icon="Edit" Label="Edit" Click="OnCommandBarElementClicked"/>
-                        <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
+                        <AppBarButton x:Name="btnSearch" Icon="Find" Label="Search" Tag="search" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnAdd" Icon="Add" Label="Add" Tag="add" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnEdit" Icon="Edit" Label="Edit" Tag="edit" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Tag="remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
                             <AppBarButton.KeyboardAccelerators>
                                 <KeyboardAccelerator Key="Delete"/>
                             </AppBarButton.KeyboardAccelerators>
                         </AppBarButton>
-                        <AppBarButton x:Name="btnCancel" Icon="Cancel" Label="Cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnCancel" Icon="Cancel" Label="Cancel" Tag="cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
                         <CommandBar.SecondaryCommands>
-                            <AppBarButton x:Name="btnRemoveAll" Icon="ViewAll" Label="Remove all" Click="OnCommandBarElementClicked"/>
+                            <AppBarButton x:Name="btnRefresh" Icon="Refresh" Label="Refresh" Tag="refresh" Click="OnCommandBarElementClicked"/>
+                            <AppBarButton x:Name="btnRemoveAll" Icon="ViewAll" Label="Remove all" Tag="remove-all" Click="OnCommandBarElementClicked"/>
                         </CommandBar.SecondaryCommands>
                     </CommandBar>
                 </Grid>
@@ -137,7 +138,7 @@
                     </controls:AdaptiveGridView>
                     <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="60" Height="60"
                                   IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
-                                  Visibility="{x:Bind ViewModel.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                  Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </StackPanel>
             </StackPanel>
         </Grid>

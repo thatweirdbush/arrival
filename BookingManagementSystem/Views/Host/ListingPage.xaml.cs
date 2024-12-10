@@ -123,28 +123,37 @@ public sealed partial class ListingPage : Page
         SearchBox.Focus(FocusState.Programmatic);
     }
 
+    private async void RefreshListing_Click(object sender, RoutedEventArgs e)
+    {
+        // Set to default pagination index & loading state
+        await ViewModel.RefreshPropertiesAsync();
+    }
+
     private void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
     {
-        var element = (sender as AppBarButton)!.Label;
+        var element = (sender as AppBarButton)!.Tag;
         switch (element)
         {
-            case "Add":
+            case "add":
                 AddNewListing_Click(sender, e);
                 break;
-            case "Edit":
+            case "edit":
                 EditListing_Click(sender, e);
                 break;
-            case "Cancel":
+            case "cancel":
                 CancelEditing_Click(sender, e);
                 break;
-            case "Remove":
+            case "remove":
                 RemoveListing_Click(sender, e);
                 break;
-            case "Remove all":
+            case "remove-all":
                 RemoveAllLissting_Click(sender, e);
                 break;
-            case "Search":
+            case "search":
                 SearchListing_Click(sender, e);
+                break;
+            case "refresh":
+                RefreshListing_Click(sender, e);
                 break;
         }
     }

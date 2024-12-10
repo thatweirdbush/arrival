@@ -169,4 +169,13 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
     {
         _currentPage = 1;
     }
+
+    public async Task RefreshPropertiesAsync()
+    {
+        CurrentLoadingState = LoadingState.Default;
+        ResetPaginationIndex();
+        await InitializeCache();
+        Properties.Clear();
+        await LoadPropertyListAsync();
+    }
 }
