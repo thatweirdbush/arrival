@@ -151,7 +151,31 @@ public class Repository<T> : IRepository<T> where T : class
     }
 
     /// <summary>
-    /// Support pagination, filtering, and sorting
+    /// Support pagination and sorting, default ascending
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <param name="keySelector"></param>
+    /// <param name="sortDescending"></param>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    public async Task<IEnumerable<T>> GetPagedSortedAsync<TKey>(
+        Expression<Func<T, TKey>> keySelector,
+        bool sortDescending,
+        int pageNumber,
+        int pageSize)
+    {
+        var query = _dbSet.AsQueryable();
+
+        query = sortDescending
+            ? query.OrderByDescending(keySelector)
+            : query.OrderBy(keySelector);
+
+        return await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+    }
+
+    /// <summary>
+    /// Support pagination, filtering and sorting
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <param name="filter"></param>

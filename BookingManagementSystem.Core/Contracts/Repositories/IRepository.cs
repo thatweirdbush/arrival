@@ -18,6 +18,7 @@ public interface IRepository<T>
     Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize);
     Task<IEnumerable<T>> GetFilteredAsync(Expression<Func<T, bool>> predicate);
     Task<IEnumerable<T>> GetSortedAsync<TKey>(Expression<Func<T, TKey>> keySelector, bool sortDescending);
+    Task<IEnumerable<T>> GetPagedSortedAsync<TKey>(Expression<Func<T, TKey>> keySelector, bool sortDescending, int pageNumber, int pageSize);
     Task<IEnumerable<T>> GetFilteredAndSortedAsync<TKey>(Expression<Func<T, bool>> filter, Expression<Func<T, TKey>> keySelector, bool sortDescending);
     Task<IEnumerable<T>> GetPagedFilteredAndSortedAsync<TKey>(Expression<Func<T, bool>> filter, Expression<Func<T, TKey>> keySelector, bool sortDescending, int pageNumber, int pageSize);
     Task<IEnumerable<TResult>> GetMappedAsync<TResult>(Expression<Func<T, bool>> filter, Expression<Func<T, TResult>> selector);

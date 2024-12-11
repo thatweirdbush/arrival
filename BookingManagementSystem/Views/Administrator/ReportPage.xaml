@@ -4,13 +4,19 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helpers="using:BookingManagementSystem.Helpers"
     xmlns:models="using:BookingManagementSystem.Core.Models"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
     mc:Ignorable="d"
     CacheMode="BitmapCache">
 
-    <ScrollView x:Name="MainScrollView">
+    <Page.Resources>
+        <helpers:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <helpers:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
+    </Page.Resources>
+
+    <ScrollViewer x:Name="MainScrollView" ViewChanged="ScrollViewer_ViewChanged">
         <Grid x:Name="MainGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="240"/>
@@ -31,14 +37,34 @@
             </Grid>
             <StackPanel Grid.Row="1" Spacing="24" HorizontalAlignment="Stretch" Margin="{StaticResource BlogViewWideContentMargin}">
                 <Grid x:Name="HeaderContent">
-                    <StackPanel Spacing="18" HorizontalAlignment="Left">
+                    <StackPanel Spacing="6">
                         <TextBlock Text="User's Reports" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
-                        <TextBlock Text="Every reports submitted from users, includes 3 types: Property, User, Review" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                        <Grid>
+                            <TextBlock Text="Every reports submitted from users" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                            <CommandBar x:Name="CollectionCommandBar" Grid.Column="2" DefaultLabelPosition="Right" HorizontalAlignment="Right">
+                                <AppBarButton x:Name="btnSelect" Icon="Bullets" Label="Select" Tag="select" Click="OnCommandBarElementClicked"/>
+                                <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Tag="remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
+                                    <AppBarButton.KeyboardAccelerators>
+                                        <KeyboardAccelerator Key="Delete"/>
+                                    </AppBarButton.KeyboardAccelerators>
+                                </AppBarButton>
+                                <AppBarButton x:Name="btnCancel" Icon="Cancel" Label="Cancel" Tag="cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
+                                <CommandBar.SecondaryCommands>
+                                    <AppBarButton x:Name="btnRemoveAll" Icon="ViewAll" Label="Remove all" Tag="remove-all" Click="OnCommandBarElementClicked"/>
+                                    <AppBarButton x:Name="btnRefresh" Icon="Refresh" Label="Refresh" Tag="refresh" Click="OnCommandBarElementClicked"/>
+                                </CommandBar.SecondaryCommands>
+                            </CommandBar>
+                        </Grid>
                         <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" Margin="0 0 0 0"/>
                     </StackPanel>
                 </Grid>
-                <StackPanel x:Name="MainContent" Spacing="28">
-                    <Grid x:Name="MainContentGrid">
+                <Grid x:Name="MainContentGrid">
+                    <StackPanel x:Name="BodyGridAllListEmpty" Spacing="18" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{x:Bind ViewModel.IsListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image Source="/Assets/modern-european-house.png" Width="240" Height="240" Stretch="Fill" Margin="0 -18 0 -24"/>
+                        <TextBlock Text="There's no complaints here" Style="{ThemeResource SubtitleTextBlockStyle}" FontFamily="Arial" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="Keep up the spirits, no one likes complaints right?" Style="{ThemeResource BodyTextBlockStyle}" FontFamily="Arial" FontSize="18" Foreground="Gray" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 -12 0 0"/>
+                    </StackPanel>
+                    <StackPanel x:Name="MainContent" Spacing="28" Visibility="{x:Bind ViewModel.IsListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
                         <ListView x:Name="ReportListView" ItemsSource="{x:Bind ViewModel.BadReports, Mode=OneWay}">
                             <ListView.ItemContainerTransitions>
                                 <TransitionCollection>
@@ -52,28 +78,31 @@
                                             <ColumnDefinition Width="Auto" MinWidth="80" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <PersonPicture DisplayName="{x:Bind UserId, Mode=OneWay}" Width="48" Height="48"/>
+                                        <PersonPicture DisplayName="{x:Bind UserId}" Width="48" Height="48"/>
                                         <StackPanel Margin="12,0,0,0" Grid.Column="1" Spacing="8">
                                             <Grid>
-                                                <TextBlock Text="{x:Bind ReportReason, Mode=OneWay}" FontSize="18" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Left"/>
-                                                <TextBlock Text="{x:Bind Status, Mode=OneWay}" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{x:Bind ReportReason}" FontSize="18" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Left"/>
+                                                <TextBlock Text="{x:Bind Status}" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                             </Grid>
-                                            <TextBlock Text="{x:Bind Description, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" TextTrimming="CharacterEllipsis" MaxLines="2" Margin="8 0 0 0"/>
+                                            <TextBlock Text="{x:Bind Description}" Style="{ThemeResource BodyTextBlockStyle}" TextTrimming="CharacterEllipsis" MaxLines="2" Margin="8 0 0 0"/>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{x:Bind EntityType, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                                <TextBlock Text="{x:Bind EntityType}" Style="{ThemeResource CaptionTextBlockStyle}"/>
                                                 <TextBlock Text=" ID: " Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                                <TextBlock Text="{x:Bind EntityId, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" Margin="4 0 0 0"/>
+                                                <TextBlock Text="{x:Bind EntityId}" Style="{ThemeResource CaptionTextBlockStyle}" Margin="4 0 0 0"/>
                                                 <TextBlock Text=" ⋅ " Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                                <TextBlock Text="{x:Bind ReportDate, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" Margin="4 0 0 0"/>
+                                                <TextBlock Text="{x:Bind ReportDate}" Style="{ThemeResource CaptionTextBlockStyle}" Margin="4 0 0 0"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                    </Grid>
-                </StackPanel>
+                        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="60" Height="60"
+                                      IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                                      Visibility="{x:Bind ViewModel.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    </StackPanel>
+                </Grid>
             </StackPanel>
         </Grid>
-    </ScrollView>
+    </ScrollViewer>
 </Page>

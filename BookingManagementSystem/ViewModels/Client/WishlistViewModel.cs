@@ -3,12 +3,9 @@ using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.ComponentModel;
 using BookingManagementSystem.ViewModels.Account;
 using CommunityToolkit.Mvvm.Input;
 using BookingManagementSystem.Contracts.ViewModels;
-using BookingManagementSystem.Core.Commons.Enums;
-using Microsoft.UI.Dispatching;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -29,7 +26,7 @@ public partial class WishlistViewModel : ObservableRecipient, INavigationAware
     public int CurrentPage => _currentPage;
     public int CurrentUserID = LoginViewModel.CurrentUser?.Id ?? 0;
     private int _currentPage = 1;
-    private const int PageSize = 5; // Default page size
+    private const int PageSize = 5;
 
     public WishlistViewModel(INavigationService navigationService, IRepository<Property> propertyRepository)
     {

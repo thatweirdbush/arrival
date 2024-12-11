@@ -69,8 +69,8 @@
                         </AppBarButton>
                         <AppBarButton x:Name="btnCancel" Icon="Cancel" Label="Cancel" Tag="cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
                         <CommandBar.SecondaryCommands>
-                            <AppBarButton x:Name="btnRefresh" Icon="Refresh" Label="Refresh" Tag="refresh" Click="OnCommandBarElementClicked"/>
                             <AppBarButton x:Name="btnRemoveAll" Icon="ViewAll" Label="Remove all" Tag="remove-all" Click="OnCommandBarElementClicked"/>
+                            <AppBarButton x:Name="btnRefresh" Icon="Refresh" Label="Refresh" Tag="refresh" Click="OnCommandBarElementClicked"/>
                         </CommandBar.SecondaryCommands>
                     </CommandBar>
                 </Grid>
