@@ -2,7 +2,7 @@
 using BookingManagementSystem.Core.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using static BookingManagementSystem.ViewModels.Administrator.ListingRequestViewModel;
+using BookingManagementSystem.Core.Commons.Enums;
 
 namespace BookingManagementSystem.Views.Administrator;
 
@@ -85,7 +85,7 @@ public sealed partial class ListingRequestPage : Page
         await ViewModel.SaveChangesAsync();
 
         // Reload the list
-        await ViewModel.ResetPagination();
+        await ViewModel.RefreshAsync();
 
         // Show the successful dialog
         _ = new ContentDialog
@@ -121,7 +121,7 @@ public sealed partial class ListingRequestPage : Page
         await ViewModel.SaveChangesAsync();
 
         // Reload the priority list
-        await ViewModel.ResetPagination();
+        await ViewModel.RefreshAsync();
 
         // Show the successful dialog
         _ = new ContentDialog

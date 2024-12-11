@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq.Expressions;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Commons.Enums;
@@ -16,12 +17,8 @@ public partial class ListingRequestViewModel : ObservableRecipient, INavigationA
     private readonly IRepository<Property> _propertyRepository;
 
     // List of content items
-    public IEnumerable<FilterType> FilterTypes
-    {
-        get; set;
-    }
+    public IEnumerable<FilterType> FilterTypes { get; set; }
     public ObservableCollection<Property> PriorityProperties { get; set; } = [];
-    public List<Property> CachedProperties { get; set; } = [];
 
     [ObservableProperty]
     private bool isPropertyListEmpty;
@@ -34,14 +31,6 @@ public partial class ListingRequestViewModel : ObservableRecipient, INavigationA
     public int CurrentPage => _currentPage;
     private int _currentPage = 1;
     private const int PageSize = 5; // Default page size
-
-    public enum FilterType
-    {
-        Current,
-        Elites,
-        Trendings,
-        Requests
-    }
 
     public ListingRequestViewModel(INavigationService navigationService, IRepository<Property> propertyRepository)
     {
@@ -63,7 +52,7 @@ public partial class ListingRequestViewModel : ObservableRecipient, INavigationA
 
     public async void OnNavigatedTo(object parameter)
     {
-        await InitializeCacheAsync();
+        // Initialize data list with pagination
         await LoadNextPageAsync();
 
         // Initial check
@@ -76,20 +65,7 @@ public partial class ListingRequestViewModel : ObservableRecipient, INavigationA
 
     partial void OnSelectedFilterChanged(FilterType value)
     {
-        _ = ResetPagination();
-    }
-
-    public async Task InitializeCacheAsync()
-    {
-        // Begin loading
-        IsLoading = true;
-
-        // Load all properties from the database
-        var data = await _propertyRepository.GetAllAsync();
-        CachedProperties = data.Where(p => p.Status.Equals(PropertyStatus.Listed)).ToList();
-
-        // End loading
-        IsLoading = false;
+        _ = RefreshAsync();
     }
 
     // Implement Incremental Loading
@@ -103,8 +79,12 @@ public partial class ListingRequestViewModel : ObservableRecipient, INavigationA
             IsLoading = true;
 
             // Load next page based on current filter
-            var filteredProperties = ApplyCurrentFilter();
-            var pagedProperties = GetPagedProperties(filteredProperties, _currentPage, PageSize);
+            var pagedProperties = await _propertyRepository.GetPagedFilteredAndSortedAsync(
+                GetCurrentFilterExpression(),
+                p => p.CreatedAt,
+                sortDescending: true,
+                _currentPage,
+                PageSize);
 
             foreach (var property in pagedProperties)
             {
@@ -117,43 +97,29 @@ public partial class ListingRequestViewModel : ObservableRecipient, INavigationA
         {
             // End loading
             IsLoading = false;
-            await Task.CompletedTask;
         }
     }
 
-    private IEnumerable<Property> ApplyCurrentFilter()
+    // Get the current filter expression
+    private Expression<Func<Property, bool>> GetCurrentFilterExpression()
     {
         return SelectedFilter switch
         {
-            FilterType.Current => CachedProperties,
-            FilterType.Elites => CachedProperties.Where(p => p.IsPriority),
-            FilterType.Trendings => CachedProperties.Where(p => p.IsFavourite),
-            FilterType.Requests => CachedProperties.Where(p => p.IsRequested),
-            _ => CachedProperties
+            FilterType.Current => p => p.Status == PropertyStatus.Listed,
+            FilterType.Elites => p => p.Status == PropertyStatus.Listed && p.IsPriority,
+            FilterType.Trendings => p => p.Status == PropertyStatus.Listed && p.IsFavourite,
+            FilterType.Requests => p => p.Status == PropertyStatus.Listed && p.IsRequested,
+            _ => p => p.Status == PropertyStatus.Listed
         };
     }
 
-    // General method for paginating data
-    private IEnumerable<Property> GetPagedProperties(IEnumerable<Property> source, int page, int pageSize)
-    {
-        return source.Skip((page - 1) * pageSize).Take(pageSize);
-    }
-
-    // Reload the data list from cache
-    public async Task ResetPagination()
+    // Refresh the data list from database
+    public async Task RefreshAsync()
     {
         _currentPage = 1;
         PriorityProperties.Clear();
         await LoadNextPageAsync();
         CheckPropertyListCount();
-    }
-
-    // Reload the cache & data list from the database
-    public async Task RefreshAsync()
-    {
-        PriorityProperties.Clear();
-        await InitializeCacheAsync();
-        await ResetPagination();
     }
 
     public Task UpdateAsync(Property property)
