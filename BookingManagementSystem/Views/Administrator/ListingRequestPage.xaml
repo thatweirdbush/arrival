@@ -17,7 +17,7 @@
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
     </Page.Resources>
 
-    <ScrollView x:Name="MainScrollView">
+    <ScrollView x:Name="MainScrollView" ViewChanged="ScrollViewer_ViewChanged">
         <Grid x:Name="MainGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="240"/>
@@ -70,19 +70,22 @@
                                                 <KeyboardAccelerator Key="I" Modifiers="Control"/>
                                             </MenuFlyoutItem.KeyboardAccelerators>
                                         </MenuFlyoutItem>
+                                        <MenuFlyoutItem x:Name="btnRefresh" Icon="Refresh" Text="Refresh" Tag="refresh" Click="OnCommandBarElementClicked">
+                                            <MenuFlyoutItem.KeyboardAccelerators>
+                                                <KeyboardAccelerator Key="F5"/>
+                                            </MenuFlyoutItem.KeyboardAccelerators>
+                                        </MenuFlyoutItem>
                                     </MenuBarItemFlyout>
                                 </AppBarButton.Flyout>
                             </AppBarButton>
                         </CommandBar>
-                        <ComboBox x:Name="ListingItemStatusComboBox" Height="36" FontSize="12" BorderThickness="0" Background="Transparent" SelectionChanged="ListingItemStatusComboBox_SelectionChanged" SelectedIndex="0" ToolTipService.ToolTip="Select list filtering" VerticalAlignment="Center">
-                            <x:String>Current</x:String>
-                            <x:String>Elites</x:String>
-                            <x:String>Trendings</x:String>
-                            <x:String>Requests</x:String>
-                        </ComboBox>
+                        <ComboBox x:Name="ListingItemStatusComboBox" Height="36" FontSize="12" BorderThickness="0"
+                                  SelectedItem="{x:Bind ViewModel.SelectedFilter, Mode=TwoWay}" Background="Transparent" VerticalAlignment="Center" ToolTipService.ToolTip="Select list filtering"
+                                  SelectionChanged="ListingItemStatusComboBox_SelectionChanged"
+                                  ItemsSource="{x:Bind ViewModel.FilterTypes}"/>
                     </StackPanel>
                 </Grid>
-                <StackPanel x:Name="MainContent" Spacing="28">
+                <StackPanel x:Name="MainContent" Spacing="12">
                     <Grid x:Name="MainContentGrid">
                         <Grid x:Name="EmptyListMessageGrid" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0 8 0 140">
@@ -145,6 +148,9 @@
                             </ListView.ItemTemplate>
                         </ListView>
                     </Grid>
+                    <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="60" Height="60"
+                                  IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                                  Visibility="{x:Bind ViewModel.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </StackPanel>
             </StackPanel>
         </Grid>
