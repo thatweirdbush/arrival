@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BookingManagementSystem.Core.Contracts.Repositories;
-using BookingManagementSystem.Core.Repositories;
+using BookingManagementSystem.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +15,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Amenity> Amenities { get; set; }
     public DbSet<BadReport> BadReports { get; set; }
     public DbSet<Booking> Bookings { get; set; }
+    public DbSet<CountryInfo> CountryInfo { get; set; }
     public DbSet<FAQ> FAQs { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<Payment> Payments { get; set; }

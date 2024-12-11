@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.Core.Commons.Enums;
 
 namespace BookingManagementSystem.Views.Client;
 public sealed partial class HomePage : Page
@@ -45,7 +46,7 @@ public sealed partial class HomePage : Page
         if (sender is FrameworkElement frameworkElement
             && frameworkElement.DataContext is Property property)
         {
-            property.IsFavourite = !property.IsFavourite;
+            ViewModel.ToggleFavorite(property);
         }
     }
 
@@ -149,18 +150,43 @@ public sealed partial class HomePage : Page
         }
     }
 
-    private void btnFilterDestination_Click(object sender, RoutedEventArgs e)
+    private async void btnFilterDestination_Click(object sender, RoutedEventArgs e)
     {
         // Filter Properties based on DestinationType  
         if (sender is FrameworkElement frameworkElement
             && frameworkElement.DataContext is DestinationTypeSymbol destinationTypeSymbol)
         {
-            ViewModel.FilterProperties(destinationTypeSymbol);
+            ViewModel.SelectedPresetFilter = destinationTypeSymbol.DestinationType;
+            await ViewModel.FilterProperties();
         }
     }
 
     private void ToggleSwitchDisplayTax_Toggled(object sender, RoutedEventArgs e)
     {
         ViewModel.ToggleDisplayPropertiesPriceWithTax(ToggleSwitchDisplayTax.IsOn);
+    }
+
+    private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+    {
+        var scrollViewer = sender as ScrollViewer;
+        if (scrollViewer == null) return;
+
+        // Detect when scroll is near the end
+        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight - 10) // 10px from end of list
+        {
+            // Check if loading default data, filter data or search data
+            if (ViewModel.CurrentLoadingState.Equals(LoadingState.Default))
+            {
+                await ViewModel.LoadPropertyListAsync(); // Load default data
+            }
+            else if (ViewModel.CurrentLoadingState.Equals(LoadingState.Filtered))
+            {
+                await ViewModel.LoadPropertyListFromPresetFilterAsync(); // Load filter data
+            }
+            else if (ViewModel.CurrentLoadingState.Equals(LoadingState.Search))
+            {
+                await ViewModel.LoadPropertyListFromSearchAsync(); // Load search data
+            }
+        }
     }
 }

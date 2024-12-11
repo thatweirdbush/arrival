@@ -88,11 +88,11 @@
                             <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0 8 0 140">
                                 <Image Source="/Assets/modern-european-house.png" Width="240" Height="240" Stretch="Fill" Margin="0 0 0 -12"/>
                                 <TextBlock Text="No request found" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center"/>
-                                <TextBlock Text="You will be notified when your clients post a listing request." Style="{ThemeResource DetailSubTitleStyle}"  HorizontalAlignment="Center"/>
+                                <TextBlock Text="You will be notified when your clients post a listing request." Style="{ThemeResource DetailSubTitleStyle}" HorizontalAlignment="Center"/>
                             </StackPanel>
                         </Grid>
-                        <ListView x:Name="PriorityPropertyListView" ItemsSource="{x:Bind ViewModel.PriorityProperties}" SelectionMode="Single"
-                                  Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}"
+                        <ListView x:Name="PriorityPropertyListView" ItemsSource="{x:Bind ViewModel.PriorityProperties, Mode=OneWay}" SelectionMode="Single"
+                                  Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"
                                   animations:Connected.ListItemElementName="itemThumbnail"
                                   animations:Connected.ListItemKey="animationKeyContentGrid"
                                   ItemClick="PriorityPropertyListView_ItemClick"
@@ -109,7 +109,12 @@
                                             <ColumnDefinition Width="Auto" MinWidth="80" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <FlipView ItemsSource="{x:Bind ImagePaths}" Width="180" Height="120">
+                                        <Image Stretch = "UniformToFill" VerticalAlignment="Center">
+                                            <Image.Source>
+                                                <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="270"/>
+                                            </Image.Source>
+                                        </Image>
+                                        <!--<FlipView ItemsSource="{x:Bind ImagePaths}" Width="180" Height="120">
                                             <FlipView.ItemTemplate>
                                                 <DataTemplate x:DataType="x:String">
                                                     <Image Stretch = "UniformToFill" VerticalAlignment="Center">
@@ -119,7 +124,7 @@
                                                     </Image>
                                                 </DataTemplate>
                                             </FlipView.ItemTemplate>
-                                        </FlipView>
+                                        </FlipView>-->
                                         <StackPanel Margin="12,0,0,0" Grid.Column="1" Spacing="8">
                                             <Grid>
                                                 <TextBlock Text="{x:Bind Name}" FontSize="18" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Left"/>

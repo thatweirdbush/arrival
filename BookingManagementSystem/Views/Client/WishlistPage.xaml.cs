@@ -1,4 +1,5 @@
-﻿using BookingManagementSystem.Core.Models;
+﻿using BookingManagementSystem.Core.Commons.Enums;
+using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels.Client;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -39,7 +40,7 @@ public sealed partial class WishlistPage : Page
     private async void RemoveListing_Click(object sender, RoutedEventArgs e)
     {
         // Get selected items and remove them from the list
-        var selectedItems = WishlistGridView.SelectedItems.ToList();
+        var selectedItems = WishlistGridView.SelectedItems;
 
         // Check if there are selected items
         if (selectedItems.Count == 0)
@@ -69,6 +70,7 @@ public sealed partial class WishlistPage : Page
                     ViewModel.RemoveWishlistAsync(property);
                 }
             }
+            await ViewModel.SaveChangesAsync();
         }
     }
 
@@ -95,6 +97,12 @@ public sealed partial class WishlistPage : Page
         }
     }
 
+    private async void RefreshListing_Click(object sender, RoutedEventArgs e)
+    {
+        // Set to default pagination index & loading state
+        await ViewModel.RefreshPropertiesAsync();
+    }
+
     private void btnGetStarted_Click(object sender, RoutedEventArgs e)
     {
         // Navigate to Home page
@@ -103,20 +111,23 @@ public sealed partial class WishlistPage : Page
 
     private void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
     {
-        var element = (sender as AppBarButton)!.Label;
+        var element = (sender as AppBarButton)!.Tag;
         switch (element)
         {
-            case "Select":
+            case "select":
                 EditListing_Click(sender, e);
                 break;
-            case "Cancel":
+            case "cancel":
                 CancelEditing_Click(sender, e);
                 break;
-            case "Remove":
+            case "remove":
                 RemoveListing_Click(sender, e);
                 break;
-            case "Remove all":
+            case "remove all":
                 RemoveAllLissting_Click(sender, e);
+                break;
+            case "refresh":
+                RefreshListing_Click(sender, e);
                 break;
         }
     } 
@@ -129,6 +140,18 @@ public sealed partial class WishlistPage : Page
             && frameworkElement.DataContext is Property property)
         {
             property.IsFavourite = !property.IsFavourite;
+        }
+    }
+
+    private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+    {
+        var scrollViewer = sender as ScrollViewer;
+        if (scrollViewer == null) return;
+
+        // Detect when scroll is near the end
+        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight - 10) // 10px from end of list
+        {
+            await ViewModel.LoadPropertyListAsync();
         }
     }
 }

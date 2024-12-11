@@ -72,6 +72,7 @@ public class PropertyImagesActivationHandler
                 imagePaths[i] = GetLocalImageFolderPath() + imagePaths[i];
             }
             property.ImagePaths = imagePaths; // Update the property with the modified list
+            await Task.CompletedTask;
         });
 
         await Task.WhenAll(tasks);

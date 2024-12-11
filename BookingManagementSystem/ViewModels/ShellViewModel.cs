@@ -38,9 +38,15 @@ public partial class ShellViewModel : ObservableRecipient
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;
         NotificationRepository = notificationRepository;
+
+        IsBackEnabled = NavigationService.CanGoBack;
+
+        // Get notification data list
+        _ = LoadNotificationData();
+        UpdateObservableProperties();
     }
 
-    private async void OnNavigated(object sender, NavigationEventArgs e)
+    private void OnNavigated(object sender, NavigationEventArgs e)
     {
         IsBackEnabled = NavigationService.CanGoBack;
 
@@ -56,9 +62,9 @@ public partial class ShellViewModel : ObservableRecipient
             Selected = selectedItem;
         }
 
-        // Get notification data list
-        await LoadNotificationData();
-        UpdateObservableProperties();
+        //// Get notification data list
+        //await LoadNotificationData();
+        //UpdateObservableProperties();
     }
 
     public void UpdateObservableProperties()

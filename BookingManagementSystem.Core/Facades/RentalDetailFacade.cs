@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BookingManagementSystem.Core.Contracts.Facades;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.Core.Repositories;
 
 namespace BookingManagementSystem.Core.Facades;
 #nullable enable
@@ -14,7 +15,7 @@ public class RentalDetailFacade : IRentalDetailFacade
     private readonly IRepository<Property> _propertyRepository;
     private readonly IRepository<Review> _reviewRepository;
     private readonly IRepository<QnA> _qnaRepository;
-    private readonly IRepository<DestinationTypeSymbol> _destinationTypeSymbolRepository;
+    private readonly DestinationTypeSymbolRepository _destinationTypeSymbolRepository;
     private readonly IRepository<PropertyPolicy> _propertyPolicyRepository;
     private readonly IRepository<BadReport> _badReportRepository;
 
@@ -22,7 +23,7 @@ public class RentalDetailFacade : IRentalDetailFacade
         IRepository<Property> propertyRepository,
         IRepository<Review> reviewRepository,
         IRepository<QnA> qnaRepository,
-        IRepository<DestinationTypeSymbol> destinationTypeSymbolRepository,
+        DestinationTypeSymbolRepository destinationTypeSymbolRepository,
         IRepository<PropertyPolicy> propertyPolicyRepository,
         IRepository<BadReport> badReportRepository)
     {

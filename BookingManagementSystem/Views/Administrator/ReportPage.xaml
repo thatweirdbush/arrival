@@ -39,7 +39,7 @@
                 </Grid>
                 <StackPanel x:Name="MainContent" Spacing="28">
                     <Grid x:Name="MainContentGrid">
-                        <ListView x:Name="ReportListView" ItemsSource="{x:Bind ViewModel.BadReports}">
+                        <ListView x:Name="ReportListView" ItemsSource="{x:Bind ViewModel.BadReports, Mode=OneWay}">
                             <ListView.ItemContainerTransitions>
                                 <TransitionCollection>
                                     <PaneThemeTransition Edge="Bottom"/>
@@ -47,24 +47,24 @@
                             </ListView.ItemContainerTransitions>
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="models:BadReport">
-                                    <Grid Margin="0,12,0,12" AutomationProperties.Name="{x:Bind ReportReason}">
+                                    <Grid Margin="0,12,0,12">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" MinWidth="80" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <PersonPicture DisplayName="{x:Bind UserId}" Width="48" Height="48"/>
+                                        <PersonPicture DisplayName="{x:Bind UserId, Mode=OneWay}" Width="48" Height="48"/>
                                         <StackPanel Margin="12,0,0,0" Grid.Column="1" Spacing="8">
                                             <Grid>
-                                                <TextBlock Text="{x:Bind ReportReason}" FontSize="18" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Left"/>
-                                                <TextBlock Text="{x:Bind Status}" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{x:Bind ReportReason, Mode=OneWay}" FontSize="18" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Left"/>
+                                                <TextBlock Text="{x:Bind Status, Mode=OneWay}" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                             </Grid>
-                                            <TextBlock Text="{x:Bind Description}" Style="{ThemeResource BodyTextBlockStyle}" TextTrimming="CharacterEllipsis" MaxLines="2" Margin="8 0 0 0"/>
+                                            <TextBlock Text="{x:Bind Description, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" TextTrimming="CharacterEllipsis" MaxLines="2" Margin="8 0 0 0"/>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{x:Bind EntityType}" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                                <TextBlock Text="{x:Bind EntityType, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}"/>
                                                 <TextBlock Text=" ID: " Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                                <TextBlock Text="{x:Bind EntityId}" Style="{ThemeResource CaptionTextBlockStyle}" Margin="4 0 0 0"/>
+                                                <TextBlock Text="{x:Bind EntityId, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" Margin="4 0 0 0"/>
                                                 <TextBlock Text=" ⋅ " Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                                <TextBlock Text="{x:Bind ReportDate}" Style="{ThemeResource CaptionTextBlockStyle}" Margin="4 0 0 0"/>
+                                                <TextBlock Text="{x:Bind ReportDate, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" Margin="4 0 0 0"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </Grid>

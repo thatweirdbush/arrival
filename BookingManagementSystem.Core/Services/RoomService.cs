@@ -7,7 +7,7 @@ namespace BookingManagementSystem.Core.Services;
 public class RoomService : IRoomService
 {
     // Properties nessesary for UI data binding
-    private readonly IRepository<DestinationTypeSymbol> _destinationTypeSymbolRepository;
+    private readonly DestinationTypeSymbolRepository _destinationTypeSymbolRepository;
 
     // Properties nessesary for Schedule searching
     private readonly IRepository<Property> _roomRepository;
@@ -19,13 +19,21 @@ public class RoomService : IRoomService
     public RoomService(
         IRepository<Property> roomRepository,
         IRepository<Booking> bookingRepository,
-        IRepository<DestinationTypeSymbol> destinationTypeSymbolRepository,
+        DestinationTypeSymbolRepository destinationTypeSymbolRepository,
         GeographicNameService geographicNamesService)
     {
         _roomRepository = roomRepository;
         _bookingRepository = bookingRepository;
         _destinationTypeSymbolRepository = destinationTypeSymbolRepository;
         _geographicNamesService = geographicNamesService;
+    }
+
+    public Task ToggleFavorite(Property property)
+    {
+        property.IsFavourite = !property.IsFavourite;
+        property.UpdatedAt = DateTime.Now.ToUniversalTime();
+        _roomRepository.UpdateAsync(property);
+        return _roomRepository.SaveChangesAsync();
     }
 
     public Task<IEnumerable<DestinationTypeSymbol>> GetAllDestinationTypeSymbolsAsync()
@@ -56,6 +64,7 @@ public class RoomService : IRoomService
 
         // Get all rooms from the database
         var rooms = await _roomRepository.GetAllAsync();
+        rooms = rooms.Where(x => x.Status == PropertyStatus.Listed);
 
         // Parse destination string into state/province and country
         string? stateOrProvince = null;
@@ -128,6 +137,4 @@ public class RoomService : IRoomService
         var locations = await _geographicNamesService.SearchLocationsAsync(locationName);
         return locations.FirstOrDefault();
     }
-
-
 }

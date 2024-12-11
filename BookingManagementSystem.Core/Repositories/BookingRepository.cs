@@ -4,59 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BookingManagementSystem.Core.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.Core.Repositories;
 public class BookingRepository : Repository<Booking>
 {
-    public BookingRepository()
+    public BookingRepository(DbContext context) : base(context)
     {
-        _entities.AddRange(
-        [
-            new()
-            {
-                Id = 1,
-                PropertyId = 1,
-                UserId = 1,
-                CheckInDate = DateTime.Now.ToUniversalTime(),
-                CheckOutDate = DateTime.Now.ToUniversalTime().AddDays(3),
-                TotalPrice = 299.9M
-            },
-            new()
-            {
-                Id = 2,
-                PropertyId = 2,
-                UserId = 2,
-                CheckInDate = DateTime.Now.ToUniversalTime(),
-                CheckOutDate = DateTime.Now.ToUniversalTime().AddDays(2),
-                TotalPrice = 199.9M
-            },
-            new()
-            {
-                Id = 3,
-                PropertyId = 3,
-                UserId = 3,
-                CheckInDate = DateTime.Now.ToUniversalTime(),
-                CheckOutDate = DateTime.Now.ToUniversalTime().AddDays(1),
-                TotalPrice = 49.9M
-            },
-            new()
-            {
-                Id = 4,
-                PropertyId = 4,
-                UserId = 4,
-                CheckInDate = DateTime.Now.ToUniversalTime(),
-                CheckOutDate = DateTime.Now.ToUniversalTime().AddDays(4),
-                TotalPrice = 99.9M
-            },
-            new()
-            {
-                Id = 5,
-                PropertyId = 5,
-                UserId = 5,
-                CheckInDate = DateTime.Now.ToUniversalTime(),
-                CheckOutDate = DateTime.Now.ToUniversalTime().AddDays(5),
-                TotalPrice = 69.9M
-            }
-        ]);
     }
 }

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.Core.Repositories;
 
 namespace BookingManagementSystem.Core.Services;
 public class PropertyService : IPropertyService
@@ -30,11 +29,13 @@ public class PropertyService : IPropertyService
         {
             // Update the existing property
             await _propertyRepository.UpdateAsync(property);
+            await _propertyRepository.SaveChangesAsync();
         }
         else
         {
             // Add new property
             await _propertyRepository.AddAsync(property);
+            await _propertyRepository.SaveChangesAsync();
         }
     }
 

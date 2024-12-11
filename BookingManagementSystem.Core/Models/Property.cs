@@ -133,7 +133,7 @@ public class Property : INotifyPropertyChanged
     {
         get
         {
-            if (Country == null && string.IsNullOrEmpty(StateOrProvince))
+            if (Country == null || string.IsNullOrEmpty(StateOrProvince))
             {
                 return DEFAULT_PROPERTY_LOCATION;
             }
@@ -144,15 +144,15 @@ public class Property : INotifyPropertyChanged
     {
         get
         {
-            if (Country == null && string.IsNullOrEmpty(StreetAddress) &&
-                string.IsNullOrEmpty(CityOrDistrict) && string.IsNullOrEmpty(StateOrProvince))
+            if (Country == null || string.IsNullOrEmpty(StreetAddress) ||
+                string.IsNullOrEmpty(CityOrDistrict) || string.IsNullOrEmpty(StateOrProvince))
             {
                 return DEFAULT_PROPERTY_LOCATION;
             }
             return $"{StreetAddress}, {CityOrDistrict}, {StateOrProvince}, {Country.CountryName}";
         }
     }
-    public CountryInfo Country
+    public virtual CountryInfo Country
     {
         get; set;
     }
@@ -180,11 +180,11 @@ public class Property : INotifyPropertyChanged
     {
         get; set;
     } = false;
-    public ICollection<Amenity> Amenities
+    public virtual ICollection<Amenity> Amenities
     {
         get; set;
     } = []; // E.g., WiFi, Pool, Parking
-    public ICollection<PropertyPolicy> Policies
+    public virtual ICollection<PropertyPolicy> Policies
     {
         get; set;
     } = []; // E.g., No smoking, No pets, No parties
@@ -204,7 +204,6 @@ public class Property : INotifyPropertyChanged
     {
         get; set;
     }
-    // Add properties for geographic coordinates using GeoPoint or WebView2 Url query string
     public double Latitude
     {
         get; set;

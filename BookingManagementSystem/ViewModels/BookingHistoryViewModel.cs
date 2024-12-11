@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.DTOs;
 using BookingManagementSystem.Core.Models;
@@ -9,7 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace BookingManagementSystem.ViewModels;
 
-public partial class BookingHistoryViewModel : ObservableRecipient
+public partial class BookingHistoryViewModel : ObservableRecipient, INavigationAware
 {
     private readonly INavigationService _navigationService;
     private readonly IRepository<Booking> _bookingRepository;
@@ -26,14 +27,6 @@ public partial class BookingHistoryViewModel : ObservableRecipient
         _navigationService = navigationService;
         _bookingRepository = bookingRepository;
         _propertyRepository = propertyRepository;
-
-        // Subscribe to CollectionChanged event
-        Bookings.CollectionChanged += (s, e) => CheckBookingListCount();
-
-        // Initial check
-        CheckBookingListCount();
-
-        OnNavigatedTo(0);
     }
 
     [RelayCommand]
@@ -50,9 +43,10 @@ public partial class BookingHistoryViewModel : ObservableRecipient
     {
         // Load Booking data list
         var bookings = await _bookingRepository.GetAllAsync();
+        var properties = await _propertyRepository.GetAllAsync();
         foreach (var booking in bookings)
         {
-            var property = await _propertyRepository.GetByIdAsync(booking.PropertyId);
+            var property = properties.FirstOrDefault(p => p.Id == booking.PropertyId);
             var bookingPropertyViewModel = new BookingPropertyViewModel
             {
                 Booking = booking,
@@ -60,15 +54,23 @@ public partial class BookingHistoryViewModel : ObservableRecipient
             };
             Bookings.Add(bookingPropertyViewModel);
         }
+
+        // Subscribe to CollectionChanged event
+        Bookings.CollectionChanged += (s, e) => CheckBookingListCount();
+
+        // Initial check
+        CheckBookingListCount();
     }
 
     public void OnNavigatedFrom()
     {
+        Bookings.CollectionChanged -= (s, e) => CheckBookingListCount();
     }
 
     public void DeleteBookingAsync(BookingPropertyViewModel bookingPropertyViewModel)
     {
         _bookingRepository.DeleteAsync(bookingPropertyViewModel.Booking.Id);
+        _bookingRepository.SaveChangesAsync();
         Bookings.Remove(bookingPropertyViewModel);
     }
 

@@ -82,6 +82,11 @@ public partial class App : Application
             // App Hosted Services
             services.AddSingleton<IConfiguration>(context.Configuration);
 
+            // This allows the application to use the ApplicationDbContext at runtime via DI.
+            services.AddTransient<DbContext, ApplicationDbContext>();
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(context.Configuration.GetConnectionString("DefaultConnection")));
+
             // Default Activation Handler
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
@@ -109,24 +114,24 @@ public partial class App : Application
 
             // Data Services
             // TODO: Change to AddScoped when using a real data service
-            services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
-            services.AddSingleton<IRentalDetailFacade, RentalDetailFacade>();
-            services.AddSingleton<IPaymentFacade, PaymentFacade>();
-            services.AddSingleton<IHomeFacade, HomeFacade>();
-            services.AddSingleton<IRepository<Amenity>, AmenityRepository>();
-            services.AddSingleton<IRepository<BadReport>, BadReportRepository>();
-            services.AddSingleton<IRepository<Booking>, BookingRepository>();
-            services.AddSingleton<IRepository<DestinationTypeSymbol>, DestinationTypeSymbolRepository>();
-            services.AddSingleton<IRepository<FAQ>, FAQRepository>();
-            services.AddSingleton<IRepository<Notification>, NotificationRepository>();
-            services.AddSingleton<IRepository<Payment>, PaymentRepository>();
-            services.AddSingleton<IRepository<PropertyPolicy>, PropertyPolicyRepository>();
-            services.AddSingleton<IRepository<Property>, PropertyRepository>();
-            services.AddSingleton<IRepository<QnA>, QnARepository>();
-            services.AddSingleton<IRepository<User>, UserRepository>();
-            services.AddSingleton<IRepository<Review>, ReviewRepository>();
-            services.AddSingleton<IRepository<Voucher>, VoucherRepository>();
-            services.AddSingleton<IRepository<PropertyTypeIcon>, PropertyTypeIconRepository>();
+            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient<IRentalDetailFacade, RentalDetailFacade>();
+            services.AddTransient<IPaymentFacade, PaymentFacade>();
+            services.AddTransient<IHomeFacade, HomeFacade>();
+            services.AddTransient<IRepository<Amenity>, AmenityRepository>();
+            services.AddTransient<IRepository<BadReport>, BadReportRepository>();
+            services.AddTransient<IRepository<Booking>, BookingRepository>();
+            services.AddTransient<IRepository<FAQ>, FAQRepository>();
+            services.AddTransient<IRepository<Notification>, NotificationRepository>();
+            services.AddTransient<IRepository<Payment>, PaymentRepository>();
+            services.AddTransient<IRepository<PropertyPolicy>, PropertyPolicyRepository>();
+            services.AddTransient<IRepository<Property>, PropertyRepository>();
+            services.AddTransient<IRepository<QnA>, QnARepository>();
+            services.AddTransient<IRepository<User>, UserRepository>();
+            services.AddTransient<IRepository<Review>, ReviewRepository>();
+            services.AddTransient<IRepository<Voucher>, VoucherRepository>();
+            services.AddTransient<DestinationTypeSymbolRepository>();
+            services.AddTransient<PropertyTypeIconRepository>();
 
             // Views and ViewModels
             services.AddTransient<NotificationViewModel>();
@@ -203,12 +208,8 @@ public partial class App : Application
             services.AddTransient<WishlistViewModel>();
             services.AddSingleton<WishlistPage>();
 
-            // Configurations
+            // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
-
-            // This allows the application to use the ApplicationDbContext at runtime via DI.
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(context.Configuration.GetConnectionString("DefaultConnection")));
         }).
         Build();
         App.GetService<IAppNotificationService>().Initialize();
@@ -241,8 +242,9 @@ public partial class App : Application
 
     private async Task RunLongRunningTasksAsync()
     {
-        await PropertyImagesActivationHandler.CopyPropertyImagesToLocalFolderAsync();
-        await PropertyImagesActivationHandler.BindingPropertyImagesWithLocalFolderAsync();
+        //await PropertyImagesActivationHandler.CopyPropertyImagesToLocalFolderAsync();
+        //await PropertyImagesActivationHandler.BindingPropertyImagesWithLocalFolderAsync();
+        await Task.Delay(100);
 
         // Create notification channel
         App.GetService<IAppNotificationService>().ShowNotification(

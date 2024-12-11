@@ -5,109 +5,103 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using BookingManagementSystem.Core.Contracts.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.Core.Repositories;
 public class Repository<T> : IRepository<T> where T : class
 {
-    protected readonly List<T> _entities = [];
+    protected readonly DbContext _context;
+    protected readonly DbSet<T> _dbSet;
+
+    public Repository(DbContext context)
+    {
+        _context = context;
+        _dbSet = _context.Set<T>();
+    }
 
     // Basic CRUD operations
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async virtual Task<IEnumerable<T>> GetAllAsync()
     {
-        return await Task.FromResult(_entities);
+        return await _dbSet.ToListAsync();
     }
 
-    public async Task<T> GetByIdAsync(int id)
+    public async virtual Task<T> GetByIdAsync(int id)
     {
-        var entity = _entities.FirstOrDefault(e => GetEntityId(e) == id);
-        return await Task.FromResult(entity);
+        return await _dbSet.FindAsync(id);
     }
 
-    public async Task AddAsync(T entity)
+    public async virtual Task AddAsync(T entity)
     {
-        _entities.Insert(0, entity);
+        // Check duplicate
+        await _dbSet.AddAsync(entity);
+    }
+
+    public async virtual Task UpdateAsync(T entity)
+    {
+        _dbSet.Update(entity);
         await Task.CompletedTask;
     }
 
-    public async Task UpdateAsync(T entity)
+    public async virtual Task DeleteAsync(int id)
     {
-        var existingEntity = _entities.FirstOrDefault(e => GetEntityId(e) == GetEntityId(entity));
-        if (existingEntity != null)
-        {
-            _entities.Remove(existingEntity);
-            _entities.Insert(0, entity);
-        }
-        await Task.CompletedTask;
-    }
-
-    public async Task DeleteAsync(int id)
-    {
-        var entity = _entities.FirstOrDefault(e => GetEntityId(e) == id);
+        var entity = await _dbSet.FindAsync(id);
         if (entity != null)
         {
-            _entities.Remove(entity);
+            _dbSet.Remove(entity);
         }
-        await Task.CompletedTask;
     }
 
-    private static int GetEntityId(T entity)
+    public async virtual Task SaveChangesAsync()
     {
-        var property = typeof(T).GetProperty("Id");
-        return property != null ? (int)property.GetValue(entity) : 0;
+        await _context.SaveChangesAsync();
     }
 
     // Pagination
-    public async Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize)
+    public async virtual Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize)
     {
-        var pagedData = _entities.Skip((pageNumber - 1) * pageSize).Take(pageSize);
-        return await Task.FromResult(pagedData);
+        return await _dbSet.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
     }
 
     // Filtering
-    public async Task<IEnumerable<T>> GetFilteredAsync(Expression<Func<T, bool>> filter)
+    public async virtual Task<IEnumerable<T>> GetFilteredAsync(Expression<Func<T, bool>> filter)
     {
-        var filteredData = _entities.AsQueryable().Where(filter);
-        return await Task.FromResult(filteredData);
+        return await _dbSet.AsQueryable().Where(filter).ToListAsync();
     }
 
     // Sorting, default ascending
-    public async Task<IEnumerable<T>> GetSortedAsync<TKey>(
+    public async virtual Task<IEnumerable<T>> GetSortedAsync<TKey>(
         Expression<Func<T, TKey>> keySelector,
         bool sortDescending = false)
     {
         var sortedData = sortDescending
-            ? _entities.AsQueryable().OrderByDescending(keySelector)
-            : _entities.AsQueryable().OrderBy(keySelector);
+        ? _dbSet.OrderByDescending(keySelector)
+        : _dbSet.OrderBy(keySelector);
 
-        return await Task.FromResult(sortedData);
+        return await sortedData.ToListAsync();
     }
 
     // Filtering & Sorting
-    public async Task<IEnumerable<T>> GetFilteredAndSortedAsync<TKey>(
+    public async virtual Task<IEnumerable<T>> GetFilteredAndSortedAsync<TKey>(
         Expression<Func<T, bool>> filter,
         Expression<Func<T, TKey>> keySelector,
         bool sortDescending = false)
     {
-        var filteredData = _entities.AsQueryable().Where(filter);
-        var sortedData = sortDescending
-            ? filteredData.OrderByDescending(keySelector)
-            : filteredData.OrderBy(keySelector);
-
-        return await Task.FromResult(sortedData);
+        var query = _dbSet.AsQueryable().Where(filter);
+        return await (sortDescending
+            ? query.OrderByDescending(keySelector)
+            : query.OrderBy(keySelector)).ToListAsync();
     }
 
     // Searching by name, using Fuzzy Search
     // TODO: Implement Fuzzy Search
-    public async Task<IEnumerable<T>> GetSearchedAsync(Expression<Func<T, bool>> search)
+    public async virtual Task<IEnumerable<T>> GetSearchedAsync(Expression<Func<T, bool>> search)
     {
-        var searchedData = _entities.AsQueryable().Where(search);
-        return await Task.FromResult(searchedData);
+        return await _dbSet.AsQueryable().Where(search).ToListAsync();
     }
 
     // Count total results when searching
-    public async Task<int> CountAsync(Expression<Func<T, bool>> filter)
+    public async virtual Task<int> CountAsync(Expression<Func<T, bool>> filter)
     {
-        var count = _entities.AsQueryable().Count(filter);
-        return await Task.FromResult(count);
+        return await _dbSet.AsQueryable().CountAsync(filter);
     }
 }
