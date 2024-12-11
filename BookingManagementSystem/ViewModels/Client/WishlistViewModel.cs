@@ -19,16 +19,12 @@ public partial class WishlistViewModel : ObservableRecipient, INavigationAware
 
     // List of content items
     public ObservableCollection<Property> Properties { get; set; } = [];
-    public List<Property> CachedProperties { get; set; } = [];
 
     [ObservableProperty]
     private bool isPropertyListEmpty;
 
     [ObservableProperty]
     private bool isLoading;
-
-    [ObservableProperty]
-    private LoadingState currentLoadingState;
 
     public int CurrentPage => _currentPage;
     public int CurrentUserID = LoginViewModel.CurrentUser?.Id ?? 0;
@@ -41,94 +37,6 @@ public partial class WishlistViewModel : ObservableRecipient, INavigationAware
         _propertyRepository = propertyRepository;
     }
 
-    public async void OnNavigatedTo(object parameter)
-    {
-        await InitializeCacheAsync();
-        await LoadPropertyListAsync();
-
-        // Initial check
-        CheckPropertyListCount();
-
-        // Subscribe to CollectionChanged event
-        Properties.CollectionChanged += (s, e) =>
-        {
-            if (e.NewItems != null)
-            {
-                foreach (Property property in e.NewItems)
-                {
-                    property.PropertyChanged += Property_PropertyChanged;
-                }
-            }
-            if (e.OldItems != null)
-            {
-                foreach (Property property in e.OldItems)
-                {
-                    property.PropertyChanged -= Property_PropertyChanged;
-                }
-            }
-            CheckPropertyListCount();
-        };
-    }
-
-    public void OnNavigatedFrom()
-    {
-        // Unsubscribe from CollectionChanged event
-        Properties.CollectionChanged -= (s, e) =>
-        {
-            if (e.NewItems != null)
-            {
-                foreach (Property property in e.NewItems)
-                {
-                    property.PropertyChanged -= Property_PropertyChanged;
-                }
-            }
-            if (e.OldItems != null)
-            {
-                foreach (Property property in e.OldItems)
-                {
-                    property.PropertyChanged -= Property_PropertyChanged;
-                }
-            }
-            CheckPropertyListCount();
-        };
-    }
-    public async Task InitializeCacheAsync()
-    {
-        // Load all properties from the database
-        var data = await _propertyRepository.GetAllAsync();
-        CachedProperties = data.Where(p => p.Status.Equals(PropertyStatus.Listed) && p.IsFavourite).ToList();
-    }
-
-    public async Task LoadPropertyListAsync()
-    {
-        // Avoid calling multiple times at the same time
-        if (IsLoading) return;
-
-        try
-        {
-            IsLoading = true;
-            var paginatedProperties = CachedProperties
-                .Skip((_currentPage - 1) * PageSize) // Skip those already loaded
-                .Take(PageSize); // Get next items
-
-            // Add the new items to the list
-            DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
-            {
-                foreach (var property in paginatedProperties)
-                {
-                    Properties.Add(property);
-                }
-            });
-
-            _currentPage++; // Increment the current page
-        }
-        finally
-        {
-            IsLoading = false;
-            await Task.CompletedTask;
-        }
-    }
-
     [RelayCommand]
     public void OnItemClick(Property? clickedItem)
     {
@@ -139,14 +47,47 @@ public partial class WishlistViewModel : ObservableRecipient, INavigationAware
         }
     }
 
-    private void Property_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    public async void OnNavigatedTo(object parameter)
     {
-        if (e.PropertyName == nameof(Property.IsFavourite) && sender is Property property)
+        // Initialize data list with pagination
+        await LoadNextPageAsync();
+
+        // Initial check
+        CheckPropertyListCount();
+    }
+
+    public void OnNavigatedFrom()
+    {
+    }
+
+    public async Task LoadNextPageAsync()
+    {
+        if (IsLoading) return;
+
+        try
         {
-            if (!property.IsFavourite)
+            // Begin loading
+            IsLoading = true;
+
+            // Load next page
+            var pagedProperties = await _propertyRepository.GetPagedFilteredAndSortedAsync(
+                p => p.Status.Equals(PropertyStatus.Listed) && p.IsFavourite,
+                p => p.UpdatedAt,
+                sortDescending: true,
+                _currentPage,
+                PageSize);
+
+            foreach (var property in pagedProperties)
             {
-                Properties.Remove(property);
+                Properties.Add(property);
             }
+
+            _currentPage++;
+        }
+        finally
+        {
+            // End loading
+            IsLoading = false;
         }
     }
 
@@ -159,10 +100,8 @@ public partial class WishlistViewModel : ObservableRecipient, INavigationAware
     {
         property.IsFavourite = false;
         property.UpdatedAt = DateTime.Now.ToUniversalTime();
-        _propertyRepository.UpdateAsync(property);
 
-        // Update cache and UI
-        CachedProperties.Remove(property);
+        _propertyRepository.UpdateAsync(property);
         Properties.Remove(property);
     }
 
@@ -172,13 +111,18 @@ public partial class WishlistViewModel : ObservableRecipient, INavigationAware
         {
             property.IsFavourite = false;
             property.UpdatedAt = DateTime.Now.ToUniversalTime();
+
             _propertyRepository.UpdateAsync(property);
         }
+
         _propertyRepository.SaveChangesAsync();
 
-        // Update cache and UI
-        CachedProperties.Clear();
         Properties.Clear();
+    }
+
+    public Task UpdateAsync(Property property)
+    {
+        return _propertyRepository.UpdateAsync(property);
     }
 
     public Task SaveChangesAsync()
@@ -186,12 +130,11 @@ public partial class WishlistViewModel : ObservableRecipient, INavigationAware
         return _propertyRepository.SaveChangesAsync();
     }
 
-    public async Task RefreshPropertiesAsync()
+    public async Task RefreshAsync()
     {
-        CurrentLoadingState = LoadingState.Default;
         _currentPage = 1;
-        await InitializeCacheAsync();
+
         Properties.Clear();
-        await LoadPropertyListAsync();
+        await LoadNextPageAsync();
     }
 }
