@@ -1,0 +1,15 @@
+﻿<Page
+    x:Class="BookingManagementSystem.Views.Client.ChatPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel Spacing="10" Padding="20">
+        <TextBox x:Name="QuestionTextBox" PlaceholderText="Nhập câu hỏi..." Margin="0,0,0,10"/>
+        <Button Content="Hỏi Bot" Click="AskBotButton_Click" Width="100"/>
+        <TextBlock x:Name="ResponseTextBlock" Text="Câu trả lời sẽ hiển thị tại đây" TextWrapping="Wrap" Margin="0,10,0,0"/>
+    </StackPanel>
+
+</Page>

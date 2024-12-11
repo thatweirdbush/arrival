@@ -24,6 +24,7 @@ using BookingManagementSystem.Views.Client;
 using BookingManagementSystem.Views.Host;
 using BookingManagementSystem.Views.Host.CreateListingSteps;
 using BookingManagementSystem.Views.Payment;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -134,6 +135,8 @@ public partial class App : Application
             services.AddTransient<PropertyTypeIconRepository>();
 
             // Views and ViewModels
+            services.AddTransient<ChatViewModel>();
+            services.AddTransient<ChatPage>();
             services.AddTransient<NotificationViewModel>();
             services.AddTransient<NotificationPage>();
             services.AddTransient<FloorPlanViewModel>();
@@ -257,19 +260,5 @@ public partial class App : Application
                 ("See details", "action=see-details")
             ]
         );
-
-        var db = App.GetService<ApplicationDbContext>();
-        //await db.AddUsersDB();
-        //await db.AddQnADB();
-        //await db.AddReviewDB();
-        //await db.AddPropertyDB();
-        //await db.AddPropertyPolicyDB();
-        //await db.AddVoucherDB();
-        //await db.AddFAQDB();
-        //await db.AddAmenityDB();
-        //await db.AddBadReportDB();
-        //await db.AddBookingDB();
-        //await db.AddNotificationDB();
-        //await db.AddPaymentDB();
     }
 }
