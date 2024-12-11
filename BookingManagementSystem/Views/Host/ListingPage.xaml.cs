@@ -26,7 +26,7 @@ public sealed partial class ListingPage : Page
         InitializeComponent();
     }
 
-    private void EditListing_Click(object sender, RoutedEventArgs e)
+    private void Edit_Click(object sender, RoutedEventArgs e)
     {
         ListingsGridView.IsItemClickEnabled = false;
         ListingsGridView.SelectionMode = ListViewSelectionMode.Multiple;
@@ -44,72 +44,70 @@ public sealed partial class ListingPage : Page
         btnEdit.Visibility = Visibility.Visible;
     }
 
-    private async void RemoveListing_Click(object sender, RoutedEventArgs e)
+    private async void Remove_Click(object sender, RoutedEventArgs e)
     {
-        // Get selected items and remove them from the list
-        var selectedItems = ListingsGridView.SelectedItems.ToList();
+        // Get selected items
+        var selectedItems = ListingsGridView.SelectedItems.Cast<Property>().ToList();
 
-        // Check if there are selected items
-        if (selectedItems.Count == 0)
-        {
-            return;
-        }
+        // If there aren't any
+        if (selectedItems.Count == 0) return;
+
         // Show confirmation dialog
-        var confirm = new ContentDialog
+        var result = await new ContentDialog
         {
             XamlRoot = XamlRoot,
-            Title = "Remove Listing",
-            Content = "Are you sure you want to remove the selected listing(s)?",
+            Title = "Remove selected items?",
+            Content = "Once you remove, you can't get them back.",
             PrimaryButtonText = "Remove",
             CloseButtonText = "Cancel",
             DefaultButton = ContentDialogButton.Primary
-        };
-        var result = await confirm.ShowAsync();
+        }.ShowAsync();
 
-        // Check if the user clicked the delete button
+        // If clicked the Remove button
         if (result == ContentDialogResult.Primary)
         {
-            // Remove the selected items from the list
             foreach (var item in selectedItems)
             {
-                if (item is Property property)
-                {
-                    await ViewModel.RemoveBookingAsync(property);
-                }
+                await ViewModel.RemoveAsync(item);
             }
+            await ViewModel.SaveChangesAsync();
         }
     }
 
-    private void AddNewListing_Click(object sender, RoutedEventArgs e)
+    private async void RemoveAll_Click(object sender, RoutedEventArgs e)
+    {
+        // Show confirmation dialog
+        var result = await new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = "Remove all items?",
+            Content = "Once you remove all, you can't get them back.",
+            PrimaryButtonText = "Remove all",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary
+        }.ShowAsync();
+
+        // If clicked the Remove all button
+        if (result == ContentDialogResult.Primary)
+        {
+            await ViewModel.RemoveAllAsync();
+        }
+    }
+
+    private void AddNew_Click(object sender, RoutedEventArgs e)
     {
         // Navigate to Create Listing Page
         App.GetService<INavigationService>().NavigateTo(typeof(CreateListingViewModel).FullName!);
     }
 
-    private async void RemoveAllLissting_Click(object sender, RoutedEventArgs e)
+    private async void Refresh_Click(object sender, RoutedEventArgs e)
     {
-        // Show confirmation dialog
-        var confirm = new ContentDialog
-        {
-            XamlRoot = XamlRoot,
-            Title = "Remove all listings?",
-            Content = "Once you remove all, you can't get them back.",
-            PrimaryButtonText = "Remove all",
-            CloseButtonText = "Cancel",
-            DefaultButton = ContentDialogButton.Primary
-        };
-
-        var result = await confirm.ShowAsync();
-
-        // Check if the user clicked the delete button
-        if (result == ContentDialogResult.Primary)
-        {
-            // Remove all listings
-            await ViewModel.RemoveAllBookingsAsync();
-        }
+        // Set to default pagination index & loading state
+        await ViewModel.RefreshAsync();
     }
 
-    private void btnGetStarted_Click(object sender, RoutedEventArgs e)
+
+    private void GetStarted_Click(object sender, RoutedEventArgs e)
     {
         // Navigate to Create Listing Page
         App.GetService<INavigationService>().NavigateTo(typeof(CreateListingViewModel).FullName!);
@@ -123,37 +121,31 @@ public sealed partial class ListingPage : Page
         SearchBox.Focus(FocusState.Programmatic);
     }
 
-    private async void RefreshListing_Click(object sender, RoutedEventArgs e)
-    {
-        // Set to default pagination index & loading state
-        await ViewModel.RefreshPropertiesAsync();
-    }
-
     private void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
     {
         var element = (sender as AppBarButton)!.Tag;
         switch (element)
         {
             case "add":
-                AddNewListing_Click(sender, e);
+                AddNew_Click(sender, e);
                 break;
             case "edit":
-                EditListing_Click(sender, e);
+                Edit_Click(sender, e);
                 break;
             case "cancel":
                 CancelEditing_Click(sender, e);
                 break;
             case "remove":
-                RemoveListing_Click(sender, e);
+                Remove_Click(sender, e);
                 break;
             case "remove-all":
-                RemoveAllLissting_Click(sender, e);
+                RemoveAll_Click(sender, e);
                 break;
             case "search":
                 SearchListing_Click(sender, e);
                 break;
             case "refresh":
-                RefreshListing_Click(sender, e);
+                Refresh_Click(sender, e);
                 break;
         }
     }
@@ -167,13 +159,14 @@ public sealed partial class ListingPage : Page
         // Clear search box text
         SearchBox.Text = string.Empty;
 
-        // Set to default pagination index & loading state
-        ViewModel.ResetPaginationIndex();
+        // Set to default loading state
         ViewModel.CurrentLoadingState = LoadingState.Default;
 
-        // Reload Property List
-        ViewModel.Properties.Clear();
-        await ViewModel.LoadPropertyListAsync();
+        // Reset current pagination index & clear the list
+        ViewModel.ResetPaginationIndex();
+
+        // Refresh the List
+        await ViewModel.RefreshAsync();
     }
 
     string currentQueryToken = string.Empty;
@@ -199,6 +192,7 @@ public sealed partial class ListingPage : Page
 
                 var suitableItems = new List<string>();
                 var splitText = sender.Text.ToLower().Split(" ");
+                ViewModel.ResetPaginationIndex();
                 ViewModel.Properties.Clear();
 
                 foreach (var line in ViewModel.PropertyNameAndLocationList)
@@ -211,7 +205,7 @@ public sealed partial class ListingPage : Page
                     {
                         currentQueryToken = line;
                         suitableItems.Add(currentQueryToken);
-                        await ViewModel.SearchPropertiesAsync(currentQueryToken);
+                        ViewModel.Search(currentQueryToken);
                     }
                 }
                 if (suitableItems.Count == 0)
@@ -232,13 +226,13 @@ public sealed partial class ListingPage : Page
         }
     }
 
-    private void SearchBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+    private async void SearchBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
     {
         // Get the Property and navigate to the Property Detail Page
         if (args.SelectedItem is string query)
         {
             sender.Text = query;
-            var propertyId = ViewModel.GetSingleSearchedProperty(query);
+            var propertyId = await ViewModel.GetSingleSearchedItem(query);
             App.GetService<INavigationService>().NavigateTo(typeof(RentalDetailViewModel).FullName!, propertyId);
         }
     }
@@ -252,17 +246,18 @@ public sealed partial class ListingPage : Page
                 // Create an instance of EditListing Dialog
                 var dialog = new EditListingDialog(property)
                 {
-                    // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
                     XamlRoot = XamlRoot
                 };
                 await dialog.ShowAsync();
+
                 switch (dialog.Result)
                 {
                     case EditListingDialog.DialogResult.Edit:
                         Frame.Navigate(typeof(CreateListingPage), property.Id);
                         break;
                     case EditListingDialog.DialogResult.Remove:
-                        await ViewModel.RemoveBookingAsync(property);
+                        await ViewModel.RemoveAsync(property);
+                        await ViewModel.SaveChangesAsync();
                         break;
                     case EditListingDialog.DialogResult.None:
                     default:
@@ -283,16 +278,16 @@ public sealed partial class ListingPage : Page
         if (scrollViewer == null) return;
 
         // Detect when scroll is near the end
-        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight - 10) // 10px from end of list
+        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight) // 10px from end of list
         {
             // Check if loading default data or search data
             if (ViewModel.CurrentLoadingState.Equals(LoadingState.Default))
             {
-                await ViewModel.LoadPropertyListAsync(); // Load default data
+                await ViewModel.LoadNextPageAsync(); // Load default data
             }
             else if (ViewModel.CurrentLoadingState.Equals(LoadingState.Search))
             {
-                // Do nothing
+                ViewModel.LoadSearchedData(currentQueryToken); // Load search data
             }
         }
     }

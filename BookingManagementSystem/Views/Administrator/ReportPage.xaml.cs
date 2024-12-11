@@ -41,15 +41,15 @@ public sealed partial class ReportPage : Page
         // Get selected items
         var selectedItems = ReportListView.SelectedItems.Cast<BadReport>().ToList();
 
-        // Check if there are any
+        // Check if there aren't any
         if (selectedItems.Count == 0) return;
 
         // Show confirmation dialog
         var result = await new ContentDialog
         {
             XamlRoot = XamlRoot,
-            Title = "Remove Listing",
-            Content = "Are you sure you want to remove the selected listing(s)?",
+            Title = "Remove selected items?",
+            Content = "Once you remove, you can't get them back.",
             PrimaryButtonText = "Remove",
             CloseButtonText = "Cancel",
             DefaultButton = ContentDialogButton.Primary
