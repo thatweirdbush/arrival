@@ -27,6 +27,8 @@ public sealed partial class NotificationPage : Page
         btnSelect.Visibility = Visibility.Collapsed;
         btnCancel.Visibility = Visibility.Visible;
         btnRemove.Visibility = Visibility.Visible;
+        btnMarkAsReadOrUnread.Visibility = Visibility.Visible;
+        btnMarkAllAsRead.Visibility = Visibility.Collapsed;
     }
 
     private void CancelEditing_Click(object sender, RoutedEventArgs e)
@@ -36,48 +38,45 @@ public sealed partial class NotificationPage : Page
         btnCancel.Visibility = Visibility.Collapsed;
         btnRemove.Visibility = Visibility.Collapsed;
         btnSelect.Visibility = Visibility.Visible;
+        btnMarkAsReadOrUnread.Visibility = Visibility.Collapsed;
+        btnMarkAllAsRead.Visibility = Visibility.Visible;
     }
 
-    private async void Remove_Click(object sender, RoutedEventArgs e)
+    private async Task Remove_Click(object sender, RoutedEventArgs e)
     {
         // Get selected items and remove them from the list
-        var selectedItems = NotificationListView.SelectedItems.ToList();
+        var selectedItems = NotificationListView.SelectedItems.Cast<Notification>().ToList();
 
         // Check if there are selected items
-        if (selectedItems.Count == 0)
-        {
-            return;
-        }
+        if (selectedItems.Count == 0) return;
+
         // Show confirmation dialog
-        var confirm = new ContentDialog
+        var result = await new ContentDialog
         {
             XamlRoot = XamlRoot,
-            Title = "Remove Notification",
-            Content = "Are you sure you want to remove the selected notifications?",
+            Title = "Remove notifications?",
+            Content = "Once you remove, you can't get them back.",
             PrimaryButtonText = "Remove",
             CloseButtonText = "Cancel",
             DefaultButton = ContentDialogButton.Primary
-        };
-        var result = await confirm.ShowAsync();
+        }.ShowAsync();
 
-        // Check if the user clicked the delete button
+        // If the Remove button
         if (result == ContentDialogResult.Primary)
         {
-            // Remove the selected items from the list
-            foreach (var item in selectedItems)
+            foreach (var notification in selectedItems)
             {
-                if (item is Notification notification)
-                {
-                    await ViewModel.RemoveNotificationAsync(notification);
-                }
+                await ViewModel.RemoveAsync(notification);
             }
+            await ViewModel.SaveChangesAsync();
+            ViewModel.CheckListCount();
         }
     }
 
-    private async void RemoveAll_Click(object sender, RoutedEventArgs e)
+    private async Task RemoveAll_Click(object sender, RoutedEventArgs e)
     {
         // Show confirmation dialog
-        var confirm = new ContentDialog
+        var result = await new ContentDialog
         {
             XamlRoot = XamlRoot,
             Title = "Remove all notifications?",
@@ -85,25 +84,47 @@ public sealed partial class NotificationPage : Page
             PrimaryButtonText = "Remove all",
             CloseButtonText = "Cancel",
             DefaultButton = ContentDialogButton.Primary
-        };
-
-        var result = await confirm.ShowAsync();
+        }.ShowAsync();
 
         // Check if the user clicked the delete button
         if (result == ContentDialogResult.Primary)
         {
-            // Remove all listings
-            await ViewModel.RemoveAllNotificationAsync();
+            await ViewModel.RemoveAllAsync();
         }
     }
 
-    private void MarkAllAsRead_Click(object sender, RoutedEventArgs e)
+    private async Task MarkAsReadOrUnread_Click(object sender, RoutedEventArgs e)
     {
-        ViewModel.MarkAllNotificationsAsRead();
+        // Get selected items and remove them from the list
+        var selectedItems = NotificationListView.SelectedItems.Cast<Notification>().ToList();
+
+        // Check if there are selected items
+        if (selectedItems.Count == 0) return;
+
+        // Check if all selected items are read
+        if (selectedItems.All(n => n.IsRead))
+        {
+            foreach (var notification in selectedItems)
+            {
+                await ViewModel.MarkAsUnreadAsync(notification);
+            }
+        }
+        else
+        {
+            foreach (var notification in selectedItems)
+            {
+                await ViewModel.MarkAsReadAsync(notification);
+            }
+        }
+        await ViewModel.SaveChangesAsync();
     }
 
+    private async Task MarkAllAsRead_Click(object sender, RoutedEventArgs e)
+    {
+        await ViewModel.MarkAllAsReadAsync();
+    }
 
-    private void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
+    private async void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
     {
         var element = (sender as AppBarButton)!.Tag;
         switch (element)
@@ -115,40 +136,51 @@ public sealed partial class NotificationPage : Page
                 CancelEditing_Click(sender, e);
                 break;
             case "remove":
-                Remove_Click(sender, e);
+                await Remove_Click(sender, e);
                 break;
             case "remove-all":
-                RemoveAll_Click(sender, e);
+                await RemoveAll_Click(sender, e);
+                break;
+            case "read-unread":
+                await MarkAsReadOrUnread_Click(sender, e);
                 break;
             case "mark-all-as-read":
-                MarkAllAsRead_Click(sender, e);
+                await MarkAllAsRead_Click(sender, e);
                 break;
         }
     }
 
-    private async void NotificationToggleButton_Click(object sender, RoutedEventArgs e)
+    private void NotificationToggleButton_Click(object sender, RoutedEventArgs e)
     {
         var element = (sender as ToggleButton)!.Tag;
         switch (element)
         {
             case "all":
-                {   // Uncheck the UnreadNotificationToggleButton
-                    UnreadNotificationToggleButton.IsChecked = false;
+                {
                     AllNotificationToggleButton.IsChecked = true;
-
-                    // Reload the notification list
-                    await ViewModel.LoadNotificationData();
+                    UnreadNotificationToggleButton.IsChecked = false;
+                    ViewModel.IsSelectedUnreadFilter = false;
                     break;
                 }
             case "unread":
-                {   // Uncheck the AllNotificationToggleButton
-                    AllNotificationToggleButton.IsChecked = false;
+                {
                     UnreadNotificationToggleButton.IsChecked = true;
-
-                    // Reload the notification list
-                    await ViewModel.LoadNotificationData(isUnreadFilter: true);
+                    AllNotificationToggleButton.IsChecked = false;
+                    ViewModel.IsSelectedUnreadFilter = true;
                     break;
                 }
+        }
+    }
+
+    private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+    {
+        var scrollViewer = sender as ScrollViewer;
+        if (scrollViewer == null) return;
+
+        // Detect when scroll is near the end
+        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight)
+        {
+            await ViewModel.LoadNextPageAsync();
         }
     }
 }

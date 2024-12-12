@@ -278,7 +278,7 @@ public sealed partial class ListingPage : Page
         if (scrollViewer == null) return;
 
         // Detect when scroll is near the end
-        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight) // 10px from end of list
+        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight) // 0px from end of list
         {
             // Check if loading default data or search data
             if (ViewModel.CurrentLoadingState.Equals(LoadingState.Default))

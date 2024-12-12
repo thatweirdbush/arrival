@@ -15,9 +15,10 @@
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
         <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
+        <helper:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
     </Page.Resources>
 
-    <ScrollView x:Name="MainScrollView">
+    <ScrollViewer x:Name="MainScrollView" ViewChanged="ScrollViewer_ViewChanged">
         <Grid x:Name="MainGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="240"/>
@@ -41,8 +42,12 @@
                     <StackPanel Spacing="4">
                         <StackPanel Orientation="Horizontal" Spacing="4">
                             <TextBlock Text="Notifications" Style="{ThemeResource TitleLargeTextBlockStyle}" Margin="0 0 12 0"/>
-                            <ToggleButton x:Name="AllNotificationToggleButton" Click="NotificationToggleButton_Click" Tag="all" Content="All" IsChecked="True" FontWeight="SemiBold" Padding="12 8 12 8" CornerRadius="16" BorderThickness="0" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"/>
-                            <ToggleButton x:Name="UnreadNotificationToggleButton" Click="NotificationToggleButton_Click" Tag="unread" Content="Unread" FontWeight="SemiBold" Padding="12 8 12 8" CornerRadius="16" BorderThickness="0" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"/>
+                            <ToggleButton x:Name="AllNotificationToggleButton" Tag="all" Content="All" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"
+                                          FontWeight="SemiBold" Padding="12 8 12 8" CornerRadius="16" BorderThickness="0"
+                                          IsChecked="True" Click="NotificationToggleButton_Click"/>
+                            <ToggleButton x:Name="UnreadNotificationToggleButton" Tag="unread" Content="Unread" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"
+                                          FontWeight="SemiBold" Padding="12 8 12 8" CornerRadius="16" BorderThickness="0"
+                                          Click="NotificationToggleButton_Click"/>
                         </StackPanel>
                         <Grid>
                             <TextBlock Text="All your recent notifications are here" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="332"/>
@@ -56,8 +61,9 @@
                                 </AppBarButton>
                                 <AppBarButton x:Name="btnCancel" Icon="Cancel" Tag="cancel" Label="Cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
                                 <CommandBar.SecondaryCommands>
+                                    <AppBarButton x:Name="btnMarkAsReadOrUnread" Icon="Read" Tag="read-unread" Label="Read / Unread" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
                                     <AppBarButton x:Name="btnMarkAllAsRead" Icon="Accept" Tag="mark-all-as-read" Label="Mark all as read" Click="OnCommandBarElementClicked"/>
-                                    <AppBarButton x:Name="btnRemoveAll" Icon="Cancel" Tag="remove-all" Label="Remove all" Click="OnCommandBarElementClicked"/>
+                                    <AppBarButton x:Name="btnRemoveAll" Icon="Remove" Tag="remove-all" Label="Remove all" Click="OnCommandBarElementClicked"/>
                                 </CommandBar.SecondaryCommands>
                             </CommandBar>
                         </Grid>
@@ -66,7 +72,7 @@
                 </Grid>
                 <StackPanel x:Name="MainContent" Spacing="28">
                     <Grid x:Name="MainContentGrid">
-                        <Grid x:Name="EmptyListMessageGrid" Visibility="{x:Bind ViewModel.IsNotificationListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid x:Name="EmptyListMessageGrid" Visibility="{x:Bind ViewModel.IsListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <StackPanel Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0 8 0 140">
                                 <Image Source="/Assets/modern-european-house.png" Width="240" Height="240" Stretch="Fill" Margin="0 0 0 -12"/>
                                 <TextBlock Text="Your notifications live here" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center"/>
@@ -74,7 +80,7 @@
                             </StackPanel>
                         </Grid>
                         <ListView x:Name="NotificationListView" ItemsSource="{x:Bind ViewModel.Notifications, Mode=OneWay}" SelectionMode="Single"
-                                  Visibility="{x:Bind ViewModel.IsNotificationListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"
+                                  Visibility="{x:Bind ViewModel.IsListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"
                                   animations:Connected.ListItemElementName="itemThumbnail"
                                   animations:Connected.ListItemKey="animationKeyContentGrid"
                                   IsItemClickEnabled="True">
@@ -115,8 +121,11 @@
                             </ListView.ItemTemplate>
                         </ListView>
                     </Grid>
+                    <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="60" Height="60"
+                                  IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                                  Visibility="{x:Bind ViewModel.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </StackPanel>
             </StackPanel>
         </Grid>
-    </ScrollView>
+    </ScrollViewer>
 </Page>

@@ -23,7 +23,6 @@ public partial class WishlistViewModel : ObservableRecipient, INavigationAware
     [ObservableProperty]
     private bool isLoading;
 
-    public int CurrentPage => _currentPage;
     public int CurrentUserID = LoginViewModel.CurrentUser?.Id ?? 0;
     private int _currentPage = 1;
     private const int PageSize = 5;
