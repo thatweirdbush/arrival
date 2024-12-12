@@ -66,11 +66,7 @@ public sealed partial class ListingPage : Page
         // If clicked the Remove button
         if (result == ContentDialogResult.Primary)
         {
-            foreach (var item in selectedItems)
-            {
-                await ViewModel.RemoveAsync(item);
-            }
-            await ViewModel.SaveChangesAsync();
+            await ViewModel.RemoveRangeAsync(selectedItems);
         }
     }
 
@@ -100,7 +96,7 @@ public sealed partial class ListingPage : Page
         App.GetService<INavigationService>().NavigateTo(typeof(CreateListingViewModel).FullName!);
     }
 
-    private async void Refresh_Click(object sender, RoutedEventArgs e)
+    private async Task Refresh_Click(object sender, RoutedEventArgs e)
     {
         // Set to default pagination index & loading state
         await ViewModel.RefreshAsync();
@@ -120,7 +116,7 @@ public sealed partial class ListingPage : Page
         SearchBox.Focus(FocusState.Programmatic);
     }
 
-    private void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
+    private async void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
     {
         var element = (sender as AppBarButton)!.Tag;
         switch (element)
@@ -144,7 +140,7 @@ public sealed partial class ListingPage : Page
                 SearchListing_Click(sender, e);
                 break;
             case "refresh":
-                Refresh_Click(sender, e);
+                await Refresh_Click(sender, e);
                 break;
         }
     }
@@ -157,12 +153,6 @@ public sealed partial class ListingPage : Page
 
         // Clear search box text
         SearchBox.Text = string.Empty;
-
-        // Set to default loading state
-        ViewModel.CurrentLoadingState = LoadingState.Default;
-
-        // Reset current pagination index & clear the list
-        ViewModel.ResetPaginationIndex();
 
         // Refresh the List
         await ViewModel.RefreshAsync();
@@ -256,7 +246,6 @@ public sealed partial class ListingPage : Page
                         break;
                     case EditListingDialog.DialogResult.Remove:
                         await ViewModel.RemoveAsync(property);
-                        await ViewModel.SaveChangesAsync();
                         break;
                     case EditListingDialog.DialogResult.None:
                     default:

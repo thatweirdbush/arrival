@@ -44,15 +44,10 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
 
         // Initial check
         CheckListCount();
-
-        // Subscribe to the CollectionChanged event
-        Properties.CollectionChanged += (s, e) => CheckListCount();
     }
 
     public void OnNavigatedFrom()
     {
-        // Unsubscribe from the CollectionChanged event
-        Properties.CollectionChanged -= (s, e) => CheckListCount();
     }
 
     public async void InitializeSearchDataAsync()
@@ -98,19 +93,31 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
     public async Task RemoveAsync(Property property)
     {
         await _propertyRepository.DeleteAsync(property.Id);
+        await _propertyRepository.SaveChangesAsync();
 
         Properties.Remove(property);
+        CheckListCount();
+    }
+
+    public async Task RemoveRangeAsync(IEnumerable<Property> properties)
+    {
+        await _propertyRepository.DeleteRangeAsync(properties.Select(p => p.Id));
+        await _propertyRepository.SaveChangesAsync();
+
+        foreach (var property in properties)
+        {
+            Properties.Remove(property);
+        }
+        CheckListCount();
     }
 
     public async Task RemoveAllAsync()
     {
-        foreach (var property in Properties)
-        {
-            await _propertyRepository.DeleteAsync(property.Id);
-        }
-        await _propertyRepository.SaveChangesAsync();
+        // No need to call SaveChangesAsync() here because it's a raw SQL query execution
+        await _propertyRepository.DeleteAllAsync();
 
         Properties.Clear();
+        CheckListCount();
     }
 
     private void CheckListCount()
@@ -125,6 +132,7 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
 
         // Start loading the search data
         LoadSearchedData(query);
+        CheckListCount();
     }
 
     public void LoadSearchedData(string query)
@@ -165,11 +173,6 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
         _currentPage = 1;
     }
 
-    public Task SaveChangesAsync()
-    {
-        return _propertyRepository.SaveChangesAsync();
-    }
-
     public async Task RefreshAsync()
     {
         CurrentLoadingState = LoadingState.Default;
@@ -178,6 +181,7 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
         Properties.Clear();
 
         await LoadNextPageAsync();
+        CheckListCount();
         InitializeSearchDataAsync();
     }
 }

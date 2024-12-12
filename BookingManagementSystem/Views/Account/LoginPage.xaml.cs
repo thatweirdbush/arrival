@@ -2,12 +2,9 @@
 using System.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Windows.Security.Cryptography;
-using Windows.Security.Cryptography.DataProtection;
 using Windows.Storage;
 using BookingManagementSystem.ViewModels.Account;
 using Microsoft.UI.Xaml.Documents;
-using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Views.Client;
 
 namespace BookingManagementSystem.Views.Account;
@@ -106,17 +103,8 @@ public sealed partial class LoginPage : Page
         }
     }
 
-    private async void btnSignIn_Click(object sender, RoutedEventArgs e)
+    private void btnSignIn_Click(object sender, RoutedEventArgs? e)
     {
-        // Default ContentDialog
-        ContentDialog contentDialog = new ContentDialog
-        {
-            XamlRoot = Content.XamlRoot,
-            Title = "Result",
-            Content = "Signed in successfully!",
-            CloseButtonText = "Ok"
-        };
-
         // Get username & password
         var username = txtUsername.Text;
         var password = passworBoxWithRevealmode.Password;
@@ -127,7 +115,6 @@ public sealed partial class LoginPage : Page
             if (chkRememberMe.IsChecked == true)
             {
                 SaveCredentials(username, password);
-                contentDialog.Content = "Signed in successfully! Credentials saved.";
             }
             else
             {
@@ -135,17 +122,18 @@ public sealed partial class LoginPage : Page
                 localSettings.Values.Remove("PasswordInBase64");
                 localSettings.Values.Remove("EntropyInBase64");
             }
-
-            var result = await contentDialog.ShowAsync();
-            if (result == ContentDialogResult.None)
-            {
-                Frame.Navigate(typeof(HomePage));
-            }
+            Frame.Navigate(typeof(HomePage));
         }
         else
         {
-            contentDialog.Content = "Login failed! Incorrect username or password.";
-            await contentDialog.ShowAsync();
+            _ = new ContentDialog
+            {
+                XamlRoot = Content.XamlRoot,
+                Title = "Login failed",
+                Content = "Incorrect username or password. Please try again!",
+                CloseButtonText = "Ok",
+                DefaultButton = ContentDialogButton.Close
+            }.ShowAsync();
         }
     }
 
@@ -167,5 +155,13 @@ public sealed partial class LoginPage : Page
     private void Hyperlink_Recover_Click(Hyperlink sender, HyperlinkClickEventArgs e)
     {
         Frame.Navigate(typeof(RecoverPasswordPage));
+    }
+
+    private void Page_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter)
+        {
+            btnSignIn_Click(btnSignIn, null);
+        }
     }
 }
