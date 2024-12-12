@@ -12,8 +12,12 @@ public interface IRepository<T>
     Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null);
     Task<T?> GetByIdAsync(int id);
     Task AddAsync(T entity);
+    Task AddRangeAsync(IEnumerable<T> entities);
     Task UpdateAsync(T entity);
+    Task UpdateRangeAsync(IEnumerable<T> entities);
     Task DeleteAsync(int id);
+    Task DeleteRangeAsync(IEnumerable<int> ids);
+    Task DeleteAllAsync();
     Task SaveChangesAsync();
     Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize);
     Task<IEnumerable<T>> GetFilteredAsync(Expression<Func<T, bool>> predicate);

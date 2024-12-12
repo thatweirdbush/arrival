@@ -97,20 +97,17 @@ public partial class App : Application
             services.AddSingleton<IAppNotificationService, AppNotificationService>();
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
-            services.AddTransient<INavigationViewService, NavigationViewService>();
-            services.AddTransient<GeographicNameService>();
-
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
-
-            // Core Services
+            services.AddTransient<INavigationViewService, NavigationViewService>();
             services.AddSingleton<IFileService, FileService>();
-            services.AddSingleton<PropertyImagesActivationHandler>();
 
             // Bussiness Services
+            services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IPropertyService, PropertyService>();
             services.AddTransient<IRoomService, RoomService>();
+            services.AddTransient<GeographicNameService>();
 
             // Data Services
             // TODO: Change to AddScoped when using a real data service

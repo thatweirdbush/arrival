@@ -1,5 +1,4 @@
-﻿using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.Core.Models;
+﻿using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -61,15 +60,10 @@ public sealed partial class NotificationPage : Page
             DefaultButton = ContentDialogButton.Primary
         }.ShowAsync();
 
-        // If the Remove button
+        // If chose Remove
         if (result == ContentDialogResult.Primary)
         {
-            foreach (var notification in selectedItems)
-            {
-                await ViewModel.RemoveAsync(notification);
-            }
-            await ViewModel.SaveChangesAsync();
-            ViewModel.CheckListCount();
+            await ViewModel.RemoveRangeAsync(selectedItems);
         }
     }
 
@@ -86,7 +80,7 @@ public sealed partial class NotificationPage : Page
             DefaultButton = ContentDialogButton.Primary
         }.ShowAsync();
 
-        // Check if the user clicked the delete button
+        // If chose Remove all
         if (result == ContentDialogResult.Primary)
         {
             await ViewModel.RemoveAllAsync();
@@ -104,24 +98,22 @@ public sealed partial class NotificationPage : Page
         // Check if all selected items are read
         if (selectedItems.All(n => n.IsRead))
         {
-            foreach (var notification in selectedItems)
-            {
-                await ViewModel.MarkAsUnreadAsync(notification);
-            }
+            await ViewModel.MarkAsUnreadRangeAsync(selectedItems);
         }
         else
         {
-            foreach (var notification in selectedItems)
-            {
-                await ViewModel.MarkAsReadAsync(notification);
-            }
+            await ViewModel.MarkAsReadRangeAsync(selectedItems);
         }
-        await ViewModel.SaveChangesAsync();
     }
 
-    private async Task MarkAllAsRead_Click(object sender, RoutedEventArgs e)
+    private Task MarkAllAsRead_Click(object sender, RoutedEventArgs e)
     {
-        await ViewModel.MarkAllAsReadAsync();
+        return ViewModel.MarkAllAsReadAsync();
+    }
+
+    private async Task Refresh_Click(object sender, RoutedEventArgs e)
+    {
+        await ViewModel.RefreshAsync();
     }
 
     private async void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
@@ -147,6 +139,9 @@ public sealed partial class NotificationPage : Page
             case "mark-all-as-read":
                 await MarkAllAsRead_Click(sender, e);
                 break;
+            case "refresh":
+                await Refresh_Click(sender, e);
+                break;
         }
     }
 
@@ -170,6 +165,11 @@ public sealed partial class NotificationPage : Page
                     break;
                 }
         }
+    }
+
+    private async void NotificationListView_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        await ViewModel.MarkAsReadAsync((Notification)e.ClickedItem);
     }
 
     private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)

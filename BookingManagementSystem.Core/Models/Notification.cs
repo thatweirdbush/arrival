@@ -44,4 +44,16 @@ public class Notification : INotifyPropertyChanged
     {
         get; set;
     } = false;
+
+    // Override the equality methods for Contains() method usage
+    public override bool Equals(object obj)
+    {
+        if (obj is not Notification other) return false;
+        return Id == other.Id;
+    }
+
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode();
+    }
 }

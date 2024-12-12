@@ -106,7 +106,6 @@ public sealed partial class ListingPage : Page
         await ViewModel.RefreshAsync();
     }
 
-
     private void GetStarted_Click(object sender, RoutedEventArgs e)
     {
         // Navigate to Create Listing Page

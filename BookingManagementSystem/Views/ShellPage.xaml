@@ -59,7 +59,12 @@
                                 <Grid MaxWidth="400">
                                     <StackPanel>
                                         <Grid>
-                                            <TextBlock FontSize="24" FontWeight="Bold" Text="Notifications" VerticalAlignment="Center"/>
+                                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                                <TextBlock FontSize="24" FontWeight="Bold" Text="Notifications" VerticalAlignment="Center"/>
+                                                <ProgressRing HorizontalAlignment="Right" VerticalAlignment="Center" Width="30" Height="30"
+                                                              IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                                                              Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            </StackPanel>
                                             <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right">
                                                 <ToggleButton x:Name="AllNotificationToggleButton" Click="NotificationToggleButton_Click" Tag="all" Content="All" IsChecked="True" FontWeight="SemiBold" Padding="12 8 12 8" CornerRadius="16" BorderThickness="0" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"/>
                                                 <ToggleButton x:Name="UnreadNotificationToggleButton" Click="NotificationToggleButton_Click" Tag="unread" Content="Unread" FontWeight="SemiBold" Padding="12 8 12 8" CornerRadius="16" BorderThickness="0" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"/>
@@ -74,35 +79,36 @@
                                                     <TextBlock Text="You will be notified when your booking is approved." FontSize="16" Style="{ThemeResource DetailSubTitleStyle}"  HorizontalAlignment="Center"/>
                                                 </StackPanel>
                                             </Grid>
-                                            <ListView x:Name="NotificationListView" MaxHeight="500"
-                                                ItemsSource="{x:Bind ViewModel.Notifications, Mode=OneWay}"
-                                                Visibility="{x:Bind ViewModel.IsNotificationListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"
-                                                ItemClick="NotificationListView_ItemClick" IsItemClickEnabled="True">
-                                                <ListView.ItemTemplate>
-                                                    <DataTemplate x:DataType="models:Notification">
-                                                        <Grid Margin="0,8,0,8" >
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="140"/>
-                                                                <ColumnDefinition Width="*" />
-                                                            </Grid.ColumnDefinitions>
-                                                            <Image MaxHeight="100" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                                <Image.Source>
-                                                                    <BitmapImage UriSource="{x:Bind ImagePath, Mode=OneWay}" DecodePixelHeight="200"/>
-                                                                </Image.Source>
-                                                            </Image>
-                                                            <StackPanel Margin="12,0,0,0" Grid.Column="1" Spacing="4">
-                                                                <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                                                                    <TextBlock Text="{x:Bind SenderName, Mode=OneWay}" FontWeight="Bold" Style="{ThemeResource DetailBodyStyle}" MaxLines="1"/>
-                                                                    <InfoBadge Width="8" Height="8" Visibility="{x:Bind IsRead, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"/>
+                                            <ScrollViewer ViewChanged="ScrollViewer_ViewChanged" Height="500">
+                                                <ListView x:Name="NotificationListView" ItemClick="NotificationListView_ItemClick" IsItemClickEnabled="True"
+                                                    ItemsSource="{x:Bind ViewModel.Notifications, Mode=OneWay}"
+                                                    Visibility="{x:Bind ViewModel.IsNotificationListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate x:DataType="models:Notification">
+                                                            <Grid Margin="0,8,0,8" >
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="140"/>
+                                                                    <ColumnDefinition Width="*" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <Image MaxHeight="100" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                                    <Image.Source>
+                                                                        <BitmapImage UriSource="{x:Bind ImagePath, Mode=OneWay}" DecodePixelHeight="200"/>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                                <StackPanel Margin="12,0,0,0" Grid.Column="1" Spacing="4">
+                                                                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                                                                        <TextBlock Text="{x:Bind SenderName, Mode=OneWay}" FontWeight="Bold" Style="{ThemeResource DetailBodyStyle}" MaxLines="1"/>
+                                                                        <InfoBadge Width="8" Height="8" Visibility="{x:Bind IsRead, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"/>
+                                                                    </StackPanel>
+                                                                    <TextBlock Text="{x:Bind Title, Mode=OneWay}" FontWeight="SemiBold" Style="{ThemeResource BaseTextBlockStyle}" MaxLines="1"/>
+                                                                    <TextBlock Text="{x:Bind Message, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" TextTrimming="CharacterEllipsis" MaxLines="2"/>
+                                                                    <TextBlock Text="{x:Bind DateSent, Mode=OneWay}" FontSize="12" Margin="0 2 0 0" Style="{ThemeResource BodyTextBlockStyle}"/>
                                                                 </StackPanel>
-                                                                <TextBlock Text="{x:Bind Title, Mode=OneWay}" FontWeight="SemiBold" Style="{ThemeResource BaseTextBlockStyle}" MaxLines="1"/>
-                                                                <TextBlock Text="{x:Bind Message, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" TextTrimming="CharacterEllipsis" MaxLines="2"/>
-                                                                <TextBlock Text="{x:Bind DateSent, Mode=OneWay}" FontSize="12" Margin="0 2 0 0" Style="{ThemeResource BodyTextBlockStyle}"/>
-                                                            </StackPanel>
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </ListView.ItemTemplate>
-                                            </ListView>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+                                                </ListView>
+                                            </ScrollViewer>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>

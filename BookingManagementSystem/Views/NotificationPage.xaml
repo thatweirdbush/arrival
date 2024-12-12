@@ -64,6 +64,7 @@
                                     <AppBarButton x:Name="btnMarkAsReadOrUnread" Icon="Read" Tag="read-unread" Label="Read / Unread" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
                                     <AppBarButton x:Name="btnMarkAllAsRead" Icon="Accept" Tag="mark-all-as-read" Label="Mark all as read" Click="OnCommandBarElementClicked"/>
                                     <AppBarButton x:Name="btnRemoveAll" Icon="Remove" Tag="remove-all" Label="Remove all" Click="OnCommandBarElementClicked"/>
+                                    <AppBarButton x:Name="btnRefresh" Icon="Refresh" Label="Refresh" Tag="refresh" Click="OnCommandBarElementClicked"/>
                                 </CommandBar.SecondaryCommands>
                             </CommandBar>
                         </Grid>
@@ -83,7 +84,8 @@
                                   Visibility="{x:Bind ViewModel.IsListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"
                                   animations:Connected.ListItemElementName="itemThumbnail"
                                   animations:Connected.ListItemKey="animationKeyContentGrid"
-                                  IsItemClickEnabled="True">
+                                  IsItemClickEnabled="True"
+                                  ItemClick="NotificationListView_ItemClick">
                             <ListView.ItemContainerTransitions>
                                 <TransitionCollection>
                                     <PaneThemeTransition Edge="Bottom"/>

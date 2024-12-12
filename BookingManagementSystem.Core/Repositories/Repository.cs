@@ -54,8 +54,17 @@ public class Repository<T> : IRepository<T> where T : class
     /// <returns></returns>
     public async virtual Task AddAsync(T entity)
     {
-        // Check duplicate
         await _dbSet.AddAsync(entity);
+    }
+
+    /// <summary>
+    /// Add a range of entities
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
+    public async virtual Task AddRangeAsync(IEnumerable<T> entities)
+    {
+        await _dbSet.AddRangeAsync(entities);
     }
 
     /// <summary>
@@ -66,6 +75,17 @@ public class Repository<T> : IRepository<T> where T : class
     public async virtual Task UpdateAsync(T entity)
     {
         _dbSet.Update(entity);
+        await Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Update a range of entities
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
+    public async Task UpdateRangeAsync(IEnumerable<T> entities)
+    {
+        _dbSet.UpdateRange(entities);
         await Task.CompletedTask;
     }
 
@@ -81,6 +101,31 @@ public class Repository<T> : IRepository<T> where T : class
         {
             _dbSet.Remove(entity);
         }
+    }
+
+    /// <summary>
+    /// Delete a range of entities by their IDs
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns></returns>
+    public async Task DeleteRangeAsync(IEnumerable<int> ids)
+    {
+        var entities = await _dbSet.Where(e => ids.Contains(e.GetHashCode())).ToListAsync();
+        if (entities != null)
+        {
+            _dbSet.RemoveRange(entities);
+        }
+    }
+
+    /// <summary>
+    /// Delete all entities
+    /// Use raw yet enhanced SQL query to delete all records from table without loading data into memory
+    /// This prevents SQL Injection
+    /// </summary>
+    /// <returns></returns>
+    public async virtual Task DeleteAllAsync()
+    {
+        await _context.Database.ExecuteSqlAsync($"DELETE FROM [{typeof(T).Name}]");
     }
 
     /// <summary>
