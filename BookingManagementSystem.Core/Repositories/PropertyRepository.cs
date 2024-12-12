@@ -8,9 +8,9 @@ using BookingManagementSystem.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.Core.Repositories;
+#nullable enable
 public class PropertyRepository : Repository<Property>
 {
-#nullable enable
     public PropertyRepository(DbContext context) : base(context)
     {
     }

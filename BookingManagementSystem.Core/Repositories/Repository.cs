@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using BookingManagementSystem.Core.Commons.Paginations;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,18 @@ public class Repository<T> : IRepository<T> where T : class
     {
         _context = context;
         _dbSet = _context.Set<T>();
+    }
+
+    /// <summary>
+    /// Get the queryable DbSet
+    /// High flexibility but violating the Single Responsibility Principle (SRP).
+    /// The Repository will no longer be fully responsible for managing data queries.
+    /// But will simply provide a flexible object for the upper layer to handle.
+    /// </summary>
+    /// <returns>IQueryable<T></returns>
+    public IQueryable<T> GetQueryable()
+    {
+        return _dbSet.AsQueryable();
     }
 
     /// Basic CRUD operations
@@ -248,6 +261,71 @@ public class Repository<T> : IRepository<T> where T : class
             : query.OrderBy(keySelector);
 
         return await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+    }
+
+    /// <summary>
+    /// Support pagination, filtering and sorting
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <param name="queryBuilder"></param>
+    /// <param name="keySelector"></param>
+    /// <param name="sortDescending"></param>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns>IEnumerable<T></returns>
+    public async Task<IEnumerable<T>> GetPagedFilteredAndSortedAsync<TKey>(
+        Func<IQueryable<T>, IQueryable<T>> queryBuilder,
+        Expression<Func<T, TKey>> keySelector,
+        bool sortDescending,
+        int pageNumber,
+        int pageSize)
+    {
+        var query = queryBuilder(_dbSet.AsQueryable());
+
+        query = sortDescending
+            ? query.OrderByDescending(keySelector)
+            : query.OrderBy(keySelector);
+
+        return await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+    }
+
+    /// <summary>
+    /// Support pagination, filtering and sorting
+    /// </summary>
+    /// <param name="queryBuilder"></param>
+    /// <param name="keySelector"></param>
+    /// <param name="sortDescending"></param>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    public async Task<PaginatedResult<T>> GetPagedFilteredAndSortedAsync(
+        Func<IQueryable<T>, IQueryable<T>> queryBuilder,
+        Expression<Func<T, object>> keySelector,
+        bool sortDescending,
+        int pageNumber,
+        int pageSize)
+    {
+        var query = _context.Set<T>().AsQueryable();
+        query = queryBuilder(query);
+
+        var totalCount = await query.CountAsync();
+
+        query = sortDescending
+            ? query.OrderByDescending(keySelector)
+            : query.OrderBy(keySelector);
+
+        var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PaginatedResult<T>
+        {
+            TotalCount = totalCount,
+            CurrentPage = pageNumber,
+            PageSize = pageSize,
+            Items = items
+        };
     }
 
     /// <summary>

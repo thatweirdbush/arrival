@@ -114,7 +114,6 @@ public partial class App : Application
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient<IRentalDetailFacade, RentalDetailFacade>();
             services.AddTransient<IPaymentFacade, PaymentFacade>();
-            services.AddTransient<IHomeFacade, HomeFacade>();
             services.AddTransient<IRepository<Amenity>, AmenityRepository>();
             services.AddTransient<IRepository<BadReport>, BadReportRepository>();
             services.AddTransient<IRepository<Booking>, BookingRepository>();

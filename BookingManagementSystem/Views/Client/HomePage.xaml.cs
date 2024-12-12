@@ -111,8 +111,8 @@ public sealed partial class HomePage : Page
     private void UpdateSchedule(DateTimeOffset checkInDate, DateTimeOffset checkOutDate)
     {
         // Update the schedule based on the selected dates
-        ViewModel.CheckInDate = checkInDate;
-        ViewModel.CheckOutDate = checkOutDate;
+        ViewModel.CheckInDate = checkInDate.UtcDateTime;
+        ViewModel.CheckOutDate = checkOutDate.UtcDateTime;
 
         // Handle ambiguous bug when remove the min date
         if (ViewModel.CheckInDate > ViewModel.CheckOutDate)
@@ -131,11 +131,15 @@ public sealed partial class HomePage : Page
             // Cancel previous token if any (if user continues typing)
             _debounceTokenSource?.Cancel();
             _debounceTokenSource = new CancellationTokenSource();
+            var token = _debounceTokenSource.Token;
 
             try
             {
                 // Wait 400ms to debounce
-                await Task.Delay(400, _debounceTokenSource.Token);
+                await Task.Delay(400, token);
+
+                // Check if token is destroyed before continuing
+                token.ThrowIfCancellationRequested();
 
                 // After 400ms, call search API
                 var query = sender.Text;
@@ -144,8 +148,13 @@ public sealed partial class HomePage : Page
                 // Display list of suggestions
                 sender.ItemsSource = suggestions;
             }
-            catch (Exception)
+            catch (OperationCanceledException)
             {
+                // Ignore the exception
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
             }
         }
     }

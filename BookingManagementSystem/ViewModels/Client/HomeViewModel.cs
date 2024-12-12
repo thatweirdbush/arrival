@@ -7,7 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using BookingManagementSystem.Core.Contracts.Services;
 using Microsoft.UI.Dispatching;
 using BookingManagementSystem.Core.Commons.Enums;
-using BookingManagementSystem.Core.Repositories;
+using BookingManagementSystem.Core.Commons.Filters;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -59,6 +59,16 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         SearchAvailableRoomsCommand = new AsyncRelayCommand(SearchRoomsAsync);
     }
 
+    [RelayCommand]
+    private void OnItemClick(Property? clickedItem)
+    {
+        if (clickedItem != null)
+        {
+            _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
+            _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, clickedItem.Id);
+        }
+    }
+
     public async void OnNavigatedTo(object parameter)
     {
         // Load DestinationTypeSymbols data
@@ -80,22 +90,25 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     {
     }
 
-    private void CheckPropertyListCount()
+    private void CheckListCount()
     {
         IsPropertyListEmpty = Properties.Count == 0;
     }
 
-    [RelayCommand]
-    private void OnItemClick(Property? clickedItem)
+    // Common method for loading properties data
+
+    private PropertyFilter BuildPropertyFilter()
     {
-        if (clickedItem != null)
+        return new PropertyFilter
         {
-            _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
-            _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, clickedItem.Id);
-        }
+            CheckInDate = CheckInDate,
+            CheckOutDate = CheckOutDate,
+            Destination = Destination,
+            MinGuests = NumberOfAdults + NumberOfChildren,
+            PetsAllowed = NumberOfPets
+        };
     }
 
-    // Common method for loading properties data
     private async Task LoadPropertiesAsync(Func<IEnumerable<Property>, IEnumerable<Property>> filterFunction)
     {
         // Avoid calling multiple times at the same time
@@ -103,11 +116,12 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
 
         try
         {
+            // Begin loading
             IsLoading = true;
 
             // Get all properties & Filter the official listed
-            var allProperties = await _roomService.GetAllPropertiesAsync();
-            var filteredProperties = filterFunction(allProperties.Where(x => x.Status == PropertyStatus.Listed));
+            var allProperties = await _roomService.GetAllPropertiesAsync(x => x.Status == PropertyStatus.Listed);
+            var filteredProperties = filterFunction(allProperties);
 
             // Get the next page of items
             var paginatedProperties = filteredProperties
@@ -120,13 +134,14 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
                 {
                     Properties.Add(property);
                 }
-                CheckPropertyListCount();
+                CheckListCount();
             });
 
             _currentPage++;
         }
         finally
         {
+            // End loading
             IsLoading = false;
         }
     }
@@ -163,9 +178,17 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     // Load properties data based on the search query
     public async Task LoadPropertyListFromSearchAsync()
     {
-        var searchResults = await _roomService.GetAvailableRoomsAsync(CheckInDate, CheckOutDate, Destination, NumberOfAdults + NumberOfChildren, NumberOfPets);
+        var filter = new PropertyFilter
+        {
+            CheckInDate = CheckInDate,
+            CheckOutDate = CheckOutDate,
+            Destination = Destination,
+            MinGuests = NumberOfAdults + NumberOfChildren,
+            PetsAllowed = NumberOfPets
+        };
+        var searchResults = await _roomService.GetAvailableRoomsAsync(filter);
 
-        await LoadPropertiesAsync(properties => searchResults);
+        await LoadPropertiesAsync(properties => searchResults.Items);
     }
 
     public async Task FilterProperties()
