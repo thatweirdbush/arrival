@@ -15,26 +15,32 @@ public class ChatBotService
 
     private readonly string _apiKey;
 
+    private readonly List<string> _context;  // Lưu trữ ngữ cảnh cuộc trò chuyện
+
     public ChatBotService(string apiKey)
     {
         _httpClient = new HttpClient();
         _apiKey = apiKey;
+        _context = new List<string>();
     }
 
     public async Task<string> AskAsync(string question)
     {
+        // Thêm câu hỏi vào ngữ cảnh
+        _context.Add("User: " + question);
+
         var requestBody = new
         {
             contents = new[]
             {
             new
-            {
-                parts = new[]
                 {
-                    new { text = question }
+                    parts = new[]
+                    {
+                        new { text = string.Join("\n", _context) }  // Gửi toàn bộ ngữ cảnh cuộc trò chuyện
+                    }
                 }
             }
-        }
         };
 
         var jsonContent = JsonSerializer.Serialize(requestBody);
@@ -61,6 +67,9 @@ public class ChatBotService
                 var contentProperty = firstCandidate.GetProperty("content");
                 var partsProperty = contentProperty.GetProperty("parts");
                 var answer = partsProperty[0].GetProperty("text").GetString();
+
+                // Thêm câu trả lời vào ngữ cảnh
+                _context.Add("Bot: " + answer);
 
                 return answer ?? "Không nhận được phản hồi từ bot.";
             }
