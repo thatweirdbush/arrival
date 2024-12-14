@@ -20,4 +20,9 @@ public class Message : INotifyPropertyChanged
     {
         get; set;
     }
+
+    public DateTime Timestamp
+    {
+        get; set;
+    }
 }

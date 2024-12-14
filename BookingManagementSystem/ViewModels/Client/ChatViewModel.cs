@@ -9,7 +9,7 @@ namespace BookingManagementSystem.ViewModels.Client;
 public partial class ChatViewModel : ObservableRecipient
 {
     private readonly ChatBotService _chatBotService;
-
+    private bool _isSendingMessage;
     [ObservableProperty]
     private string _userInput = string.Empty;
 
@@ -36,6 +36,8 @@ public partial class ChatViewModel : ObservableRecipient
     [RelayCommand]
     public async Task SendMessageAsync()
     {
+        IsSendingMessage = true;
+
         if (string.IsNullOrWhiteSpace(UserInput))
         {
             Messages.Add(new Message
@@ -50,7 +52,8 @@ public partial class ChatViewModel : ObservableRecipient
         Messages.Add(new Message
         {
             Content = UserInput,
-            IsUserMessage = true
+            IsUserMessage = true,
+            Timestamp = DateTime.Now
         });
 
         var currentInput = UserInput; // Lưu nội dung câu hỏi hiện tại
@@ -60,7 +63,8 @@ public partial class ChatViewModel : ObservableRecipient
         Messages.Add(new Message
         {
             Content = "Processing...",
-            IsUserMessage = false
+            IsUserMessage = false,
+            Timestamp = DateTime.Now
         });
 
         // Nhận phản hồi từ bot
@@ -70,7 +74,21 @@ public partial class ChatViewModel : ObservableRecipient
         Messages[Messages.Count - 1] = new Message
         {
             Content = response,
-            IsUserMessage = false
+            IsUserMessage = false,
+            Timestamp = DateTime.Now
         };
+
+        IsSendingMessage = false;
     }
+
+    public bool IsSendingMessage
+    {
+        get => _isSendingMessage;
+        set
+        {
+            _isSendingMessage = value;
+            OnPropertyChanged(nameof(IsSendingMessage));
+        }
+    }
+
 }

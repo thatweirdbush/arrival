@@ -11,6 +11,8 @@
     <Page.Resources>
         <!-- Converter to determine background color based on IsUserMessage -->
         <helper:BoolToBrushConverter x:Key="BoolToBrushConverter" />
+        <helper:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+        <helper:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
     </Page.Resources>
 
     <Page.DataContext>
@@ -23,15 +25,36 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <ListView ItemsSource="{Binding Messages}" Grid.Row="0" Padding="10" Margin="10" Background="#F0F0F0">
+        <ListView ItemsSource="{Binding Messages}" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="0" Padding="10" Margin="10" Background="#F0F0F0">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <Border Background="{Binding IsUserMessage, Converter={StaticResource BoolToBrushConverter}}"
-                            CornerRadius="10" Padding="10" MaxWidth="300">
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Tin nhắn -->
+                            <ColumnDefinition Width="*"/>
+                            <!-- Khoảng cách -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Thời gian -->
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Nội dung tin nhắn -->
+                        <Border Grid.Column="0" 
+                                Background="{Binding IsUserMessage, Converter={StaticResource BoolToBrushConverter}}"
+                                CornerRadius="10" 
+                                Padding="10" 
+                                MaxWidth="300">
                             <TextBlock Text="{Binding Content}" TextWrapping="Wrap"/>
                         </Border>
-                    </StackPanel>
+
+                        <!-- Thời gian tin nhắn -->
+                        <TextBlock Grid.Column="2" 
+                                   Text="{Binding Timestamp, Converter={StaticResource DateTimeToStringConverter}}" 
+                                   Margin="10,0,0,0"
+                                   VerticalAlignment="Center"
+                                   Foreground="Gray"
+                                   FontSize="12"/>
+                    </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -42,8 +65,30 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Text="{Binding UserInput, Mode=TwoWay}" PlaceholderText="Nhập câu hỏi..." VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-            <Button Content="Gửi" Command="{Binding SendMessageAsyncCommand}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <!-- TextBox nhập tin nhắn -->
+
+            <TextBox Text="{Binding UserInput, Mode=TwoWay}" 
+                     PlaceholderText="Nhập câu hỏi..." 
+                     VerticalAlignment="Center" 
+                     HorizontalAlignment="Stretch" 
+                     Margin="0,0,50,0"  
+                     IsSpellCheckEnabled="False"
+                     IsEnabled="{Binding IsSendingMessage, Converter={StaticResource InvertedBoolConverter}}"/>
+            
+            <!-- Button gửi tin nhắn -->
+            <Button Content="Gửi" 
+                    Command="{Binding SendMessageAsyncCommand}" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Right"
+                    Visibility="{Binding IsSendingMessage, Converter={StaticResource InvertedBoolConverter}}"/>
+
+            <!-- Spinner hiển thị khi đang xử lý -->
+            <ProgressRing IsActive="{Binding IsSendingMessage}" 
+                  VerticalAlignment="Center" 
+                  HorizontalAlignment="Right" 
+                  Margin="0,5,10,0"
+                  Width="20" 
+                  Height="20"/>
         </Grid>
     </Grid>
 </Page>
