@@ -307,22 +307,17 @@
                                         <RowDefinition Height="2*"/>
                                     </Grid.RowDefinitions>
                                     <Grid>
-                                        <Image Stretch = "UniformToFill" VerticalAlignment="Center">
-                                            <Image.Source>
-                                                <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="800"/>
-                                            </Image.Source>
-                                        </Image>
-                                        <!--<FlipView ItemsSource="{x:Bind ImagePaths, Mode=OneWay}">
-                                        <FlipView.ItemTemplate>
-                                            <DataTemplate x:DataType="x:String">
-                                                <Image Stretch = "UniformToFill" VerticalAlignment="Center">
-                                                    <Image.Source>
-                                                        <BitmapImage UriSource="{x:Bind}" DecodePixelWidth="800"/>
-                                                    </Image.Source>
-                                                </Image>
-                                            </DataTemplate>
-                                        </FlipView.ItemTemplate>
-                                    </FlipView>-->
+                                        <FlipView ItemsSource="{x:Bind ImagePaths, Mode=OneWay}">
+                                            <FlipView.ItemTemplate>
+                                                <DataTemplate x:DataType="x:String">
+                                                    <Image Stretch = "UniformToFill" VerticalAlignment="Center">
+                                                        <Image.Source>
+                                                            <BitmapImage UriSource="{x:Bind}" DecodePixelWidth="800"/>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </DataTemplate>
+                                            </FlipView.ItemTemplate>
+                                        </FlipView>
                                         <Border x:Name="BorderVipMember" Visibility="{x:Bind IsPriority, Mode=OneWay}" CornerRadius="18" Width="82" Height="36" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
                                             <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center" VerticalAlignment="Center">
                                                 <Image Width="18" Height="18">

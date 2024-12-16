@@ -107,6 +107,7 @@ public partial class App : Application
             services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IPropertyService, PropertyService>();
             services.AddTransient<IRoomService, RoomService>();
+            services.AddTransient<IImageService, ImageService>();
             services.AddTransient<GeographicNameService>();
 
             // Data Services

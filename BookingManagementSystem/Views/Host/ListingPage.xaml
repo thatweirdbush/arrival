@@ -111,7 +111,7 @@
                                     <Grid>
                                         <Image Stretch = "UniformToFill" VerticalAlignment="Center">
                                             <Image.Source>
-                                                <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="900"/>
+                                                <BitmapImage UriSource="{x:Bind ImageThumbnail, Mode=OneWay}" DecodePixelWidth="900"/>
                                             </Image.Source>
                                         </Image>
                                         <StackPanel Orientation="Horizontal" Spacing="6" CornerRadius="20" HorizontalAlignment="Left" VerticalAlignment="Top" 
