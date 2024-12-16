@@ -110,6 +110,10 @@ public sealed partial class HomePage : Page
     // Update the schedule based on the selected dates to ViewModel and UI
     private void UpdateSchedule(DateTimeOffset checkInDate, DateTimeOffset checkOutDate)
     {
+        // Update the UI first to avoid misleading UTC time vs local time
+        btnCheckInCalendar.Content = checkInDate.ToString("MMMM d");
+        btnCheckOutCalendar.Content = checkOutDate.ToString("MMMM d");
+
         // Update the schedule based on the selected dates
         ViewModel.CheckInDate = checkInDate.UtcDateTime;
         ViewModel.CheckOutDate = checkOutDate.UtcDateTime;
@@ -119,9 +123,6 @@ public sealed partial class HomePage : Page
         {
             ViewModel.CheckInDate = ViewModel.CheckOutDate;
         }
-        // Update the UI
-        btnCheckInCalendar.Content = ViewModel.CheckInDate?.ToString("MMMM d");
-        btnCheckOutCalendar.Content = ViewModel.CheckOutDate?.ToString("MMMM d");
     }
 
     private async void DestinationAutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -161,12 +162,12 @@ public sealed partial class HomePage : Page
 
     private async void btnFilterDestination_Click(object sender, RoutedEventArgs e)
     {
-        // Filter Properties based on DestinationType  
+        // Filter Properties based on Destination Type - Preset Filter
         if (sender is FrameworkElement frameworkElement
             && frameworkElement.DataContext is DestinationTypeSymbol destinationTypeSymbol)
         {
             ViewModel.SelectedPresetFilter = destinationTypeSymbol.DestinationType;
-            await ViewModel.FilterProperties();
+            await ViewModel.RefreshAsync();
         }
     }
 
@@ -181,21 +182,9 @@ public sealed partial class HomePage : Page
         if (scrollViewer == null) return;
 
         // Detect when scroll is near the end
-        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight - 10) // 10px from end of list
+        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight) // 0px from end of list
         {
-            // Check if loading default data, filter data or search data
-            if (ViewModel.CurrentLoadingState.Equals(LoadingState.Default))
-            {
-                await ViewModel.LoadPropertyListAsync(); // Load default data
-            }
-            else if (ViewModel.CurrentLoadingState.Equals(LoadingState.Filtered))
-            {
-                await ViewModel.LoadPropertyListFromPresetFilterAsync(); // Load filter data
-            }
-            else if (ViewModel.CurrentLoadingState.Equals(LoadingState.Search))
-            {
-                await ViewModel.LoadPropertyListFromSearchAsync(); // Load search data
-            }
+            await ViewModel.LoadPropertiesAsync();
         }
     }
 }

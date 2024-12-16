@@ -5,6 +5,7 @@ using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.Core.Services;
 #nullable enable
@@ -36,6 +37,7 @@ public class RoomService : IRoomService
     {
         return _destinationTypeSymbolRepository.GetAllAsync();
     }
+
     public Task<IEnumerable<Property>> GetAllPropertiesAsync(Expression<Func<Property, bool>>? filter = null)
     {
         return _roomRepository.GetAllAsync(filter);
@@ -91,24 +93,36 @@ public class RoomService : IRoomService
             if (filter.PetsAllowed.HasValue && filter.PetsAllowed.Value > 0)
                 query = query.Where(r => r.IsPetFriendly);
 
+            // Filter by DestinationType
+            if (filter.DestinationType.HasValue)
+            {
+                if (filter.DestinationType == DestinationType.All)
+                {
+                    // Do nothing, as all properties will be returned
+                }
+                else if (filter.DestinationType == DestinationType.Trending)
+                {
+                    query = query.Where(p => p.IsPriority || p.IsFavourite);
+                }
+                else
+                {
+                    query = query.Where(r => r.DestinationTypes.Contains(filter.DestinationType.Value));
+                }
+            }
+
+            // Include Country Info
+            query = query.Include(r => r.Country);
+
             return query;
         });
 
-        // Step 4: Fetch paginated results
-        var paginatedResult = await _roomRepository.GetPagedFilteredAndSortedAsync(
+        // Step 4: Execute query and return paginated results
+        return await _roomRepository.GetPagedFilteredAndSortedAsync(
             queryBuilder: queryBuilder,
             keySelector: r => r.PricePerNight,
             sortDescending: false,
             pageNumber: filter.PageNumber,
             pageSize: filter.PageSize);
-
-        return new PaginatedResult<Property>
-        {
-            TotalCount = paginatedResult.TotalCount,
-            CurrentPage = filter.PageNumber,
-            PageSize = filter.PageSize,
-            Items = paginatedResult.Items
-        };
     }
 
     public async Task<List<string>> SearchLocationsToStringAsync(string query, int maxRows = 10)

@@ -9,10 +9,9 @@ namespace BookingManagementSystem.Core.Commons.Filters;
 #nullable enable
 public class PropertyFilter
 {
-    public DestinationType? DestinationType { get; set; }
-    public bool? IsTrending { get; set; }
     public DateTimeOffset? CheckInDate { get; set; }
     public DateTimeOffset? CheckOutDate { get; set; }
+    public DestinationType? DestinationType { get; set; }
     public string? Destination { get; set; }
     public int? MinGuests { get; set; }
     public int? PetsAllowed { get; set; }
