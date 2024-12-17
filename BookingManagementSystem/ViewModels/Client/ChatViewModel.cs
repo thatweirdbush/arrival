@@ -9,14 +9,25 @@ namespace BookingManagementSystem.ViewModels.Client;
 public partial class ChatViewModel : ObservableRecipient
 {
     private readonly ChatBotService _chatBotService;
-    private bool _isSendingMessage;
-    [ObservableProperty]
-    private string _userInput = string.Empty;
 
-    public ObservableCollection<Message> Messages
+    private string _userInput = string.Empty;
+    public string UserInput
     {
-        get;
+        get => _userInput;
+        set
+        {
+            _userInput = value;
+            OnPropertyChanged();
+            SendMessageAsyncCommand.NotifyCanExecuteChanged(); // Cập nhật trạng thái Command
+        }
     }
+
+    [ObservableProperty]
+    private bool _isSendingMessage;
+
+    public ObservableCollection<Message> Messages { get; }
+
+    public RelayCommand SendMessageAsyncCommand { get; }
 
     public ChatViewModel()
     {
@@ -25,70 +36,67 @@ public partial class ChatViewModel : ObservableRecipient
 
         // Danh sách tin nhắn
         Messages = new ObservableCollection<Message>();
-        SendMessageAsyncCommand = new RelayCommand(async () => await SendMessageAsync());
+
+        //SendMessageAsyncCommand = new RelayCommand(async () => await SendMessageAsync());
+        SendMessageAsyncCommand = new RelayCommand(
+            async () => await SendMessageAsync(),
+            () => !string.IsNullOrWhiteSpace(UserInput) && !IsSendingMessage
+        );
     }
 
-    public IRelayCommand SendMessageAsyncCommand
-    {
-        get;
-    }
 
-    [RelayCommand]
-    public async Task SendMessageAsync()
+    private async Task SendMessageAsync()
     {
         IsSendingMessage = true;
+        SendMessageAsyncCommand.NotifyCanExecuteChanged(); // Vô hiệu hóa button gửi
 
-        if (string.IsNullOrWhiteSpace(UserInput))
+        try
         {
+            // Thêm tin nhắn của người dùng vào danh sách
+            var currentInput = UserInput;
             Messages.Add(new Message
             {
-                Content = "Enter the new question, please!",
-                IsUserMessage = false
+                Content = currentInput,
+                IsUserMessage = true,
+                Timestamp = DateTime.Now
             });
-            return;
+
+            UserInput = string.Empty; // Xóa nội dung TextBox sau khi gửi
+
+            // Thêm thông báo "Processing..." vào danh sách tin nhắn
+            Messages.Add(new Message
+            {
+                Content = "Processing...",
+                IsUserMessage = false,
+                Timestamp = DateTime.Now
+            });
+
+            // Gửi câu hỏi tới ChatBotService và nhận câu trả lời
+            var response = await _chatBotService.AskAsync(currentInput);
+
+            // Cập nhật tin nhắn cuối cùng bằng phản hồi từ chatbot
+            Messages[Messages.Count - 1] = new Message
+            {
+                Content = response,
+                IsUserMessage = false,
+                Timestamp = DateTime.Now
+            };
         }
-
-        // Thêm câu hỏi của người dùng
-        Messages.Add(new Message
+        catch (Exception ex)
         {
-            Content = UserInput,
-            IsUserMessage = true,
-            Timestamp = DateTime.Now
-        });
-
-        var currentInput = UserInput; // Lưu nội dung câu hỏi hiện tại
-        UserInput = string.Empty; // Xóa nội dung TextBox
-
-        // Thêm thông báo đang xử lý
-        Messages.Add(new Message
+            // Xử lý lỗi và thông báo tới người dùng
+            Messages.Add(new Message
+            {
+                Content = "Error occurred. Please try again!",
+                IsUserMessage = false,
+                Timestamp = DateTime.Now
+            });
+            Console.WriteLine(ex.Message);
+        }
+        finally
         {
-            Content = "Processing...",
-            IsUserMessage = false,
-            Timestamp = DateTime.Now
-        });
-
-        // Nhận phản hồi từ bot
-        var response = await _chatBotService.AskAsync(currentInput);
-
-        // Thay thế thông báo "Processing..." bằng câu trả lời từ bot
-        Messages[Messages.Count - 1] = new Message
-        {
-            Content = response,
-            IsUserMessage = false,
-            Timestamp = DateTime.Now
-        };
-
-        IsSendingMessage = false;
-    }
-
-    public bool IsSendingMessage
-    {
-        get => _isSendingMessage;
-        set
-        {
-            _isSendingMessage = value;
-            OnPropertyChanged(nameof(IsSendingMessage));
+            IsSendingMessage = false;
+            SendMessageAsyncCommand.NotifyCanExecuteChanged(); // Kích hoạt lại button gửi
         }
     }
-
 }

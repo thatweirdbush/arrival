@@ -13,6 +13,7 @@
         <helper:BoolToBrushConverter x:Key="BoolToBrushConverter" />
         <helper:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
         <helper:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
+        <helper:StringToBoolConverter x:Key="StringToBoolConverter"/>
     </Page.Resources>
 
     <Page.DataContext>
@@ -67,7 +68,7 @@
 
             <!-- TextBox nhập tin nhắn -->
 
-            <TextBox Text="{Binding UserInput, Mode=TwoWay}" 
+            <TextBox Text="{Binding UserInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      PlaceholderText="Nhập câu hỏi..." 
                      VerticalAlignment="Center" 
                      HorizontalAlignment="Stretch" 
@@ -80,7 +81,8 @@
                     Command="{Binding SendMessageAsyncCommand}" 
                     VerticalAlignment="Center" 
                     HorizontalAlignment="Right"
-                    Visibility="{Binding IsSendingMessage, Converter={StaticResource InvertedBoolConverter}}"/>
+                    Visibility="{Binding IsSendingMessage, Converter={StaticResource InvertedBoolConverter}}"
+                    IsEnabled="{Binding UserInput, Converter={StaticResource StringToBoolConverter}}"/>
 
             <!-- Spinner hiển thị khi đang xử lý -->
             <ProgressRing IsActive="{Binding IsSendingMessage}" 
