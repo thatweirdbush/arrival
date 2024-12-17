@@ -35,14 +35,6 @@ public interface IRepository<T>
         Expression<Func<T, bool>> filter,
         Expression<Func<T, TKey>> keySelector,
         bool sortDescending);
-
-    /// TODO: Remove this and use second overload of GetPagedFilteredAndSortedAsync instead
-    Task<IEnumerable<T>> GetPagedFilteredAndSortedAsync<TKey>(
-        Expression<Func<T, bool>> filter,
-        Expression<Func<T, TKey>> keySelector,
-        bool sortDescending,
-        int pageNumber,
-        int pageSize);
     Task<PaginatedResult<T>> GetPagedFilteredAndSortedAsync(
         Func<IQueryable<T>, IQueryable<T>> queryBuilder,
         Expression<Func<T, object>> keySelector,

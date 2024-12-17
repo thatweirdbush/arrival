@@ -49,20 +49,21 @@ public class NotificationService : INotificationService
 
         if (unreadOnly)
         {
-            data = await _notificationRepository.GetPagedFilteredAndSortedAsync(
-                n => !n.IsRead,
-                n => n.DateSent,
+            var result = await _notificationRepository.GetPagedFilteredAndSortedAsync(
+                queryBuilder: q => q.Where(n => !n.IsRead),
+                keySelector: n => n.DateSent,
                 sortDescending: true,
-                page,
-                pageSize);
+                pageNumber: page,
+                pageSize: pageSize);
+            data = result.Items;
         }
         else
         {
             data = await _notificationRepository.GetPagedSortedAsync(
-                n => n.DateSent,
+                keySelector: n => n.DateSent,
                 sortDescending: true,
-                page,
-                pageSize);
+                pageNumber: page,
+                pageSize: pageSize);
         }
 
         UpdateCachedUnreadNotifications(data, page);

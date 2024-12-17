@@ -112,24 +112,14 @@ public partial class NotificationViewModel : ObservableRecipient, INavigationAwa
         await RefreshAsync();
     }
 
-    public async Task MarkAsUnreadRangeAsync(IEnumerable<Notification> notifications)
+    public Task MarkAsUnreadRangeAsync(IEnumerable<Notification> notifications)
     {
-        await _notificationService.MarkAsUnreadRangeAsync(notifications);
-
-        foreach (var notification in notifications)
-        {
-            notification.IsRead = false;
-        }
+        return _notificationService.MarkAsUnreadRangeAsync(notifications);
     }
 
-    public async Task MarkAsReadRangeAsync(IEnumerable<Notification> notifications)
+    public Task MarkAsReadRangeAsync(IEnumerable<Notification> notifications)
     {
-        await _notificationService.MarkAsReadRangeAsync(notifications);
-
-        foreach (var notification in notifications)
-        {
-            notification.IsRead = true;
-        }
+        return _notificationService.MarkAsReadRangeAsync(notifications);
     }
 
     public async Task RefreshAsync()

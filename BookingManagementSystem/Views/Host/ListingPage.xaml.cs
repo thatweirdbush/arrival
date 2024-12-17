@@ -221,7 +221,7 @@ public sealed partial class ListingPage : Page
         if (args.SelectedItem is string query)
         {
             sender.Text = query;
-            var propertyId = await ViewModel.GetSingleSearchedItem(query);
+            var propertyId = await ViewModel.GetSingleSearchedItemId(query);
             App.GetService<INavigationService>().NavigateTo(typeof(RentalDetailViewModel).FullName!, propertyId);
         }
     }

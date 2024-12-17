@@ -337,10 +337,11 @@
                                             <TextBlock Text = "{x:Bind Name, Mode=OneWay}" Style = "{ThemeResource SubtitleTextBlockStyle}" MaxLines="2"/>
                                             <TextBlock Text = "{x:Bind Location, Mode=OneWay}" Style = "{ThemeResource BodyTextBlockStyle}" Foreground="Gray"/>
                                             <StackPanel Orientation = "Horizontal" Spacing="8" VerticalAlignment="Center">
-                                                <Border CornerRadius="4.5 4.5 4.5 0" Background="#00308F" Width="48" Height="24">
+                                                <Border CornerRadius="4.5 4.5 4.5 0" Background="#679436" Width="48" Height="24">
                                                     <StackPanel Orientation="Horizontal" Spacing="3" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                        <Image Width="12" Height="12" Source="/Assets/symbol-icons/white-star-icon.png" Stretch="Fill" Margin="0 0 0 3"/>
-                                                        <TextBlock Text="4.9" Foreground="WhiteSmoke" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        <!--<Image Width="12" Height="12" Source="/Assets/symbol-icons/white-star-icon.png" Stretch="Fill" Margin="0 0 0 3"/>-->
+                                                        <FontIcon Glyph="&#xE735;" Foreground="WhiteSmoke" FontSize="12" VerticalAlignment="Center" Margin="0 -1 0 0"/>
+                                                        <TextBlock Text="4.9" Foreground="WhiteSmoke" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0 2 0 0"/>
                                                     </StackPanel>
                                                 </Border>
                                                 <TextBlock Text = "Excellent" Style = "{ThemeResource BodyTextBlockStyle}" VerticalAlignment="Center"/>

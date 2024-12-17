@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using BookingManagementSystem.ViewModels.Account;
 using CommunityToolkit.Mvvm.Input;
 using BookingManagementSystem.Contracts.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -66,14 +67,15 @@ public partial class WishlistViewModel : ObservableRecipient, INavigationAware
             IsLoading = true;
 
             // Load next page
-            var pagedProperties = await _propertyRepository.GetPagedFilteredAndSortedAsync(
-                p => p.Status.Equals(PropertyStatus.Listed) && p.IsFavourite,
-                p => p.UpdatedAt,
+            var result = await _propertyRepository.GetPagedFilteredAndSortedAsync(
+                queryBuilder: q => q.Include(p => p.Country)
+                                    .Where(p => p.Status.Equals(PropertyStatus.Listed) && p.IsFavourite),
+                keySelector: p => p.CreatedAt,
                 sortDescending: true,
-                _currentPage,
-                PageSize);
+                pageNumber: _currentPage,
+                pageSize: PageSize);
 
-            foreach (var property in pagedProperties)
+            foreach (var property in result.Items)
             {
                 Properties.Add(property);
             }
@@ -92,13 +94,21 @@ public partial class WishlistViewModel : ObservableRecipient, INavigationAware
         IsPropertyListEmpty = Properties.Count == 0;
     }
 
-    public void RemoveWishlistAsync(Property property)
+    public async Task RemoveRangeAsync(IEnumerable<Property> properties)
     {
-        property.IsFavourite = false;
-        property.UpdatedAt = DateTime.Now.ToUniversalTime();
+        foreach (var property in properties)
+        {
+            property.IsFavourite = false;
+            property.UpdatedAt = DateTime.Now.ToUniversalTime();
+        }
 
-        _propertyRepository.UpdateAsync(property);
-        Properties.Remove(property);
+        await _propertyRepository.UpdateRangeAsync(properties);
+        await _propertyRepository.SaveChangesAsync();
+
+        foreach (var property in properties)
+        {
+            Properties.Remove(property);
+        }
     }
 
     public void RemoveAllWishlistAsync()
@@ -107,23 +117,24 @@ public partial class WishlistViewModel : ObservableRecipient, INavigationAware
         {
             property.IsFavourite = false;
             property.UpdatedAt = DateTime.Now.ToUniversalTime();
-
-            _propertyRepository.UpdateAsync(property);
         }
 
+        _propertyRepository.UpdateRangeAsync(Properties);
         _propertyRepository.SaveChangesAsync();
 
         Properties.Clear();
     }
 
-    public Task UpdateAsync(Property property)
+    public async Task UpdateAsync(Property property)
     {
-        return _propertyRepository.UpdateAsync(property);
+        await _propertyRepository.UpdateAsync(property);
+        await _propertyRepository.SaveChangesAsync();
     }
 
-    public Task SaveChangesAsync()
+    public async Task UpdateRangeAsync(IEnumerable<Property> properties)
     {
-        return _propertyRepository.SaveChangesAsync();
+        await _propertyRepository.UpdateRangeAsync(properties);
+        await _propertyRepository.SaveChangesAsync();
     }
 
     public async Task RefreshAsync()
@@ -132,5 +143,6 @@ public partial class WishlistViewModel : ObservableRecipient, INavigationAware
 
         Properties.Clear();
         await LoadNextPageAsync();
+        CheckPropertyListCount();
     }
 }

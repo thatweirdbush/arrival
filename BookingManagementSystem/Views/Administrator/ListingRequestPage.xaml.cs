@@ -68,7 +68,6 @@ public sealed partial class ListingRequestPage : Page
             foreach (var item in selectedItems)
             {
                 item.IsRequested = false;
-                await ViewModel.UpdateAsync(item);
             }
         }
         else
@@ -77,12 +76,11 @@ public sealed partial class ListingRequestPage : Page
             {
                 item.IsPriority = false;
                 item.IsFavourite = false;
-                await ViewModel.UpdateAsync(item);
             }
         }
 
-        // Save changes to the database
-        await ViewModel.SaveChangesAsync();
+        // Batch update to the database
+        await ViewModel.UpdateRangeAsync(selectedItems);
 
         // Reload the list
         await ViewModel.RefreshAsync();
@@ -101,7 +99,7 @@ public sealed partial class ListingRequestPage : Page
     private async Task AddToPriority_Click(object sender, RoutedEventArgs e)
     {
         // Get selected items from the priority list
-        var selectedItems = PriorityPropertyListView.SelectedItems;
+        var selectedItems = PriorityPropertyListView.SelectedItems.Cast<Property>().ToList();
 
         // Check empty selection
         if (selectedItems.Count == 0) return;
@@ -113,12 +111,11 @@ public sealed partial class ListingRequestPage : Page
             {
                 property.IsPriority = true;
                 property.IsRequested = false;
-                await ViewModel.UpdateAsync(property);
             }
         }
 
-        // Save changes to the database
-        await ViewModel.SaveChangesAsync();
+        // Batch update to the database
+        await ViewModel.UpdateRangeAsync(selectedItems);
 
         // Reload the priority list
         await ViewModel.RefreshAsync();
@@ -191,7 +188,7 @@ public sealed partial class ListingRequestPage : Page
         if (scrollViewer == null) return;
 
         // Detect when scroll is near the end
-        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight - 10) // 10px from end of list
+        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight) // 0px from end of list
         {
             await ViewModel.LoadNextPageAsync();
         }

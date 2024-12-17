@@ -217,7 +217,7 @@ public class Repository<T> : IRepository<T> where T : class
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
     /// <returns></returns>
-    public async Task<IEnumerable<T>> GetPagedSortedAsync<TKey>(
+    public async virtual Task<IEnumerable<T>> GetPagedSortedAsync<TKey>(
         Expression<Func<T, TKey>> keySelector,
         bool sortDescending,
         int pageNumber,
@@ -235,70 +235,13 @@ public class Repository<T> : IRepository<T> where T : class
     /// <summary>
     /// Support pagination, filtering and sorting
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <param name="filter"></param>
-    /// <param name="keySelector"></param>
-    /// <param name="sortDescending"></param>
-    /// <param name="pageNumber"></param>
-    /// <param name="pageSize"></param>
-    /// <returns></returns>
-    public async Task<IEnumerable<T>> GetPagedFilteredAndSortedAsync<TKey>(
-        Expression<Func<T, bool>> filter,
-        Expression<Func<T, TKey>> keySelector,
-        bool sortDescending,
-        int pageNumber,
-        int pageSize)
-    {
-        var query = _dbSet.AsQueryable();
-
-        if (filter != null)
-        {
-            query = query.Where(filter);
-        }
-
-        query = sortDescending
-            ? query.OrderByDescending(keySelector)
-            : query.OrderBy(keySelector);
-
-        return await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-    }
-
-    /// <summary>
-    /// Support pagination, filtering and sorting
-    /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <param name="queryBuilder"></param>
-    /// <param name="keySelector"></param>
-    /// <param name="sortDescending"></param>
-    /// <param name="pageNumber"></param>
-    /// <param name="pageSize"></param>
-    /// <returns>IEnumerable<T></returns>
-    public async Task<IEnumerable<T>> GetPagedFilteredAndSortedAsync<TKey>(
-        Func<IQueryable<T>, IQueryable<T>> queryBuilder,
-        Expression<Func<T, TKey>> keySelector,
-        bool sortDescending,
-        int pageNumber,
-        int pageSize)
-    {
-        var query = queryBuilder(_dbSet.AsQueryable());
-
-        query = sortDescending
-            ? query.OrderByDescending(keySelector)
-            : query.OrderBy(keySelector);
-
-        return await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-    }
-
-    /// <summary>
-    /// Support pagination, filtering and sorting
-    /// </summary>
     /// <param name="queryBuilder"></param>
     /// <param name="keySelector"></param>
     /// <param name="sortDescending"></param>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
     /// <returns></returns>
-    public async Task<PaginatedResult<T>> GetPagedFilteredAndSortedAsync(
+    public async virtual Task<PaginatedResult<T>> GetPagedFilteredAndSortedAsync(
         Func<IQueryable<T>, IQueryable<T>> queryBuilder,
         Expression<Func<T, object>> keySelector,
         bool sortDescending,
@@ -337,7 +280,7 @@ public class Repository<T> : IRepository<T> where T : class
     /// <param name="filter"></param>
     /// <param name="selector"></param>
     /// <returns></returns>
-    public async Task<IEnumerable<TResult>> GetMappedAsync<TResult>(
+    public async virtual Task<IEnumerable<TResult>> GetMappedAsync<TResult>(
         Expression<Func<T, bool>> filter,
         Expression<Func<T, TResult>> selector)
     {

@@ -157,15 +157,15 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
         }
     }
 
-    public async Task<int> GetSingleSearchedItem(string query)
+    public async Task<int> GetSingleSearchedItemId(string query)
     {
-        var data = await _propertyRepository.GetPagedFilteredAndSortedAsync(
-            p => p.Name.Equals(query) || p.Location.Equals(query),
-            p => p.UpdatedAt,
+        var result = await _propertyRepository.GetPagedFilteredAndSortedAsync(
+            queryBuilder: q => q.Where(p => p.Name.Equals(query) || p.Location.Equals(query)),
+            keySelector: p => p.CreatedAt,
             sortDescending: true,
-            1,
-            1);
-        return data.FirstOrDefault()!.Id;
+            pageNumber: 1,
+            pageSize: 1);
+        return result.Items.FirstOrDefault()!.Id;
     }
 
     public void ResetPaginationIndex()

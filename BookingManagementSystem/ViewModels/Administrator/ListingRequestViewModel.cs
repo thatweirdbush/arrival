@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq.Expressions;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Commons.Enums;
@@ -8,6 +7,7 @@ using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels.Client;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.ViewModels.Administrator;
 
@@ -63,8 +63,9 @@ public partial class ListingRequestViewModel : ObservableRecipient, INavigationA
     {
     }
 
-    partial void OnSelectedFilterChanged(FilterType value)
+    partial void OnSelectedFilterChanged(FilterType oldValue, FilterType newValue)
     {
+        if (oldValue == newValue) return;
         _ = RefreshAsync();
     }
 
@@ -79,14 +80,14 @@ public partial class ListingRequestViewModel : ObservableRecipient, INavigationA
             IsLoading = true;
 
             // Load next page based on current filter
-            var pagedProperties = await _propertyRepository.GetPagedFilteredAndSortedAsync(
-                GetCurrentFilterExpression(),
-                p => p.CreatedAt,
+            var result = await _propertyRepository.GetPagedFilteredAndSortedAsync(
+                queryBuilder: GetCurrentFilterExpression(),
+                keySelector: p => p.CreatedAt,
                 sortDescending: true,
-                _currentPage,
-                PageSize);
+                pageNumber: _currentPage,
+                pageSize: PageSize);
 
-            foreach (var property in pagedProperties)
+            foreach (var property in result.Items)
             {
                 PriorityProperties.Add(property);
             }
@@ -101,16 +102,18 @@ public partial class ListingRequestViewModel : ObservableRecipient, INavigationA
     }
 
     // Get the current filter expression
-    private Expression<Func<Property, bool>> GetCurrentFilterExpression()
+    private Func<IQueryable<Property>, IQueryable<Property>> GetCurrentFilterExpression()
     {
-        return SelectedFilter switch
-        {
-            FilterType.Current => p => p.Status == PropertyStatus.Listed,
-            FilterType.Elites => p => p.Status == PropertyStatus.Listed && p.IsPriority,
-            FilterType.Trendings => p => p.Status == PropertyStatus.Listed && p.IsFavourite,
-            FilterType.Requests => p => p.Status == PropertyStatus.Listed && p.IsRequested,
-            _ => p => p.Status == PropertyStatus.Listed
-        };
+        return query => query
+            .Include(p => p.Country) // Include Country Info
+            .Where(SelectedFilter switch
+            {
+                FilterType.Current => p => p.Status == PropertyStatus.Listed,
+                FilterType.Elites => p => p.Status == PropertyStatus.Listed && p.IsPriority,
+                FilterType.Trendings => p => p.Status == PropertyStatus.Listed && p.IsFavourite,
+                FilterType.Requests => p => p.Status == PropertyStatus.Listed && p.IsRequested,
+                _ => p => p.Status == PropertyStatus.Listed
+            });
     }
 
     // Refresh the data list from database
@@ -122,14 +125,10 @@ public partial class ListingRequestViewModel : ObservableRecipient, INavigationA
         CheckPropertyListCount();
     }
 
-    public Task UpdateAsync(Property property)
+    public async Task UpdateRangeAsync(IEnumerable<Property> properties)
     {
-        return _propertyRepository.UpdateAsync(property);
-    }
-
-    public Task SaveChangesAsync()
-    {
-        return _propertyRepository.SaveChangesAsync();
+        await _propertyRepository.UpdateRangeAsync(properties);
+        await _propertyRepository.SaveChangesAsync();
     }
 
     private void CheckPropertyListCount()

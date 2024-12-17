@@ -55,15 +55,10 @@ public sealed partial class WishlistPage : Page
             DefaultButton = ContentDialogButton.Primary
         }.ShowAsync();
 
-        // Check if the user clicked the Remove button
+        // If clicked Remove button
         if (result == ContentDialogResult.Primary)
         {
-            // Remove the selected items from the list
-            foreach (var item in selectedItems)
-            {
-                ViewModel.RemoveWishlistAsync(item);
-            }
-            await ViewModel.SaveChangesAsync();
+            await ViewModel.RemoveRangeAsync(selectedItems);
         }
     }
 
@@ -80,7 +75,7 @@ public sealed partial class WishlistPage : Page
             DefaultButton = ContentDialogButton.Primary
         }.ShowAsync();
 
-        // Check if the user clicked the delete button
+        // If clicked Remove all button
         if (result == ContentDialogResult.Primary)
         {
             ViewModel.RemoveAllWishlistAsync();
@@ -129,7 +124,6 @@ public sealed partial class WishlistPage : Page
         {
             property.IsFavourite = !property.IsFavourite;
             await ViewModel.UpdateAsync(property);
-            await ViewModel.SaveChangesAsync();
         }
     }
 
@@ -139,7 +133,7 @@ public sealed partial class WishlistPage : Page
         if (scrollViewer == null) return;
 
         // Detect when scroll is near the end
-        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight - 10) // 10px from end of list
+        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight) // 0px from end of list
         {
             await ViewModel.LoadNextPageAsync();
         }

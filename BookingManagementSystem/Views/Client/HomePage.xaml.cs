@@ -2,7 +2,6 @@
 using Microsoft.UI.Xaml.Controls;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.Core.Commons.Enums;
 
 namespace BookingManagementSystem.Views.Client;
 public sealed partial class HomePage : Page
@@ -19,6 +18,17 @@ public sealed partial class HomePage : Page
     {
         InitializeComponent();
         ViewModel = App.GetService<HomeViewModel>();
+
+        MultiDatePicker.CalendarViewDayItemChanging += CalendarViewDayItemChanging;
+    }
+
+    private void CalendarViewDayItemChanging(CalendarView sender, CalendarViewDayItemChangingEventArgs args)
+    {
+        if (args.Item.Date < DateTimeOffset.Now.Date)
+        {
+            // Disable past dates
+            args.Item.IsEnabled = false;
+        }
     }
 
     private void btnToggleSwitchWrapper_Click(object sender, RoutedEventArgs e)
