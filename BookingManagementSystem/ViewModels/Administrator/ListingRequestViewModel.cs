@@ -1,11 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
+using BookingManagementSystem.Core.Commons.Enums;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels.Client;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.ViewModels.Administrator;
 
@@ -15,32 +17,27 @@ public partial class ListingRequestViewModel : ObservableRecipient, INavigationA
     private readonly IRepository<Property> _propertyRepository;
 
     // List of content items
+    public IEnumerable<FilterType> FilterTypes { get; set; }
     public ObservableCollection<Property> PriorityProperties { get; set; } = [];
 
     [ObservableProperty]
     private bool isPropertyListEmpty;
 
+    [ObservableProperty]
+    private bool isLoading;
+
+    [ObservableProperty]
+    private FilterType selectedFilter;
+    public int CurrentPage => _currentPage;
+    private int _currentPage = 1;
+    private const int PageSize = 5; // Default page size
+
     public ListingRequestViewModel(INavigationService navigationService, IRepository<Property> propertyRepository)
     {
         _navigationService = navigationService;
         _propertyRepository = propertyRepository;
-    }
-
-    public void OnNavigatedTo(object parameter)
-    {
-        /// No need to load Priority data list here because
-        /// the ComboBox's default selection will trigger the SelectionChanged event
-        /// which will load the data based on the selected value
-
-        // Initial check
-        CheckPropertyListCount();
-
-        // Subscribe to CollectionChanged event
-        PriorityProperties.CollectionChanged += (s, e) => CheckPropertyListCount();
-    }
-
-    public void OnNavigatedFrom()
-    {
+        FilterTypes = Enum.GetValues(typeof(FilterType)).Cast<FilterType>();
+        SelectedFilter = FilterType.Current;
     }
 
     [RelayCommand]
@@ -53,67 +50,89 @@ public partial class ListingRequestViewModel : ObservableRecipient, INavigationA
         }
     }
 
+    public async void OnNavigatedTo(object parameter)
+    {
+        // Initialize data list with pagination
+        await LoadNextPageAsync();
+
+        // Initial check
+        CheckPropertyListCount();
+    }
+
+    public void OnNavigatedFrom()
+    {
+    }
+
+    partial void OnSelectedFilterChanged(FilterType oldValue, FilterType newValue)
+    {
+        if (oldValue == newValue) return;
+        _ = RefreshAsync();
+    }
+
+    // Implement Incremental Loading
+    public async Task LoadNextPageAsync()
+    {
+        if (IsLoading) return;
+
+        try
+        {
+            // Begin loading
+            IsLoading = true;
+
+            // Load next page based on current filter
+            var result = await _propertyRepository.GetPagedFilteredAndSortedAsync(
+                queryBuilder: GetCurrentFilterExpression(),
+                keySelector: p => p.CreatedAt,
+                sortDescending: true,
+                pageNumber: _currentPage,
+                pageSize: PageSize);
+
+            foreach (var property in result.Items)
+            {
+                PriorityProperties.Add(property);
+            }
+
+            _currentPage++;
+        }
+        finally
+        {
+            // End loading
+            IsLoading = false;
+        }
+    }
+
+    // Get the current filter expression
+    private Func<IQueryable<Property>, IQueryable<Property>> GetCurrentFilterExpression()
+    {
+        return query => query
+            .Include(p => p.Country) // Include Country Info
+            .Where(SelectedFilter switch
+            {
+                FilterType.Current => p => p.Status == PropertyStatus.Listed,
+                FilterType.Elites => p => p.Status == PropertyStatus.Listed && p.IsPriority,
+                FilterType.Trendings => p => p.Status == PropertyStatus.Listed && p.IsFavourite,
+                FilterType.Requests => p => p.Status == PropertyStatus.Listed && p.IsRequested,
+                _ => p => p.Status == PropertyStatus.Listed
+            });
+    }
+
+    // Refresh the data list from database
+    public async Task RefreshAsync()
+    {
+        _currentPage = 1;
+        PriorityProperties.Clear();
+        await LoadNextPageAsync();
+        CheckPropertyListCount();
+    }
+
+    public async Task UpdateRangeAsync(IEnumerable<Property> properties)
+    {
+        await _propertyRepository.UpdateRangeAsync(properties);
+        await _propertyRepository.SaveChangesAsync();
+    }
+
     private void CheckPropertyListCount()
     {
         IsPropertyListEmpty = PriorityProperties.Count == 0;
-    }
-
-    public async void LoadPriorityListDataAsync()
-    {
-        var data = await _propertyRepository.GetAllAsync();
-        data = data.Where(p => p.IsPriority || p.IsFavourite);
-
-        PriorityProperties.Clear();
-        foreach (var item in data)
-        {
-            PriorityProperties.Add(item);
-        }
-    }
-
-    public async void GetRequestedPropertyListDataAsync()
-    {
-        var data = await _propertyRepository.GetAllAsync();
-        data = data.Where(p => p.IsRequested);
-
-        PriorityProperties.Clear();
-        foreach (var item in data)
-        {
-            PriorityProperties.Add(item);
-        }
-    }
-
-    public async void GetAllPropertyListDataAsync()
-    {
-        var data = await _propertyRepository.GetAllAsync();
-
-        PriorityProperties.Clear();
-        foreach (var item in data)
-        {
-            PriorityProperties.Add(item);
-        }
-    }
-
-    public async void GetElitePropertyListDataAsync()
-    {
-        var data = await _propertyRepository.GetAllAsync();
-        data = data.Where(p => p.IsPriority);
-
-        PriorityProperties.Clear();
-        foreach (var item in data)
-        {
-            PriorityProperties.Add(item);
-        }
-    }
-
-    public async void GetTrendingPropertyListDataAsync()
-    {
-        var data = await _propertyRepository.GetAllAsync();
-        data = data.Where(p => p.IsFavourite);
-
-        PriorityProperties.Clear();
-        foreach (var item in data)
-        {
-            PriorityProperties.Add(item);
-        }
     }
 }

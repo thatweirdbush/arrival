@@ -97,27 +97,24 @@ public partial class App : Application
             services.AddSingleton<IAppNotificationService, AppNotificationService>();
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
-            services.AddTransient<INavigationViewService, NavigationViewService>();
-            services.AddTransient<GeographicNameService>();
-
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
-
-            // Core Services
+            services.AddTransient<INavigationViewService, NavigationViewService>();
             services.AddSingleton<IFileService, FileService>();
-            services.AddSingleton<PropertyImagesActivationHandler>();
 
             // Bussiness Services
+            services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IPropertyService, PropertyService>();
             services.AddTransient<IRoomService, RoomService>();
+            services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<GeographicNameService>();
 
             // Data Services
             // TODO: Change to AddScoped when using a real data service
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient<IRentalDetailFacade, RentalDetailFacade>();
             services.AddTransient<IPaymentFacade, PaymentFacade>();
-            services.AddTransient<IHomeFacade, HomeFacade>();
             services.AddTransient<IRepository<Amenity>, AmenityRepository>();
             services.AddTransient<IRepository<BadReport>, BadReportRepository>();
             services.AddTransient<IRepository<Booking>, BookingRepository>();

@@ -2,6 +2,7 @@
 using BookingManagementSystem.Core.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using BookingManagementSystem.Core.Commons.Enums;
 
 namespace BookingManagementSystem.Views.Administrator;
 
@@ -16,36 +17,6 @@ public sealed partial class ListingRequestPage : Page
     {
         ViewModel = App.GetService<ListingRequestViewModel>();
         InitializeComponent();
-    }
-
-    private void ListingItemStatusComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        var comboBox = (ComboBox)sender;
-        var selectedValue = comboBox.SelectedItem.ToString();
-
-        switch (selectedValue)
-        {
-            case "Current":
-                btnAdd.Visibility = Visibility.Collapsed;
-                ViewModel.LoadPriorityListDataAsync();
-                break;
-            case "Elites":
-                btnAdd.Visibility = Visibility.Collapsed;
-                ViewModel.GetElitePropertyListDataAsync();
-                break;
-            case "Trendings":
-                btnAdd.Visibility = Visibility.Collapsed;
-                ViewModel.GetTrendingPropertyListDataAsync();
-                break;
-            case "Requests":
-                ViewModel.GetRequestedPropertyListDataAsync();
-                btnAdd.Visibility = Visibility.Visible;
-                break;
-            default:
-                btnAdd.Visibility = Visibility.Collapsed;
-                ViewModel.LoadPriorityListDataAsync();
-                break;
-        }
     }
 
     private void Edit_Click(object sender, RoutedEventArgs e)
@@ -83,63 +54,36 @@ public sealed partial class ListingRequestPage : Page
         }
     }
 
-    private void Remove_Click(object sender, RoutedEventArgs e)
+    private async Task Remove_Click(object sender, RoutedEventArgs e)
     {
-        // Get selected filter mode from combobox
-        var selectedValueComboBox = ListingItemStatusComboBox.SelectedItem.ToString();
-
         // Get selected items from the priority list
-        var selectedItems = PriorityPropertyListView.SelectedItems;
-        var selectedItemsList = selectedItems.ToList();
-        
+        var selectedItems = PriorityPropertyListView.SelectedItems.Cast<Property>().ToList();
+
         // Check empty selection
-        if (selectedItemsList.Count == 0)
-        {
-            return;
-        }
+        if (selectedItems.Count == 0) return;
 
         // Modify the selected items' properties
-        if (selectedValueComboBox == "Requests")
+        if (ViewModel.SelectedFilter.Equals(FilterType.Requests))
         {
-            foreach (var item in selectedItemsList)
+            foreach (var item in selectedItems)
             {
-                if (item is Property property)
-                {
-                    property.IsRequested = false;
-                }
+                item.IsRequested = false;
             }
         }
         else
         {
-            foreach (var item in selectedItemsList)
+            foreach (var item in selectedItems)
             {
-                if (item is Property property)
-                {
-                    property.IsPriority = false;
-                    property.IsFavourite = false;
-                }
+                item.IsPriority = false;
+                item.IsFavourite = false;
             }
         }
 
+        // Batch update to the database
+        await ViewModel.UpdateRangeAsync(selectedItems);
+
         // Reload the list
-        switch (selectedValueComboBox)
-        {
-            case "Current":
-                ViewModel.LoadPriorityListDataAsync();
-                break;
-            case "Elites":
-                ViewModel.GetElitePropertyListDataAsync();
-                break;
-            case "Trendings":
-                ViewModel.GetTrendingPropertyListDataAsync();
-                break;
-            case "Requests":
-                ViewModel.GetRequestedPropertyListDataAsync();
-                break;
-            default:
-                ViewModel.LoadPriorityListDataAsync();
-                break;
-        }
+        await ViewModel.RefreshAsync();
 
         // Show the successful dialog
         _ = new ContentDialog
@@ -152,20 +96,16 @@ public sealed partial class ListingRequestPage : Page
         }.ShowAsync();
     }
 
-    private void AddToPriority_Click(object sender, RoutedEventArgs e)
+    private async Task AddToPriority_Click(object sender, RoutedEventArgs e)
     {
         // Get selected items from the priority list
-        var selectedItems = PriorityPropertyListView.SelectedItems;
-        var selectedItemsList = selectedItems.ToList();
+        var selectedItems = PriorityPropertyListView.SelectedItems.Cast<Property>().ToList();
 
         // Check empty selection
-        if (selectedItemsList.Count == 0)
-        {
-            return;
-        }
+        if (selectedItems.Count == 0) return;
 
         // Modify the selected items' properties
-        foreach (var item in selectedItemsList)
+        foreach (var item in selectedItems)
         {
             if (item is Property property)
             {
@@ -173,8 +113,12 @@ public sealed partial class ListingRequestPage : Page
                 property.IsRequested = false;
             }
         }
+
+        // Batch update to the database
+        await ViewModel.UpdateRangeAsync(selectedItems);
+
         // Reload the priority list
-        ViewModel.GetRequestedPropertyListDataAsync();
+        await ViewModel.RefreshAsync();
 
         // Show the successful dialog
         _ = new ContentDialog
@@ -187,13 +131,19 @@ public sealed partial class ListingRequestPage : Page
         }.ShowAsync();
     }
 
-    private void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
+    private Task Refresh_Click(object sender, RoutedEventArgs e)
+    {
+        // Set to default pagination index & loading state
+        return ViewModel.RefreshAsync();
+    }
+
+    private async void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
     {
         var elementTag = (sender as AppBarButton)?.Tag ?? (sender as MenuFlyoutItem)?.Tag;
         switch (elementTag)
         {
             case "add":
-                AddToPriority_Click(sender, e);
+                await AddToPriority_Click(sender, e);
                 break;
             case "edit":
                 Edit_Click(sender, e);
@@ -202,7 +152,7 @@ public sealed partial class ListingRequestPage : Page
                 CancelEditing_Click(sender, e);
                 break;
             case "remove":
-                Remove_Click(sender, e);
+                await Remove_Click(sender, e);
                 break;
             case "deselect":
                 Deselect_Click(sender, e);
@@ -210,7 +160,18 @@ public sealed partial class ListingRequestPage : Page
             case "inverse":
                 SelectInverse_Click(sender, e);
                 break;
+            case "refresh":
+                await Refresh_Click(sender, e);
+                break;
         }
+    }
+
+    private void ListingItemStatusComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var comboBox = (ComboBox)sender;
+        var selectedValue = comboBox.SelectedItem.ToString();
+
+        btnAdd.Visibility = selectedValue == "Requests" ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private void PriorityPropertyListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -218,6 +179,18 @@ public sealed partial class ListingRequestPage : Page
         if (e.ClickedItem is Property clickedItem)
         {
             ViewModel.OnItemClick(clickedItem);
+        }
+    }
+
+    private async void ScrollViewer_ViewChanged(ScrollView sender, object args)
+    {
+        var scrollViewer = sender as ScrollView;
+        if (scrollViewer == null) return;
+
+        // Detect when scroll is near the end
+        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight) // 0px from end of list
+        {
+            await ViewModel.LoadNextPageAsync();
         }
     }
 }

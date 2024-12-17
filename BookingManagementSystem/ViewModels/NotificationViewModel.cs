@@ -3,88 +3,131 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Contracts.ViewModels;
-using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.Core.Contracts.Services;
 
 namespace BookingManagementSystem.ViewModels;
 
 public partial class NotificationViewModel : ObservableRecipient, INavigationAware
 {
-    [ObservableProperty]
-    private bool isNotificationListEmpty;
-    public INavigationService NavigationService
-    {
-        get;
-    }
-    public IRepository<Notification> NotificationRepository
-    {
-        get;
-    }
+    private readonly INotificationService _notificationService;
     public ObservableCollection<Notification> Notifications { get; } = [];
 
-    public NotificationViewModel(INavigationService navigationService, IRepository<Notification> notificationRepository)
+    [ObservableProperty]
+    private bool isListEmpty;
+
+    [ObservableProperty]
+    private bool isLoading;
+
+    [ObservableProperty]
+    private bool isSelectedUnreadFilter;
+
+    private int _currentPage = 1;
+    private const int PageSize = 5;
+
+    public NotificationViewModel(INotificationService notificationService)
     {
-        NavigationService = navigationService;
-        NotificationRepository = notificationRepository;
-
-        // Initial check
-        CheckNotificationListCount();
-
-        // Subscribe to CollectionChanged event
-        Notifications.CollectionChanged += (s, e) => CheckNotificationListCount();
-    }
-
-    public async Task LoadNotificationData(bool isUnreadFilter = false)
-    {
-        // Clear notification data list first
-        Notifications.Clear();
-
-        // Get notification data list
-        var notifications = await NotificationRepository.GetAllAsync();
-
-        if (isUnreadFilter)
-        {
-            notifications = notifications.Where(n => !n.IsRead).ToList();
-        }
-        foreach (var notification in notifications)
-        {
-            Notifications.Add(notification);
-        }
+        _notificationService = notificationService;
     }
 
     public async void OnNavigatedTo(object parameter)
     {
-        // Get notification data list
-        await LoadNotificationData();
+        // Initialize filter
+        IsSelectedUnreadFilter = false;
+
+        // Initialize data list with pagination
+        await LoadNextPageAsync();
+
+        // Initial check
+        CheckListCount();
     }
     public void OnNavigatedFrom()
     {
     }
 
-    private void CheckNotificationListCount()
+    // Do nothing if the filter is not changed
+    partial void OnIsSelectedUnreadFilterChanged(bool oldValue, bool newValue)
     {
-        IsNotificationListEmpty = Notifications.Count == 0;
+        if (oldValue == newValue) return;
+        _ = RefreshAsync();
     }
 
-    public async Task RemoveNotificationAsync(Notification notification)
+    public async Task LoadNextPageAsync()
     {
-        await NotificationRepository.DeleteAsync(notification.Id);
-        Notifications.Remove(notification);
-    }
+        if (IsLoading) return;
 
-    public async Task RemoveAllNotificationAsync()
-    {
-        foreach (var notification in Notifications)
+        try
         {
-            await NotificationRepository.DeleteAsync(notification.Id);
+            // Begin loading
+            IsLoading = true;
+
+            // Load next page
+            var pagedItems = await _notificationService.GetPagedNotificationsAsync(_currentPage, PageSize, unreadOnly: IsSelectedUnreadFilter);
+
+            foreach (var notification in pagedItems)
+            {
+                Notifications.Add(notification);
+            }
+
+            _currentPage++;
         }
+        finally
+        {
+            // End loading
+            IsLoading = false;
+        }
+    }
+
+    public void CheckListCount()
+    {
+        IsListEmpty = Notifications.Count == 0;
+    }
+
+    public async Task RemoveRangeAsync(IEnumerable<Notification> notifications)
+    {
+        var notificationIds = notifications.Select(n => n.Id);
+        await _notificationService.RemoveNotificationRangeAsync(notificationIds);
+
+        foreach (var notification in notifications)
+        {
+            Notifications.Remove(notification);
+        }
+    }
+
+    public async Task RemoveAllAsync()
+    {
+        await _notificationService.RemoveAllNotificationsAsync();
+
         Notifications.Clear();
+        CheckListCount();
     }
 
-    public void MarkAllNotificationsAsRead()
+    public Task MarkAsReadAsync(Notification notification)
     {
-        foreach (var notification in Notifications)
-        {
-            notification.IsRead = true;
-        }
+        return _notificationService.MarkAsReadAsync(notification);
+    }
+
+    public async Task MarkAllAsReadAsync()
+    {
+        await _notificationService.MarkAllAsReadAsync();
+        await RefreshAsync();
+    }
+
+    public Task MarkAsUnreadRangeAsync(IEnumerable<Notification> notifications)
+    {
+        return _notificationService.MarkAsUnreadRangeAsync(notifications);
+    }
+
+    public Task MarkAsReadRangeAsync(IEnumerable<Notification> notifications)
+    {
+        return _notificationService.MarkAsReadRangeAsync(notifications);
+    }
+
+    public async Task RefreshAsync()
+    {
+        _currentPage = 1;
+
+        Notifications.Clear();
+        await LoadNextPageAsync();
+        CheckListCount();
     }
 }

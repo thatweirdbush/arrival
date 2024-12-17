@@ -37,13 +37,13 @@ public partial class ShellPage : Page
     private List<string> MenuItems
     {
         get;
-    } = new()
-    {
+    } =
+    [
         "Home - Hotels & Apartments",
         "Rental Details",
         "Map Services",
         "Hosting"
-    };
+    ];
 
     public ShellPage(ShellViewModel viewModel, LoginViewModel loginViewModel)
     {
@@ -253,34 +253,42 @@ public partial class ShellPage : Page
         }
     }
 
-    private async void NotificationToggleButton_Click(object sender, RoutedEventArgs e)
+    private void NotificationToggleButton_Click(object sender, RoutedEventArgs e)
     {
         var element = (sender as ToggleButton)!.Tag;
         switch (element)
         {
             case "all":
-                {   // Uncheck the UnreadNotificationToggleButton
-                    UnreadNotificationToggleButton.IsChecked = false;
+                {
                     AllNotificationToggleButton.IsChecked = true;
-
-                    // Reload the notification list
-                    await ViewModel.LoadNotificationData();
+                    UnreadNotificationToggleButton.IsChecked = false;
+                    ViewModel.IsSelectedUnreadFilter = false;
                     break;
                 }
             case "unread":
-                {   // Uncheck the AllNotificationToggleButton
-                    AllNotificationToggleButton.IsChecked = false;
+                {
                     UnreadNotificationToggleButton.IsChecked = true;
-
-                    // Reload the notification list
-                    await ViewModel.LoadNotificationData(isUnreadFilter: true);
+                    AllNotificationToggleButton.IsChecked = false;
+                    ViewModel.IsSelectedUnreadFilter = true;
                     break;
                 }
         }
     }
 
-    private void NotificationListView_ItemClick(object sender, ItemClickEventArgs e)
+    private async void NotificationListView_ItemClick(object sender, ItemClickEventArgs e)
     {
-        ViewModel.MarkAsReadSingleItem((Notification)e.ClickedItem);
+        await ViewModel.MarkAsRead((Notification)e.ClickedItem);
+    }
+
+    private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+    {
+        var scrollViewer = sender as ScrollViewer;
+        if (scrollViewer == null) return;
+
+        // Detect when scroll is near the end
+        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight)
+        {
+            await ViewModel.LoadNotificationData();
+        }
     }
 }

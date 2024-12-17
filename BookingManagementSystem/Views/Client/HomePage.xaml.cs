@@ -2,7 +2,6 @@
 using Microsoft.UI.Xaml.Controls;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.Core.Commons.Enums;
 
 namespace BookingManagementSystem.Views.Client;
 public sealed partial class HomePage : Page
@@ -19,6 +18,17 @@ public sealed partial class HomePage : Page
     {
         InitializeComponent();
         ViewModel = App.GetService<HomeViewModel>();
+
+        MultiDatePicker.CalendarViewDayItemChanging += CalendarViewDayItemChanging;
+    }
+
+    private void CalendarViewDayItemChanging(CalendarView sender, CalendarViewDayItemChangingEventArgs args)
+    {
+        if (args.Item.Date < DateTimeOffset.Now.Date)
+        {
+            // Disable past dates
+            args.Item.IsEnabled = false;
+        }
     }
 
     private void btnToggleSwitchWrapper_Click(object sender, RoutedEventArgs e)
@@ -110,18 +120,19 @@ public sealed partial class HomePage : Page
     // Update the schedule based on the selected dates to ViewModel and UI
     private void UpdateSchedule(DateTimeOffset checkInDate, DateTimeOffset checkOutDate)
     {
+        // Update the UI first to avoid misleading UTC time vs local time
+        btnCheckInCalendar.Content = checkInDate.ToString("MMMM d");
+        btnCheckOutCalendar.Content = checkOutDate.ToString("MMMM d");
+
         // Update the schedule based on the selected dates
-        ViewModel.CheckInDate = checkInDate;
-        ViewModel.CheckOutDate = checkOutDate;
+        ViewModel.CheckInDate = checkInDate.UtcDateTime;
+        ViewModel.CheckOutDate = checkOutDate.UtcDateTime;
 
         // Handle ambiguous bug when remove the min date
         if (ViewModel.CheckInDate > ViewModel.CheckOutDate)
         {
             ViewModel.CheckInDate = ViewModel.CheckOutDate;
         }
-        // Update the UI
-        btnCheckInCalendar.Content = ViewModel.CheckInDate?.ToString("MMMM d");
-        btnCheckOutCalendar.Content = ViewModel.CheckOutDate?.ToString("MMMM d");
     }
 
     private async void DestinationAutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -131,11 +142,15 @@ public sealed partial class HomePage : Page
             // Cancel previous token if any (if user continues typing)
             _debounceTokenSource?.Cancel();
             _debounceTokenSource = new CancellationTokenSource();
+            var token = _debounceTokenSource.Token;
 
             try
             {
                 // Wait 400ms to debounce
-                await Task.Delay(400, _debounceTokenSource.Token);
+                await Task.Delay(400, token);
+
+                // Check if token is destroyed before continuing
+                token.ThrowIfCancellationRequested();
 
                 // After 400ms, call search API
                 var query = sender.Text;
@@ -144,20 +159,25 @@ public sealed partial class HomePage : Page
                 // Display list of suggestions
                 sender.ItemsSource = suggestions;
             }
-            catch (Exception)
+            catch (OperationCanceledException)
             {
+                // Ignore the exception
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
             }
         }
     }
 
     private async void btnFilterDestination_Click(object sender, RoutedEventArgs e)
     {
-        // Filter Properties based on DestinationType  
+        // Filter Properties based on Destination Type - Preset Filter
         if (sender is FrameworkElement frameworkElement
             && frameworkElement.DataContext is DestinationTypeSymbol destinationTypeSymbol)
         {
             ViewModel.SelectedPresetFilter = destinationTypeSymbol.DestinationType;
-            await ViewModel.FilterProperties();
+            await ViewModel.RefreshAsync();
         }
     }
 
@@ -172,21 +192,9 @@ public sealed partial class HomePage : Page
         if (scrollViewer == null) return;
 
         // Detect when scroll is near the end
-        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight - 10) // 10px from end of list
+        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight) // 0px from end of list
         {
-            // Check if loading default data, filter data or search data
-            if (ViewModel.CurrentLoadingState.Equals(LoadingState.Default))
-            {
-                await ViewModel.LoadPropertyListAsync(); // Load default data
-            }
-            else if (ViewModel.CurrentLoadingState.Equals(LoadingState.Filtered))
-            {
-                await ViewModel.LoadPropertyListFromPresetFilterAsync(); // Load filter data
-            }
-            else if (ViewModel.CurrentLoadingState.Equals(LoadingState.Search))
-            {
-                await ViewModel.LoadPropertyListFromSearchAsync(); // Load search data
-            }
+            await ViewModel.LoadPropertiesAsync();
         }
     }
 }

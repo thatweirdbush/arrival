@@ -57,8 +57,8 @@
                         </AppBarButton>
                         <AppBarButton x:Name="btnCancel" Icon="Cancel" Label="Cancel" Tag="cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
                         <CommandBar.SecondaryCommands>
-                            <AppBarButton x:Name="btnRefresh" Icon="Refresh" Label="Refresh" Tag="refresh" Click="OnCommandBarElementClicked"/>
                             <AppBarButton x:Name="btnRemoveAll" Icon="ViewAll" Label="Remove all" Tag="remove-all" Click="OnCommandBarElementClicked"/>
+                            <AppBarButton x:Name="btnRefresh" Icon="Refresh" Label="Refresh" Tag="refresh" Click="OnCommandBarElementClicked"/>
                         </CommandBar.SecondaryCommands>
                     </CommandBar>
                 </Grid>
@@ -99,7 +99,7 @@
                                     <Grid>
                                         <Image Stretch = "UniformToFill" VerticalAlignment="Center">
                                             <Image.Source>
-                                                <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="900"/>
+                                                <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="900"/>
                                             </Image.Source>
                                         </Image>
                                         <Button x:Name="btnFavourite" Click="btnFavourite_Click" CornerRadius="48" Width="48" Height="48" Background="Transparent" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="4">
@@ -120,9 +120,10 @@
                             </DataTemplate>
                         </controls:AdaptiveGridView.ItemTemplate>
                     </controls:AdaptiveGridView>
+                    
                     <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="60" Height="60"
                                   IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
-                                  Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                  Visibility="{x:Bind ViewModel.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </StackPanel>
             </StackPanel>
         </Grid>

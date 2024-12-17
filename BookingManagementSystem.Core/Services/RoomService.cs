@@ -1,9 +1,14 @@
-﻿using BookingManagementSystem.Core.Contracts.Repositories;
+﻿using System.Linq.Expressions;
+using BookingManagementSystem.Core.Commons.Filters;
+using BookingManagementSystem.Core.Commons.Paginations;
+using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.Core.Services;
+#nullable enable
 public class RoomService : IRoomService
 {
     // Properties nessesary for UI data binding
@@ -28,113 +33,114 @@ public class RoomService : IRoomService
         _geographicNamesService = geographicNamesService;
     }
 
-    public Task ToggleFavorite(Property property)
-    {
-        property.IsFavourite = !property.IsFavourite;
-        property.UpdatedAt = DateTime.Now.ToUniversalTime();
-        _roomRepository.UpdateAsync(property);
-        return _roomRepository.SaveChangesAsync();
-    }
-
     public Task<IEnumerable<DestinationTypeSymbol>> GetAllDestinationTypeSymbolsAsync()
     {
         return _destinationTypeSymbolRepository.GetAllAsync();
     }
-    public Task<IEnumerable<Property>> GetAllPropertiesAsync()
+
+    public Task<IEnumerable<Property>> GetAllPropertiesAsync(Expression<Func<Property, bool>>? filter = null)
     {
-        return _roomRepository.GetAllAsync();
+        return _roomRepository.GetAllAsync(filter);
     }
 
-#nullable enable
-    public async Task<IEnumerable<Property>> GetAvailableRoomsAsync(
-        DateTimeOffset? checkIn,
-        DateTimeOffset? checkOut,
-        string? destination = null,
-        int? guests = null,
-        int? pets = null)
+    public async Task<PaginatedResult<Property>> GetAvailableRoomsAsync(PropertyFilter filter)
     {
-        // Get all bookings from the database
-        var bookings = await _bookingRepository.GetAllAsync();
+        // Business Rule: Check-in and check-out dates are required
+        if (filter.CheckInDate == null || filter.CheckOutDate == null)
+            return new PaginatedResult<Property>();
 
-        // Get all bookings that overlap with the requested dates
-        var unavailableRoomIds = bookings
-            .Where(b => b.CheckInDate < checkOut && b.CheckOutDate > checkIn)
+        // Step 1: Fetch unavailable room IDs
+        var unavailableRoomIds = (await _bookingRepository.GetAllAsync(b =>
+            b.CheckInDate < filter.CheckOutDate && b.CheckOutDate > filter.CheckInDate))
             .Select(b => b.PropertyId)
             .ToHashSet();
 
-        // Get all rooms from the database
-        var rooms = await _roomRepository.GetAllAsync();
-        rooms = rooms.Where(x => x.Status == PropertyStatus.Listed);
-
-        // Parse destination string into state/province and country
+        // Step 2: Handle destination asynchronously
         string? stateOrProvince = null;
         string? countryName = null;
-        destination = destination?.Trim();
 
-        if (!string.IsNullOrEmpty(destination))
+        if (!string.IsNullOrWhiteSpace(filter.Destination))
         {
-            // Search for the location detailed info from API
-            var location = await SearchSingleLocationAsync(destination);
+            var location = await SearchSingleLocationAsync(filter.Destination.Trim());
             if (location != null)
             {
-                stateOrProvince = location.Name;
-                countryName = location.CountryName;
+                stateOrProvince = location.Name?.ToLower();
+                countryName = location.CountryName?.ToLower();
             }
         }
 
-        // Parse the number of guests and pets
-        var totalGuests = guests ?? 0;
-        var totalPets = pets ?? 0;
-
-        // Search for rooms that match the criteria
-        List<Property> searchResults;
-
-        if (string.IsNullOrEmpty(destination))
+        // Step 3: Build query for available rooms
+        var queryBuilder = new Func<IQueryable<Property>, IQueryable<Property>>(query =>
         {
-            // If destination is ignored, only filter rooms that are not booked
-            searchResults = rooms.Where(r => !unavailableRoomIds.Contains(r.Id)).ToList();
-        }
-        else if (string.IsNullOrEmpty(countryName)) // No need to check stateOrProvince as it comes with countryName
-        {
-            // Return empty list if the country is not found
-            return [];
-        }
-        else
-        {
-            // Primary search: By destination (state/province and country)
-            searchResults = rooms.Where(r =>
-                r.Country.CountryName.Equals(countryName, StringComparison.OrdinalIgnoreCase) &&
-                r.StateOrProvince.Equals(stateOrProvince, StringComparison.OrdinalIgnoreCase)).ToList();
-
-            // Fallback: Search more by country only if results are fewer than 10
-            if (searchResults.Count < 10)
-            {
-                var countryResults = rooms.Where(r =>
-                    r.Country.CountryName.Equals(countryName, StringComparison.OrdinalIgnoreCase)).ToList();
-
-                searchResults.AddRange(countryResults.Except(searchResults));
-            }
+            // Filter by listed status
+            query = query.Where(r => r.Status == PropertyStatus.Listed);
 
             // Remove booked rooms
-            searchResults = searchResults.Where(r => !unavailableRoomIds.Contains(r.Id)).ToList();
-        }
+            query = query.Where(r => !unavailableRoomIds.Contains(r.Id));
 
-        // Filter by number of guests and pets
-        searchResults = searchResults.Where(r =>
-            r.MaxGuests >= totalGuests &&
-            (totalPets == 0 || r.IsPetFriendly)).ToList();
+            // Filter by destination
+            if (!string.IsNullOrEmpty(countryName))
+            {
+                query = query.Where(r =>
+                    r.Country.CountryName.ToLower().Contains(countryName) ||
+                    (!string.IsNullOrEmpty(stateOrProvince) && r.StateOrProvince.ToLower().Contains(stateOrProvince)));
+            }
 
-        return searchResults;
+            // Filter by guests and pets
+            if (filter.MinGuests.HasValue)
+                query = query.Where(r => r.MaxGuests >= filter.MinGuests.Value);
+
+            if (filter.PetsAllowed.HasValue && filter.PetsAllowed.Value > 0)
+                query = query.Where(r => r.IsPetFriendly);
+
+            // Filter by DestinationType
+            if (filter.DestinationType.HasValue)
+            {
+                if (filter.DestinationType == DestinationType.All)
+                {
+                    // Do nothing, as all properties will be returned
+                }
+                else if (filter.DestinationType == DestinationType.Trending)
+                {
+                    query = query.Where(p => p.IsPriority || p.IsFavourite);
+                }
+                else
+                {
+                    query = query.Where(r => r.DestinationTypes.Contains(filter.DestinationType.Value));
+                }
+            }
+
+            // Include Country Info
+            query = query.Include(r => r.Country);
+
+            return query;
+        });
+
+        // Step 4: Execute query and return paginated results
+        return await _roomRepository.GetPagedFilteredAndSortedAsync(
+            queryBuilder: queryBuilder,
+            keySelector: r => r.PricePerNight,
+            sortDescending: false,
+            pageNumber: filter.PageNumber,
+            pageSize: filter.PageSize);
     }
 
     public async Task<List<string>> SearchLocationsToStringAsync(string query, int maxRows = 10)
     {
-         return await _geographicNamesService.GeographicNameToStringListAsync(query, maxRows);
+        return await _geographicNamesService.GeographicNameToStringListAsync(query, maxRows);
     }
 
     public async Task<GeographicName?> SearchSingleLocationAsync(string locationName)
     {
         var locations = await _geographicNamesService.SearchLocationsAsync(locationName);
         return locations.FirstOrDefault();
+    }
+
+    public Task ToggleFavorite(Property property)
+    {
+        property.IsFavourite = !property.IsFavourite;
+        property.UpdatedAt = DateTime.Now.ToUniversalTime();
+        _roomRepository.UpdateAsync(property);
+        return _roomRepository.SaveChangesAsync();
     }
 }

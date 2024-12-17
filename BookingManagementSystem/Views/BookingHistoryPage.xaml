@@ -112,7 +112,7 @@
                                         <Grid>
                                             <Image Stretch = "UniformToFill" VerticalAlignment="Center">
                                                 <Image.Source>
-                                                    <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="900"/>
+                                                    <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="900"/>
                                                 </Image.Source>
                                             </Image>
                                             <Border x:Name="BorderVipMember" Visibility="{x:Bind IsPriority}" CornerRadius="18" Width="82" Height="36" Background="WhiteSmoke" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
@@ -177,7 +177,7 @@
                                         <Grid>
                                             <Image Stretch = "UniformToFill" VerticalAlignment="Center">
                                                 <Image.Source>
-                                                    <BitmapImage UriSource="/Assets/homescreen.jpg" DecodePixelWidth="360"/>
+                                                    <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="360"/>
                                                 </Image.Source>
                                             </Image>
                                             <Border x:Name="BorderVipMember" Visibility="{x:Bind IsPriority}" CornerRadius="15" Width="64" Height="32" Background="WhiteSmoke" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="12">
