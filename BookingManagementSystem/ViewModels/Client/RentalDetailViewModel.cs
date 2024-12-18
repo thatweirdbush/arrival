@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BookingManagementSystem.Contracts.ViewModels;
-using BookingManagementSystem.Core.Contracts.Services;
+﻿using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml;
 using System.Collections.ObjectModel;
 using BookingManagementSystem.Core.Contracts.Facades;
 using CommunityToolkit.Mvvm.Input;
-using BookingManagementSystem.Core.Services;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.ViewModels.Payment;
 
@@ -27,12 +18,9 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     private Property? item;
     public ObservableCollection<Review> Reviews { get; set; } = [];
     public ObservableCollection<QnA> QnAs { get; set; } = [];
-    public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = Enumerable.Empty<DestinationTypeSymbol>();
-    public IEnumerable<PropertyPolicy> PropertyPolicies { get; set; } = Enumerable.Empty<PropertyPolicy>();
-    public IAsyncRelayCommand ProceedPaymentCommand
-    {
-        get;
-    }
+    public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = [];
+    public IEnumerable<PropertyPolicy> PropertyPolicies { get; set; } = [];
+    public IAsyncRelayCommand ProceedPaymentCommand { get; }
 
     public RentalDetailViewModel(IRentalDetailFacade rentalDetailFacade, INavigationService navigationService)
     {
@@ -46,17 +34,12 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
         if (parameter is int Id)
         {
             Item = await _rentalDetailFacade.GetPropertyByIdAsync(Id);
+
             var reviews = await _rentalDetailFacade.GetReviewsAsync();
-            foreach (var review in reviews)
-            {
-                Reviews.Add(review);
-            }
+            Reviews = new ObservableCollection<Review>(reviews);
 
             var qnas = await _rentalDetailFacade.GetQnAsAsync();
-            foreach (var qna in qnas)
-            {
-                QnAs.Add(qna);
-            }
+            QnAs = new ObservableCollection<QnA>(qnas);
 
             DestinationTypeSymbols = await _rentalDetailFacade.GetDestinationTypeSymbolsAsync();
             PropertyPolicies = await _rentalDetailFacade.GetPropertyPoliciesAsync();
@@ -67,19 +50,19 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     {
     }
 
-    public async Task AddReviewAsync(Review review)
+    public Task AddReviewAsync(Review review)
     {
-        await _rentalDetailFacade.AddReviewAsync(review);
+        return _rentalDetailFacade.AddReviewAsync(review);
     }
 
-    public async Task AddQnAAsync(QnA qna)
+    public Task AddQnAAsync(QnA qna)
     {
-        await _rentalDetailFacade.AddQnAAsync(qna);
+        return _rentalDetailFacade.AddQnAAsync(qna);
     }
 
-    public async Task AddBadReportAsync(BadReport badReport)
+    public Task AddBadReportAsync(BadReport badReport)
     {
-        await _rentalDetailFacade.AddBadReportAsync(badReport);
+        return _rentalDetailFacade.AddBadReportAsync(badReport);
     }
 
     public async Task ProceedPaymentAsync()

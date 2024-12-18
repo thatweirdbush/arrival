@@ -50,6 +50,7 @@ public class RoomService : IRoomService
             return new PaginatedResult<Property>();
 
         // Step 1: Fetch unavailable room IDs
+        // No need to eliminate bookings from the past because dates are already validated in the front-end
         var unavailableRoomIds = (await _bookingRepository.GetAllAsync(b =>
             b.CheckInDate < filter.CheckOutDate && b.CheckOutDate > filter.CheckInDate))
             .Select(b => b.PropertyId)

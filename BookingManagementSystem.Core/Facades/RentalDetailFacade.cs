@@ -15,47 +15,66 @@ public class RentalDetailFacade : IRentalDetailFacade
     private readonly IRepository<Property> _propertyRepository;
     private readonly IRepository<Review> _reviewRepository;
     private readonly IRepository<QnA> _qnaRepository;
-    private readonly DestinationTypeSymbolRepository _destinationTypeSymbolRepository;
     private readonly IRepository<PropertyPolicy> _propertyPolicyRepository;
     private readonly IRepository<BadReport> _badReportRepository;
+    private readonly DestinationTypeSymbolRepository _destinationTypeSymbolRepository;
 
     public RentalDetailFacade(
         IRepository<Property> propertyRepository,
         IRepository<Review> reviewRepository,
         IRepository<QnA> qnaRepository,
-        DestinationTypeSymbolRepository destinationTypeSymbolRepository,
         IRepository<PropertyPolicy> propertyPolicyRepository,
-        IRepository<BadReport> badReportRepository)
+        IRepository<BadReport> badReportRepository,
+        DestinationTypeSymbolRepository destinationTypeSymbolRepository)
     {
         _propertyRepository = propertyRepository;
         _reviewRepository = reviewRepository;
         _qnaRepository = qnaRepository;
-        _destinationTypeSymbolRepository = destinationTypeSymbolRepository;
         _propertyPolicyRepository = propertyPolicyRepository;
         _badReportRepository = badReportRepository;
+        _destinationTypeSymbolRepository = destinationTypeSymbolRepository;
     }
 
-    public async Task<Property?> GetPropertyByIdAsync(int id) =>
-        await _propertyRepository.GetByIdAsync(id);
+    public Task<Property?> GetPropertyByIdAsync(int id)
+    {
+        return _propertyRepository.GetByIdAsync(id);
+    }
 
-    public async Task<IEnumerable<Review>> GetReviewsAsync() =>
-        await _reviewRepository.GetAllAsync();
+    public Task<IEnumerable<Review>> GetReviewsAsync()
+    {
+        return _reviewRepository.GetAllAsync();
+    }
 
-    public async Task<IEnumerable<QnA>> GetQnAsAsync() =>
-        await _qnaRepository.GetAllAsync();
+    public Task<IEnumerable<QnA>> GetQnAsAsync()
+    {
+        return _qnaRepository.GetAllAsync();
+    }
 
-    public async Task<IEnumerable<DestinationTypeSymbol>> GetDestinationTypeSymbolsAsync() =>
-        await _destinationTypeSymbolRepository.GetAllAsync();
+    public Task<IEnumerable<DestinationTypeSymbol>> GetDestinationTypeSymbolsAsync()
+    {
+        return _destinationTypeSymbolRepository.GetAllAsync();
+    }
 
-    public async Task<IEnumerable<PropertyPolicy>> GetPropertyPoliciesAsync() =>
-        await _propertyPolicyRepository.GetAllAsync();
+    public Task<IEnumerable<PropertyPolicy>> GetPropertyPoliciesAsync()
+    {
+        return _propertyPolicyRepository.GetAllAsync();
+    }
 
-    public async Task AddReviewAsync(Review review) =>
+    public async Task AddReviewAsync(Review review)
+    {
         await _reviewRepository.AddAsync(review);
+        await _reviewRepository.SaveChangesAsync();
+    }
 
-    public async Task AddQnAAsync(QnA qna) =>
+    public async Task AddQnAAsync(QnA qna)
+    {
         await _qnaRepository.AddAsync(qna);
+        await _qnaRepository.SaveChangesAsync();
+    }
 
-    public async Task AddBadReportAsync(BadReport badReport) =>
+    public async Task AddBadReportAsync(BadReport badReport)
+    {
         await _badReportRepository.AddAsync(badReport);
+        await _badReportRepository.SaveChangesAsync();
+    }
 }

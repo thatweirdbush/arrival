@@ -227,7 +227,7 @@ public partial class App : Application
         MainWindow.Content = new SplashScreenPage();
         MainWindow.Activate();
 
-        // Run heavy load functions on background threads
+        //Run heavy load functions on background threads
         await Task.Run(async () =>
         {
             await RunLongRunningTasksAsync();
@@ -239,8 +239,6 @@ public partial class App : Application
 
     private async Task RunLongRunningTasksAsync()
     {
-        //await PropertyImagesActivationHandler.CopyPropertyImagesToLocalFolderAsync();
-        //await PropertyImagesActivationHandler.BindingPropertyImagesWithLocalFolderAsync();
         await Task.Delay(100);
 
         // Create notification channel
@@ -254,19 +252,5 @@ public partial class App : Application
                 ("See details", "action=see-details")
             ]
         );
-
-        var db = App.GetService<ApplicationDbContext>();
-        //await db.AddUsersDB();
-        //await db.AddQnADB();
-        //await db.AddReviewDB();
-        //await db.AddPropertyDB();
-        //await db.AddPropertyPolicyDB();
-        //await db.AddVoucherDB();
-        //await db.AddFAQDB();
-        //await db.AddAmenityDB();
-        //await db.AddBadReportDB();
-        //await db.AddBookingDB();
-        //await db.AddNotificationDB();
-        //await db.AddPaymentDB();
     }
 }

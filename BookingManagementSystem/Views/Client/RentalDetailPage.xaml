@@ -26,18 +26,18 @@
         <DataTemplate x:Key="ReviewItemTemplate" x:DataType="models:Review">
             <StackPanel Spacing="4">
                 <StackPanel Orientation="Horizontal" Spacing="16">
-                    <PersonPicture DisplayName="{x:Bind UserId, Mode=OneWay}" Width="40" Height="40"/>
+                    <PersonPicture DisplayName="{x:Bind UserId}" Width="40" Height="40"/>
                     <StackPanel Spacing="2" VerticalAlignment="Center">
                         <TextBlock Text="John Doe" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
                         <TextBlock Text="Manchester, Michigan" Style="{ThemeResource BodyTextBlockStyle}"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
-                    <RatingControl IsClearEnabled="False" IsReadOnly="True" Value="{x:Bind Rating, Mode=OneWay}" Margin="0 4 0 0"/>
+                    <RatingControl IsClearEnabled="False" IsReadOnly="True" Value="{x:Bind Rating}" Margin="0 4 0 0"/>
                     <TextBlock Text="·" Style="{ThemeResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
-                    <TextBlock Text="{x:Bind CreatedAt.ToLongDateString(), Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{x:Bind CreatedAt.ToLongDateString()}" Style="{ThemeResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
                 </StackPanel>
-                <TextBlock Text="{x:Bind Comment, Mode=OneWay}" TextWrapping="Wrap" Style="{ThemeResource BodyTextStyle}"/>
+                <TextBlock Text="{x:Bind Comment}" TextWrapping="Wrap" Style="{ThemeResource BodyTextStyle}"/>
             </StackPanel>
         </DataTemplate>
 
@@ -64,9 +64,9 @@
 
     <Grid x:Name="ContentArea">
         <ScrollView x:Name="ContentScrollView" ZoomMode="Disabled" IsTabStop="True" ContentOrientation="Vertical"
-                HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden"
-                VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto"
-                Background="Transparent">
+                    HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden"
+                    VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto"
+                    Background="Transparent">
             <Grid x:Name="MainGrid" Margin="{StaticResource NavigationViewPageContentMargin}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="5*"/>
@@ -82,12 +82,12 @@
                         <FlipView.ItemTemplate>
                             <DataTemplate x:DataType="x:String">
                                 <ScrollView ContentOrientation="None" ZoomMode="Enabled" IsTabStop="True"
-                                     VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                                     HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Hidden"
-                                     VerticalScrollMode="Auto" VerticalScrollBarVisibility="Hidden">
+                                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                                    HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Hidden"
+                                    VerticalScrollMode="Auto" VerticalScrollBarVisibility="Hidden">
                                     <Image AutomationProperties.Name="cliff" Stretch="Uniform" 
-                                    HorizontalAlignment="Center" VerticalAlignment="Center"
-                                    ToolTipService.ToolTip="You can scroll, pan and zoom an image in this panel. Try it out!">
+                                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        ToolTipService.ToolTip="You can scroll, pan and zoom an image in this panel. Try it out!">
                                         <Image.Source>
                                             <BitmapImage UriSource="{x:Bind}" DecodePixelWidth="1440"/>
                                         </Image.Source>
@@ -136,12 +136,12 @@
 
                     <Grid x:Name="MainInfoActionsGrid" Grid.Row="1" Padding="24 18 24 18">
                         <Button x:Name="btnBookNow" Height="56"
-                                HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
-                                Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
-                                Command="{x:Bind ViewModel.ProceedPaymentCommand}"
-                                FontWeight="SemiBold"
-                                ToolTipService.ToolTip="Place your reservation now">
+                            HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                            Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
+                            Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
+                            Command="{x:Bind ViewModel.ProceedPaymentCommand}"
+                            FontWeight="SemiBold"
+                            ToolTipService.ToolTip="Place your reservation now">
                             <Grid>
                                 <TextBlock Text="Book now" Visibility="{x:Bind ViewModel.ProceedPaymentCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"/>
                                 <ProgressRing x:Name="ButtonProgressRing" IsActive="True"
@@ -160,7 +160,7 @@
                                 DesiredWidth="240"
                                 ItemHeight="60" Padding="0"               
                                 x:Name="AmenityGridView"
-                                ItemsSource="{x:Bind ViewModel.DestinationTypeSymbols}"
+                                ItemsSource="{x:Bind ViewModel.DestinationTypeSymbols, Mode=OneWay}"
                                 FlowDirection="LeftToRight"
                                 StretchContentForSingleRow="False"
                                 ItemContainerStyle="{ThemeResource GridViewItemRevealStyle}">
@@ -211,10 +211,10 @@
                                         <controls:AdaptiveGridView.ItemTemplate>
                                             <DataTemplate x:DataType = "models:PropertyPolicy">
                                                 <StackPanel Orientation="Horizontal" Spacing="12" Padding="12">
-                                                    <PersonPicture DisplayName="{x:Bind Name, Mode=OneWay}" Width="40" Height="40"/>
+                                                    <PersonPicture DisplayName="{x:Bind Name}" Width="40" Height="40"/>
                                                     <StackPanel Spacing="4" VerticalAlignment="Center">
-                                                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap"/>
-                                                        <TextBlock Text="{x:Bind Description, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" MaxWidth="180" Padding="0 0 12 0"/>
+                                                        <TextBlock Text="{x:Bind Name}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                                        <TextBlock Text="{x:Bind Description}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" MaxWidth="180" Padding="0 0 12 0"/>
                                                     </StackPanel>
                                                 </StackPanel>
                                             </DataTemplate>
@@ -242,10 +242,8 @@
                                     </Button>
                                 </Grid>
                             </Grid>
-                            <RatingControl x:Name="PropertyRatingControl" 
-                                           IsClearEnabled="True" IsReadOnly="False" 
-                                           Caption="312 ratings" PlaceholderValue="4"
-                                           ValueChanged="PropertyRatingControl_ValueChanged"/>
+                            <RatingControl x:Name="PropertyRatingControl" ValueChanged="PropertyRatingControl_ValueChanged"
+                                           IsClearEnabled="True" IsReadOnly="False" Caption="312 ratings" PlaceholderValue="4"/>
                         </StackPanel>
 
                         <StackPanel x:Name="ReviewContent" Spacing="12">
@@ -253,8 +251,8 @@
                             <TextBlock Text="Guest reviews" FontSize="26" FontWeight="Bold" Padding="0 10 0 0"/>
                             <ScrollView MaxHeight="400" VerticalAlignment="Top" Margin="0 0 -28 0">
                                 <ItemsRepeater ItemsSource="{x:Bind ViewModel.Reviews, Mode=OneWay}"
-                                           Layout="{StaticResource VerticalStackLayout}"
-                                           ItemTemplate="{StaticResource ReviewItemTemplate}"/>
+                                               Layout="{StaticResource VerticalStackLayout}"
+                                               ItemTemplate="{StaticResource ReviewItemTemplate}"/>
                             </ScrollView>
                         </StackPanel>
 
@@ -264,8 +262,8 @@
                             <ScrollView MaxHeight="400" VerticalAlignment="Top" Margin="0 0 -28 0">
                                 <Grid Padding="0 0 28 0">
                                     <ItemsRepeater ItemsSource="{x:Bind ViewModel.QnAs, Mode=OneWay}"
-                                           Layout="{StaticResource VerticalStackLayout}"
-                                           ItemTemplate="{StaticResource QnAItemTemplate}"/>
+                                                   Layout="{StaticResource VerticalStackLayout}"
+                                                   ItemTemplate="{StaticResource QnAItemTemplate}"/>
                                 </Grid>
                             </ScrollView>
                             <Grid>
@@ -291,9 +289,9 @@
 
                         <StackPanel x:Name="InfoBarContent" VerticalAlignment="Top" HorizontalAlignment="Stretch" Spacing="12" Margin="0 8 0 0">
                             <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
-                            <InfoBar x:Name="infSmartphone" IsOpen="True" Severity="Warning" IsIconVisible="True" IsClosable="True" Title="News">
+                            <InfoBar x:Name="RentalDetailInfoBar" IsOpen="True" Severity="Warning" IsIconVisible="True" IsClosable="True" Title="News">
                                 <InfoBar.ActionButton>
-                                    <Button Content="Next" ToolTipService.ToolTip="Get next smartphone"/>
+                                    <Button Content="Next" ToolTipService.ToolTip="Get next news"/>
                                 </InfoBar.ActionButton>
                             </InfoBar>
                         </StackPanel>

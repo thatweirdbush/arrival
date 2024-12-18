@@ -1,34 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.Contracts.Services;
 using CommunityToolkit.WinUI.UI.Animations;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Views.Forms;
-using BookingManagementSystem.Views.Payment;
-using BookingManagementSystem.Services;
-using BookingManagementSystem.ViewModels.Payment;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace BookingManagementSystem.Views.Client;
-
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class RentalDetailPage : Page
 {
     public RentalDetailViewModel ViewModel
@@ -39,7 +18,7 @@ public sealed partial class RentalDetailPage : Page
     public RentalDetailPage()
     {
         ViewModel = App.GetService<RentalDetailViewModel>();
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -47,21 +26,18 @@ public sealed partial class RentalDetailPage : Page
         base.OnNavigatedTo(e);
         this.RegisterElementForConnectedAnimation("animationKeyContentGrid", itemHero);
 
-        // Scroll to top when navigating to this page
-        ContentScrollView.ScrollTo(0, 0);
-
-        // Always show the Smartphone even if the InfoBar is closed
-        infSmartphone.IsOpen = true;
-        infSmartphone.Message = ViewModel.Item?.ToString() ?? "No item available";
-
-        if (ViewModel.Item != null)
+        // Observe the ViewModel's Item and update the UI
+        ViewModel.PropertyChanged += (s, args) =>
         {
-            // Set up initial map location            
-            var query = $"{ViewModel.Item.Latitude}+{ViewModel.Item.Longitude}";
+            if (args.PropertyName == nameof(ViewModel.Item) && ViewModel.Item != null)
+            {
+                var query = $"{ViewModel.Item.Latitude}+{ViewModel.Item.Longitude}";
+                MapWebView2.Source = new Uri($"https://www.google.com/maps/place/{query}");
 
-            // Set the source of the WebView to the Pinned Google Maps URL
-            MapWebView2.Source = new Uri($"https://www.google.com/maps/place/{query}");
-        }
+                RentalDetailInfoBar.IsOpen = true;
+                RentalDetailInfoBar.Message = ViewModel.Item.ToString();
+            }
+        };
     }
 
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -97,10 +73,11 @@ public sealed partial class RentalDetailPage : Page
     private async void PropertyRatingControl_ValueChanged(RatingControl sender, object args)
     {
         // Create an instance of ReviewDialog with the current rating value
-        var dialog = new ReviewDialog(PropertyRatingControl.Value);
-
-        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
-        dialog.XamlRoot = XamlRoot;
+        var dialog = new ReviewDialog(PropertyRatingControl.Value)
+        {
+            // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
+            XamlRoot = XamlRoot
+        };
 
         // Show the form as a dialog box
         if (await dialog.ShowAsync() == ContentDialogResult.Primary)
@@ -126,7 +103,8 @@ public sealed partial class RentalDetailPage : Page
                 $"Rating: {review.Rating} star(s)\n" +
                 $"Comment: {review.Comment}\n" +
                 $"Property Id: {review.PropertyId}\n",
-                CloseButtonText = "Ok"
+                CloseButtonText = "Ok",
+                DefaultButton = ContentDialogButton.Close
             }.ShowAsync();
 
             // Update real value for the RatingControl
@@ -143,14 +121,14 @@ public sealed partial class RentalDetailPage : Page
     private async void btnReport_Click(object sender, RoutedEventArgs e)
     {
         // Create an instance of BadReportDialog
-        var reportDialog = new BadReportDialog();
-
-        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
-        reportDialog.XamlRoot = XamlRoot;
-        var result = await reportDialog.ShowAsync();
+        var reportDialog = new BadReportDialog
+        {
+            // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
+            XamlRoot = XamlRoot
+        };
 
         // Display the form as a dialog box
-        if (result == ContentDialogResult.Primary)
+        if (await reportDialog.ShowAsync() == ContentDialogResult.Primary)
         {
             // Get data from BadReportDialog and process the report
             var reportReason = reportDialog.ReportReason;
@@ -182,7 +160,8 @@ public sealed partial class RentalDetailPage : Page
                 $"Entity Type: {badReport.EntityType} \n" +
                 $"Entity Id: {badReport.EntityId} \n" +
                 $"Report Date: {badReport.ReportDate}",
-                CloseButtonText = "Ok"
+                CloseButtonText = "Ok",
+                DefaultButton = ContentDialogButton.Close
             }.ShowAsync();
         }
     }
@@ -196,7 +175,8 @@ public sealed partial class RentalDetailPage : Page
                 XamlRoot = XamlRoot,
                 Title = "Field is required",
                 Content = "Please enter a question before submitting!",
-                CloseButtonText = "Ok"
+                CloseButtonText = "Ok",
+                DefaultButton = ContentDialogButton.Close
             }.ShowAsync();
             return;
         }
@@ -222,7 +202,8 @@ public sealed partial class RentalDetailPage : Page
                 XamlRoot = XamlRoot,
                 Title = "Question submission result",
                 Content = "Your question has been submitted successfully!",
-                CloseButtonText = "Ok"
+                CloseButtonText = "Ok",
+                DefaultButton = ContentDialogButton.Close
             }.ShowAsync();
         }
 

@@ -11,6 +11,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
     mc:Ignorable="d"
+    NavigationCacheMode="Enabled"
     CacheMode="BitmapCache">
 
     <Page.Resources>
@@ -162,9 +163,9 @@
                                                 </StackPanel>
                                             </StackPanel>
                                             <StackPanel Grid.Column="1" Spacing="40" Margin="48 0 0 0">
-                                                <NumberBox x:Name="NumberBoxAdults" Value="{x:Bind ViewModel.NumberOfAdults, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" SpinButtonPlacementMode="Compact" Minimum="1" SmallChange="1" LargeChange="5" />
-                                                <NumberBox x:Name="NumberBoxChildren" Value="{x:Bind ViewModel.NumberOfChildren, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" SpinButtonPlacementMode="Compact" Minimum="0" SmallChange="1" LargeChange="5" />
-                                                <NumberBox x:Name="NumberBoxPets" Value="{x:Bind ViewModel.NumberOfPets, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" SpinButtonPlacementMode="Compact" Minimum="0" SmallChange="1" LargeChange="5" />
+                                                <NumberBox x:Name="NumberBoxAdults" Value="{x:Bind ViewModel.NumberOfAdults, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" SpinButtonPlacementMode="Compact" Minimum="1" Maximum="16" SmallChange="1" LargeChange="5" />
+                                                <NumberBox x:Name="NumberBoxChildren" Value="{x:Bind ViewModel.NumberOfChildren, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" SpinButtonPlacementMode="Compact" Minimum="0" Maximum="16" SmallChange="1" LargeChange="5" />
+                                                <NumberBox x:Name="NumberBoxPets" Value="{x:Bind ViewModel.NumberOfPets, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" SpinButtonPlacementMode="Compact" Minimum="0" Maximum="5" SmallChange="1" LargeChange="5" />
                                             </StackPanel>
                                         </Grid>
                                     </Flyout>
@@ -242,9 +243,9 @@
                                     </StackPanel>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Spacing="40" Margin="48 0 0 0">
-                                    <NumberBox x:Name="NumberBoxAdults2" Value="0" SpinButtonPlacementMode="Compact" SmallChange="1" LargeChange="5" />
-                                    <NumberBox x:Name="NumberBoxChildren2" Value="0" SpinButtonPlacementMode="Compact" SmallChange="1" LargeChange="5" />
-                                    <NumberBox x:Name="NumberBoxPets2" Value="0" SpinButtonPlacementMode="Compact" SmallChange="1" LargeChange="5" />
+                                    <NumberBox x:Name="NumberBoxAdults2" Value="{x:Bind ViewModel.NumberOfAdults, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" SpinButtonPlacementMode="Compact" Minimum="1" Maximum="16" SmallChange="1" LargeChange="5" />
+                                    <NumberBox x:Name="NumberBoxChildren2" Value="{x:Bind ViewModel.NumberOfChildren, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" SpinButtonPlacementMode="Compact" Minimum="0" Maximum="16" SmallChange="1" LargeChange="5" />
+                                    <NumberBox x:Name="NumberBoxPets2" Value="{x:Bind ViewModel.NumberOfPets, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" SpinButtonPlacementMode="Compact" Minimum="0" Maximum="5" SmallChange="1" LargeChange="5" />
                                 </StackPanel>
                             </Grid>
                         </Flyout>
