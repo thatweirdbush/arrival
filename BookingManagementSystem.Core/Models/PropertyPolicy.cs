@@ -6,24 +6,17 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 
 namespace BookingManagementSystem.Core.Models;
-public class PropertyPolicy : INotifyPropertyChanged
+public partial class PropertyPolicy
 {
-    public event PropertyChangedEventHandler PropertyChanged;
-    public override string ToString() => $"{Name} - {Description} - Is Mandatory: {IsMandatory}";
-    public int Id
-    {
-        get; set;
-    }
-    public string Name
-    {
-        get; set;
-    }
-    public string Description
-    {
-        get; set;
-    }
-    public bool IsMandatory
-    {
-        get; set;
-    }  // True if it's mandatory to follow, False otherwise
+    public int Id { get; set; }
+
+    public string Name { get; set; }
+
+    public string Description { get; set; }
+
+    public bool IsMandatory { get; set; }
+
+    public int? PropertyId { get; set; }
+
+    public virtual Property Property { get; set; }
 }

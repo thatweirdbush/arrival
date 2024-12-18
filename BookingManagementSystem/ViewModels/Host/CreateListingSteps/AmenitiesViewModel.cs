@@ -49,24 +49,36 @@ public partial class AmenitiesViewModel : BaseStepViewModel
     public void TryLoadSelectedAmenities()
     {
         // Load selected amenities
-        SelectedGuestFavoriteAmenities = PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.GuestFavorite);
-        SelectedStandoutAmenities = PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.Standout);
-        SelectedSafetyAmenities = PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.Safety);
+        SelectedGuestFavoriteAmenities = PropertyOnCreating.PropertyAmenities
+            .Where(x => x.Amenity.Type == AmenityType.GuestFavorite)
+            .Select(x => x.Amenity);
+        SelectedStandoutAmenities = PropertyOnCreating.PropertyAmenities
+            .Where(x => x.Amenity.Type == AmenityType.Standout)
+            .Select(x => x.Amenity);
+        SelectedSafetyAmenities = PropertyOnCreating.PropertyAmenities
+            .Where(x => x.Amenity.Type == AmenityType.Safety)
+            .Select(x => x.Amenity);
     }
 
     public void ResetPropertyAmenities()
     {
-        foreach (var amenity in PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.GuestFavorite).ToList())
+        foreach (var amenity in PropertyOnCreating.PropertyAmenities
+            .Where(x => x.Amenity.Type == AmenityType.GuestFavorite)
+            .ToList())
         {
-            PropertyOnCreating.Amenities.Remove(amenity);
+            PropertyOnCreating.PropertyAmenities.Remove(amenity);
         }
-        foreach (var amenity in PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.Standout).ToList())
+        foreach (var amenity in PropertyOnCreating.PropertyAmenities
+            .Where(x => x.Amenity.Type == AmenityType.Standout)
+            .ToList())
         {
-            PropertyOnCreating.Amenities.Remove(amenity);
+            PropertyOnCreating.PropertyAmenities.Remove(amenity);
         }
-        foreach (var amenity in PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.Safety).ToList())
+        foreach (var amenity in PropertyOnCreating.PropertyAmenities
+            .Where(x => x.Amenity.Type == AmenityType.Safety)
+            .ToList())
         {
-            PropertyOnCreating.Amenities.Remove(amenity);
+            PropertyOnCreating.PropertyAmenities.Remove(amenity);
         }
     }
 
@@ -78,15 +90,18 @@ public partial class AmenitiesViewModel : BaseStepViewModel
         // Add selected amenities to the property
         foreach (var amenity in SelectedGuestFavoriteAmenities)
         {
-            PropertyOnCreating.Amenities.Add(amenity);
+            PropertyOnCreating.PropertyAmenities
+                .Add(new PropertyAmenity { Property = PropertyOnCreating, Amenity = amenity });
         }
         foreach (var amenity in SelectedStandoutAmenities)
         {
-            PropertyOnCreating.Amenities.Add(amenity);
+            PropertyOnCreating.PropertyAmenities
+                .Add(new PropertyAmenity { Property = PropertyOnCreating, Amenity = amenity });
         }
         foreach (var amenity in SelectedSafetyAmenities)
         {
-            PropertyOnCreating.Amenities.Add(amenity);
+            PropertyOnCreating.PropertyAmenities
+                .Add(new PropertyAmenity { Property = PropertyOnCreating, Amenity = amenity });
         }
     }
 

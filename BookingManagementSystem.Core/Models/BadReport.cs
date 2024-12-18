@@ -21,64 +21,29 @@ public enum EntityType
     Review
 }
 
-public class BadReport : INotifyPropertyChanged
+public partial class BadReport
 {
-    public event PropertyChangedEventHandler PropertyChanged;
-    public override string ToString() => $"Bad Report Id: {Id}, User Id: {UserId}," +
-        $" Report Date: {ReportDate}," +
-        $" Report Description: {Description}";
-    public int Id
-    {
-        get; set;
-    }
-    public int UserId
-    {
-        get; set;
-    }
-    public int EntityId
-    {
-        get; set;
-    }
-    public DateTime ReportDate
-    {
-        get; set;
-    } = DateTime.Now.ToUniversalTime();  // Default report date is the current date and time
+    public int Id { get; set; }
 
-    // The reason or category of the report (e.g., "Spam", "Inappropriate Content", "Harassment")
-    public string ReportReason
-    {
-        get; set;
-    }
-    public string Description
-    {
-        get; set;
-    }
-    public ReportStatus Status 
-    { 
-        get; set; 
-    } = ReportStatus.Pending;  // Default status is "Pending"
+    public int UserId { get; set; }
 
-    // Type of the entity being reported (e.g., Property, User, Review)
-    public EntityType EntityType
-    {
-        get; set;
-    } = EntityType.Property;  // Default entity type is "Property"
+    public int EntityId { get; set; }
 
-    // Admin or moderator who handled the report
-    public int? HandledByAdminId
-    {
-        get; set;
-    }  // Nullable, only set when the report is handled
+    public DateTime ReportDate { get; set; } = DateTime.Now.ToUniversalTime();
 
-    // Date and time the report was handled
-    public DateTime? HandledDate
-    {
-        get; set;
-    }  // Nullable, only set when the report is handled
+    public string ReportReason { get; set; }
 
-    // Notes from the admin or moderator who handled the report
-    public string AdminNotes
-    {
-        get; set;
-    }
+    public string Description { get; set; }
+
+    public ReportStatus Status { get; set; } = ReportStatus.Pending;
+
+    public EntityType EntityType { get; set; } = EntityType.Property;
+
+    public int? HandledByAdminId { get; set; }
+
+    public DateTime? HandledDate { get; set; }
+
+    public string AdminNotes { get; set; }
+
+    public virtual User User { get; set; }
 }

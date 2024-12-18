@@ -21,7 +21,6 @@
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
         <helper:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
 
-
         <DataTemplate x:Key="ImageTemplate" x:DataType="models:DestinationTypeSymbol">
             <ItemContainer HorizontalAlignment="Left" Width="200" Height="140" AutomationProperties.Name="{x:Bind Name}">
                 <Image Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind ImagePath}" Margin="4" AutomationProperties.AccessibilityView="Raw"/>

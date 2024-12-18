@@ -51,7 +51,7 @@
                         <TextBlock Text="Bathrooms" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Normal" VerticalAlignment="Center"/>
                         <NumberBox x:Name="BathroomsNumberBox" HorizontalAlignment="Right" 
                                    PreviewKeyDown="BathroomsNumberBox_PreviewKeyDown" 
-                                   Value="{x:Bind ViewModel.BathoomPlan.Quantity, Mode=TwoWay}" 
+                                   Value="{x:Bind ViewModel.BathroomPlan.Quantity, Mode=TwoWay}" 
                                    Minimum="0" SpinButtonPlacementMode="Inline"/>
                     </Grid>
                 </StackPanel>

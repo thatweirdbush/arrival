@@ -8,7 +8,6 @@ using BookingManagementSystem.Core.Services;
 
 namespace BookingManagementSystem.Core.Models;
 
-// These types best describe your place
 public enum PropertyType
 {
     House,
@@ -42,26 +41,6 @@ public enum PropertyType
     Yurt
 }
 
-public class PropertyTypeIcon
-{
-    // Define XAML Image's Path Declaration
-    public static string MS_APPX = "ms-appx:///Assets/real-estate-type-icons/";
-    private string _imagePath;
-    public PropertyType PropertyType
-    {
-        get; set;
-    }
-    public string Name
-    {
-        get; set;
-    }
-    public string ImagePath
-    {
-        get => $"{MS_APPX}{_imagePath}";
-        set => _imagePath = value;
-    }
-}
-
 public enum PropertyRatingStatus
 {
     NotRated, // Default
@@ -79,55 +58,41 @@ public enum PropertyStatus
     InProgress,
 }
 
-public class Property : INotifyPropertyChanged
+public class PropertyTypeIcon
 {
-    // Define constants
-    public const string DEFAULT_PROPERTY_NAME = "Your House listing";
-    public const string DEFAULT_PROPERTY_LOCATION = "Your House location";
-    public const string DEFAULT_PROPERTY_DESCRIPTION= "Your House description";
-    public const decimal DEFAULT_PROPERTY_PRICE = 0.0M;
-    public const decimal DEFAULT_GUEST_SERVICE_FEE_RATE = 0.14m;
-    public const decimal DEFAULT_HOST_SERVICE_FEE_RATE = 0.03m;
+    public PropertyType PropertyType { get; set; }
 
-    public const int PROPERTY_NAME_MAX_LENGTH = 32;
-    public const int PROPERTY_LOCATION_MAX_LENGTH = 250;
-    public const int PROPERTY_DESCRIPTION_MAX_LENGTH = 500;
+    public string Name { get; set; }
 
-    public event PropertyChangedEventHandler PropertyChanged;
-    public override string ToString() => $"{Name} ({Location}), {Description}, " +
-        $"Price: {PricePerNight:C}, Is Available: {IsAvailable}, " +
-        $"Created At: {CreatedAt}, Updated At: {UpdatedAt}";
-    public int Id
+    public string ImagePath
     {
-        get; set;
+        get => $"{MS_APPX}{_imagePath}";
+        set => _imagePath = value;
     }
-    public string Name
-    {
-        get; set;
-    } = DEFAULT_PROPERTY_NAME;
-    public PropertyType? Type
-    {
-        get; set;
-    }
-    public string Description
-    {
-        get; set;
-    } = DEFAULT_PROPERTY_DESCRIPTION;
-    public int HostId
-    {
-        get; set;
-    } // Each property belongs to a host
-    public ICollection<DestinationType> DestinationTypes
-    {
-        get; set;
-    } = [];
 
-    public ICollection<string> ImagePaths
-    {
-        get; set;
-    } = [];
+    private string _imagePath;
 
-    public string ImageThumbnail => ImagePaths.FirstOrDefault() ?? "ms-appx:///Assets/modern-european-house.png";
+    // XAML Image's Path Declaration
+    public const string MS_APPX = "ms-appx:///Assets/real-estate-type-icons/";
+}
+
+public partial class Property : INotifyPropertyChanged
+{
+    public int Id { get; set; }
+
+    public string Name { get; set; } = DEFAULT_PROPERTY_NAME;
+
+    public PropertyType? Type { get; set; }
+
+    public string Description { get; set; } = DEFAULT_PROPERTY_DESCRIPTION;
+
+    public int HostId { get; set; } // Each property belongs to a host
+
+    public ICollection<DestinationType> DestinationTypes { get; set; } = [];
+
+    public ICollection<string> ImagePaths { get; set; } = [];
+
+    public string ImageThumbnail => ImagePaths.FirstOrDefault() ?? DEFAULT_THUMBNAIL;
 
     public string Location
     {
@@ -140,6 +105,7 @@ public class Property : INotifyPropertyChanged
             return $"{StateOrProvince}, {Country.CountryName}";
         }
     }
+
     public string FullLocation
     {
         get
@@ -152,84 +118,108 @@ public class Property : INotifyPropertyChanged
             return $"{StreetAddress}, {CityOrDistrict}, {StateOrProvince}, {Country.CountryName}";
         }
     }
-    public virtual CountryInfo Country
+
+    public int? CountryId { get; set; }
+
+    public virtual CountryInfo Country { get; set; }
+
+    public string StateOrProvince { get; set; }
+
+    public string CityOrDistrict { get; set; }
+
+    public string StreetAddress { get; set; }
+
+    public string PostalCode { get; set; }
+
+    public decimal PricePerNight { get; set; } = DEFAULT_PROPERTY_PRICE;
+
+    public bool IsFavourite { get; set; } = false;
+
+    public bool IsAvailable { get; set; } = true;
+
+    public PropertyStatus Status { get; set; } = PropertyStatus.Listed;
+
+    public DateTime CreatedAt { get; set; } = DateTime.Now.ToUniversalTime();
+
+    public DateTime? UpdatedAt { get; set; }
+
+    public double Latitude { get; set; } = 0.0;
+
+    public double Longitude { get; set; } = 0.0;
+
+    public bool IsPriority { get; set; } = false;
+
+    public bool IsRequested { get; set; } = false;
+
+    public bool IsPetFriendly { get; set; } = false;
+
+    public int MaxGuests { get; set; } = 1;
+
+    public int LastEditedStep { get; set; } = -1;
+
+    public int ReviewsCount => Reviews.Count;
+
+    public int AverageRating => Reviews.Count > 0 ? (int)Reviews.Average(r => r.Rating) : 0;
+
+    public PropertyRatingStatus RatingStatus
     {
-        get; set;
+        get
+        {
+            if (ReviewsCount == 0)
+            {
+                return PropertyRatingStatus.NotRated;
+            }
+            else if (AverageRating <= 1)
+            {
+                return PropertyRatingStatus.Poor;
+            }
+            else if (AverageRating <= 2)
+            {
+                return PropertyRatingStatus.Fair;
+            }
+            else if (AverageRating <= 3)
+            {
+                return PropertyRatingStatus.Good;
+            }
+            else if (AverageRating <= 4)
+            {
+                return PropertyRatingStatus.VeryGood;
+            }
+            else
+            {
+                return PropertyRatingStatus.Excellent;
+            }
+        }
     }
-    public string StateOrProvince
-    {
-        get; set;
-    }
-    public string CityOrDistrict
-    {
-        get; set;
-    }
-    public string StreetAddress
-    {
-        get; set;
-    }
-    public string PostalCode
-    {
-        get; set;
-    }
-    public decimal PricePerNight
-    {
-        get; set;
-    } = DEFAULT_PROPERTY_PRICE;
-    public bool IsFavourite
-    {
-        get; set;
-    } = false;
-    public virtual ICollection<Amenity> Amenities
-    {
-        get; set;
-    } = []; // E.g., WiFi, Pool, Parking
-    public virtual ICollection<PropertyPolicy> Policies
-    {
-        get; set;
-    } = []; // E.g., No smoking, No pets, No parties
-    public bool IsAvailable
-    {
-        get; set;
-    } = true;
-    public PropertyStatus Status
-    {
-        get; set;
-    } = PropertyStatus.Listed;
-    public DateTime CreatedAt
-    {
-        get; set;
-    } = DateTime.Now.ToUniversalTime();
-    public DateTime? UpdatedAt
-    {
-        get; set;
-    }
-    public double Latitude
-    {
-        get; set;
-    } = 0.0;
-    public double Longitude
-    {
-        get; set;
-    } = 0.0;
-    public bool IsPriority
-    {
-        get; set;
-    } = false;
-    public bool IsRequested
-    {
-        get; set;
-    } = false;
-    public bool IsPetFriendly
-    {
-        get; set;
-    } = false;
-    public int MaxGuests
-    {
-        get; set;
-    } = 1;
-    public int LastEditedStep
-    {
-        get; set;
-    } = -1;
+
+    public virtual User Host { get; set; }
+
+    public virtual ICollection<Booking> Bookings { get; set; } = [];
+
+    public virtual ICollection<PropertyAmenity> PropertyAmenities { get; set; } = [];
+
+    public virtual ICollection<PropertyPolicy> PropertyPolicies { get; set; } = [];
+
+    public virtual ICollection<QnA> QnAs { get; set; } = [];
+
+    public virtual ICollection<Review> Reviews { get; set; } = [];
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    // Define constants
+    public const string DEFAULT_THUMBNAIL = "ms-appx:///Assets/modern-european-house.png";
+    public const string DEFAULT_PROPERTY_NAME = "Your House listing";
+    public const string DEFAULT_PROPERTY_LOCATION = "Your House location";
+    public const string DEFAULT_PROPERTY_DESCRIPTION = "Your House description";
+    public const decimal DEFAULT_PROPERTY_PRICE = 0.0M;
+    public const decimal DEFAULT_GUEST_SERVICE_FEE_RATE = 0.14m;
+    public const decimal DEFAULT_HOST_SERVICE_FEE_RATE = 0.03m;
+
+    public const int PROPERTY_NAME_MAX_LENGTH = 32;
+    public const int PROPERTY_LOCATION_MAX_LENGTH = 250;
+    public const int PROPERTY_DESCRIPTION_MAX_LENGTH = 500;
+
+    public override string ToString() => $"{Name} ({Location}), {Description}, " +
+        $"Price: {PricePerNight:C}, Is Available: {IsAvailable}, " +
+        $"Created At: {CreatedAt}, Updated At: {UpdatedAt}";
 }

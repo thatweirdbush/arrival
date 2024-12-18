@@ -6,38 +6,34 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 
 namespace BookingManagementSystem.Core.Models;
-public class Payment : INotifyPropertyChanged
+
+public enum PaymentStatus
 {
+    Pending,
+    Paid,
+    Failed,
+    Refunded
+}
+
+public partial class Payment : INotifyPropertyChanged
+{
+    public int Id { get; set; }
+
+    public int UserId { get; set; }
+
+    public int BookingId { get; set; }
+
+    public decimal Amount { get; set; }
+
+    public DateTime PaymentDate { get; set; }
+
+    public string PaymentMethod { get; set; } // E.g., Credit Card, Debit Card, PayPal
+
+    public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
+
+    public virtual Booking Booking { get; set; }
+
+    public virtual User User { get; set; }
+
     public event PropertyChangedEventHandler PropertyChanged;
-    public override string ToString() => $"Payment Id: {Id}, User Id: {UserId}," +
-        $" Booking Id: {BookingId}, Amount: {Amount}, Payment Date: {PaymentDate}," +
-        $" Payment Method: {PaymentMethod}, Payment Status: {Status}";
-    public int Id
-    {
-        get; set;
-    }
-    public int UserId
-    {
-        get; set;
-    }
-    public int BookingId
-    {
-        get; set;
-    }
-    public decimal Amount
-    {
-        get; set;
-    }
-    public DateTime PaymentDate
-    {
-        get; set;
-    }
-    public string PaymentMethod
-    {
-        get; set;
-    } // E.g., Credit Card, Debit Card, PayPal
-    public string Status
-    {
-        get; set;
-    } // E.g., Pending, Paid, Failed
 }
