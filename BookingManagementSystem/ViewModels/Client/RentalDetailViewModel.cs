@@ -16,8 +16,16 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
 
     [ObservableProperty]
     private Property? item;
+
+    [ObservableProperty]
+    private bool isReviewListEmpty;
+
+    [ObservableProperty]
+    private bool isQnAListEmpty;
+
     public ObservableCollection<Review> Reviews { get; set; } = [];
     public ObservableCollection<QnA> QnAs { get; set; } = [];
+    public IEnumerable<Amenity> Amenities { get; set; } = [];
     public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = [];
     public IEnumerable<PropertyPolicy> PropertyPolicies { get; set; } = [];
     public IAsyncRelayCommand ProceedPaymentCommand { get; }
@@ -43,6 +51,9 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
 
             DestinationTypeSymbols = await _rentalDetailFacade.GetDestinationTypeSymbolsAsync();
             PropertyPolicies = await _rentalDetailFacade.GetPropertyPoliciesAsync();
+            Amenities = await _rentalDetailFacade.GetPropertyAmenitiesAsync();
+
+            UpdateObservableProperties();
         }
     }
 
@@ -50,14 +61,22 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     {
     }
 
-    public Task AddReviewAsync(Review review)
+    public void UpdateObservableProperties()
     {
-        return _rentalDetailFacade.AddReviewAsync(review);
+        IsReviewListEmpty = Reviews.Count == 0;
+        IsQnAListEmpty = QnAs.Count == 0;
     }
 
-    public Task AddQnAAsync(QnA qna)
+    public async Task AddReviewAsync(Review review)
     {
-        return _rentalDetailFacade.AddQnAAsync(qna);
+        await _rentalDetailFacade.AddReviewAsync(review);
+        UpdateObservableProperties();
+    }
+
+    public async Task AddQnAAsync(QnA qna)
+    {
+        await _rentalDetailFacade.AddQnAAsync(qna);
+        UpdateObservableProperties();
     }
 
     public Task AddBadReportAsync(BadReport badReport)

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using BookingManagementSystem.Core.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.Core.Repositories;
+#nullable enable
 public class DestinationTypeSymbolRepository
 {
     private readonly List<DestinationTypeSymbol> _icons;
@@ -100,8 +103,13 @@ public class DestinationTypeSymbolRepository
             }
         ]);
     }
-    public Task<IEnumerable<DestinationTypeSymbol>> GetAllAsync()
+
+    public Task<IEnumerable<DestinationTypeSymbol>> GetAllAsync(Expression<Func<DestinationTypeSymbol, bool>>? filter = null)
     {
+        if (filter != null)
+        {
+            return Task.FromResult(_icons.Where(filter.Compile()).AsEnumerable());
+        }
         return Task.FromResult(_icons.AsEnumerable());
     }
 }

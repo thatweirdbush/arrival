@@ -7,6 +7,7 @@ using BookingManagementSystem.Core.Contracts.Facades;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.Core.Facades;
 #nullable enable
@@ -18,6 +19,8 @@ public class RentalDetailFacade : IRentalDetailFacade
     private readonly IRepository<PropertyPolicy> _propertyPolicyRepository;
     private readonly IRepository<BadReport> _badReportRepository;
     private readonly DestinationTypeSymbolRepository _destinationTypeSymbolRepository;
+
+    public Property? Property { get; private set; }
 
     public RentalDetailFacade(
         IRepository<Property> propertyRepository,
@@ -35,29 +38,55 @@ public class RentalDetailFacade : IRentalDetailFacade
         _destinationTypeSymbolRepository = destinationTypeSymbolRepository;
     }
 
-    public Task<Property?> GetPropertyByIdAsync(int id)
+    public async Task<Property?> GetPropertyByIdAsync(int id)
     {
-        return _propertyRepository.GetByIdAsync(id);
+        var query = _propertyRepository.GetQueryable();
+
+        // Inlcude neccessary navigational properties
+        query = query.Include(p => p.Country)
+                     .Include(p => p.PropertyAmenities)
+                     .Include(p => p.PropertyPolicies)
+                     .Include(p => p.QnAs)
+                     .Include(p => p.Reviews)
+                     .ThenInclude(r => r.User);
+
+        Property = await query.FirstOrDefaultAsync(p => p.Id == id);
+        return Property;
     }
 
     public Task<IEnumerable<Review>> GetReviewsAsync()
     {
-        return _reviewRepository.GetAllAsync();
+        return Property != null
+            ? Task.FromResult(Property.Reviews.AsEnumerable())
+            : Task.FromResult(Enumerable.Empty<Review>());
     }
 
     public Task<IEnumerable<QnA>> GetQnAsAsync()
     {
-        return _qnaRepository.GetAllAsync();
+        return Property != null
+            ? Task.FromResult(Property.QnAs.AsEnumerable())
+            : Task.FromResult(Enumerable.Empty<QnA>());
+    }
+
+    public Task<IEnumerable<Amenity>> GetPropertyAmenitiesAsync()
+    {
+        return Property != null
+            ? Task.FromResult(Property.PropertyAmenities.Select(p => p.Amenity).AsEnumerable())
+            : Task.FromResult(Enumerable.Empty<Amenity>());
     }
 
     public Task<IEnumerable<DestinationTypeSymbol>> GetDestinationTypeSymbolsAsync()
     {
-        return _destinationTypeSymbolRepository.GetAllAsync();
+        return Property != null
+            ? _destinationTypeSymbolRepository.GetAllAsync(dts => Property.DestinationTypes.Contains(dts.DestinationType))
+            : Task.FromResult(Enumerable.Empty<DestinationTypeSymbol>());
     }
 
     public Task<IEnumerable<PropertyPolicy>> GetPropertyPoliciesAsync()
     {
-        return _propertyPolicyRepository.GetAllAsync();
+        return Property != null
+            ? Task.FromResult(Property.PropertyPolicies.AsEnumerable())
+            : Task.FromResult(Enumerable.Empty<PropertyPolicy>());
     }
 
     public async Task AddReviewAsync(Review review)

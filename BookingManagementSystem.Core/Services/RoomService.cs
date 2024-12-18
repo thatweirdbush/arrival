@@ -111,8 +111,9 @@ public class RoomService : IRoomService
                 }
             }
 
-            // Include Country Info
-            query = query.Include(r => r.Country);
+            // Include navigational properties
+            query = query.Include(r => r.Country)
+                         .Include(r => r.Reviews);
 
             return query;
         });

@@ -159,7 +159,7 @@ public partial class Property : INotifyPropertyChanged
 
     public int ReviewsCount => Reviews.Count;
 
-    public int AverageRating => Reviews.Count > 0 ? (int)Reviews.Average(r => r.Rating) : 0;
+    public double AverageRating => Reviews.Count > 0 ? (double)Reviews.Average(r => r.Rating) : 0;
 
     public PropertyRatingStatus RatingStatus
     {
@@ -191,6 +191,8 @@ public partial class Property : INotifyPropertyChanged
             }
         }
     }
+
+    public bool IsNotRated => RatingStatus == PropertyRatingStatus.NotRated;
 
     public virtual User Host { get; set; }
 

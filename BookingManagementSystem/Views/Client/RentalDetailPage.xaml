@@ -17,6 +17,7 @@
         <helper:IsFavouriteToImagePathConverter x:Key="IsFavouriteToImagePathConverter"/>
         <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
+        <helper:RatingControlEmptyConverter x:Key="RatingControlEmptyConverter"/>
 
         <!--Layouts for stacks-->
         <StackLayout x:Name="VerticalStackLayout" Orientation="Vertical" Spacing="36"/>
@@ -242,30 +243,54 @@
                                     </Button>
                                 </Grid>
                             </Grid>
-                            <RatingControl x:Name="PropertyRatingControl" ValueChanged="PropertyRatingControl_ValueChanged"
-                                           IsClearEnabled="True" IsReadOnly="False" Caption="312 ratings" PlaceholderValue="4"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <RatingControl x:Name="PropertyRatingControl" ValueChanged="PropertyRatingControl_ValueChanged"
+                                               IsClearEnabled="True" IsReadOnly="False" PlaceholderValue="{x:Bind ViewModel.Item.AverageRating, Mode=OneWay, Converter={StaticResource RatingControlEmptyConverter}}"/>
+                                <TextBlock VerticalAlignment="Center" FontSize="12" Foreground="#9E000000" Margin="12 0 0 8">
+                                    <Run Text="{x:Bind ViewModel.Item.ReviewsCount, Mode=OneWay}"/> ratings
+                                </TextBlock>
+                            </StackPanel>
                         </StackPanel>
 
                         <StackPanel x:Name="ReviewContent" Spacing="12">
                             <Line x:Name="LineRatingReview" Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
                             <TextBlock Text="Guest reviews" FontSize="26" FontWeight="Bold" Padding="0 10 0 0"/>
-                            <ScrollView MaxHeight="400" VerticalAlignment="Top" Margin="0 0 -28 0">
-                                <ItemsRepeater ItemsSource="{x:Bind ViewModel.Reviews, Mode=OneWay}"
-                                               Layout="{StaticResource VerticalStackLayout}"
-                                               ItemTemplate="{StaticResource ReviewItemTemplate}"/>
-                            </ScrollView>
+                            <Grid>
+                                <StackPanel x:Name="EmptyReviewListPanel" Spacing="6" Margin="0 0 0 8"
+                                            Visibility="{x:Bind ViewModel.IsReviewListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <FontIcon Glyph="&#xE7E7;" FontSize="26" />
+                                    <TextBlock Text="No reviews yet" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center" />
+                                    <TextBlock Text="Be the first to review this place!" Style="{ThemeResource DetailBodyBaseMediumStyle}" HorizontalAlignment="Center" />
+                                </StackPanel>
+                                <ScrollView MaxHeight="400" VerticalAlignment="Top" Margin="0 0 -28 0"
+                                            Visibility="{x:Bind ViewModel.IsReviewListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.Reviews, Mode=OneWay}"
+                                                   Layout="{StaticResource VerticalStackLayout}"
+                                                   ItemTemplate="{StaticResource ReviewItemTemplate}"/>
+                                </ScrollView>
+                            </Grid>
                         </StackPanel>
 
                         <StackPanel x:Name="QnAContent" Spacing="12">
                             <Line x:Name="LineReviewQnA" Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
                             <TextBlock Text="Travelers are asking" FontSize="26" FontWeight="Bold" Padding="0 10 0 0"/>
-                            <ScrollView MaxHeight="400" VerticalAlignment="Top" Margin="0 0 -28 0">
-                                <Grid Padding="0 0 28 0">
-                                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.QnAs, Mode=OneWay}"
-                                                   Layout="{StaticResource VerticalStackLayout}"
-                                                   ItemTemplate="{StaticResource QnAItemTemplate}"/>
-                                </Grid>
-                            </ScrollView>
+
+                            <Grid>
+                                <StackPanel x:Name="EmptyQnAListPanel" Spacing="6" Margin="0 8 0 8"
+                                            Visibility="{x:Bind ViewModel.IsQnAListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <FontIcon Glyph="&#xE8F2;" FontSize="26" />
+                                    <TextBlock Text="No questions yet" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center" />
+                                    <TextBlock Text="Be the first to ask questions about this place!" Style="{ThemeResource DetailBodyBaseMediumStyle}" HorizontalAlignment="Center" />
+                                </StackPanel>
+                                <ScrollView MaxHeight="400" VerticalAlignment="Top" Margin="0 0 -28 0"
+                                            Visibility="{x:Bind ViewModel.IsQnAListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                                    <Grid Padding="0 0 28 0">
+                                        <ItemsRepeater ItemsSource="{x:Bind ViewModel.QnAs, Mode=OneWay}"
+                                                       Layout="{StaticResource VerticalStackLayout}"
+                                                       ItemTemplate="{StaticResource QnAItemTemplate}"/>
+                                    </Grid>
+                                </ScrollView>
+                            </Grid>
                             <Grid>
                                 <StackPanel Spacing="12" Margin="0 8 0 0">
                                     <Line x:Name="LinQnA" Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>

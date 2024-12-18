@@ -26,6 +26,8 @@ public sealed partial class RentalDetailPage : Page
         base.OnNavigatedTo(e);
         this.RegisterElementForConnectedAnimation("animationKeyContentGrid", itemHero);
 
+        CalendarView.CalendarViewDayItemChanging += CalendarViewDayItemChanging;
+
         // Observe the ViewModel's Item and update the UI
         ViewModel.PropertyChanged += (s, args) =>
         {
@@ -51,6 +53,17 @@ public sealed partial class RentalDetailPage : Page
             {
                 navigationService.SetListDataItemForNextConnectedAnimation(ViewModel.Item);
             }
+        }
+    }
+
+
+
+    private void CalendarViewDayItemChanging(CalendarView sender, CalendarViewDayItemChangingEventArgs args)
+    {
+        if (args.Item.Date < DateTimeOffset.Now.Date)
+        {
+            // Disable past dates
+            args.Item.IsEnabled = false;
         }
     }
 
