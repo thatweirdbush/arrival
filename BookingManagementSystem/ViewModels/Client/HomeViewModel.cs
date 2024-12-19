@@ -64,8 +64,17 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     {
         if (clickedItem != null)
         {
+            var filterInformation = BuildPropertyFilter();
+
+            // Wrap both Id and PropertyFilter into an object to pass
+            IDictionary<string, object> navigationParameters = new Dictionary<string, object>
+            {
+                { "PropertyId", clickedItem.Id },
+                { "Filter", filterInformation }
+            };
+
             _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
-            _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, clickedItem.Id);
+            _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, navigationParameters);
         }
     }
 

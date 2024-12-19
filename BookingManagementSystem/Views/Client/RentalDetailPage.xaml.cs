@@ -39,6 +39,18 @@ public sealed partial class RentalDetailPage : Page
 
                 RentalDetailInfoBar.IsOpen = true;
                 RentalDetailInfoBar.Message = ViewModel.Item.ToString();
+
+                // Use the CheckinDate & CheckoutDate from ViewModel.ScheduleInformation to update the selected dates in the CalendarView
+                if (ViewModel.ScheduleInformation != null)
+                {
+                    var checkInDate = ViewModel.ScheduleInformation.CheckInDate;
+                    var checkOutDate = ViewModel.ScheduleInformation.CheckOutDate;
+
+                    if (checkInDate.HasValue && checkOutDate.HasValue)
+                    {
+                        UpdateSelectedDateRange(CalendarView, checkInDate.Value, checkOutDate.Value);
+                    }
+                }
             }
         };
     }
@@ -174,7 +186,7 @@ public sealed partial class RentalDetailPage : Page
     private async void btnSubmitQuestion_Click(object sender, RoutedEventArgs e)
     {
         // Check if the question is empty
-        if (string.IsNullOrWhiteSpace(tbAskPropertyQuestion.Text))
+        if (string.IsNullOrWhiteSpace(AskQuestionTextBox.Text))
         {
             await ShowContentDialogAsync("Field is required", "Please enter a question before submitting!");
             return;
@@ -197,7 +209,7 @@ public sealed partial class RentalDetailPage : Page
         // Create a new QnA object
         var qna = new QnA
         {
-            Question = tbAskPropertyQuestion.Text,
+            Question = AskQuestionTextBox.Text,
             PropertyId = ViewModel.Item.Id,
             CustomerId = LoginViewModel.CurrentUser.Id,
             HostId = ViewModel.Item.HostId,
@@ -207,7 +219,7 @@ public sealed partial class RentalDetailPage : Page
         await ViewModel.AddQnAAsync(qna);
 
         // Clear the question text box
-        tbAskPropertyQuestion.Text = string.Empty;
+        AskQuestionTextBox.Text = string.Empty;
     }
 
     private async Task ShowContentDialogAsync(string title, string content)
@@ -222,5 +234,87 @@ public sealed partial class RentalDetailPage : Page
         };
 
         await dialog.ShowAsync();
+    }
+
+    private void AskQuestionTextBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter)
+        {
+            btnSubmitQuestion_Click(sender, e);
+            e.Handled = true;
+        }
+    }
+
+    private bool _isUpdatingDates; // Flag to prevent logic processing when updating dates
+
+    private void CalendarView_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
+    {
+        // Prevent logic processing when updating
+        if (_isUpdatingDates) return;
+
+        try
+        {
+            _isUpdatingDates = true;
+
+            // Get the list of currently selected days
+            var selectedDates = sender.SelectedDates.Select(d => d.Date).ToList();
+
+            // If no date is selected, do nothing
+            if (!selectedDates.Any()) return;
+
+            // Handle adding days logic
+            if (args.AddedDates.Any())
+            {
+                // Newly selected date
+                var newlySelectedDate = args.AddedDates[0].Date;
+
+                // Update the selected date range based on the current list
+                UpdateSelectedDateRange(sender, selectedDates.Min(), newlySelectedDate);
+                UpdateSchedule(selectedDates.Min(), newlySelectedDate);
+            }
+            // Handle removing days logic
+            else if (args.RemovedDates.Any())
+            {
+                // Removed date
+                var removedDate = args.RemovedDates[0].Date;
+
+                // Update the selected date range based on the current list
+                UpdateSelectedDateRange(sender, selectedDates.Min(), removedDate);
+                UpdateSchedule(selectedDates.Min(), removedDate);
+            }
+        }
+        finally
+        {
+            _isUpdatingDates = false;
+        }
+    }
+
+    // Update the selected date range in the CalendarView
+    private void UpdateSelectedDateRange(CalendarView sender, DateTimeOffset startDate, DateTimeOffset endDate)
+    {
+        // Clear all selected dates
+        sender.SelectedDates.Clear();
+
+        // Add the selected date range to the CalendarView
+        for (var date = startDate; date <= endDate; date = date.AddDays(1))
+        {
+            sender.SelectedDates.Add(date);
+        }
+    }
+
+    // Update the schedule based on the selected dates to ViewModel and UI
+    private void UpdateSchedule(DateTimeOffset checkInDate, DateTimeOffset checkOutDate)
+    {
+        if (ViewModel.ScheduleInformation == null) return;
+
+        // Update the schedule based on the selected dates
+        ViewModel.ScheduleInformation.CheckInDate = checkInDate.UtcDateTime;
+        ViewModel.ScheduleInformation.CheckOutDate = checkOutDate.UtcDateTime;
+
+        // Handle ambiguous bug when remove the min date
+        if (ViewModel.ScheduleInformation.CheckInDate > ViewModel.ScheduleInformation.CheckOutDate)
+        {
+            ViewModel.ScheduleInformation.CheckInDate = ViewModel.ScheduleInformation.CheckOutDate;
+        }
     }
 }

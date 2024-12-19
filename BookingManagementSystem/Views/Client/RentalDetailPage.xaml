@@ -203,7 +203,9 @@
                                     <TextBlock Text="Your stay schedule" FontSize="26" FontWeight="Bold"/>
                                 </StackPanel>
                                 <StackPanel Grid.Row="1" Spacing="4">
-                                    <CalendarView x:Name="CalendarView" SelectionMode="Single" IsGroupLabelVisible="True" IsOutOfScopeEnabled="True" Language="en" CalendarIdentifier="GregorianCalendar" Background="Transparent" CalendarItemForeground="Gray" BorderThickness="0" HorizontalAlignment="Stretch"/>
+                                    <CalendarView x:Name="CalendarView" SelectionMode="Multiple" IsGroupLabelVisible="True" IsOutOfScopeEnabled="True" Language="en"
+                                                  CalendarIdentifier="GregorianCalendar" Background="Transparent" CalendarItemForeground="Gray" BorderThickness="0" HorizontalAlignment="Stretch"
+                                                  SelectedDatesChanged="CalendarView_SelectedDatesChanged"/>
                                     <HyperlinkButton x:Name="btnClearDates" Content="Clear dates" FontWeight="SemiBold" Click="btnClearDates_Click" HorizontalAlignment="Right"/>
                                 </StackPanel>
                             </Grid>
@@ -318,10 +320,10 @@
                             </Grid>
                             <Grid>
                                 <StackPanel Spacing="12" Margin="0 8 0 0">
-                                    <Line x:Name="LinQnA" Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
+                                    <Line x:Name="LineQnA" Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
                                     <TextBlock Text="Ask a question" Style="{ThemeResource TitleTextBlockStyle}" Padding="0 10 0 0"/>
                                     <TextBlock Text="Your question" Style="{ThemeResource BaseTextBlockStyle}" Margin="0 -6 0 0"/>
-                                    <TextBox x:Name="tbAskPropertyQuestion" PlaceholderText="e.g. do you offer room service?" Height="80"/>
+                                    <TextBox x:Name="AskQuestionTextBox" PlaceholderText="e.g. do you offer room service?" Height="80" KeyDown="AskQuestionTextBox_KeyDown"/>
                                     <Button 
                                         x:Name="btnSubmitQuestion"
                                         HorizontalAlignment="Stretch" VerticalAlignment="Center"

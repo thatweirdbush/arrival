@@ -17,6 +17,7 @@
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
         <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
+        <helper:DecimalPlacesConverter x:Key="DecimalPlacesConverter" DecimalPlaces="1"/>
         <!--Flyout Template-->
         <Flyout x:Key="PricingDetailsFlyout">
             <StackPanel Spacing="16">
@@ -115,16 +116,14 @@
                                     <StackPanel Spacing="8">
                                         <TextBlock Text="Dates" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                                         <TextBlock Style="{ThemeResource BodyTextStyle}">
-                                    <Run Text="Nov 26"/>
-                                    <Run Text="-"/>
-                                    <Run Text="Dec 1"/>
+                                            <Run Text="Nov 26"/> - 
+                                            <Run Text="Dec 1"/>
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Spacing="8">
                                         <TextBlock Text="Guests" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                                         <TextBlock Style="{ThemeResource BodyTextStyle}">
-                                    <Run Text="1"/>
-                                    <Run Text=" guests"/>
+                                    <Run Text="{x:Bind ViewModel.TotalGuests, Mode=OneWay}"/> guests
                                         </TextBlock>
                                     </StackPanel>
                                     <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
@@ -275,12 +274,16 @@
                                     </Grid>
                                     <Grid>
                                         <StackPanel x:Name="PropertyInfoPanel" Orientation="Vertical" Spacing="8" MaxWidth="250">
-                                            <TextBlock x:Name="txtPropertyName" Text="{x:Bind ViewModel.Item.Name, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" MaxLines="2"/>
-                                            <TextBlock x:Name="txtPropertyType" Text="{x:Bind ViewModel.Item.Type, Mode=OneWay}" Style="{ThemeResource DetailBodyStyle}" TextWrapping="Wrap"/>
-                                            <TextBlock x:Name="txtPropertyRateAndReview" Style="{ThemeResource DetailBodyStyle}" TextWrapping="Wrap">
-                                            <Run FontWeight="SemiBold" Text="4.89"/> (
-                                            <Run Text="232"/> reviews)
-                                            </TextBlock>
+                                            <TextBlock x:Name="txtPropertyName" Text="{x:Bind ViewModel.Item.Name, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" MaxLines="2"/>
+                                            <TextBlock x:Name="txtPropertyType" Text="{x:Bind ViewModel.Item.Type, Mode=OneWay}" Style="{ThemeResource DetailBodyStyle}"/>
+                                            <StackPanel Orientation="Horizontal" Spacing="4">
+                                                <FontIcon Glyph="&#xE735;" FontSize="12" VerticalAlignment="Center" Margin="0 -1 0 0"/>
+                                                <TextBlock x:Name="txtPropertyRate" Style="{ThemeResource DetailBodyStyle}" FontWeight="SemiBold"
+                                                           Text="{x:Bind ViewModel.Item.AverageRating, Mode=OneWay, Converter={StaticResource DecimalPlacesConverter}}"/>
+                                                <TextBlock x:Name="txtPropertyReview" Style="{ThemeResource DetailBodyStyle}">
+                                                    (<Run Text="{x:Bind ViewModel.Item.ReviewsCount, Mode=OneWay}"/> reviews)
+                                                </TextBlock>
+                                            </StackPanel>
                                         </StackPanel>
                                     </Grid>
                                 </StackPanel>

@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.ViewModels.Payment;
 using BookingManagementSystem.ViewModels.Account;
+using BookingManagementSystem.Core.Commons.Filters;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -34,6 +35,7 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     public IEnumerable<PropertyAmenity> PropertyAmenities { get; set; } = [];
     public IEnumerable<PropertyPolicy> PropertyPolicies { get; set; } = [];
     public IAsyncRelayCommand ProceedPaymentCommand { get; }
+    public PropertyFilter? ScheduleInformation { get; private set; }
 
     public RentalDetailViewModel(IRentalDetailFacade rentalDetailFacade, INavigationService navigationService)
     {
@@ -44,9 +46,12 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
 
     public async void OnNavigatedTo(object parameter)
     {
-        if (parameter is int Id)
+        if (parameter is IDictionary<string, object> paramDict &&
+            paramDict.TryGetValue("PropertyId", out var idObj) && idObj is int id &&
+            paramDict.TryGetValue("Filter", out var filterObj) && filterObj is PropertyFilter filter)
         {
-            Item = await _rentalDetailFacade.GetPropertyByIdAsync(Id);
+            ScheduleInformation = filter;
+            Item = await _rentalDetailFacade.GetPropertyByIdAsync(id);
 
             var reviews = await _rentalDetailFacade.GetReviewsAsync();
             Reviews = new ObservableCollection<Review>(reviews.OrderByDescending(r => r.CreatedAt));
@@ -106,7 +111,16 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
         // Simulate network delay
         await Task.Delay(400);
 
+        if (Item == null || ScheduleInformation == null) return;
+
+        // Wrap both Id and PropertyFilter into an object to pass
+        IDictionary<string, object> navigationParameters = new Dictionary<string, object>
+            {
+                { "PropertyId", Item.Id },
+                { "Filter", ScheduleInformation }
+            };
+
         // Navigate to Payment Page
-        _navigationService.NavigateTo(typeof(PaymentViewModel).FullName!, Item?.Id);
+        _navigationService.NavigateTo(typeof(PaymentViewModel).FullName!, navigationParameters);
     }
 }

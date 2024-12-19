@@ -1,17 +1,11 @@
 ﻿using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.Core.Contracts.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using BookingManagementSystem.Core.Models;
-using Windows.System;
-using System.Security.Cryptography.X509Certificates;
-using System.Collections.ObjectModel;
 using BookingManagementSystem.Core.Contracts.Facades;
-using BookingManagementSystem.Core.Facades;
 using BookingManagementSystem.Contracts.ViewModels;
 using CommunityToolkit.Mvvm.Input;
-using BookingManagementSystem.Core.Contracts.Messengers;
-using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
+using BookingManagementSystem.Core.Commons.Filters;
 
 namespace BookingManagementSystem.ViewModels.Payment;
 
@@ -19,7 +13,6 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IPaymentFacade _paymentFacade;
     private readonly INavigationService _navigationService;
-    public IEnumerable<Voucher> Vouchers { get; private set; } = [];
 
     [ObservableProperty]
     public Voucher? voucher;
@@ -29,6 +22,11 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
     
     [ObservableProperty]
     public int totalNights;
+
+    [ObservableProperty]
+    public int totalGuests;
+
+    public PropertyFilter? ScheduleInformation { get; private set; }
     public decimal TotalAmount { get; set; }
     public decimal TotalAmountBeforeFees { get; set; }
     public decimal TotalAmountAfterFees { get; set; }
@@ -38,6 +36,8 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
     public decimal PayPartLaterPrice => TotalAmount / 2;
     public DateTime PayLaterDate => DateTime.Now.AddDays(2);
     public bool IsVoucherApplied => Voucher != null;
+
+    public IEnumerable<Voucher> Vouchers { get; private set; } = [];
     public AsyncRelayCommand ConfirmAndPayCommand { get; }
 
     public PaymentViewModel(IPaymentFacade paymentFacade, INavigationService navigationService)
@@ -49,13 +49,17 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
 
     public async void OnNavigatedTo(object parameter)
     {
-        if (parameter is int Id)
+        if (parameter is IDictionary<string, object> paramDict &&
+            paramDict.TryGetValue("PropertyId", out var idObj) && idObj is int id &&
+            paramDict.TryGetValue("Filter", out var filterObj) && filterObj is PropertyFilter filter)
         {
-            Item = await _paymentFacade.GetPropertyByIdAsync(Id);
+            ScheduleInformation = filter;
+            Item = await _paymentFacade.GetPropertyByIdAsync(id);
             Vouchers = await _paymentFacade.GetVouchersAsync();
 
             // Initialize core properties
-            TotalNights = 5;
+            TotalGuests = ScheduleInformation.MinGuests ?? 1;
+            TotalNights = (int)(ScheduleInformation.CheckOutDate?.Subtract(ScheduleInformation.CheckInDate ?? DateTimeOffset.MinValue).TotalDays ?? 0);
             TotalAmountBeforeFees = Item?.PricePerNight * TotalNights ?? 0.0m;
             TotalAmountAfterFees = TotalAmountBeforeFees + Tax;
             TotalAmount = TotalAmountAfterFees;
