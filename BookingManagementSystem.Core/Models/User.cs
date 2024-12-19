@@ -52,7 +52,9 @@ public partial class User : INotifyPropertyChanged
 
     public string PasswordHash { get; set; }
 
-    public virtual ICollection<BadReport> BadReports { get; set; } = [];
+    public virtual ICollection<BadReport> BadReportHandledByAdmins { get; set; } = [];
+
+    public virtual ICollection<BadReport> BadReportUsers { get; set; } = [];
 
     public virtual ICollection<Booking> Bookings { get; set; } = [];
 

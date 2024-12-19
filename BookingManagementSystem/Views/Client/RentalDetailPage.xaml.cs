@@ -73,6 +73,13 @@ public sealed partial class RentalDetailPage : Page
 
     private async void btnFavourite_Click(object sender, RoutedEventArgs e)
     {
+        // Check if the user is logged in
+        if (LoginViewModel.CurrentUser == null)
+        {
+            await ShowContentDialogAsync("Login required", "Please login to submit this question!");
+            return;
+        }
+
         // Toggle the favourite button
         // Change the image source to the filled heart icon
         if (sender is FrameworkElement frameworkElement
@@ -85,6 +92,13 @@ public sealed partial class RentalDetailPage : Page
 
     private async void PropertyRatingControl_ValueChanged(RatingControl sender, object args)
     {
+        // Check if the user is logged in
+        if (LoginViewModel.CurrentUser == null)
+        {
+            await ShowContentDialogAsync("Login required", "Please login to submit this question!");
+            return;
+        }
+
         // Create an instance of ReviewDialog with the current rating value
         var dialog = new ReviewDialog(PropertyRatingControl.Value)
         {
@@ -117,6 +131,13 @@ public sealed partial class RentalDetailPage : Page
 
     private async void btnReport_Click(object sender, RoutedEventArgs e)
     {
+        // Check if the user is logged in
+        if (LoginViewModel.CurrentUser == null)
+        {
+            await ShowContentDialogAsync("Login required", "Please login to submit this question!");
+            return;
+        }
+
         // Create an instance of BadReportDialog
         var reportDialog = new BadReportDialog
         {
@@ -142,57 +163,64 @@ public sealed partial class RentalDetailPage : Page
                 EntityId = ViewModel.Item?.Id ?? 0,
             };
 
-            // Add to database
+            // Add to database and update the UI
             await ViewModel.AddBadReportAsync(badReport);
 
             // Show confirmation after sending report
-            _ = new ContentDialog
-            {
-                XamlRoot = XamlRoot,
-                Title = "Report result",
-                Content = $"Thank you for reporting this item.\n" +
-                $"We will review this and inform you as soon as possible!\n\n" +
-                $"Reason: {badReport.ReportReason} \n" +
-                $"Description: {badReport.Description} \n" +
-                $"Entity Type: {badReport.EntityType} \n" +
-                $"Entity Id: {badReport.EntityId} \n" +
-                $"Report Date: {badReport.ReportDate}",
-                CloseButtonText = "Ok",
-                DefaultButton = ContentDialogButton.Close
-            }.ShowAsync();
+            await ShowContentDialogAsync("Report result", "We will review this and inform you as soon as possible!");
         }
     }
 
     private async void btnSubmitQuestion_Click(object sender, RoutedEventArgs e)
     {
+        // Check if the question is empty
         if (string.IsNullOrWhiteSpace(tbAskPropertyQuestion.Text))
         {
-            _ = new ContentDialog
-            {
-                XamlRoot = XamlRoot,
-                Title = "Field is required",
-                Content = "Please enter a question before submitting!",
-                CloseButtonText = "Ok",
-                DefaultButton = ContentDialogButton.Close
-            }.ShowAsync();
+            await ShowContentDialogAsync("Field is required", "Please enter a question before submitting!");
             return;
         }
 
-        if (ViewModel.Item != null)
+        // Check if the user is logged in
+        if (LoginViewModel.CurrentUser == null)
         {
-            // Create a new QnA object
-            var qna = new QnA
-            {
-                Question = tbAskPropertyQuestion.Text,
-                PropertyId = ViewModel.Item?.Id ?? 0,
-                CustomerId = LoginViewModel.CurrentUser?.Id ?? 0,
-            };
-
-            // Add to database
-            await ViewModel.AddQnAAsync(qna);
+            await ShowContentDialogAsync("Login required", "Please login to submit this question!");
+            return;
         }
 
+        // Check if the property is fully loaded
+        if (ViewModel.Item == null)
+        {
+            await ShowContentDialogAsync("Submit Error", "The property is not loaded yet!");
+            return;
+        }
+
+        // Create a new QnA object
+        var qna = new QnA
+        {
+            Question = tbAskPropertyQuestion.Text,
+            PropertyId = ViewModel.Item.Id,
+            CustomerId = LoginViewModel.CurrentUser.Id,
+            HostId = ViewModel.Item.HostId,
+        };
+
+        // Add to database and update the UI
+        await ViewModel.AddQnAAsync(qna);
+
         // Clear the question text box
-        tbAskPropertyQuestion.Text = "";
+        tbAskPropertyQuestion.Text = string.Empty;
+    }
+
+    private async Task ShowContentDialogAsync(string title, string content)
+    {
+        var dialog = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = title,
+            Content = content,
+            CloseButtonText = "Ok",
+            DefaultButton = ContentDialogButton.Close
+        };
+
+        await dialog.ShowAsync();
     }
 }

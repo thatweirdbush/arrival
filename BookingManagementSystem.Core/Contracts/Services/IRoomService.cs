@@ -13,5 +13,5 @@ public interface IRoomService
     Task<PaginatedResult<Property>> GetAvailableRoomsAsync(PropertyFilter filter);
     Task<List<string>> SearchLocationsToStringAsync(string query, int maxRows = 10);
     Task<GeographicName?> SearchSingleLocationAsync(string locationName);
-    Task ToggleFavorite(Property property);
+    Task ToggleFavoriteAsync(Property property);
 }

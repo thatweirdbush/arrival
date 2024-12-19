@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.ViewModels.Account;
 
 namespace BookingManagementSystem.Views.Client;
 public sealed partial class HomePage : Page
@@ -49,14 +50,21 @@ public sealed partial class HomePage : Page
         DestinationAutoSuggestBox.Focus(FocusState.Programmatic);
     }
 
-    private void btnFavourite_Click(object sender, RoutedEventArgs e)
+    private async void btnFavourite_Click(object sender, RoutedEventArgs e)
     {
+        // Check if the user is logged in
+        if (LoginViewModel.CurrentUser == null)
+        {
+            await ShowContentDialogAsync("Login required", "Please login to submit this question!");
+            return;
+        }
+
         // Toggle the favourite button  
         // That change the image source to the filled heart icon  
         if (sender is FrameworkElement frameworkElement
             && frameworkElement.DataContext is Property property)
         {
-            ViewModel.ToggleFavorite(property);
+            await ViewModel.ToggleFavoriteAsync(property);
         }
     }
 
@@ -196,5 +204,19 @@ public sealed partial class HomePage : Page
         {
             await ViewModel.LoadPropertiesAsync();
         }
+    }
+
+    private async Task ShowContentDialogAsync(string title, string content)
+    {
+        var dialog = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = title,
+            Content = content,
+            CloseButtonText = "Ok",
+            DefaultButton = ContentDialogButton.Close
+        };
+
+        await dialog.ShowAsync();
     }
 }

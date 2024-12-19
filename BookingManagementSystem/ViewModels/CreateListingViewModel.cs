@@ -2,10 +2,8 @@
 using System.Windows.Input;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
-using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.ViewModels.Host;
 using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 using BookingManagementSystem.Views.Host.CreateListingSteps;
@@ -33,7 +31,11 @@ public partial class CreateListingViewModel : ObservableRecipient, INavigationAw
     public ObservableCollection<BaseStepViewModel> Stages = [];
 
     public Dictionary<string, Type> ViewModelToPageDictionary = [];
-    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
+
+    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;    
+
+    public ICommand GoForwardCommand { get; }
+    public ICommand GoBackwardCommand { get; }
 
     public CreateListingViewModel(IPropertyService propertyService, INavigationService navigationService)
     {
@@ -72,7 +74,6 @@ public partial class CreateListingViewModel : ObservableRecipient, INavigationAw
             // So new Property instance must be created by this ViewModel, which is Transient
             _propertyService.PropertyOnCreating = new()
             {
-                Id = new Random().Next(1000, 9999),
                 Status = PropertyStatus.InProgress,
             };
             // Initialize steps' ViewModel
@@ -118,15 +119,6 @@ public partial class CreateListingViewModel : ObservableRecipient, INavigationAw
             { nameof(ReviewListingViewModel), typeof(ReviewListingPage) },
             { nameof(PublishCelebrationViewModel), typeof(PublishCelebrationPage) },
         };
-    }
-
-    public ICommand GoForwardCommand
-    {
-        get;
-    }
-    public ICommand GoBackwardCommand
-    {
-        get;
     }
 
     public async void GoForward()

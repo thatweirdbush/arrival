@@ -45,5 +45,7 @@ public partial class BadReport
 
     public string AdminNotes { get; set; }
 
+    public virtual User HandledByAdmin { get; set; }
+
     public virtual User User { get; set; }
 }

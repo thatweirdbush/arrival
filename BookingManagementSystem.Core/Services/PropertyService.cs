@@ -12,10 +12,7 @@ public class PropertyService : IPropertyService
 {
     private readonly IRepository<Property> _propertyRepository;
 
-    public Property PropertyOnCreating
-    {
-        get; set;
-    }
+    public Property PropertyOnCreating { get; set; }
 
     public PropertyService(IRepository<Property> propertyRepository)
     {

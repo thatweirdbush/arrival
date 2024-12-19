@@ -30,18 +30,24 @@ public partial class ApplicationDbContext : DbContext
     {
         modelBuilder.Entity<Amenity>(entity =>
         {
+            entity.Property(e => e.Id).UseIdentityAlwaysColumn();
             entity.Property(e => e.Type).HasDefaultValue(AmenityType.Other);
         });
 
         modelBuilder.Entity<BadReport>(entity =>
         {
-            entity.HasOne(d => d.User).WithMany(p => p.BadReports)
+            entity.Property(e => e.Id).UseIdentityAlwaysColumn();
+
+            entity.HasOne(d => d.HandledByAdmin).WithMany(p => p.BadReportHandledByAdmins).HasForeignKey(d => d.HandledByAdminId);
+
+            entity.HasOne(d => d.User).WithMany(p => p.BadReportUsers)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<Booking>(entity =>
         {
+            entity.Property(e => e.Id).UseIdentityAlwaysColumn();
             entity.Property(e => e.Status).HasDefaultValue(BookingStatus.Pending);
 
             entity.HasOne(d => d.Property).WithMany(p => p.Bookings)
@@ -62,11 +68,14 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.ToTable("FAQs");
 
+            entity.Property(e => e.Id).UseIdentityAlwaysColumn();
             entity.Property(e => e.FAQCategory).HasColumnName("FAQCategory");
         });
 
         modelBuilder.Entity<Notification>(entity =>
         {
+            entity.Property(e => e.Id).UseIdentityAlwaysColumn();
+
             entity.HasOne(d => d.User).WithMany(p => p.Notifications)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
@@ -74,6 +83,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Payment>(entity =>
         {
+            entity.Property(e => e.Id).UseIdentityAlwaysColumn();
             entity.Property(e => e.Status).HasDefaultValue(PaymentStatus.Pending);
 
             entity.HasOne(d => d.Booking).WithMany(p => p.Payments)
@@ -89,6 +99,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasIndex(e => e.CountryId, "IX_Properties_CountryId");
 
+            entity.Property(e => e.Id).UseIdentityAlwaysColumn();
             entity.Property(e => e.IsAvailable).HasDefaultValue(true);
             entity.Property(e => e.IsFavourite).HasDefaultValue(false);
             entity.Property(e => e.IsPetFriendly).HasDefaultValue(false);
@@ -124,11 +135,15 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasIndex(e => e.PropertyId, "IX_PropertyPolicies_PropertyId");
 
+            entity.Property(e => e.Id).UseIdentityAlwaysColumn();
+
             entity.HasOne(d => d.Property).WithMany(p => p.PropertyPolicies).HasForeignKey(d => d.PropertyId);
         });
 
         modelBuilder.Entity<QnA>(entity =>
         {
+            entity.Property(e => e.Id).UseIdentityAlwaysColumn();
+
             entity.HasOne(d => d.Customer).WithMany(p => p.QnACustomers)
                 .HasForeignKey(d => d.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
@@ -142,6 +157,8 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Review>(entity =>
         {
+            entity.Property(e => e.Id).UseIdentityAlwaysColumn();
+
             entity.HasOne(d => d.Property).WithMany(p => p.Reviews)
                 .HasForeignKey(d => d.PropertyId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
@@ -153,7 +170,13 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
+            entity.Property(e => e.Id).UseIdentityAlwaysColumn();
             entity.Property(e => e.IsEliteHost).HasDefaultValue(false);
+        });
+
+        modelBuilder.Entity<Voucher>(entity =>
+        {
+            entity.Property(e => e.Id).UseIdentityAlwaysColumn();
         });
 
         OnModelCreatingPartial(modelBuilder);

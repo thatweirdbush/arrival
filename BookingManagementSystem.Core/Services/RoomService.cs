@@ -138,7 +138,7 @@ public class RoomService : IRoomService
         return locations.FirstOrDefault();
     }
 
-    public Task ToggleFavorite(Property property)
+    public Task ToggleFavoriteAsync(Property property)
     {
         property.IsFavourite = !property.IsFavourite;
         property.UpdatedAt = DateTime.Now.ToUniversalTime();

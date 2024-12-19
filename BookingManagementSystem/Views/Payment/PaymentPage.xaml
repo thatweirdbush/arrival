@@ -256,7 +256,6 @@
                                         <TextBlock Text="Confirm and pay" Visibility="{x:Bind ViewModel.ConfirmAndPayCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"/>
                                         <ProgressRing x:Name="ButtonProgressRing" IsActive="True"
                                                       Visibility="{x:Bind ViewModel.ConfirmAndPayCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
                                     </Grid>
                                 </Button>
                             </Grid>

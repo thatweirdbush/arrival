@@ -6,6 +6,7 @@ using BookingManagementSystem.Core.Contracts.Facades;
 using CommunityToolkit.Mvvm.Input;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.ViewModels.Payment;
+using BookingManagementSystem.ViewModels.Account;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -28,7 +29,6 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
 
     [ObservableProperty]
     private bool isAmenitiesEmpty;
-
     public ObservableCollection<Review> Reviews { get; set; } = [];
     public ObservableCollection<QnA> QnAs { get; set; } = [];
     public IEnumerable<PropertyAmenity> PropertyAmenities { get; set; } = [];
@@ -49,10 +49,10 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
             Item = await _rentalDetailFacade.GetPropertyByIdAsync(Id);
 
             var reviews = await _rentalDetailFacade.GetReviewsAsync();
-            Reviews = new ObservableCollection<Review>(reviews);
+            Reviews = new ObservableCollection<Review>(reviews.OrderByDescending(r => r.CreatedAt));
 
             var qnas = await _rentalDetailFacade.GetQnAsAsync();
-            QnAs = new ObservableCollection<QnA>(qnas);
+            QnAs = new ObservableCollection<QnA>(qnas.OrderByDescending(q => q.CreatedAt));
 
             PropertyPolicies = await _rentalDetailFacade.GetPropertyPoliciesAsync();
             PropertyAmenities = await _rentalDetailFacade.GetPropertyAmenitiesAsync();
@@ -83,7 +83,11 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     public async Task AddQnAAsync(QnA qna)
     {
         await _rentalDetailFacade.AddQnAAsync(qna);
+
+        // Set the current user as the customer for immediate UI update
+        qna.Customer = LoginViewModel.CurrentUser;
         QnAs.Insert(0, qna);
+
         UpdateObservableProperties();
     }
 

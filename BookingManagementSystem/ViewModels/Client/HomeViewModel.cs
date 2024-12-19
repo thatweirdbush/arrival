@@ -159,9 +159,9 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         return _roomService.SearchLocationsToStringAsync(query);
     }
 
-    public Task ToggleFavorite(Property property)
+    public Task ToggleFavoriteAsync(Property property)
     {
-        return _roomService.ToggleFavorite(property);
+        return _roomService.ToggleFavoriteAsync(property);
     }
 
     public async Task RefreshAsync()
