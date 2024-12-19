@@ -6,6 +6,7 @@ using BookingManagementSystem.Contracts.Services;
 using CommunityToolkit.WinUI.UI.Animations;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Views.Forms;
+using BookingManagementSystem.ViewModels.Account;
 
 namespace BookingManagementSystem.Views.Client;
 public sealed partial class RentalDetailPage : Page
@@ -56,8 +57,6 @@ public sealed partial class RentalDetailPage : Page
         }
     }
 
-
-
     private void CalendarViewDayItemChanging(CalendarView sender, CalendarViewDayItemChangingEventArgs args)
     {
         if (args.Item.Date < DateTimeOffset.Now.Date)
@@ -72,7 +71,7 @@ public sealed partial class RentalDetailPage : Page
         CalendarView.SelectedDates.Clear();
     }
 
-    private void btnFavourite_Click(object sender, RoutedEventArgs e)
+    private async void btnFavourite_Click(object sender, RoutedEventArgs e)
     {
         // Toggle the favourite button
         // Change the image source to the filled heart icon
@@ -80,6 +79,7 @@ public sealed partial class RentalDetailPage : Page
             && frameworkElement.DataContext is Property property)
         {
             property.IsFavourite = !property.IsFavourite;
+            await ViewModel.UpdateAsync(property);
         }
     }
 
@@ -101,33 +101,17 @@ public sealed partial class RentalDetailPage : Page
             // Create a new Review object
             var review = new Review
             {
-                UserId = 1,  // Hardcoded user id for now
+                UserId = LoginViewModel.CurrentUser?.Id ?? 0,
                 Rating = rating,
                 Comment = comment,
                 PropertyId = ViewModel.Item?.Id ?? 0,
             };
-
-            // Show the successful dialog
-            _ = new ContentDialog
-            {
-                XamlRoot = XamlRoot,
-                Title = "Review submission result",
-                Content = $"Your review has been submitted successfully!\n\n" +
-                $"Rating: {review.Rating} star(s)\n" +
-                $"Comment: {review.Comment}\n" +
-                $"Property Id: {review.PropertyId}\n",
-                CloseButtonText = "Ok",
-                DefaultButton = ContentDialogButton.Close
-            }.ShowAsync();
 
             // Update real value for the RatingControl
             PropertyRatingControl.Value = rating;
 
             // Add to database
             await ViewModel.AddReviewAsync(review);
-
-            // Add the review to the Reviews list
-            ViewModel.Reviews.Insert(0, review);
         }
     }
 
@@ -151,7 +135,7 @@ public sealed partial class RentalDetailPage : Page
             // Create a new BadReport object
             var badReport = new BadReport
             {
-                UserId = 1,  // Hardcoded user id for now
+                UserId = LoginViewModel.CurrentUser?.Id ?? 0,
                 ReportReason = reportReason,
                 Description = description,
                 EntityType = entityType,
@@ -200,24 +184,12 @@ public sealed partial class RentalDetailPage : Page
             var qna = new QnA
             {
                 Question = tbAskPropertyQuestion.Text,
-                PropertyId = ViewModel.Item.Id
+                PropertyId = ViewModel.Item?.Id ?? 0,
+                CustomerId = LoginViewModel.CurrentUser?.Id ?? 0,
             };
 
             // Add to database
             await ViewModel.AddQnAAsync(qna);
-
-            // Add the question to the QnA list
-            ViewModel.QnAs.Insert(0, qna);
-
-            // Show the successful dialog
-            _ = new ContentDialog
-            {
-                XamlRoot = XamlRoot,
-                Title = "Question submission result",
-                Content = "Your question has been submitted successfully!",
-                CloseButtonText = "Ok",
-                DefaultButton = ContentDialogButton.Close
-            }.ShowAsync();
         }
 
         // Clear the question text box

@@ -137,11 +137,10 @@
                                     <StackPanel x:Name="ButtonPaymentTypeGrid">
                                         <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                                             Background="Transparent" CornerRadius="12 12 0 0" Padding="12">
-                                            <RadioButton x:Name="btnPayNow"
+                                            <RadioButton x:Name="btnPayNow" IsChecked="True"
                                                      HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                                                      VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                     FlowDirection="RightToLeft" Background="Transparent"
-                                                     GroupName="PaymentOptions">
+                                                     FlowDirection="RightToLeft" GroupName="PaymentOptions">
                                                 <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap">
                                                     <Run Text="Pay"/>
                                                     <Run Text="{x:Bind ViewModel.TotalAmount, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}"/>
@@ -154,8 +153,7 @@
                                             <RadioButton x:Name="btnPayLater"
                                                      HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                                                      VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                     FlowDirection="RightToLeft" Background="Transparent"
-                                                     GroupName="PaymentOptions">
+                                                     FlowDirection="RightToLeft" GroupName="PaymentOptions">
                                                 <StackPanel Spacing="6">
                                                     <TextBlock Text="Pay part now, part later" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap"/>
                                                     <TextBlock Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap" FlowDirection="LeftToRight">
@@ -272,7 +270,7 @@
                                     <Grid Height="110" Width="116" CornerRadius="12">
                                         <Image Stretch="UniformToFill" HorizontalAlignment="Center">
                                             <Image.Source>
-                                                <BitmapImage UriSource="{x:Bind ViewModel.Item.ImageThumbnail, Mode=OneWay}" DecodePixelHeight="110"/>
+                                                <BitmapImage UriSource="{x:Bind ViewModel.Item.ImageThumbnail, Mode=OneWay}" DecodePixelHeight="180"/>
                                             </Image.Source>
                                         </Image>
                                     </Grid>

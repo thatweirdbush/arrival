@@ -100,7 +100,7 @@ public partial class ShellViewModel : ObservableRecipient
 
     public void OnNotificationListChanged(int eventParameter = -1)
     {
-        IsNotificationListEmpty = Notifications.Count == 0;
+        IsNotificationListEmpty = !Notifications.Any();
 
         if (eventParameter == -1)
         {

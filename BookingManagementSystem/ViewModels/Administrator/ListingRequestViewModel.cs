@@ -133,6 +133,6 @@ public partial class ListingRequestViewModel : ObservableRecipient, INavigationA
 
     private void CheckPropertyListCount()
     {
-        IsPropertyListEmpty = PriorityProperties.Count == 0;
+        IsPropertyListEmpty = !PriorityProperties.Any();
     }
 }

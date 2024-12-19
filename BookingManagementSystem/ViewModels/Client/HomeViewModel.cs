@@ -92,7 +92,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
 
     private void CheckListCount()
     {
-        IsPropertyListEmpty = Properties.Count == 0;
+        IsPropertyListEmpty = !Properties.Any();
     }
 
     // General methods for loading properties data

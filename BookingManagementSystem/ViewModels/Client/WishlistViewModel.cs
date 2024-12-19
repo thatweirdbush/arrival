@@ -91,7 +91,7 @@ public partial class WishlistViewModel : ObservableRecipient, INavigationAware
 
     private void CheckPropertyListCount()
     {
-        IsPropertyListEmpty = Properties.Count == 0;
+        IsPropertyListEmpty = !Properties.Any();
     }
 
     public async Task RemoveRangeAsync(IEnumerable<Property> properties)

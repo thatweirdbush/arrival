@@ -122,7 +122,7 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
 
     private void CheckListCount()
     {
-        IsPropertyListEmpty = Properties.Count == 0;
+        IsPropertyListEmpty = !Properties.Any();
     }
 
     public void Search(string query)

@@ -29,8 +29,8 @@
                 <StackPanel Orientation="Horizontal" Spacing="16">
                     <PersonPicture DisplayName="{x:Bind UserId}" Width="40" Height="40"/>
                     <StackPanel Spacing="2" VerticalAlignment="Center">
-                        <TextBlock Text="John Doe" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
-                        <TextBlock Text="Manchester, Michigan" Style="{ThemeResource BodyTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind User.FullName}" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind User.Address}" Style="{ThemeResource BodyTextBlockStyle}"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
@@ -48,7 +48,7 @@
                 <StackPanel Orientation="Horizontal" Spacing="16">
                     <PersonPicture DisplayName="{x:Bind CustomerId}" Width="40" Height="40"/>
                     <StackPanel Spacing="2" VerticalAlignment="Center">
-                        <TextBlock Text="John Doe" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind Customer.FullName}" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
                         <TextBlock Text="{x:Bind CreatedAt.ToLongDateString()}" Style="{ThemeResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>
@@ -144,10 +144,12 @@
                             FontWeight="SemiBold"
                             ToolTipService.ToolTip="Place your reservation now">
                             <Grid>
-                                <TextBlock Text="Book now" Visibility="{x:Bind ViewModel.ProceedPaymentCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"/>
+                                <StackPanel Orientation="Horizontal" Spacing="8" Visibility="{x:Bind ViewModel.ProceedPaymentCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                                    <FontIcon Glyph="&#xF8AA;"/>
+                                    <TextBlock Text="Book now" VerticalAlignment="Center"/>
+                                </StackPanel>
                                 <ProgressRing x:Name="ButtonProgressRing" IsActive="True"
                                               Visibility="{x:Bind ViewModel.ProceedPaymentCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
                             </Grid>
                         </Button>
                     </Grid>
@@ -157,23 +159,37 @@
                     <Grid x:Name="AmenitiesContent">
                         <StackPanel Spacing="12">
                             <TextBlock Text="What this place offers" FontSize="26" FontWeight="Bold"/>
-                            <controls:AdaptiveGridView
-                                DesiredWidth="240"
-                                ItemHeight="60" Padding="0"               
-                                x:Name="AmenityGridView"
-                                ItemsSource="{x:Bind ViewModel.DestinationTypeSymbols, Mode=OneWay}"
-                                FlowDirection="LeftToRight"
-                                StretchContentForSingleRow="False"
-                                ItemContainerStyle="{ThemeResource GridViewItemRevealStyle}">
-                                <controls:AdaptiveGridView.ItemTemplate>
-                                    <DataTemplate x:DataType = "models:DestinationTypeSymbol">
-                                        <StackPanel Orientation="Horizontal" Spacing="12">
-                                            <Image Stretch="UniformToFill" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind ImagePath}" Margin="4"/>
-                                            <TextBlock Text="{x:Bind Name}" VerticalAlignment="Center" FontSize="16" FontWeight="SemiBold"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </controls:AdaptiveGridView.ItemTemplate>
-                            </controls:AdaptiveGridView>
+                            <Grid>
+                                <StackPanel x:Name="EmptyAmenityListPanel" Spacing="6" Margin="0 8 0 32"
+                                            Visibility="{x:Bind ViewModel.IsAmenitiesEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <FontIcon Glyph="&#xF133;" FontSize="26" Margin="0 0 0 6" />
+                                    <TextBlock Text="No amenities listed yet" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center" />
+                                    <TextBlock Text="But we're sure they have some great ones!" Style="{ThemeResource DetailBodyBaseMediumStyle}" HorizontalAlignment="Center" />
+                                </StackPanel>
+                                <controls:AdaptiveGridView
+                                    DesiredWidth="240"
+                                    ItemHeight="60" Padding="0"
+                                    x:Name="AmenityGridView"
+                                    ItemsSource="{x:Bind ViewModel.PropertyAmenities, Mode=OneWay}"
+                                    FlowDirection="LeftToRight"
+                                    StretchContentForSingleRow="False"
+                                    ItemContainerStyle="{ThemeResource GridViewItemRevealStyle}"
+                                    Visibility="{x:Bind ViewModel.IsAmenitiesEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+                                    <controls:AdaptiveGridView.ItemTemplate>
+                                        <DataTemplate x:DataType = "models:PropertyAmenity">
+                                            <Grid ToolTipService.ToolTip="{x:Bind Amenity.Description}">
+                                                <StackPanel Orientation="Horizontal" Spacing="12">
+                                                    <Image Stretch="UniformToFill" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind Amenity.ImagePath}" Margin="4"/>
+                                                    <TextBlock Text="{x:Bind Amenity.Name}" VerticalAlignment="Center" FontSize="16" FontWeight="SemiBold"/>
+                                                </StackPanel>
+                                                <Grid HorizontalAlignment="Right" Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" CornerRadius="100" Width="22" Height="22" Margin="0 0 12 0">
+                                                    <TextBlock Text="{x:Bind Quantity}" Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" FontWeight="SemiBold"/>
+                                                </Grid>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </controls:AdaptiveGridView.ItemTemplate>
+                                </controls:AdaptiveGridView>
+                            </Grid>
 
                             <Grid x:Name="StayScheduleContent">
                                 <Grid.RowDefinitions>
@@ -202,25 +218,33 @@
                                 <StackPanel Spacing="18">
                                     <Line Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center" Margin="0 18 0 0"/>
                                     <TextBlock Text="Things to know" FontSize="26" FontWeight="Bold"/>
-                                    <controls:AdaptiveGridView
-                                        DesiredWidth="240"
-                                        ItemHeight="80" Padding="0"               
-                                        x:Name="PropertyPoliciesGridView"
-                                        ItemsSource="{x:Bind ViewModel.PropertyPolicies, Mode=OneWay}" ItemContainerStyle="{ThemeResource GridViewItemRevealStyle}"
-                                        FlowDirection="LeftToRight"
-                                        StretchContentForSingleRow="False">
-                                        <controls:AdaptiveGridView.ItemTemplate>
-                                            <DataTemplate x:DataType = "models:PropertyPolicy">
-                                                <StackPanel Orientation="Horizontal" Spacing="12" Padding="12">
-                                                    <PersonPicture DisplayName="{x:Bind Name}" Width="40" Height="40"/>
-                                                    <StackPanel Spacing="4" VerticalAlignment="Center">
-                                                        <TextBlock Text="{x:Bind Name}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap"/>
-                                                        <TextBlock Text="{x:Bind Description}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" MaxWidth="180" Padding="0 0 12 0"/>
+                                    <Grid>
+                                        <StackPanel x:Name="EmptyPolicyListPanel" Spacing="6" Margin="0 0 0 60"
+                                            Visibility="{x:Bind ViewModel.IsPropertyPoliciesEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <FontIcon Glyph="&#xE776;" FontSize="26" Margin="0 0 0 4" />
+                                            <TextBlock Text="No policies available" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center" />
+                                            <TextBlock Text="Contact the host directly for more information!" Style="{ThemeResource DetailBodyBaseMediumStyle}" HorizontalAlignment="Center" />
+                                        </StackPanel>
+                                        <controls:AdaptiveGridView
+                                            DesiredWidth="240"
+                                            ItemHeight="80" Padding="0"               
+                                            x:Name="PropertyPoliciesGridView"
+                                            ItemsSource="{x:Bind ViewModel.PropertyPolicies, Mode=OneWay}" ItemContainerStyle="{ThemeResource GridViewItemRevealStyle}"
+                                            FlowDirection="LeftToRight"
+                                            StretchContentForSingleRow="False">
+                                            <controls:AdaptiveGridView.ItemTemplate>
+                                                <DataTemplate x:DataType = "models:PropertyPolicy">
+                                                    <StackPanel Orientation="Horizontal" Spacing="12" Padding="12">
+                                                        <PersonPicture DisplayName="{x:Bind Name}" Width="40" Height="40"/>
+                                                        <StackPanel Spacing="4" VerticalAlignment="Center">
+                                                            <TextBlock Text="{x:Bind Name}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                                            <TextBlock Text="{x:Bind Description}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" MaxWidth="180" Padding="0 0 12 0"/>
+                                                        </StackPanel>
                                                     </StackPanel>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </controls:AdaptiveGridView.ItemTemplate>
-                                    </controls:AdaptiveGridView>
+                                                </DataTemplate>
+                                            </controls:AdaptiveGridView.ItemTemplate>
+                                        </controls:AdaptiveGridView>
+                                    </Grid>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
@@ -256,9 +280,9 @@
                             <Line x:Name="LineRatingReview" Stroke="Gray" X1="0" Y1="0" X2="240" Y2="0" StrokeThickness="1" HorizontalAlignment="Center"/>
                             <TextBlock Text="Guest reviews" FontSize="26" FontWeight="Bold" Padding="0 10 0 0"/>
                             <Grid>
-                                <StackPanel x:Name="EmptyReviewListPanel" Spacing="6" Margin="0 0 0 8"
+                                <StackPanel x:Name="EmptyReviewListPanel" Spacing="6" Margin="0 8 0 12"
                                             Visibility="{x:Bind ViewModel.IsReviewListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    <FontIcon Glyph="&#xE7E7;" FontSize="26" />
+                                    <FontIcon Glyph="&#xE7E7;" FontSize="26"/>
                                     <TextBlock Text="No reviews yet" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center" />
                                     <TextBlock Text="Be the first to review this place!" Style="{ThemeResource DetailBodyBaseMediumStyle}" HorizontalAlignment="Center" />
                                 </StackPanel>
@@ -276,9 +300,9 @@
                             <TextBlock Text="Travelers are asking" FontSize="26" FontWeight="Bold" Padding="0 10 0 0"/>
 
                             <Grid>
-                                <StackPanel x:Name="EmptyQnAListPanel" Spacing="6" Margin="0 8 0 8"
+                                <StackPanel x:Name="EmptyQnAListPanel" Spacing="6" Margin="0 18 0 12"
                                             Visibility="{x:Bind ViewModel.IsQnAListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    <FontIcon Glyph="&#xE8F2;" FontSize="26" />
+                                    <FontIcon Glyph="&#xE8F2;" FontSize="26" Margin="0 0 0 4" />
                                     <TextBlock Text="No questions yet" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center" />
                                     <TextBlock Text="Be the first to ask questions about this place!" Style="{ThemeResource DetailBodyBaseMediumStyle}" HorizontalAlignment="Center" />
                                 </StackPanel>
@@ -299,7 +323,6 @@
                                     <TextBox x:Name="tbAskPropertyQuestion" PlaceholderText="e.g. do you offer room service?" Height="80"/>
                                     <Button 
                                         x:Name="btnSubmitQuestion"
-                                        Content="Submit"
                                         HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                         Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                         Foreground="{ThemeResource SystemControlBackgroundAltHighBrush}"
@@ -307,7 +330,12 @@
                                         Click="btnSubmitQuestion_Click"
                                         FontWeight="SemiBold"
                                         Padding="18"
-                                        ToolTipService.ToolTip="Place your reservation now"/>
+                                        ToolTipService.ToolTip="Place your reservation now">
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <FontIcon Glyph="&#xE725;" FontSize="18"/>
+                                            <TextBlock Text="Submit" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>

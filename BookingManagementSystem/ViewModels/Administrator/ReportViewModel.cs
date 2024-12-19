@@ -71,7 +71,7 @@ public partial class ReportViewModel : ObservableRecipient, INavigationAware
 
     private void CheckListCount()
     {
-        IsListEmpty = BadReports.Count == 0;
+        IsListEmpty = !BadReports.Any();
     }
 
     public async Task RemoveReportAsync(BadReport report)

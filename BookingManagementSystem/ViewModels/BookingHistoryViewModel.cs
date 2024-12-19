@@ -76,6 +76,6 @@ public partial class BookingHistoryViewModel : ObservableRecipient, INavigationA
 
     private void CheckBookingListCount()
     {
-        IsBookingListEmpty = Bookings.Count == 0;
+        IsBookingListEmpty = !Bookings.Any();
     }
 }

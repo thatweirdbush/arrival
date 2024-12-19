@@ -79,7 +79,7 @@ public partial class NotificationViewModel : ObservableRecipient, INavigationAwa
 
     public void CheckListCount()
     {
-        IsListEmpty = Notifications.Count == 0;
+        IsListEmpty = !Notifications.Any();
     }
 
     public async Task RemoveRangeAsync(IEnumerable<Notification> notifications)

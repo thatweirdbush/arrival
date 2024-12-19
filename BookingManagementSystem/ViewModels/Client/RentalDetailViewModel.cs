@@ -23,10 +23,15 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     [ObservableProperty]
     private bool isQnAListEmpty;
 
+    [ObservableProperty]
+    private bool isPropertyPoliciesEmpty;
+
+    [ObservableProperty]
+    private bool isAmenitiesEmpty;
+
     public ObservableCollection<Review> Reviews { get; set; } = [];
     public ObservableCollection<QnA> QnAs { get; set; } = [];
-    public IEnumerable<Amenity> Amenities { get; set; } = [];
-    public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = [];
+    public IEnumerable<PropertyAmenity> PropertyAmenities { get; set; } = [];
     public IEnumerable<PropertyPolicy> PropertyPolicies { get; set; } = [];
     public IAsyncRelayCommand ProceedPaymentCommand { get; }
 
@@ -49,9 +54,8 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
             var qnas = await _rentalDetailFacade.GetQnAsAsync();
             QnAs = new ObservableCollection<QnA>(qnas);
 
-            DestinationTypeSymbols = await _rentalDetailFacade.GetDestinationTypeSymbolsAsync();
             PropertyPolicies = await _rentalDetailFacade.GetPropertyPoliciesAsync();
-            Amenities = await _rentalDetailFacade.GetPropertyAmenitiesAsync();
+            PropertyAmenities = await _rentalDetailFacade.GetPropertyAmenitiesAsync();
 
             UpdateObservableProperties();
         }
@@ -63,25 +67,34 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
 
     public void UpdateObservableProperties()
     {
-        IsReviewListEmpty = Reviews.Count == 0;
-        IsQnAListEmpty = QnAs.Count == 0;
+        IsReviewListEmpty = !Reviews.Any();
+        IsQnAListEmpty = !QnAs.Any();
+        IsPropertyPoliciesEmpty = !PropertyPolicies.Any();
+        IsAmenitiesEmpty = !PropertyAmenities.Any();
     }
 
     public async Task AddReviewAsync(Review review)
     {
         await _rentalDetailFacade.AddReviewAsync(review);
+        Reviews.Insert(0, review);
         UpdateObservableProperties();
     }
 
     public async Task AddQnAAsync(QnA qna)
     {
         await _rentalDetailFacade.AddQnAAsync(qna);
+        QnAs.Insert(0, qna);
         UpdateObservableProperties();
     }
 
     public Task AddBadReportAsync(BadReport badReport)
     {
         return _rentalDetailFacade.AddBadReportAsync(badReport);
+    }
+
+    public Task UpdateAsync(Property property)
+    {
+        return _rentalDetailFacade.UpdateAsync(property);
     }
 
     public async Task ProceedPaymentAsync()
