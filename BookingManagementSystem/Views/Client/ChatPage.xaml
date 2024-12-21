@@ -35,7 +35,13 @@
             <AppBarButton Icon="Refresh" Label="Start Over" Command="{Binding StartNewConversationCommand}" />
         </CommandBar>
 
-        <ListView ItemsSource="{Binding Messages}" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1" Padding="10" Margin="10" Background="#F0F0F0">
+        <ListView ItemsSource="{Binding Messages}" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                  Grid.Row="1" 
+                  Padding="10"
+                  Margin="10" 
+                  Background="#F0F0F0"
+                  x:Name="MessagesListView">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="0,5">

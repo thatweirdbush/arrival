@@ -4,12 +4,18 @@ using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
 public partial class ChatViewModel : ObservableRecipient
 {
     private readonly ChatBotService _chatBotService;
+
+    // Sự kiện thông báo cần cuộn xuống cuối
+    public event Action? ScrollToBottomRequested;
 
     private string _userInput = string.Empty;
     public string UserInput
@@ -151,8 +157,11 @@ public partial class ChatViewModel : ObservableRecipient
                 IsUserMessage = false,
                 Timestamp = DateTime.Now
             };
+
+            // Gọi một sự kiện để thông báo UI cuộn xuống cuối
+            ScrollToBottomRequested?.Invoke();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // Xử lý lỗi và thông báo tới người dùng
             Messages.Add(new Message
