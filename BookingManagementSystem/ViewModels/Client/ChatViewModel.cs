@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -27,7 +28,11 @@ public partial class ChatViewModel : ObservableRecipient
 
     public ObservableCollection<Message> Messages { get; }
 
+    public ObservableCollection<string> SuggestedQuestions { get; }
+
     public RelayCommand SendMessageAsyncCommand { get; }
+
+    public ICommand SelectSuggestedQuestionCommand { get; }
 
     public ChatViewModel()
     {
@@ -37,11 +42,50 @@ public partial class ChatViewModel : ObservableRecipient
         // Danh sách tin nhắn
         Messages = new ObservableCollection<Message>();
 
+        // Câu hỏi gợi ý
+        SuggestedQuestions = new ObservableCollection<string>
+        {
+            "How do I make a booking?",
+            "What is your cancellation policy?",
+            "Do you have any special offers?",
+            "What are your customer support hours?"
+        };
+
         //SendMessageAsyncCommand = new RelayCommand(async () => await SendMessageAsync());
         SendMessageAsyncCommand = new RelayCommand(
             async () => await SendMessageAsync(),
             () => !string.IsNullOrWhiteSpace(UserInput) && !IsSendingMessage
         );
+
+        // Thêm tin nhắn chào mừng từ bot
+        Messages.Add(new Message
+        {
+            Content = "Welcome to Arrival Hotel Booking! I am here to help you with bookings, cancellations, and more. What can I assist you with?",
+            IsUserMessage = false,
+            Timestamp = DateTime.Now
+        });
+
+        SelectSuggestedQuestionCommand = new RelayCommand<string>(OnSelectSuggestedQuestion);
+    }
+
+    private void OnSelectSuggestedQuestion(string question)
+    {
+        // Kiểm tra nếu có tin nhắn nhập tay, nếu có thì lưu vào Messages
+        if (!string.IsNullOrEmpty(UserInput))
+        {
+            Messages.Add(new Message
+            {
+                Content = UserInput,
+                IsUserMessage = true,
+                Timestamp = DateTime.Now
+            });
+        }
+
+        // Gán câu hỏi gợi ý vào UserInput
+        UserInput = question;
+
+        // Gọi lệnh gửi câu hỏi tới chatbot
+        SendMessageAsyncCommand.Execute(null);
     }
 
 
@@ -54,12 +98,17 @@ public partial class ChatViewModel : ObservableRecipient
         {
             // Thêm tin nhắn của người dùng vào danh sách
             var currentInput = UserInput;
-            Messages.Add(new Message
+
+            // Nếu có tin nhắn người dùng, gửi nó và thêm vào danh sách
+            if (!string.IsNullOrEmpty(currentInput))
             {
-                Content = currentInput,
-                IsUserMessage = true,
-                Timestamp = DateTime.Now
-            });
+                Messages.Add(new Message
+                {
+                    Content = currentInput,
+                    IsUserMessage = true,
+                    Timestamp = DateTime.Now
+                });
+            }
 
             UserInput = string.Empty; // Xóa nội dung TextBox sau khi gửi
 
@@ -91,7 +140,6 @@ public partial class ChatViewModel : ObservableRecipient
                 IsUserMessage = false,
                 Timestamp = DateTime.Now
             });
-            Console.WriteLine(ex.Message);
         }
         finally
         {

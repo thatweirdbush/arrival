@@ -5,7 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helper="using:BookingManagementSystem.Helpers" 
-    xmlns:vm="using:BookingManagementSystem.ViewModels.Client"
+    xmlns:vm="using:BookingManagementSystem.ViewModels.Client" 
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -14,6 +15,7 @@
         <helper:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
         <helper:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
         <helper:StringToBoolConverter x:Key="StringToBoolConverter"/>
+        <helper:HorizontalAlignmentConverter x:Key="HorizontalAlignmentConverter"/>
     </Page.Resources>
 
     <Page.DataContext>
@@ -24,6 +26,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <ListView ItemsSource="{Binding Messages}" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="0" Padding="10" Margin="10" Background="#F0F0F0">
@@ -31,10 +34,8 @@
                 <DataTemplate>
                     <Grid Margin="0,5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <!-- Tin nhắn -->
                             <ColumnDefinition Width="*"/>
-                            <!-- Khoảng cách -->
+                            <!-- Tin nhắn -->
                             <ColumnDefinition Width="Auto"/>
                             <!-- Thời gian -->
                         </Grid.ColumnDefinitions>
@@ -44,23 +45,47 @@
                                 Background="{Binding IsUserMessage, Converter={StaticResource BoolToBrushConverter}}"
                                 CornerRadius="10" 
                                 Padding="10" 
-                                MaxWidth="300">
+                                MaxWidth="350"
+                                HorizontalAlignment="{Binding IsUserMessage, Converter={StaticResource HorizontalAlignmentConverter}}"
+                                VerticalAlignment="Top">
                             <TextBlock Text="{Binding Content}" TextWrapping="Wrap"/>
                         </Border>
 
                         <!-- Thời gian tin nhắn -->
-                        <TextBlock Grid.Column="2" 
-                                   Text="{Binding Timestamp, Converter={StaticResource DateTimeToStringConverter}}" 
-                                   Margin="10,0,0,0"
-                                   VerticalAlignment="Center"
-                                   Foreground="Gray"
-                                   FontSize="12"/>
+                        <TextBlock Grid.Column="1" 
+                           Text="{Binding Timestamp, Converter={StaticResource DateTimeToStringConverter}}" 
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"
+                           Foreground="Gray"
+                           FontSize="12"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
-        <Grid Grid.Row="1" Background="#FFFFFF" Padding="10" Margin="10,0,10,10">
+        <!-- Bong bóng gợi ý -->
+        <ItemsControl ItemsSource="{Binding SuggestedQuestions}" Grid.Row="1" Margin="10">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <controls:WrapPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="#E0E0E0" CornerRadius="10" Padding="10" Margin="5">
+                        <TextBlock Text="{Binding}" 
+                                   Tapped="OnSuggestedQuestionTapped"
+                                   TextWrapping="Wrap"
+                                   FontSize="14"
+                                   Foreground="Black"
+                                   TextTrimming="WordEllipsis"
+                                   Width="200"/> 
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <Grid Grid.Row="2" Background="#FFFFFF" Padding="10" Margin="10,0,10,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>

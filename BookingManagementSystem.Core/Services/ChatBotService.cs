@@ -17,11 +17,15 @@ public class ChatBotService
 
     private readonly List<string> _context;  // Lưu trữ ngữ cảnh cuộc trò chuyện
 
+    private const string PreContext = "You are a virtual assistant for the Arrival Hotel Booking platform. " +
+                                       "Your job is to assist users with booking, cancellations, pricing policies, and offers. " +
+                                       "If a user asks about you, introduce yourself as a dedicated assistant for Arrival.";
+
     public ChatBotService(string apiKey)
     {
         _httpClient = new HttpClient();
         _apiKey = apiKey;
-        _context = new List<string>();
+        _context = new List<string> { PreContext };
     }
 
     public async Task<string> AskAsync(string question)
@@ -71,17 +75,17 @@ public class ChatBotService
                 // Thêm câu trả lời vào ngữ cảnh
                 _context.Add("Bot: " + answer);
 
-                return answer ?? "Không nhận được phản hồi từ bot.";
+                return answer ?? "No response from the bot.";
             }
             else
             {
-                return "Không tìm thấy thông tin cần thiết trong phản hồi từ bot.";
+                return "Bot response is missing.";
             }
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Error: {ex.Message}");
-            return "Đã xảy ra lỗi khi giao tiếp với bot.";
+            return "An error occurred while communicating with the bot.";
         }
     }
 
