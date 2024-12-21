@@ -24,12 +24,18 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <ListView ItemsSource="{Binding Messages}" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="0" Padding="10" Margin="10" Background="#F0F0F0">
+        <!-- Thanh công cụ -->
+        <CommandBar Grid.Row="0">
+            <AppBarButton Icon="Refresh" Label="Start Over" Command="{Binding StartNewConversationCommand}" />
+        </CommandBar>
+
+        <ListView ItemsSource="{Binding Messages}" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1" Padding="10" Margin="10" Background="#F0F0F0">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="0,5">
@@ -64,7 +70,7 @@
         </ListView>
 
         <!-- Bong bóng gợi ý -->
-        <ItemsControl ItemsSource="{Binding SuggestedQuestions}" Grid.Row="1" Margin="10">
+        <ItemsControl ItemsSource="{Binding SuggestedQuestions}" Grid.Row="2" Margin="10">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <controls:WrapPanel Orientation="Horizontal" />
@@ -85,7 +91,7 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <Grid Grid.Row="2" Background="#FFFFFF" Padding="10" Margin="10,0,10,10">
+        <Grid Grid.Row="3" Background="#FFFFFF" Padding="10" Margin="10,0,10,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>

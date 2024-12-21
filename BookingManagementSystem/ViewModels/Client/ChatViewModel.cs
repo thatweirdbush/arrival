@@ -34,6 +34,8 @@ public partial class ChatViewModel : ObservableRecipient
 
     public ICommand SelectSuggestedQuestionCommand { get; }
 
+    public RelayCommand StartNewConversationCommand { get; }  // Command để bắt đầu lại cuộc trò chuyện
+
     public ChatViewModel()
     {
         // Khởi tạo dịch vụ bot (API Key cần được cung cấp từ bên ngoài nếu cần bảo mật hơn)
@@ -66,6 +68,8 @@ public partial class ChatViewModel : ObservableRecipient
         });
 
         SelectSuggestedQuestionCommand = new RelayCommand<string>(OnSelectSuggestedQuestion);
+
+        StartNewConversationCommand = new RelayCommand(StartNewConversation);
     }
 
     private void OnSelectSuggestedQuestion(string question)
@@ -86,6 +90,23 @@ public partial class ChatViewModel : ObservableRecipient
 
         // Gọi lệnh gửi câu hỏi tới chatbot
         SendMessageAsyncCommand.Execute(null);
+    }
+
+    private void StartNewConversation()
+    {
+        // Xoá tất cả các tin nhắn cũ trong danh sách
+        Messages.Clear();
+
+        // Thêm tin nhắn chào mừng mới khi bắt đầu cuộc trò chuyện
+        Messages.Add(new Message
+        {
+            Content = "Welcome to Arrival Hotel Booking! I am here to help you with bookings, cancellations, and more. What can I assist you with?",
+            IsUserMessage = false,
+            Timestamp = DateTime.Now
+        });
+
+        // Xoá nội dung trong ô nhập liệu
+        UserInput = string.Empty;
     }
 
 
