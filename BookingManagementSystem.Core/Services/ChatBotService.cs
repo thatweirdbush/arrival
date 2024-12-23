@@ -10,12 +10,11 @@ namespace BookingManagementSystem.Core.Services;
 public class ChatBotService
 {
     private readonly HttpClient _httpClient;
-    //private const string BaseUrl = "https://api.generativeai.google/v1beta3/models/";
-    //private const string Model = "gemini-1.5-flash";
 
     private readonly string _apiKey;
 
-    private readonly List<string> _context;  // Lưu trữ ngữ cảnh cuộc trò chuyện
+    private readonly Queue<string> _context; // Sử dụng Queue để giới hạn ngữ cảnh
+    private const int MaxContextSize = 20;  // Số lượng câu tối đa trong ngữ cảnh
 
     private const string PreContext = "You are a virtual assistant for the Arrival Hotel Booking platform. " +
                                        "Your job is to assist users with booking, cancellations, pricing policies, and offers. " +
@@ -23,15 +22,19 @@ public class ChatBotService
 
     public ChatBotService(string apiKey)
     {
-        _httpClient = new HttpClient();
+        _httpClient = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(30) // Đặt thời gian chờ cho mỗi yêu cầu
+        };
         _apiKey = apiKey;
-        _context = new List<string> { PreContext };
+        _context = new Queue<string>();
+        _context.Enqueue(PreContext);
     }
 
     public async Task<string> AskAsync(string question)
     {
         // Thêm câu hỏi vào ngữ cảnh
-        _context.Add("User: " + question);
+        AddToContext($"User: {question}");
 
         var requestBody = new
         {
@@ -73,7 +76,7 @@ public class ChatBotService
                 var answer = partsProperty[0].GetProperty("text").GetString();
 
                 // Thêm câu trả lời vào ngữ cảnh
-                _context.Add("Bot: " + answer);
+                AddToContext($"Bot: {answer}");
 
                 return answer ?? "No response from the bot.";
             }
@@ -89,20 +92,12 @@ public class ChatBotService
         }
     }
 
-
-    private class ChatBotResponse
+    private void AddToContext(string entry)
     {
-        public Candidate[] Candidates
+        if (_context.Count >= MaxContextSize)
         {
-            get; set;
+            _context.Dequeue(); // Xóa câu cũ nhất khi vượt quá kích thước tối đa
         }
-    }
-
-    private class Candidate
-    {
-        public string Content
-        {
-            get; set;
-        }
+        _context.Enqueue(entry);
     }
 }
