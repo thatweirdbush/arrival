@@ -41,7 +41,7 @@ public sealed partial class LoginPage : Page
         }
     }
 
-    public void SaveCredentials(string username, string password)
+    private void SaveCredentials(string username, string password)
     {
         // Save username
         localSettings.Values["Username"] = username;
@@ -70,7 +70,7 @@ public sealed partial class LoginPage : Page
     }
 
     // Method to load saved credentials
-    public void LoadCredentials()
+    private void LoadCredentials()
     {
         if (localSettings.Values.ContainsKey("Username") && localSettings.Values.ContainsKey("PasswordInBase64"))
         {
@@ -103,14 +103,22 @@ public sealed partial class LoginPage : Page
         }
     }
 
-    private void btnSignIn_Click(object sender, RoutedEventArgs? e)
+    private void ClearCredentials()
+    {
+        localSettings.Values.Remove("Username");
+        localSettings.Values.Remove("PasswordInBase64");
+        localSettings.Values.Remove("EntropyInBase64");
+    }
+
+    private async void btnSignIn_Click(object sender, RoutedEventArgs? e)
     {
         // Get username & password
         var username = txtUsername.Text;
         var password = passworBoxWithRevealmode.Password;
 
         // Check if the user is valid
-        if (ViewModel.LoginAuthentication(username, password))
+        var user = await ViewModel.LoginAuthentication(username, password);
+        if (user != null)
         {
             if (chkRememberMe.IsChecked == true)
             {
@@ -118,11 +126,17 @@ public sealed partial class LoginPage : Page
             }
             else
             {
-                localSettings.Values.Remove("Username");
-                localSettings.Values.Remove("PasswordInBase64");
-                localSettings.Values.Remove("EntropyInBase64");
+                ClearCredentials();
             }
-            Frame.Navigate(typeof(HomePage));
+
+            // Navigate to the previous page if available
+            if (Frame.BackStackDepth > 0)
+            {
+                // Since the LoginAuthentication's been called, the BackStack has been added with the LoginPage
+                // Remove last page from back stack to prevent user from going back to login page
+                Frame.BackStack.Remove(Frame.BackStack.Last());
+                Frame.GoBack();
+            }
         }
         else
         {

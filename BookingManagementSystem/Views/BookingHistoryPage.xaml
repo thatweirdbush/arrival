@@ -132,9 +132,9 @@
                                         <Grid Grid.Row="1" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}" Padding="20">
                                             <StackPanel Spacing="4">
                                                 <StackPanel Orientation="Horizontal" Spacing="2">
-                                                    <TextBlock Text = "{x:Bind Booking.CheckInDate, Converter={StaticResource DateToShortDateFormatConverter}}" Style="{ThemeResource BodyStrongTextBlockStyle}" FontSize="12"/>
+                                                    <TextBlock Text = "{x:Bind Booking.CheckInDate, Converter={StaticResource DateToShortDateFormatConverter}, ConverterParameter='MMM d'}" Style="{ThemeResource BodyStrongTextBlockStyle}" FontSize="12"/>
                                                     <TextBlock Text = "-" Style = "{ThemeResource BodyStrongTextBlockStyle}" FontSize="12"/>
-                                                    <TextBlock Text = "{x:Bind Booking.CheckOutDate, Converter={StaticResource DateToShortDateFormatConverter}}" Style="{ThemeResource BodyStrongTextBlockStyle}" FontSize="12"/>
+                                                    <TextBlock Text = "{x:Bind Booking.CheckOutDate, Converter={StaticResource DateToShortDateFormatConverter}, ConverterParameter='MMM d'}" Style="{ThemeResource BodyStrongTextBlockStyle}" FontSize="12"/>
                                                 </StackPanel>
                                                 <TextBlock Text = "{x:Bind Location}" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" FontSize="22"/>
                                                 <TextBlock Text = "1 home reservation" Style="{ThemeResource BodyTextBlockStyle}" Foreground="Gray"/>

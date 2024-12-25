@@ -101,7 +101,7 @@
                         <Button x:Name="HiddenMultiDatePicker" Click="HiddenMultiDatePicker_Click" HorizontalAlignment="Center" VerticalAlignment="Bottom">
                             <Button.Flyout>
                                 <Flyout Placement="Bottom">
-                                    <CalendarView x:Name="MultiDatePicker" Width="420" SelectionMode="Multiple" SelectedDatesChanged="MultiDatePicker_SelectedDatesChanged" Background="Transparent" BorderThickness="0" />
+                                    <CalendarView x:Name="MultiDatePicker" CalendarViewDayItemChanging="MultiDatePicker_CalendarViewDayItemChanging" Width="420" SelectionMode="Multiple" SelectedDatesChanged="MultiDatePicker_SelectedDatesChanged" Background="Transparent" BorderThickness="0" />
                                 </Flyout>
                             </Button.Flyout>
                         </Button>

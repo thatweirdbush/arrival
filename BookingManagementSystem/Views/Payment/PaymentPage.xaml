@@ -18,6 +18,7 @@
         <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
         <helper:DecimalPlacesConverter x:Key="DecimalPlacesConverter" DecimalPlaces="1"/>
+        <helper:DateToShortDateFormatConverter x:Key="DateToShortDateFormatConverter"/>
         <!--Flyout Template-->
         <Flyout x:Key="PricingDetailsFlyout">
             <StackPanel Spacing="16">
@@ -116,8 +117,8 @@
                                     <StackPanel Spacing="8">
                                         <TextBlock Text="Dates" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                                         <TextBlock Style="{ThemeResource BodyTextStyle}">
-                                            <Run Text="Nov 26"/> - 
-                                            <Run Text="Dec 1"/>
+                                            <Run Text="{x:Bind ViewModel.ScheduleInformation.CheckInDate, Converter={StaticResource DateToShortDateFormatConverter}, ConverterParameter='MMM d', Mode=OneWay}"/> -
+                                            <Run Text="{x:Bind ViewModel.ScheduleInformation.CheckOutDate, Converter={StaticResource DateToShortDateFormatConverter}, ConverterParameter='MMM d', Mode=OneWay}"/>
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Spacing="8">
@@ -160,7 +161,7 @@
                                                     <Run Text="due today,"/>
                                                     <Run Text="{x:Bind ViewModel.PayPartLaterPrice, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}"/>
                                                     <Run Text="on"/>
-                                                    <Run Text="{x:Bind ViewModel.PayLaterDate.ToShortDateString(), Mode=OneWay}"/>.
+                                                    <Run Text="{x:Bind ViewModel.PayLaterDate, Converter={StaticResource DateToShortDateFormatConverter}, ConverterParameter='MMM d', Mode=OneWay}"/>.
                                                     <Run Text="No extra fees."/>
                                                     <Hyperlink NavigateUri="https://www.example.com">
                                                         <Run Text="More info" FontWeight="SemiBold"/>
@@ -197,9 +198,9 @@
                                     <Grid>
                                         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" FontSize="15">
                                         <Run Text="Free cancellation before" FontWeight="SemiBold"/>
-                                        <Run Text="Nov 25. " FontWeight="SemiBold"/>
+                                        <Run Text="{x:Bind ViewModel.CancelBeforeDate, Converter={StaticResource DateToShortDateFormatConverter}, ConverterParameter='MMM d', Mode=OneWay}" FontWeight="SemiBold"/>.
                                         <Run Text="Cancel before check-in on"/>
-                                        <Run Text="Nov 26"/>
+                                        <Run Text="{x:Bind ViewModel.ScheduleInformation.CheckInDate, Converter={StaticResource DateToShortDateFormatConverter}, ConverterParameter='MMM d', Mode=OneWay}"/>
                                         <Run Text="for a partial refund."/>
                                         <Hyperlink NavigateUri="https://www.example.com">
                                             <Run Text="Learn more" FontWeight="SemiBold"/>
@@ -301,15 +302,17 @@
                                             </Button>
                                         </Grid>
                                         <Grid>
-                                            <TextBlock Text="5 nights" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
-                                            <TextBlock x:Name="AmountTextBox" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right">
+                                            <TextBlock Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal">
+                                                <Run Text="{x:Bind ViewModel.TotalNights, Mode=OneWay}"/> nights
+                                            </TextBlock>
+                                            <TextBlock x:Name="AmountTextBlock" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right">
                                                 <Run Text="{x:Bind ViewModel.Item.PricePerNight, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}"/>
-                                                <Run>x5</Run>
+                                                x<Run Text="{x:Bind ViewModel.TotalNights, Mode=OneWay}"/>
                                             </TextBlock>
                                         </Grid>
                                         <Grid>
                                             <TextBlock Text="Taxes" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
-                                            <TextBlock x:Name="TaxTextBox" Text="{x:Bind ViewModel.Tax, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
+                                            <TextBlock x:Name="TaxTextBlock" Text="{x:Bind ViewModel.Tax, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>

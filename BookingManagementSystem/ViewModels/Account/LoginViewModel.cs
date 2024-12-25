@@ -1,57 +1,33 @@
-﻿using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Contracts.Repositories;
 
 namespace BookingManagementSystem.ViewModels.Account;
 
 public partial class LoginViewModel : ObservableRecipient
-{
+{   
+    public static User? CurrentUser { get; private set; }
+
     public event Action<User>? UserLoggedIn;
-    private readonly INavigationService _navigationService;
+
     private readonly IRepository<User> _userRepository;
 
-    public IEnumerable<User> Users { get; private set; } = Enumerable.Empty<User>();
-
-    public static User? CurrentUser { get; private set; } // Declare as nullable
-
-    public LoginViewModel(INavigationService navigationService, IRepository<User> userRepository)
+    public LoginViewModel(IRepository<User> userRepository)
     {
-        _navigationService = navigationService;
         _userRepository = userRepository;
-        OnNavigatedTo(0);
-    }
-
-    public async void OnNavigatedTo(object parameter)
-    {
-        // Load user data list
-        var users = await _userRepository.GetAllAsync();
-        Users = users;
-    }
-
-    public void OnNavigatedFrom()
-    {
     }
 
     // Check if user has correct password for account
-    public bool LoginAuthentication(string username, string password)
+    public async Task<User?> LoginAuthentication(string username, string password)
     {
-        // Tìm người dùng có username tương ứng
-        var user = Users.FirstOrDefault(u => u.Username.Equals(username));
+        CurrentUser = (await _userRepository
+            .GetAllAsync(u => u.Username == username && u.Password == password))
+            .FirstOrDefault();
 
-        // Kiểm tra nếu tìm thấy user và password khớp
-        if (user != null && user.Password.Equals(password))
-        {
-            CurrentUser = user;
-
-            // Notify subscribers that a user has logged in
+        // Notify subscribers that a user has logged in
+        if (CurrentUser != null) 
             UserLoggedIn?.Invoke(CurrentUser);
 
-            return true; // Đăng nhập thành công
-        }
-
-        return false; // Đăng nhập thất bại
+        return CurrentUser;
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using BookingManagementSystem.Core.Services;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingManagementSystem.Core.Models;
 
@@ -78,6 +79,7 @@ public class PropertyTypeIcon
 
 public partial class Property : INotifyPropertyChanged
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
     public string Name { get; set; } = DEFAULT_PROPERTY_NAME;
