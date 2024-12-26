@@ -29,7 +29,7 @@ public partial class Payment : INotifyPropertyChanged
 
     public DateTime PaymentDate { get; set; }
 
-    public string PaymentMethod { get; set; } // E.g., Credit Card, Debit Card, PayPal
+    public string PaymentMethod { get; set; } = "Credit Card"; // E.g., Credit Card, Debit Card, PayPal
 
     public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
 

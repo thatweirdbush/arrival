@@ -27,10 +27,10 @@ public sealed partial class HomePage : Page
         ToggleSwitchDisplayTax.IsOn = !ToggleSwitchDisplayTax.IsOn;
     }
 
-    private void HiddenMultiDatePicker_Click(object sender, RoutedEventArgs e)
+    private void HiddenCalendarView_Click(object sender, RoutedEventArgs e)
     {
-        // Open the HiddenMultiDatePicker Flyout
-        HiddenMultiDatePicker.Flyout.ShowAt(HiddenMultiDatePicker);
+        // Open the HiddenCalendarViewFlyout
+        HiddenCalendarView.Flyout.ShowAt(HiddenCalendarView);
     }
 
     private void btnSearchDestinationWrapper_Click(object sender, RoutedEventArgs e)
@@ -209,7 +209,7 @@ public sealed partial class HomePage : Page
         await dialog.ShowAsync();
     }
 
-    private void MultiDatePicker_CalendarViewDayItemChanging(CalendarView sender, CalendarViewDayItemChangingEventArgs args)
+    private void CalendarView_CalendarViewDayItemChanging(CalendarView sender, CalendarViewDayItemChangingEventArgs args)
     {
         // Must explicitly handle state for both branches (past and future)
         // As the CalendarView reuses items, leading to unwanted state if not handled properly

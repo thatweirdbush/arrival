@@ -12,6 +12,7 @@ public class PaymentFacade : IPaymentFacade
     private readonly IRepository<Property> _propertyRepository;
     private readonly IRepository<Voucher> _voucherRepository;
     private readonly IRepository<Booking> _bookingRepository;
+    private readonly IRepository<Payment> _paymentRepository;
     private readonly INotificationService _notificationService;
     public Property? Property { get; private set; }
 
@@ -19,11 +20,13 @@ public class PaymentFacade : IPaymentFacade
         IRepository<Property> propertyRepository, 
         IRepository<Voucher> voucherRepository,
         IRepository<Booking> bookingRepository,
+        IRepository<Payment> paymentRepository,
         INotificationService notificationService)
     {
         _propertyRepository = propertyRepository;
         _voucherRepository = voucherRepository;
         _bookingRepository = bookingRepository;
+        _paymentRepository = paymentRepository;
         _notificationService = notificationService;
     }
 
@@ -38,13 +41,15 @@ public class PaymentFacade : IPaymentFacade
         return Property;
     }
 
-    public async Task<IEnumerable<Voucher>> GetAllVouchersAsync()
+    public async Task<Voucher?> GetVoucherByCodeAsync(string code)
     {
         Expression<Func<Voucher, bool>> IsVoucherValid = v
             => DateTime.Now.ToUniversalTime() >= v.ValidFrom.ToUniversalTime()
             && (!v.ValidUntil.HasValue || DateTime.Now.ToUniversalTime() <= v.ValidUntil.Value.ToUniversalTime())
             && !v.IsUsed;
-        return await _voucherRepository.GetAllAsync(IsVoucherValid);
+
+        var vouchers = await _voucherRepository.GetAllAsync(IsVoucherValid);
+        return vouchers.FirstOrDefault(v => v.Code == code);
     }
 
     public async Task UpdateVoucherAsync(Voucher voucher)
@@ -57,6 +62,12 @@ public class PaymentFacade : IPaymentFacade
     {
         await _bookingRepository.AddAsync(booking);
         await _bookingRepository.SaveChangesAsync();
+    }
+
+    public async Task AddPaymentAsync(Payment payment)
+    {
+        await _paymentRepository.AddAsync(payment);
+        await _paymentRepository.SaveChangesAsync();
     }
 
     public Task AddNotificationAsync(Notification notification)

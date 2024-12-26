@@ -16,13 +16,16 @@ public partial class BookingHistoryViewModel : ObservableRecipient, INavigationA
     private readonly IRepository<Booking> _bookingRepository;
     private readonly IRepository<Property> _propertyRepository;
 
-    // List of content items
-    public ObservableCollection<BookingPropertyViewModel> Bookings { get; set; } = [];
-
     [ObservableProperty]
     private bool isBookingListEmpty;
 
-    public BookingHistoryViewModel(INavigationService navigationService, IRepository<Booking> bookingRepository, IRepository<Property> propertyRepository)
+    // List of content items
+    public ObservableCollection<BookingPropertyViewModel> Bookings { get; set; } = [];
+
+    public BookingHistoryViewModel(
+        INavigationService navigationService,
+        IRepository<Booking> bookingRepository,
+        IRepository<Property> propertyRepository)
     {
         _navigationService = navigationService;
         _bookingRepository = bookingRepository;

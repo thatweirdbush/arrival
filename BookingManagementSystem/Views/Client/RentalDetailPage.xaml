@@ -205,7 +205,7 @@
                                 <StackPanel Grid.Row="1" Spacing="4">
                                     <CalendarView x:Name="CalendarView" SelectionMode="Multiple" IsGroupLabelVisible="True" IsOutOfScopeEnabled="True" Language="en"
                                                   CalendarIdentifier="GregorianCalendar" Background="Transparent" CalendarItemForeground="Gray" BorderThickness="0" HorizontalAlignment="Stretch"
-                                                  SelectedDatesChanged="CalendarView_SelectedDatesChanged"/>
+                                                  SelectedDatesChanged="CalendarView_SelectedDatesChanged" CalendarViewDayItemChanging="CalendarView_CalendarViewDayItemChanging"/>
                                     <HyperlinkButton x:Name="btnClearDates" Content="Clear dates" FontWeight="SemiBold" Click="btnClearDates_Click" HorizontalAlignment="Right"/>
                                 </StackPanel>
                             </Grid>

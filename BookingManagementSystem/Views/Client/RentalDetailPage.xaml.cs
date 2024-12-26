@@ -27,8 +27,6 @@ public sealed partial class RentalDetailPage : Page
         base.OnNavigatedTo(e);
         this.RegisterElementForConnectedAnimation("animationKeyContentGrid", itemHero);
 
-        CalendarView.CalendarViewDayItemChanging += CalendarViewDayItemChanging;
-
         // Observe the ViewModel's Item and update the UI
         ViewModel.PropertyChanged += (s, args) =>
         {
@@ -66,15 +64,6 @@ public sealed partial class RentalDetailPage : Page
             {
                 navigationService.SetListDataItemForNextConnectedAnimation(ViewModel.Item);
             }
-        }
-    }
-
-    private void CalendarViewDayItemChanging(CalendarView sender, CalendarViewDayItemChangingEventArgs args)
-    {
-        if (args.Item.Date < DateTimeOffset.Now.Date)
-        {
-            // Disable past dates
-            args.Item.IsEnabled = false;
         }
     }
 
@@ -315,6 +304,22 @@ public sealed partial class RentalDetailPage : Page
         if (ViewModel.ScheduleInformation.CheckInDate > ViewModel.ScheduleInformation.CheckOutDate)
         {
             ViewModel.ScheduleInformation.CheckInDate = ViewModel.ScheduleInformation.CheckOutDate;
+        }
+    }
+
+    private void CalendarView_CalendarViewDayItemChanging(CalendarView sender, CalendarViewDayItemChangingEventArgs args)
+    {
+        // Must explicitly handle state for both branches (past and future)
+        // As the CalendarView reuses items, leading to unwanted state if not handled properly
+        if (args.Item.Date < DateTimeOffset.Now.Date)
+        {
+            // Disable past dates
+            args.Item.IsEnabled = false;
+        }
+        else
+        {
+            // Enable future dates
+            args.Item.IsEnabled = true;
         }
     }
 }

@@ -49,7 +49,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Amenities");
+                    b.ToTable("Amenities", (string)null);
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.BadReport", b =>
@@ -96,7 +96,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BadReports");
+                    b.ToTable("BadReports", (string)null);
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.Booking", b =>
@@ -139,7 +139,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.FAQ", b =>
@@ -198,7 +198,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.Payment", b =>
@@ -235,7 +235,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.Property", b =>
@@ -340,7 +340,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex(new[] { "CountryId" }, "IX_Properties_CountryId");
 
-                    b.ToTable("Properties");
+                    b.ToTable("Properties", (string)null);
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.PropertyAmenity", b =>
@@ -361,7 +361,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex("AmenityId");
 
-                    b.ToTable("PropertyAmenities");
+                    b.ToTable("PropertyAmenities", (string)null);
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.PropertyPolicy", b =>
@@ -388,7 +388,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex(new[] { "PropertyId" }, "IX_PropertyPolicies_PropertyId");
 
-                    b.ToTable("PropertyPolicies");
+                    b.ToTable("PropertyPolicies", (string)null);
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.QnA", b =>
@@ -428,7 +428,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("QnAs");
+                    b.ToTable("QnAs", (string)null);
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.Review", b =>
@@ -463,7 +463,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.User", b =>
@@ -523,7 +523,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.Voucher", b =>
@@ -563,7 +563,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Vouchers");
+                    b.ToTable("Vouchers", (string)null);
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Services.CountryInfo", b =>

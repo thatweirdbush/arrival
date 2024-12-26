@@ -18,39 +18,38 @@ public sealed partial class PaymentPage : Page
         InitializeComponent();
     }
 
-    private void ApplyVoucherButton_click(object sender, RoutedEventArgs e)
+    private async void ApplyVoucherButton_click(object sender, RoutedEventArgs e)
     {
-        var pricePerNight = ViewModel.Item?.PricePerNight;
-        var tax = ViewModel.Tax;
-
-        // Try to find the voucher with the given code
         var voucherCode = VoucherInputTextBox.Text.Trim();
-        ViewModel.Voucher = ViewModel.Vouchers.FirstOrDefault(v => v.Code == voucherCode);
 
-        if (string.IsNullOrWhiteSpace(VoucherInputTextBox.Text))
+        if (string.IsNullOrWhiteSpace(voucherCode))
         {
-            VoucherWarning.Text = "Please enter the voucher code.";
-            VoucherWarning.Visibility = Visibility.Visible;
+            ShowVoucherWarning("Please enter the voucher code.");
+            return;
         }
-        else if (ViewModel.Voucher == null)
+
+        await ViewModel.GetVoucherByCodeAsync(voucherCode);
+
+        if (ViewModel.Voucher == null)
         {
-            VoucherWarning.Text = "This voucher does not exist.";
-            VoucherWarning.Visibility = Visibility.Visible;
+            ShowVoucherWarning("This voucher does not exist.");
         }
         else if (ViewModel.Voucher.Quantity <= 0)
         {
-            VoucherWarning.Text = "The number of voucher uses has exceeded the limit.";
-            VoucherWarning.Visibility = Visibility.Visible;
+            ShowVoucherWarning("The number of voucher uses has exceeded the limit.");
         }
         else
         {
-            // All checks passed, hide the warning
             VoucherWarning.Visibility = Visibility.Collapsed;
-
-            // Update the discount text blocks
             DiscountPercentageTextBlock.Visibility = Visibility.Visible;
             DiscountAmountTextBlock.Visibility = Visibility.Visible;
         }
+    }
+
+    private void ShowVoucherWarning(string message)
+    {
+        VoucherWarning.Text = message;
+        VoucherWarning.Visibility = Visibility.Visible;
     }
 
     private void DiscountPercentageTextBlock_Click(Microsoft.UI.Xaml.Documents.Hyperlink sender, Microsoft.UI.Xaml.Documents.HyperlinkClickEventArgs args)
