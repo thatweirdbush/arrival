@@ -2,8 +2,8 @@
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Repositories;
-using BookingManagementSystem.Core.DTOs;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.ViewModels.Account;
 using BookingManagementSystem.ViewModels.Client;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -14,52 +14,54 @@ public partial class BookingHistoryViewModel : ObservableRecipient, INavigationA
 {
     private readonly INavigationService _navigationService;
     private readonly IRepository<Booking> _bookingRepository;
-    private readonly IRepository<Property> _propertyRepository;
 
     [ObservableProperty]
-    private bool isBookingListEmpty;
+    private bool isUpcomingBookingListEmpty;
+
+    [ObservableProperty]
+    private bool isPastBookingListEmpty;
 
     // List of content items
-    public ObservableCollection<BookingPropertyViewModel> Bookings { get; set; } = [];
+    public ObservableCollection<Booking> UpcomingBookings { get; set; } = [];
+    public ObservableCollection<Booking> PastBookings { get; set; } = [];
 
     public BookingHistoryViewModel(
         INavigationService navigationService,
-        IRepository<Booking> bookingRepository,
-        IRepository<Property> propertyRepository)
+        IRepository<Booking> bookingRepository)
     {
         _navigationService = navigationService;
         _bookingRepository = bookingRepository;
-        _propertyRepository = propertyRepository;
     }
 
     [RelayCommand]
-    private void OnItemClick(BookingPropertyViewModel? clickedItem)
+    private void OnItemClick(Booking? clickedItem)
     {
         if (clickedItem != null)
         {
-            _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
-            _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, clickedItem.Property.Id);
+            _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem.Property);
+            _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, clickedItem.PropertyId);
         }
     }
 
     public async void OnNavigatedTo(object parameter)
     {
         // Load Booking data list
-        var bookings = await _bookingRepository.GetAllAsync();
-        var properties = await _propertyRepository.GetAllAsync();
+        var bookings = await _bookingRepository.GetFilteredAndSortedAsync(
+            filter: b => b.UserId == LoginViewModel.CurrentUser!.Id,
+            keySelector: b => b.CheckInDate,
+            sortDescending: true);
+
         foreach (var booking in bookings)
         {
-            var property = properties.FirstOrDefault(p => p.Id == booking.PropertyId);
-            var bookingPropertyViewModel = new BookingPropertyViewModel
+            if (booking.CheckOutDate < DateTime.Now)
             {
-                Booking = booking,
-                Property = property
-            };
-            Bookings.Add(bookingPropertyViewModel);
+                PastBookings.Add(booking);
+            }
+            else
+            {
+                UpcomingBookings.Add(booking);
+            }
         }
-
-        // Subscribe to CollectionChanged event
-        Bookings.CollectionChanged += (s, e) => CheckBookingListCount();
 
         // Initial check
         CheckBookingListCount();
@@ -67,18 +69,22 @@ public partial class BookingHistoryViewModel : ObservableRecipient, INavigationA
 
     public void OnNavigatedFrom()
     {
-        Bookings.CollectionChanged -= (s, e) => CheckBookingListCount();
     }
 
-    public void DeleteBookingAsync(BookingPropertyViewModel bookingPropertyViewModel)
+    public void DeleteBookingRangeAsync(IEnumerable<Booking> bookings)
     {
-        _bookingRepository.DeleteAsync(bookingPropertyViewModel.Booking.Id);
+        foreach (var booking in bookings)
+        {
+            _bookingRepository.DeleteAsync(booking.Id);
+            UpcomingBookings.Remove(booking);
+            PastBookings.Remove(booking);
+        }
         _bookingRepository.SaveChangesAsync();
-        Bookings.Remove(bookingPropertyViewModel);
     }
 
     private void CheckBookingListCount()
     {
-        IsBookingListEmpty = !Bookings.Any();
+        IsUpcomingBookingListEmpty = !UpcomingBookings.Any();
+        IsPastBookingListEmpty = !PastBookings.Any();
     }
 }

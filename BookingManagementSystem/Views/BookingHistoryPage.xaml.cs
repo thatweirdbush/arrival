@@ -1,5 +1,6 @@
 ﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.DTOs;
+using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.ViewModels.Client;
 
@@ -27,7 +28,7 @@ public sealed partial class BookingHistoryPage : Page
         TripsGridView.SelectionMode = ListViewSelectionMode.Multiple;
         btnSelect.Visibility = Visibility.Collapsed;
         btnCancel.Visibility = Visibility.Visible;
-        btnDelete.Visibility = Visibility.Visible;
+        btnRemove.Visibility = Visibility.Visible;
     }
 
     private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -35,47 +36,34 @@ public sealed partial class BookingHistoryPage : Page
         TripsGridView.IsItemClickEnabled = true;
         TripsGridView.SelectionMode = ListViewSelectionMode.Single;
         btnCancel.Visibility = Visibility.Collapsed;
-        btnDelete.Visibility = Visibility.Collapsed;
+        btnRemove.Visibility = Visibility.Collapsed;
         btnSelect.Visibility = Visibility.Visible;
     }
 
-    private async void btnDelete_Click(object sender, RoutedEventArgs e)
+    private async void btnRemove_Click(object sender, RoutedEventArgs e)
     {
         // Get selected items and remove them from the list
-        var selectedItems = TripsGridView.SelectedItems.ToList();
+        var selectedItems = TripsGridView.SelectedItems.Cast<Booking>().ToList();
 
         // Check if there are selected items
-        if (selectedItems.Count == 0)
-        {
-            return;
-        }
+        if (!selectedItems.Any()) return;
 
         // Show confirmation dialog
-        var confirm = new ContentDialog
+        var result = await new ContentDialog
         {
             XamlRoot = this.XamlRoot,
-            Title = "Delete Booking",
-            Content = "Are you sure you want to cancel the selected booking(s)?",
-            PrimaryButtonText = "Delete",
+            Title = "Remove Booking",
+            Content = "Are you sure you want to remove the selected booking(s)?",
+            PrimaryButtonText = "Remove",
             CloseButtonText = "Cancel",
             DefaultButton = ContentDialogButton.Primary
-        };
+        }.ShowAsync();
 
-        var result = await confirm.ShowAsync();
-
-        // Check if the user clicked the delete button
-        if (result != ContentDialogResult.Primary)
+        // If clicked the Remove button
+        if (result == ContentDialogResult.Primary)
         {
-            return;
-        }
-
-        // Remove the selected items from the list
-        foreach (var item in selectedItems)
-        {
-            if (item is BookingPropertyViewModel bookingPropertyViewModel)
-            {
-                ViewModel.DeleteBookingAsync(bookingPropertyViewModel);
-            }
+            // Remove the selected items from the list
+            ViewModel.DeleteBookingRangeAsync(selectedItems);
         }
     }
 

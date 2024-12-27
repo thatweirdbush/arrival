@@ -46,12 +46,29 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
 
     public async void OnNavigatedTo(object parameter)
     {
-        if (parameter is IDictionary<string, object> paramDict &&
-            paramDict.TryGetValue("PropertyId", out var idObj) && idObj is int id &&
-            paramDict.TryGetValue("Filter", out var filterObj) && filterObj is PropertyFilter filter)
+        int? propertyId = null;
+        PropertyFilter? filter = null;
+
+        if (parameter is IDictionary<string, object> paramDict)
+        {
+            if (paramDict.TryGetValue("PropertyId", out var idObj) && idObj is int id)
+            {
+                propertyId = id;
+            }
+            if (paramDict.TryGetValue("Filter", out var filterObj) && filterObj is PropertyFilter propertyFilter)
+            {
+                filter = propertyFilter;
+            }
+        }
+        else if (parameter is int id)
+        {
+            propertyId = id;
+        }
+
+        if (propertyId.HasValue)
         {
             ScheduleInformation = filter;
-            Item = await _rentalDetailFacade.GetPropertyByIdAsync(id);
+            Item = await _rentalDetailFacade.GetPropertyByIdAsync(propertyId.Value);
 
             var reviews = await _rentalDetailFacade.GetReviewsAsync();
             Reviews = new ObservableCollection<Review>(reviews.OrderByDescending(r => r.CreatedAt));
