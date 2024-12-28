@@ -29,6 +29,8 @@
                 <TextBlock Text="Add some photos of your house" Style="{ThemeResource TitleTextBlockStyle}"/>
                 <TextBlock Text="You'll need 1 photo to get started. You can add more or make changes later." 
                            Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
+                <ProgressBar IsIndeterminate="True" ShowPaused="False" ShowError="False"
+                             Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             </StackPanel>
             <Grid Grid.Row="1">
                 <Grid x:Name="EmptyPhotoCollectionGrid" 
@@ -47,7 +49,7 @@
                                 <Image Source="/Assets/camera.png" Width="180" Stretch="UniformToFill"/>
                             </Grid>
                             <Grid Grid.Row="1">
-                                <Button x:Name="AddPhotosButton" Click="AddPhotosButton_Click" Content="Add photos" 
+                                <Button x:Name="AddPhotosButton" Content="Add photos" Tag="add" Click="AddPhotosButton_Click"
                                         FontWeight="SemiBold" FontSize="16" CornerRadius="8" Padding="12" Width="140" HorizontalAlignment="Center"
                                         BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"/>
                             </Grid>
@@ -61,29 +63,29 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <CommandBar x:Name="CollectionCommandBar" DefaultLabelPosition="Right" HorizontalAlignment="Right">
-                        <AppBarButton x:Name="btnAdd" Icon="Add" Label="Add" Click="OnCommandBarElementClicked"/>
-                        <AppBarButton x:Name="btnEdit" Icon="Edit" Label="Edit" Click="OnCommandBarElementClicked"/>
-                        <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
+                        <AppBarButton x:Name="btnAdd" Icon="Add" Label="Add" Tag="add" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnEdit" Icon="Edit" Label="Edit" Tag="edit" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Tag="remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
                             <AppBarButton.KeyboardAccelerators>
                                 <KeyboardAccelerator Key="Delete"/>
                             </AppBarButton.KeyboardAccelerators>
                         </AppBarButton>
-                        <AppBarButton x:Name="btnCancel" Icon="Cancel" Label="Cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
+                        <AppBarButton x:Name="btnCancel" Icon="Cancel" Label="Cancel" Tag="cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
                         <CommandBar.SecondaryCommands>
-                            <AppBarButton x:Name="btnRemoveAll" Icon="ViewAll" Label="Remove all" Click="OnCommandBarElementClicked"/>
+                            <AppBarButton x:Name="btnRemoveAll" Icon="ViewAll" Label="Remove all" Tag="remove-all" Click="OnCommandBarElementClicked"/>
                         </CommandBar.SecondaryCommands>
                     </CommandBar>
                     <controls:AdaptiveGridView
-                        Grid.Row="1" x:Name="PhotosListView" ItemsSource="{x:Bind ViewModel.Photos}"
+                        Grid.Row="1" x:Name="PhotosListView" ItemsSource="{x:Bind ViewModel.PhotoUrls, Mode=OneWay}"
                         CanReorderItems="True" ReorderMode="Enabled" CanDragItems="True" 
                         AllowDrop="True" DragItemsCompleted="PhotosListView_DragItemsCompleted"
                         DesiredWidth="360" ItemHeight="240" SelectionMode="Single"
                         StretchContentForSingleRow="True" IsItemClickEnabled="True"
                         ItemContainerStyle="{ThemeResource GridViewItemExpanded}">
                         <GridView.ItemTemplate>
-                            <DataTemplate x:DataType="storage:StorageFile">
+                            <DataTemplate x:DataType="x:String">
                                 <Grid CornerRadius="12">
-                                    <Image Source="{x:Bind Path}" Stretch="UniformToFill"/>
+                                    <Image Source="{Binding}" Stretch="UniformToFill"/>
                                 </Grid>
                             </DataTemplate>
                         </GridView.ItemTemplate>

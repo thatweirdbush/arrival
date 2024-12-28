@@ -1,59 +1,61 @@
 ﻿using System.Collections.ObjectModel;
+using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage;
 
 namespace BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
 public partial class PlacePhotosViewModel : BaseStepViewModel
 {
-    public ObservableCollection<StorageFile> Photos
-    {
-        get; set;
-    } = [];
+    private readonly IPropertyService _propertyService;
+    private readonly IImageService _imageService;
 
     [ObservableProperty]
     private bool isPhotoListEmpty;
-    private readonly IPropertyService _propertyService;
+
+    [ObservableProperty]
+    private bool isLoading;
+
+    public ObservableCollection<string> PhotoUrls { get; set; } = [];
+
     public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
 
-    public PlacePhotosViewModel(IPropertyService propertyService)
+    public PlacePhotosViewModel(IPropertyService propertyService, IImageService imageService)
     {
         _propertyService = propertyService;
+        _imageService = imageService;
 
-        // Attach CollectionChanged event to track changes in Photos list
-        Photos.CollectionChanged += Photos_CollectionChanged;
+        // Attach CollectionChanged event to track changes in PhotoUrls list
+        PhotoUrls.CollectionChanged += PhotoUrls_CollectionChanged;
 
         // Initialize core properties
         TryInitializePhotos();
 
         // Initialize the IsPhotoListEmpty property
-        IsPhotoListEmpty = Photos.Count == 0;
+        IsPhotoListEmpty = !PhotoUrls.Any();
     }
 
-    private void Photos_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    private void PhotoUrls_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-        // Update IsPhotoListEmpty every time the list changes
-        IsPhotoListEmpty = Photos.Count == 0;
+        IsPhotoListEmpty = !PhotoUrls.Any();
         ValidateProcess();
     }
 
-    public async void TryInitializePhotos()
+    public void TryInitializePhotos()
     {
-        // Load photos from Property's ImagePaths
-        foreach (var path in PropertyOnCreating.ImagePaths)
+        // Load existing photo URLs from the Property's ImagePaths
+        foreach (var url in PropertyOnCreating.ImagePaths)
         {
-            var photo = await StorageFile.GetFileFromPathAsync(path);
-            Photos.Add(photo);
+            PhotoUrls.Add(url);
         }
     }
 
     public override void ValidateProcess()
     {
-        IsStepCompleted = Photos.Count > 0;
+        IsStepCompleted = PhotoUrls.Any();
     }
 
     public override void SaveProcess()
@@ -62,9 +64,92 @@ public partial class PlacePhotosViewModel : BaseStepViewModel
         PropertyOnCreating.ImagePaths.Clear();
 
         // Add photos path to the Property's ImagePaths
-        foreach (var photo in Photos)
+        foreach (var url in PhotoUrls)
         {
-            PropertyOnCreating.ImagePaths.Add(photo.Path);
+            PropertyOnCreating.ImagePaths.Add(url);
         }
+    }
+
+    public async Task AddPhotoRangeAsync(IEnumerable<StorageFile> files)
+    {
+        IsLoading = true;
+
+        foreach (var file in files)
+        {
+            // Upload each file to Cloudinary
+            using var stream = await file.OpenStreamForReadAsync();
+            var uploadedUrl = await _imageService.UploadImageAsync(stream, file.Name);
+
+            // Add the uploaded URL to the PhotoUrls collection
+            if (!PhotoUrls.Contains(uploadedUrl))
+            {
+                PhotoUrls.Add(uploadedUrl);
+            }
+        }
+
+        IsLoading = false;
+    }
+
+    public async Task RemovePhotoAsync(string photoUrl)
+    {
+        IsLoading = true;
+
+        // Extract the public ID from the URL
+        var publicId = ExtractPublicIdFromUrl(photoUrl);
+
+        // Delete the photo from Cloudinary
+        var success = await _imageService.DeleteImageAsync(publicId);
+        if (success)
+        {
+            // Remove the URL from the PhotoUrls collection
+            PhotoUrls.Remove(photoUrl);
+        }
+
+        IsLoading = false;
+    }
+
+    public async Task RemovePhotoRangeAsync(IEnumerable<string> photoUrls)
+    {
+        IsLoading = true;
+
+        // Extract the public IDs from the URLs
+        var publicIds = photoUrls.Select(ExtractPublicIdFromUrl);
+
+        // Delete the photos from Cloudinary
+        var success = await _imageService.DeleteImageRangeAsync(publicIds);
+        if (success)
+        {
+            // Create a copy of the PhotoUrls collection to avoid modifying it while iterating
+            var urlsToRemove = photoUrls.ToList();
+
+            // Remove the URLs from the PhotoUrls collection
+            foreach (var photoUrl in urlsToRemove)
+            {
+                PhotoUrls.Remove(photoUrl);
+            }
+        }
+
+        IsLoading = false;
+    }
+
+    public Task RemoveAllPhotosAsync()
+    {
+        return RemovePhotoRangeAsync(PhotoUrls);
+    }
+
+    private static string ExtractPublicIdFromUrl(string url)
+    {
+        var uri = new Uri(url);
+        var segments = uri.AbsolutePath.Split('/');
+
+        if (segments.Length < 2)
+        {
+            throw new InvalidOperationException("Invalid URL structure.");
+        }
+
+        var folder = segments[^2];
+        var fileName = Path.GetFileNameWithoutExtension(segments[^1]);
+
+        return $"{folder}/{fileName}"; // Example: "properties/photo"
     }
 }

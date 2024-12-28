@@ -21,4 +21,11 @@ public interface IImageService
     /// <param name="publicId">The public ID of the image to delete.</param>
     /// <returns>True if deletion was successful, otherwise false.</returns>
     Task<bool> DeleteImageAsync(string publicId);
+
+    /// <summary>
+    /// Deletes a range of images from the cloud by their public IDs.
+    /// </summary>
+    /// <param name="publicIds">The public IDs of the images to delete.</param>
+    /// <returns>True if deletion was successful, otherwise false.</returns></returns>
+    Task<bool> DeleteImageRangeAsync(IEnumerable<string> publicIds);
 }

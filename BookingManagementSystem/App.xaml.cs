@@ -28,6 +28,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
 
 using WinUIEx.Messaging;
@@ -81,6 +82,13 @@ public partial class App : Application
         {
             // App Hosted Services
             services.AddSingleton<IConfiguration>(context.Configuration);
+
+            // Add logging
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddDebug(); // Log to Debug Output
+                loggingBuilder.AddConsole(); // Log to Console
+            });
 
             // This allows the application to use the ApplicationDbContext at runtime via DI.
             services.AddTransient<DbContext, ApplicationDbContext>();
