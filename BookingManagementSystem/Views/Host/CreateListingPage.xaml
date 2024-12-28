@@ -31,8 +31,8 @@
                         Click="QuestionButton_Click" 
                         BorderThickness="1" CornerRadius="20" Height="44" Padding="14,8,14,8"
                         FontWeight="SemiBold" FontSize="16" />
-                <Button x:Name="SaveAndExitButton" Content="Save &amp; exit" 
-                        Click="SaveAndExitButton_Click"
+                <Button x:Name="SaveAndExitButton" Content="Save &amp; exit"
+                        Command="{x:Bind ViewModel.SaveAndExitAsyncCommand}"
                         BorderThickness="1" CornerRadius="20" Height="44" Padding="14,8,14,8"
                         Visibility="{x:Bind ViewModel.IsLastStepCompleted, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"
                         FontWeight="SemiBold" FontSize="16" />

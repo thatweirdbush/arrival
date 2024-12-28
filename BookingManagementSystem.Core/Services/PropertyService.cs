@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BookingManagementSystem.Core.Contracts.Repositories;
+﻿using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 
@@ -36,8 +31,8 @@ public class PropertyService : IPropertyService
         }
     }
 
-    public async Task<Property> GetPropertyInProgressAsync(int propertyId)
+    public Task<Property> GetPropertyInProgressAsync(int propertyId)
     {
-        return await _propertyRepository.GetByIdAsync(propertyId);
+        return _propertyRepository.GetByIdAsync(propertyId);
     }
 }

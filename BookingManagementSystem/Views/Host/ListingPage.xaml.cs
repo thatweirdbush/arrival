@@ -70,7 +70,7 @@ public sealed partial class ListingPage : Page
         }
     }
 
-    private async void RemoveAll_Click(object sender, RoutedEventArgs e)
+    private async Task RemoveAll_Click(object sender, RoutedEventArgs e)
     {
         // Show confirmation dialog
         var result = await new ContentDialog
@@ -96,10 +96,10 @@ public sealed partial class ListingPage : Page
         App.GetService<INavigationService>().NavigateTo(typeof(CreateListingViewModel).FullName!);
     }
 
-    private async Task Refresh_Click(object sender, RoutedEventArgs e)
+    private Task Refresh_Click(object sender, RoutedEventArgs e)
     {
         // Set to default pagination index & loading state
-        await ViewModel.RefreshAsync();
+        return ViewModel.RefreshAsync();
     }
 
     private void GetStarted_Click(object sender, RoutedEventArgs e)
@@ -134,7 +134,7 @@ public sealed partial class ListingPage : Page
                 Remove_Click(sender, e);
                 break;
             case "remove-all":
-                RemoveAll_Click(sender, e);
+                await RemoveAll_Click(sender, e);
                 break;
             case "search":
                 SearchListing_Click(sender, e);

@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Services;
@@ -7,8 +9,8 @@ using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels.Host;
 using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 using BookingManagementSystem.Views.Host.CreateListingSteps;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml.Media.Animation;
+using Microsoft.UI.Xaml.Controls;
 
 namespace BookingManagementSystem.ViewModels;
 
@@ -26,6 +28,11 @@ public partial class CreateListingViewModel : ObservableRecipient, INavigationAw
     [ObservableProperty]
     private bool isLastStepCompleted;
 
+    private int previousStageIndex = 0;
+
+    // Property to hold the Frame for steps' pages
+    public Frame? ContentFrame { get; set; }
+
     public BaseStepViewModel CurrentStep => Stages[CurrentStepIndex];
 
     public ObservableCollection<BaseStepViewModel> Stages = [];
@@ -35,7 +42,10 @@ public partial class CreateListingViewModel : ObservableRecipient, INavigationAw
     public Property PropertyOnCreating => _propertyService.PropertyOnCreating;    
 
     public ICommand GoForwardCommand { get; }
+
     public ICommand GoBackwardCommand { get; }
+
+    public IAsyncRelayCommand SaveAndExitAsyncCommand { get; }
 
     public CreateListingViewModel(IPropertyService propertyService, INavigationService navigationService)
     {
@@ -43,25 +53,32 @@ public partial class CreateListingViewModel : ObservableRecipient, INavigationAw
         _propertyService = propertyService;
         _navigationService = navigationService;
 
-        // Initialize core properties
+        // Initialize Observable Properties
         CurrentStepIndex = 0;
         IsLastStepCompleted = false;
+
+        // Initilize Commands
         GoForwardCommand = new RelayCommand(GoForward);
         GoBackwardCommand = new RelayCommand(GoBackward);
+        SaveAndExitAsyncCommand = new AsyncRelayCommand(SaveAndExitAsync);
     }
 
-    public async void OnNavigatedTo(object? parameter)
+    public void OnNavigatedTo(object? parameter)
     {
-        // Check if we are editing an In Progress Property
+        // Check if we are editing an In-progress Property
         if (parameter is int Id)
         {
+            // If there is a Property Id, we are editing an In-progress Property
+            Task.Run(async () =>
+            {
+                // Load the Property from the database
+                _propertyService.PropertyOnCreating = await _propertyService.GetPropertyInProgressAsync(Id);
+            }).Wait();
+
             // Initialize steps' ViewModel
             InitializeSteps();
 
-            // If there is a Property Id, this is the case of editing an In Progress Property
-            _propertyService.PropertyOnCreating = await _propertyService.GetPropertyInProgressAsync(Id);
-
-            // Update the current step index to the last step
+            // Update the current step index to the latest step
             var lastEditedStep = PropertyOnCreating.LastEditedStep;
             if (lastEditedStep != -1)
             {
@@ -71,14 +88,21 @@ public partial class CreateListingViewModel : ObservableRecipient, INavigationAw
         else
         {
             // Property Service is set to Singleton instance
-            // So new Property instance must be created by this ViewModel, which is Transient
+            // So new Property instance must be created in this ViewModel, which is Transient
             _propertyService.PropertyOnCreating = new()
             {
                 Status = PropertyStatus.InProgress,
             };
+
             // Initialize steps' ViewModel
             InitializeSteps();
+
+            // Initialize the first step
+            CurrentStepIndex = 0;
         }
+
+        // Manually call the method to update the UI
+        OnCurrentStepIndexChanged(CurrentStepIndex);
     }
 
     public void OnNavigatedFrom()
@@ -127,16 +151,18 @@ public partial class CreateListingViewModel : ObservableRecipient, INavigationAw
         // The below method will only save the current step's data to the PropertyOnCreating instance
         // Not yet to database
         CurrentStep.SaveProcess();
+
+        // If current step is the last step
         if (CurrentStepIndex == Stages.Count - 1)
         {
             // Update new listing status
             PropertyOnCreating.Status = PropertyStatus.Listed;
 
             // Save new listing to the database
-            await SaveCurrentStepAsync();   // Current step is the last step
+            await SaveCurrentStepAsync();
 
-            // Return to Listings page using BackTrack
-            App.GetService<INavigationService>().NavigateTo(typeof(ListingViewModel).FullName!);
+            // Return to Listings page
+            _navigationService.NavigateTo(typeof(ListingViewModel).FullName!);
             return;
         }
         CurrentStepIndex++;
@@ -147,7 +173,7 @@ public partial class CreateListingViewModel : ObservableRecipient, INavigationAw
         if (CurrentStepIndex == 0)
         {
             // Return to Listings page using BackTrack
-            App.GetService<INavigationService>()?.Frame?.GoBack();
+            _navigationService.Frame?.GoBack();
             return;
         }
         CurrentStepIndex--;
@@ -155,11 +181,52 @@ public partial class CreateListingViewModel : ObservableRecipient, INavigationAw
 
     partial void OnCurrentStepIndexChanged(int value)
     {
+        // Get the page type based on the current ViewModel name
+        if (ViewModelToPageDictionary.TryGetValue(CurrentStep.GetType().Name, out var pageType))
+        {
+            var slideNavigationTransitionEffect =
+                CurrentStepIndex - previousStageIndex > 0 ?
+                    SlideNavigationTransitionEffect.FromRight :
+                    SlideNavigationTransitionEffect.FromLeft;
+
+            ContentFrame?.Navigate(pageType, CurrentStep, new SlideNavigationTransitionInfo()
+            {
+                Effect = slideNavigationTransitionEffect
+            });
+
+            previousStageIndex = CurrentStepIndex;
+        }
+
+        // Check if the current step is the last step
         IsLastStepCompleted = value == Stages.Count - 1;
     }
 
-    public async Task SaveCurrentStepAsync()
+    public async Task SaveCurrentStepAsync(int stepIndex = -1)
     {
-        await _propertyService.SavePropertyAsync(_propertyService.PropertyOnCreating);
+        PropertyOnCreating.LastEditedStep = stepIndex;
+
+        await _propertyService.SavePropertyAsync(PropertyOnCreating);
+    }
+
+    public async Task SaveAndExitAsync()
+    {
+        // Display dialog to confirm saving and exiting
+        var result = await new ContentDialog
+        {
+            XamlRoot = App.MainWindow.Content.XamlRoot,
+            Title = "Save and Exit",
+            Content = "Are you sure you want to save and exit?",
+            PrimaryButtonText = "Save and Exit",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary
+        }.ShowAsync();
+
+        if (result == ContentDialogResult.Primary)
+        {
+            await SaveCurrentStepAsync(CurrentStepIndex);
+
+            // Return to Listings page using BackTrack
+            _navigationService.GoBack();
+        }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
-using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
 using BookingManagementSystem.Contracts.ViewModels;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
 using BookingManagementSystem.Core.Commons.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.ViewModels.Host;
 
@@ -40,7 +41,7 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
     {
         // Initialize data list with pagination & search data
         await LoadNextPageAsync();
-        InitializeSearchDataAsync();
+        await InitializeSearchDataAsync();
 
         // Initial check
         CheckListCount();
@@ -50,7 +51,7 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
     {
     }
 
-    public async void InitializeSearchDataAsync()
+    public async Task InitializeSearchDataAsync()
     {
         // Load Property Name and Location string data list
         var data = await _propertyRepository.GetAllAsync();
@@ -70,13 +71,14 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
             IsLoading = true;
 
             // Load next page, including Listed, Unlisted, and InProgress properties
-            var pagedItems = await _propertyRepository.GetPagedSortedAsync(
-                p => p.UpdatedAt,
+            var result = await _propertyRepository.GetPagedFilteredAndSortedAsync(
+                queryBuilder: q => q.Include(p => p.Country),
+                keySelector: p => p.UpdatedAt ?? DateTime.MinValue,
                 sortDescending: true,
-                _currentPage,
-                PageSize);
+                pageNumber: _currentPage,
+                pageSize: PageSize);
 
-            foreach (var property in pagedItems)
+            foreach (var property in result.Items)
             {
                 Properties.Add(property);
             }
@@ -181,7 +183,7 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
         Properties.Clear();
 
         await LoadNextPageAsync();
+        await InitializeSearchDataAsync();
         CheckListCount();
-        InitializeSearchDataAsync();
     }
 }
