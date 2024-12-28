@@ -248,8 +248,8 @@ public partial class App : Application
             imageUri: "https://letsenhance.io/static/a31ab775f44858f1d1b80ee51738f4f3/11499/EnhanceAfter.jpg",
             buttons:
             [
-                ("Mark as read", "action=mark-as-read"),
-                ("See details", "action=see-details")
+                ("See details", "action=see-details"),
+                ("Dismiss", "action=dismiss")
             ]
         );
     }

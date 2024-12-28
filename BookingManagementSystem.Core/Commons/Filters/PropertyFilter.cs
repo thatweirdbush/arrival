@@ -9,12 +9,12 @@ namespace BookingManagementSystem.Core.Commons.Filters;
 #nullable enable
 public class PropertyFilter
 {
-    public DateTimeOffset? CheckInDate { get; set; }
-    public DateTimeOffset? CheckOutDate { get; set; }
+    public DateTimeOffset? CheckInDate { get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset? CheckOutDate { get; set; } = DateTimeOffset.UtcNow.AddDays(5);
     public DestinationType? DestinationType { get; set; }
     public string? Destination { get; set; }
-    public int? MinGuests { get; set; }
-    public int? PetsAllowed { get; set; }
+    public int? MinGuests { get; set; } = 1;
+    public int? PetsAllowed { get; set; } = 0;
     public int PageNumber { get; set; } = 1; // Default to first page
     public int PageSize { get; set; } = 10; // Default page size
 }

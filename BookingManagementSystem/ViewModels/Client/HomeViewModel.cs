@@ -1,12 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Dispatching;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Models;
-using CommunityToolkit.Mvvm.Input;
 using BookingManagementSystem.Core.Contracts.Services;
-using Microsoft.UI.Dispatching;
-using BookingManagementSystem.Core.Commons.Enums;
 using BookingManagementSystem.Core.Commons.Filters;
 
 namespace BookingManagementSystem.ViewModels.Client;
@@ -24,9 +23,6 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
 
     [ObservableProperty]
     private bool isPropertyListEmpty;
-
-    [ObservableProperty]
-    private LoadingState currentLoadingState;
 
     [ObservableProperty]
     private bool isLoading;
@@ -82,9 +78,6 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     {
         // Load DestinationTypeSymbols data
         DestinationTypeSymbols = await _roomService.GetAllDestinationTypeSymbolsAsync();
-
-        // Set the default loading state
-        CurrentLoadingState = LoadingState.Default;
 
         // Initialize observable input fields
         NumberOfAdults = 1;

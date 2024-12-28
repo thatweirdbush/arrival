@@ -294,16 +294,14 @@ public sealed partial class RentalDetailPage : Page
     // Update the schedule based on the selected dates to ViewModel and UI
     private void UpdateSchedule(DateTimeOffset checkInDate, DateTimeOffset checkOutDate)
     {
-        if (ViewModel.ScheduleInformation == null) return;
-
         // Update the schedule based on the selected dates
-        ViewModel.ScheduleInformation.CheckInDate = checkInDate.UtcDateTime;
-        ViewModel.ScheduleInformation.CheckOutDate = checkOutDate.UtcDateTime;
+        ViewModel.CheckInDate = checkInDate.UtcDateTime;
+        ViewModel.CheckOutDate = checkOutDate.UtcDateTime;
 
         // Handle ambiguous bug when remove the min date
-        if (ViewModel.ScheduleInformation.CheckInDate > ViewModel.ScheduleInformation.CheckOutDate)
+        if (ViewModel.CheckInDate > ViewModel.CheckOutDate)
         {
-            ViewModel.ScheduleInformation.CheckInDate = ViewModel.ScheduleInformation.CheckOutDate;
+            ViewModel.CheckInDate = ViewModel.CheckOutDate;
         }
     }
 

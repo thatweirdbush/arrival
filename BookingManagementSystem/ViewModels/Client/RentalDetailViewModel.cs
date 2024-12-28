@@ -1,13 +1,14 @@
 ﻿using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Models;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
-using BookingManagementSystem.Core.Contracts.Facades;
-using CommunityToolkit.Mvvm.Input;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.ViewModels.Payment;
 using BookingManagementSystem.ViewModels.Account;
 using BookingManagementSystem.Core.Commons.Filters;
+using BookingManagementSystem.Core.Contracts.Facades;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
+using Microsoft.UI.Xaml.Controls;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -36,6 +37,8 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     public IEnumerable<PropertyPolicy> PropertyPolicies { get; set; } = [];
     public IAsyncRelayCommand ProceedPaymentCommand { get; }
     public PropertyFilter? ScheduleInformation { get; private set; }
+    public DateTimeOffset? CheckInDate { get; set; }
+    public DateTimeOffset? CheckOutDate { get; set; }
 
     public RentalDetailViewModel(IRentalDetailFacade rentalDetailFacade, INavigationService navigationService)
     {
@@ -67,7 +70,13 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
 
         if (propertyId.HasValue)
         {
-            ScheduleInformation = filter;
+            if (filter != null)
+            {
+                ScheduleInformation = filter;
+                CheckInDate = ScheduleInformation?.CheckInDate;
+                CheckOutDate = ScheduleInformation?.CheckOutDate;
+            }
+
             Item = await _rentalDetailFacade.GetPropertyByIdAsync(propertyId.Value);
 
             var reviews = await _rentalDetailFacade.GetReviewsAsync();
@@ -99,6 +108,7 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     {
         await _rentalDetailFacade.AddReviewAsync(review);
         Reviews.Insert(0, review);
+
         UpdateObservableProperties();
     }
 
@@ -123,21 +133,46 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
         return _rentalDetailFacade.UpdateAsync(property);
     }
 
+    public void RebuildPropertyFilter()
+    {
+        ScheduleInformation ??= new PropertyFilter();
+
+        if (CheckInDate.HasValue && CheckOutDate.HasValue)
+        {
+            ScheduleInformation.CheckInDate = CheckInDate.Value;
+            ScheduleInformation.CheckOutDate = CheckOutDate.Value;
+        }
+    }
+
     public async Task ProceedPaymentAsync()
     {
-        // Simulate network delay
+        if (Item == null)
+        {
+            _ = await new ContentDialog
+            {
+                XamlRoot = App.MainWindow.Content.XamlRoot,
+                Title = "Property Not Found",
+                Content = "No property selected for booking.",
+                CloseButtonText = "OK",
+                DefaultButton = ContentDialogButton.Close
+            }.ShowAsync();
+            return;
+        }
+
+        // Simulate network delay  
         await Task.Delay(400);
 
-        if (Item == null || ScheduleInformation == null) return;
+        // Update the filter with the latest schedule information
+        RebuildPropertyFilter();
 
-        // Wrap both Id and PropertyFilter into an object to pass
+        // Wrap both Id and PropertyFilter into an object to pass  
         IDictionary<string, object> navigationParameters = new Dictionary<string, object>
-            {
-                { "PropertyId", Item.Id },
-                { "Filter", ScheduleInformation }
-            };
+        {
+           { "PropertyId", Item.Id },
+           { "Filter", ScheduleInformation! }
+        };
 
-        // Navigate to Payment Page
+        // Navigate to Payment Page  
         _navigationService.NavigateTo(typeof(PaymentViewModel).FullName!, navigationParameters);
     }
 }
