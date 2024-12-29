@@ -1,5 +1,4 @@
 ﻿using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.Core.DTOs;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.ViewModels.Client;
@@ -51,7 +50,7 @@ public sealed partial class BookingHistoryPage : Page
         // Show confirmation dialog
         var result = await new ContentDialog
         {
-            XamlRoot = this.XamlRoot,
+            XamlRoot = XamlRoot,
             Title = "Remove Booking",
             Content = "Are you sure you want to remove the selected booking(s)?",
             PrimaryButtonText = "Remove",
@@ -78,9 +77,9 @@ public sealed partial class BookingHistoryPage : Page
         // Toggle the favourite button  
         // Change the image source to the filled heart icon  
         if (sender is FrameworkElement frameworkElement
-            && frameworkElement.DataContext is BookingPropertyViewModel bookingProperty)
+            && frameworkElement.DataContext is Booking booking)
         {
-            bookingProperty.Property.IsFavourite = !bookingProperty.Property.IsFavourite;
+            booking.Property.IsFavourite = !booking.Property.IsFavourite;
         }
     }
 }

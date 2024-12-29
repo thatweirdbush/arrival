@@ -1,23 +1,19 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Windows.System;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Helpers;
 using BookingManagementSystem.ViewModels;
-
-using Windows.System;
 using BookingManagementSystem.Views.Host;
 using BookingManagementSystem.Views.Account;
 using BookingManagementSystem.Views.Client;
 using BookingManagementSystem.ViewModels.Account;
 using BookingManagementSystem.Core.Models;
-using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace BookingManagementSystem.Views;
 
-// TODO: Update NavigationViewItem titles and icons in ShellPage.xaml.
 public partial class ShellPage : Page
 {
     public ShellViewModel ViewModel
@@ -42,7 +38,9 @@ public partial class ShellPage : Page
         "Home - Hotels & Apartments",
         "Rental Details",
         "Map Services",
-        "Hosting"
+        "Hosting",
+        "Notifications",
+        "FAQs"
     ];
 
     public ShellPage(ShellViewModel viewModel, LoginViewModel loginViewModel)
@@ -51,15 +49,13 @@ public partial class ShellPage : Page
         LoginViewModel = loginViewModel;
         InitializeComponent();
 
-        // Subscribe to the UserLoggedIn event
+        // Subscribe to events
         loginViewModel.UserLoggedIn += OnUserLoggedIn;
+        loginViewModel.UserLoggedOut += OnUserLoggedOut;
 
         ViewModel.NavigationService.Frame = NavigationFrame;
         ViewModel.NavigationViewService.Initialize(NavigationViewControl);
 
-        // TODO: Set the title bar icon by updating /Assets/WindowIcon.ico.
-        // A custom title bar is required for full window theme and Mica support.
-        // https://docs.microsoft.com/windows/apps/develop/title-bar?tabs=winui3#full-customization
         App.MainWindow.ExtendsContentIntoTitleBar = true;
         App.MainWindow.SetTitleBar(AppTitleBar);
         App.MainWindow.Activated += MainWindow_Activated;
@@ -172,7 +168,7 @@ public partial class ShellPage : Page
                     NavigationFrame.Navigate(typeof(LoginPage));
                     break;
                 case "logout":
-                    OnUserLoggedOut();
+                    LoginViewModel.Logout();
                     break;
                 case "host":
                     NavigationFrame.Navigate(typeof(ListingPage));
@@ -195,22 +191,39 @@ public partial class ShellPage : Page
         }
     }
 
-    private void OnUserLoggedIn(BookingManagementSystem.Core.Models.User user)
+    private async void OnUserLoggedIn(Core.Models.User user)
     {
+        // Setup user data
         isLoggedIn = true;
         txtUsername.Text = user.FullName;
         UserProfilePicture.DisplayName = user.FullName;
         NavigationFrame.Navigate(typeof(LoginPage));
         UserLoginStatusChanged();
+
+        // Load user notifications
+        await ViewModel.RefreshNotificationsAsync();
+
+        // Setup UI controls based on user role
+        if (user.Role == Role.Admin)
+        {
+            Shell_Admin.Visibility = Visibility.Visible;
+        }
     }
 
-    private void OnUserLoggedOut()
+    private async void OnUserLoggedOut(Core.Models.User? user)
     {
+        // Clear user data
         isLoggedIn = false;
         txtUsername.Text = "Sign In";
         UserProfilePicture.DisplayName = "";
         NavigationFrame.Navigate(typeof(HomePage));
         UserLoginStatusChanged(false);
+
+        // Clear notification data
+        await ViewModel.ResetUserNotificationsAsync();
+
+        // Clear UI controls based on user role
+        Shell_Admin.Visibility = Visibility.Collapsed;
     }
 
     private void UpdateMenuFlyoutVisibility()
@@ -288,7 +301,7 @@ public partial class ShellPage : Page
         // Detect when scroll is near the end
         if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight)
         {
-            await ViewModel.LoadNotificationData();
+            await ViewModel.GetNextNotificationDataPage();
         }
     }
 }

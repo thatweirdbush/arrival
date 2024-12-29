@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Contracts.Repositories;
-using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.ViewModels.Account;
 
-namespace BookingManagementSystem.Core.Services;
+namespace BookingManagementSystem.Services;
 public class NotificationService : INotificationService
 {
     private readonly IRepository<Notification> _notificationRepository;
-    private HashSet<Notification> _cachedUnreadNotifications = [];
+    private HashSet<Notification> _cachedUnreadNotifications = new();
     public int UnreadNotificationCount => _cachedUnreadNotifications.Count;
-    public event Action<int> NotificationListChanged;
+    public event Action<int> NotificationListChanged = delegate { };
 
     public NotificationService(IRepository<Notification> notificationRepository)
     {
@@ -30,7 +25,7 @@ public class NotificationService : INotificationService
     {
         // Load initial notifications, unread only
         _cachedUnreadNotifications = new HashSet<Notification>(
-            await _notificationRepository.GetAllAsync(n => !n.IsRead));
+            await _notificationRepository.GetAllAsync(n => !n.IsRead && n.UserId == LoginViewModel.CurrentUser!.Id));
     }
 
     /// <summary>
@@ -40,32 +35,24 @@ public class NotificationService : INotificationService
     /// <returns></returns>
     public Task<IEnumerable<Notification>> GetAllNotificationsAsync()
     {
-        return _notificationRepository.GetAllAsync();
+        return _notificationRepository.GetAllAsync(n => n.UserId == LoginViewModel.CurrentUser!.Id);
     }
 
     public async Task<IEnumerable<Notification>> GetPagedNotificationsAsync(int page, int pageSize, bool unreadOnly = false)
     {
-        IEnumerable<Notification> data;
+        var queryBuilder = unreadOnly
+            ? (Func<IQueryable<Notification>, IQueryable<Notification>>)
+             (q => q.Where(n => !n.IsRead && n.UserId == LoginViewModel.CurrentUser!.Id))
+            : q => q.Where(n => n.UserId == LoginViewModel.CurrentUser!.Id);
 
-        if (unreadOnly)
-        {
-            var result = await _notificationRepository.GetPagedFilteredAndSortedAsync(
-                queryBuilder: q => q.Where(n => !n.IsRead),
-                keySelector: n => n.DateSent,
-                sortDescending: true,
-                pageNumber: page,
-                pageSize: pageSize);
-            data = result.Items;
-        }
-        else
-        {
-            data = await _notificationRepository.GetPagedSortedAsync(
-                keySelector: n => n.DateSent,
-                sortDescending: true,
-                pageNumber: page,
-                pageSize: pageSize);
-        }
+        var result = await _notificationRepository.GetPagedFilteredAndSortedAsync(
+            queryBuilder: queryBuilder,
+            keySelector: n => n.DateSent,
+            sortDescending: true,
+            pageNumber: page,
+            pageSize: pageSize);
 
+        var data = result.Items;
         UpdateCachedUnreadNotifications(data, page);
         return data;
     }
@@ -242,4 +229,16 @@ public class NotificationService : INotificationService
         await _notificationRepository.UpdateRangeAsync(unreadNotifications);
         await _notificationRepository.SaveChangesAsync();
     }
+
+    public Task ResetUserNotificationsAsync()
+    {
+        // Clear the cached unread list
+        _cachedUnreadNotifications.Clear();
+
+        // Notify subscribers that the notification list has changed
+        NotificationListChanged.Invoke(UnreadNotificationCount);
+
+        return Task.CompletedTask;
+    }
 }
+

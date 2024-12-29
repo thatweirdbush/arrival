@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BookingManagementSystem.Core.Models;
 
-namespace BookingManagementSystem.Core.Contracts.Services;
+namespace BookingManagementSystem.Contracts.Services;
 public interface INotificationService
 {
     int UnreadNotificationCount { get; }
@@ -24,4 +24,5 @@ public interface INotificationService
     Task MarkAsUnreadRangeAsync(IEnumerable<Notification> notifications);
     Task MarkAllAsReadAsync();
     Task<IEnumerable<Notification>> GetAllNotificationsAsync();
+    Task ResetUserNotificationsAsync();
 }

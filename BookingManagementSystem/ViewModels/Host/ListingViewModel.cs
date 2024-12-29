@@ -5,17 +5,22 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 using BookingManagementSystem.Core.Commons.Enums;
 using Microsoft.EntityFrameworkCore;
+using BookingManagementSystem.ViewModels.Account;
+using System.Windows.Input;
+using BookingManagementSystem.Contracts.Services;
+using CommunityToolkit.Mvvm.Input;
 
 namespace BookingManagementSystem.ViewModels.Host;
 
 public partial class ListingViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IRepository<Property> _propertyRepository;
-    public ObservableCollection<Property> Properties { get; set; } = [];
-    public List<Property> CachedProperties { get; set; } = [];
+    private readonly INavigationService _navigationService;
+    public ObservableCollection<Property> Properties { get; set; } = new();
+    public List<Property> CachedProperties { get; set; } = new();
 
     // List of Property's Name & Location for searching
-    public List<string> PropertyNameAndLocationList { get; set; } = [];
+    public List<string> PropertyNameAndLocationList { get; set; } = new();
 
     [ObservableProperty]
     private bool isPropertyListEmpty;
@@ -26,25 +31,45 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
     [ObservableProperty]
     private LoadingState currentLoadingState;
 
+    [ObservableProperty]
+    private bool isUserLoggedIn;
+
+    private int CurrentUserId;
+
     private int _currentPage = 1;
     private const int PageSize = 5;
 
-    public ListingViewModel(IRepository<Property> propertyRepository)
+    public ICommand GetStartedCommand { get; }
+
+    public ListingViewModel(IRepository<Property> propertyRepository, INavigationService navigationService)
     {
         _propertyRepository = propertyRepository;
-
-        // Set the default loading state
-        CurrentLoadingState = LoadingState.Default;
+        _navigationService = navigationService;
+        GetStartedCommand = new RelayCommand(GetStarted);
     }
 
     public async void OnNavigatedTo(object parameter)
     {
+        if (LoginViewModel.CurrentUser == null)
+        {
+            CheckListCount();
+            CheckUserLoggedIn();
+            return;
+        }
+
+        // Get the current user id
+        CurrentUserId = LoginViewModel.CurrentUser.Id;
+
+        // Set the default loading state
+        CurrentLoadingState = LoadingState.Default;
+
         // Initialize data list with pagination & search data
         await LoadNextPageAsync();
         await InitializeSearchDataAsync();
 
         // Initial check
         CheckListCount();
+        CheckUserLoggedIn();
     }
 
     public void OnNavigatedFrom()
@@ -54,7 +79,7 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
     public async Task InitializeSearchDataAsync()
     {
         // Load Property Name and Location string data list
-        var data = await _propertyRepository.GetAllAsync();
+        var data = await _propertyRepository.GetAllAsync(p => p.HostId == CurrentUserId);
         CachedProperties = data.ToList();
         PropertyNameAndLocationList = CachedProperties.Select(p => p.Name)
                                                         .Concat(CachedProperties.Select(p => p.Location))
@@ -63,6 +88,8 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
 
     public async Task LoadNextPageAsync()
     {
+        if (LoginViewModel.CurrentUser == null) return;
+
         if (IsLoading) return;
 
         try
@@ -73,7 +100,8 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
             // Load next page, including Listed, Unlisted, and InProgress properties
             var result = await _propertyRepository.GetPagedFilteredAndSortedAsync(
                 queryBuilder: q => q.Include(p => p.Country) // Also include with one that has no country yet
-                                    .Where(p => p.CountryId == null || p.Country != null),
+                                    .Where(p => p.CountryId == null || p.Country != null)
+                                    .Where(p => p.HostId == CurrentUserId),
                 keySelector: p => p.CreatedAt,
                 sortDescending: true,
                 pageNumber: _currentPage,
@@ -125,11 +153,18 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
 
     private void CheckListCount()
     {
-        IsPropertyListEmpty = !Properties.Any();
+        IsPropertyListEmpty = Properties.Count == 0;
+    }
+
+    private void CheckUserLoggedIn()
+    {
+        IsUserLoggedIn = LoginViewModel.CurrentUser != null;
     }
 
     public void Search(string query)
     {
+        if (LoginViewModel.CurrentUser == null) return;
+
         // Set the current loading state
         CurrentLoadingState = LoadingState.Search;
 
@@ -178,6 +213,8 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
 
     public async Task RefreshAsync()
     {
+        if (LoginViewModel.CurrentUser == null) return;
+
         CurrentLoadingState = LoadingState.Default;
 
         ResetPaginationIndex();
@@ -186,5 +223,19 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
         await LoadNextPageAsync();
         await InitializeSearchDataAsync();
         CheckListCount();
+    }
+
+    public void GetStarted()
+    {
+        if (LoginViewModel.CurrentUser == null)
+        {
+            // Navigate to Login Page
+            _navigationService.NavigateTo(typeof(LoginViewModel).FullName!);
+        }
+        else
+        {
+            // Navigate to Create Listing Page
+            _navigationService.NavigateTo(typeof(CreateListingViewModel).FullName!);
+        }
     }
 }

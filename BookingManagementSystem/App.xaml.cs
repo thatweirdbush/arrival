@@ -112,7 +112,7 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Bussiness Services
-            services.AddSingleton<INotificationService, NotificationService>();
+            services.AddSingleton<BookingManagementSystem.Contracts.Services.INotificationService, BookingManagementSystem.Services.NotificationService>();
             services.AddSingleton<IPropertyService, PropertyService>();
             services.AddTransient<IRoomService, RoomService>();
             services.AddTransient<IImageService, ImageService>();

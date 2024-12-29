@@ -9,6 +9,7 @@ public partial class LoginViewModel : ObservableRecipient
     public static User? CurrentUser { get; private set; }
 
     public event Action<User>? UserLoggedIn;
+    public event Action<User?>? UserLoggedOut;
 
     private readonly IRepository<User> _userRepository;
 
@@ -29,5 +30,14 @@ public partial class LoginViewModel : ObservableRecipient
             UserLoggedIn?.Invoke(CurrentUser);
 
         return CurrentUser;
+    }
+
+    // Log out user
+    public Task<User?> Logout()
+    {
+        CurrentUser = null;
+        UserLoggedOut?.Invoke(CurrentUser);
+
+        return Task.FromResult(CurrentUser);
     }
 }

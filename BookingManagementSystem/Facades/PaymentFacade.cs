@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
+using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Contracts.Facades;
 using BookingManagementSystem.Core.Contracts.Repositories;
-using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,10 +14,13 @@ public class PaymentFacade : IPaymentFacade
     private readonly IRepository<Booking> _bookingRepository;
     private readonly IRepository<Payment> _paymentRepository;
     private readonly INotificationService _notificationService;
-    public Property? Property { get; private set; }
+    public Property? Property
+    {
+        get; private set;
+    }
 
     public PaymentFacade(
-        IRepository<Property> propertyRepository, 
+        IRepository<Property> propertyRepository,
         IRepository<Voucher> voucherRepository,
         IRepository<Booking> bookingRepository,
         IRepository<Payment> paymentRepository,

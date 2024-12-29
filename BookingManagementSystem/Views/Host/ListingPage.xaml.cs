@@ -72,6 +72,8 @@ public sealed partial class ListingPage : Page
 
     private async Task RemoveAll_Click(object sender, RoutedEventArgs e)
     {
+        if (ViewModel.Properties.Count == 0) return;
+
         // Show confirmation dialog
         var result = await new ContentDialog
         {
@@ -100,12 +102,6 @@ public sealed partial class ListingPage : Page
     {
         // Set to default pagination index & loading state
         return ViewModel.RefreshAsync();
-    }
-
-    private void GetStarted_Click(object sender, RoutedEventArgs e)
-    {
-        // Navigate to Create Listing Page
-        App.GetService<INavigationService>().NavigateTo(typeof(CreateListingViewModel).FullName!);
     }
 
     private void SearchListing_Click(object sender, RoutedEventArgs e)

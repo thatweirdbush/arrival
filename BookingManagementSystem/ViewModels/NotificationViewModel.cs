@@ -1,9 +1,9 @@
-﻿using BookingManagementSystem.Core.Contracts.Repositories;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Contracts.ViewModels;
-using BookingManagementSystem.Core.Contracts.Services;
+using BookingManagementSystem.ViewModels.Account;
+using BookingManagementSystem.Contracts.Services;
 
 namespace BookingManagementSystem.ViewModels;
 
@@ -21,6 +21,9 @@ public partial class NotificationViewModel : ObservableRecipient, INavigationAwa
     [ObservableProperty]
     private bool isSelectedUnreadFilter;
 
+    [ObservableProperty]
+    private bool isUserLoggedIn;
+
     private int _currentPage = 1;
     private const int PageSize = 5;
 
@@ -31,6 +34,13 @@ public partial class NotificationViewModel : ObservableRecipient, INavigationAwa
 
     public async void OnNavigatedTo(object parameter)
     {
+        if (LoginViewModel.CurrentUser == null)
+        {
+            CheckListCount();
+            CheckUserLoggedIn();
+            return;
+        }
+
         // Initialize filter
         IsSelectedUnreadFilter = false;
 
@@ -39,6 +49,7 @@ public partial class NotificationViewModel : ObservableRecipient, INavigationAwa
 
         // Initial check
         CheckListCount();
+        CheckUserLoggedIn();
     }
     public void OnNavigatedFrom()
     {
@@ -53,6 +64,8 @@ public partial class NotificationViewModel : ObservableRecipient, INavigationAwa
 
     public async Task LoadNextPageAsync()
     {
+        if (LoginViewModel.CurrentUser == null) return;
+
         if (IsLoading) return;
 
         try
@@ -79,7 +92,12 @@ public partial class NotificationViewModel : ObservableRecipient, INavigationAwa
 
     public void CheckListCount()
     {
-        IsListEmpty = !Notifications.Any();
+        IsListEmpty = Notifications.Count == 0;
+    }
+
+    private void CheckUserLoggedIn()
+    {
+        IsUserLoggedIn = LoginViewModel.CurrentUser != null;
     }
 
     public async Task RemoveRangeAsync(IEnumerable<Notification> notifications)

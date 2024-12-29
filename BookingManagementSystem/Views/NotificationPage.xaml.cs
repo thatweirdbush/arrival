@@ -69,6 +69,8 @@ public sealed partial class NotificationPage : Page
 
     private async Task RemoveAll_Click(object sender, RoutedEventArgs e)
     {
+        if (ViewModel.Notifications.Count == 0) return;
+
         // Show confirmation dialog
         var result = await new ContentDialog
         {
@@ -89,6 +91,8 @@ public sealed partial class NotificationPage : Page
 
     private async Task MarkAsReadOrUnread_Click(object sender, RoutedEventArgs e)
     {
+        if (ViewModel.Notifications.Count == 0) return;
+
         // Get selected items and remove them from the list
         var selectedItems = NotificationListView.SelectedItems.Cast<Notification>().ToList();
 
@@ -106,9 +110,11 @@ public sealed partial class NotificationPage : Page
         }
     }
 
-    private Task MarkAllAsRead_Click(object sender, RoutedEventArgs e)
+    private async Task MarkAllAsRead_Click(object sender, RoutedEventArgs e)
     {
-        return ViewModel.MarkAllAsReadAsync();
+        if (ViewModel.Notifications.Count == 0) return;
+
+        await ViewModel.MarkAllAsReadAsync();
     }
 
     private async Task Refresh_Click(object sender, RoutedEventArgs e)

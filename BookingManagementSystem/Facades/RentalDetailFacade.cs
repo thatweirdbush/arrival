@@ -12,7 +12,10 @@ public class RentalDetailFacade : IRentalDetailFacade
     private readonly IRepository<QnA> _qnaRepository;
     private readonly IRepository<BadReport> _badReportRepository;
 
-    public Property? Property { get; private set; }
+    public Property? Property
+    {
+        get; private set;
+    }
 
     public RentalDetailFacade(
         IRepository<Property> propertyRepository,

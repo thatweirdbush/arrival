@@ -4,7 +4,6 @@ using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Views;
 using BookingManagementSystem.Core.Models;
 using System.Collections.ObjectModel;
-using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.ViewModels.Account;
 
 namespace BookingManagementSystem.ViewModels;
@@ -30,25 +29,18 @@ public partial class ShellViewModel : ObservableRecipient
     private bool isSelectedUnreadFilter;
 
     [ObservableProperty]
+    private bool isUserLoggedIn;
+
+    [ObservableProperty]
     private bool isLoading;
 
-    public INavigationService NavigationService
-    {
-        get;
-    }
-    public INavigationViewService NavigationViewService
-    {
-        get;
-    }
-    public INotificationService NotificationService
-    {
-        get;
-    }
-    public ObservableCollection<Notification> Notifications { get; set; } = [];
+    public INavigationService NavigationService { get; }
+    public INavigationViewService NavigationViewService { get; }
+    public INotificationService NotificationService { get; }
+    public ObservableCollection<Notification> Notifications { get; set; } = new();
 
     private int _currentPage = 1;
     private const int PageSize = 5;
-    bool isFirstTimeLoaded = true;
 
     public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService, INotificationService notificationService)
     {
@@ -66,7 +58,7 @@ public partial class ShellViewModel : ObservableRecipient
         NotificationService.NotificationListChanged += OnNotificationListChanged;
     }
 
-    private async void OnNavigated(object sender, NavigationEventArgs e)
+    private void OnNavigated(object sender, NavigationEventArgs e)
     {
         IsBackEnabled = NavigationService.CanGoBack;
 
@@ -82,25 +74,25 @@ public partial class ShellViewModel : ObservableRecipient
             Selected = selectedItem;
         }
 
-        if (isFirstTimeLoaded)
-        {
-            isFirstTimeLoaded = false;
-            await NotificationService.InitializeCacheAsync();
-            await LoadNotificationData();
-            OnNotificationListChanged();
-        }
+        OnNotificationListChanged();
+        CheckUserLoggedIn();
+    }
+
+    private void CheckUserLoggedIn()
+    {
+        IsUserLoggedIn = LoginViewModel.CurrentUser != null;
     }
 
     // Do nothing if the filter is not changed
     partial void OnIsSelectedUnreadFilterChanged(bool oldValue, bool newValue)
     {
         if (oldValue == newValue) return;
-        _ = RefreshAsync();
+        _ = RefreshNotificationsAsync();
     }
 
     public void OnNotificationListChanged(int eventParameter = -1)
     {
-        IsNotificationListEmpty = !Notifications.Any();
+        IsNotificationListEmpty = Notifications.Count == 0;
 
         if (eventParameter == -1)
         {
@@ -114,7 +106,14 @@ public partial class ShellViewModel : ObservableRecipient
         }
     }
 
-    public async Task LoadNotificationData()
+    public async Task LoadNotificationsAsync()
+    {
+        await NotificationService.InitializeCacheAsync();
+        await GetNextNotificationDataPage();
+        OnNotificationListChanged();
+    }
+
+    public async Task GetNextNotificationDataPage()
     {
         if (IsLoading) return;
 
@@ -146,12 +145,19 @@ public partial class ShellViewModel : ObservableRecipient
         OnNotificationListChanged();
     }
 
-    public async Task RefreshAsync()
+    public async Task RefreshNotificationsAsync()
     {
         _currentPage = 1;
 
         Notifications.Clear();
-        await LoadNotificationData();
+        await GetNextNotificationDataPage();
+        OnNotificationListChanged();
+    }
+
+    public async Task ResetUserNotificationsAsync()
+    {
+        await NotificationService.ResetUserNotificationsAsync();
+        Notifications.Clear();
         OnNotificationListChanged();
     }
 }

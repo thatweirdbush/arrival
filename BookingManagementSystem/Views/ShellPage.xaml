@@ -168,17 +168,7 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Uid="Shell_Home" Icon="Home" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.HomeViewModel"/>
                 <NavigationViewItem x:Uid="Shell_Map" Icon="World" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.MapViewModel"/>
-                <NavigationViewItem x:Uid="Shell_Host" Icon="Street">
-                    <NavigationViewItem.MenuItems>
-                        <NavigationViewItem x:Uid="Shell_Listing" Icon="List" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Host.ListingViewModel"/>
-                        <NavigationViewItem x:Uid="Shell_CreateListing" Icon="NewFolder" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.CreateListingViewModel"/>
-                        <!--<NavigationViewItem x:Uid="Shell_LoyaltyProgram" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.LoyaltyProgramViewModel">
-                            <NavigationViewItem.Icon>
-                                <FontIcon Glyph="&#xE7E3;"/>
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>-->
-                    </NavigationViewItem.MenuItems>
-                </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_Host" Icon="Street" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Host.ListingViewModel"/>
                 <NavigationViewItem x:Uid="Shell_Notification" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.NotificationViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA8F;"/>
@@ -191,7 +181,7 @@
                     </NavigationViewItem.InfoBadge>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_FAQ" Icon="Flag" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.FAQViewModel"/>
-                <NavigationViewItem x:Uid="Shell_Admin" Icon="GoToStart" AutomationProperties.Name="Administrator">
+                <NavigationViewItem x:Uid="Shell_Admin" x:Name="Shell_Admin" Visibility="Collapsed" Icon="GoToStart" AutomationProperties.Name="Administrator">
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem x:Uid="Shell_ListingRequest" Icon="Library" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Administrator.ListingRequestViewModel"/>
                         <NavigationViewItem x:Uid="Shell_Report" Icon="ReportHacked" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Administrator.ReportViewModel"/>
