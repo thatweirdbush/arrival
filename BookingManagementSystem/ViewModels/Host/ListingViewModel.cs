@@ -72,8 +72,9 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
 
             // Load next page, including Listed, Unlisted, and InProgress properties
             var result = await _propertyRepository.GetPagedFilteredAndSortedAsync(
-                queryBuilder: q => q.Include(p => p.Country),
-                keySelector: p => p.UpdatedAt!,
+                queryBuilder: q => q.Include(p => p.Country) // Also include with one that has no country yet
+                                    .Where(p => p.CountryId == null || p.Country != null),
+                keySelector: p => p.CreatedAt,
                 sortDescending: true,
                 pageNumber: _currentPage,
                 pageSize: PageSize);

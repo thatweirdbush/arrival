@@ -7,14 +7,16 @@ namespace BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
 public partial class SetPriceViewModel : BaseStepViewModel
 {
-    public const decimal DefaultPrice = 10m;
-    public const decimal GuestServiceFeeRate = 0.14m;
-    public const decimal HostServiceFeeRate = 0.03m;
+    private readonly IPropertyService _propertyService;
 
     [ObservableProperty]
     private decimal basePrice = DefaultPrice;
-    private readonly IPropertyService _propertyService;
-    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
+
+    public Property PropertyOnCreating => _propertyService.PropertyOnCreating!;
+
+    public const decimal DefaultPrice = 10m;
+    public const decimal GuestServiceFeeRate = 0.14m;
+    public const decimal HostServiceFeeRate = 0.03m;
 
     partial void OnBasePriceChanged(decimal value)
     {

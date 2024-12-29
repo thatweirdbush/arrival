@@ -13,6 +13,7 @@ public interface IRepository<T>
     IQueryable<T> GetQueryable();
     Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null);
     Task<T?> GetByIdAsync(int id);
+    Task<T?> GetByIdWithIncludeAsync(int id, params Expression<Func<T, object>>[] includeProperties);
     Task AddAsync(T entity);
     Task AddRangeAsync(IEnumerable<T> entities);
     Task UpdateAsync(T entity);

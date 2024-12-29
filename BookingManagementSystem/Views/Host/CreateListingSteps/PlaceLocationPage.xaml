@@ -27,7 +27,7 @@
                                Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
                 </StackPanel>
                 <Grid Grid.Row="1" CornerRadius="12">
-                    <WebView2 x:Name="MapWebView2" Height="480" Source="https://www.google.com/maps" />
+                    <WebView2 x:Name="MapWebView2" Height="480" Source="https://www.google.com/maps/@10.7789449,106.7030947,4360m" />
                     <Image Height="50" Source="/Assets/common-icons/pinned-location.png"/>
                 </Grid>
                 <Grid Grid.Row="2">

@@ -21,7 +21,7 @@ public partial class PlacePhotosViewModel : BaseStepViewModel
 
     public ObservableCollection<string> PhotoUrls { get; set; } = [];
 
-    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
+    public Property PropertyOnCreating => _propertyService.PropertyOnCreating!;
 
     public PlacePhotosViewModel(IPropertyService propertyService, IImageService imageService)
     {
@@ -73,12 +73,13 @@ public partial class PlacePhotosViewModel : BaseStepViewModel
     public async Task AddPhotoRangeAsync(IEnumerable<StorageFile> files)
     {
         IsLoading = true;
+        var folderName = PropertyOnCreating.Id.ToString(); // Folder name is the Property's Id
 
         foreach (var file in files)
         {
             // Upload each file to Cloudinary
             using var stream = await file.OpenStreamForReadAsync();
-            var uploadedUrl = await _imageService.UploadImageAsync(stream, file.Name);
+            var uploadedUrl = await _imageService.UploadImageAsync(stream, file.Name, folderName);
 
             // Add the uploaded URL to the PhotoUrls collection
             if (!PhotoUrls.Contains(uploadedUrl))
@@ -142,14 +143,16 @@ public partial class PlacePhotosViewModel : BaseStepViewModel
         var uri = new Uri(url);
         var segments = uri.AbsolutePath.Split('/');
 
-        if (segments.Length < 2)
+        if (segments.Length < 3)
         {
             throw new InvalidOperationException("Invalid URL structure.");
         }
 
-        var folder = segments[^2];
-        var fileName = Path.GetFileNameWithoutExtension(segments[^1]);
+        // Extract folder and file name from the URL
+        var parentFolder = segments[^3]; // "Arrival"
+        var folder = segments[^2];      // Property ID, e.g., "17"
+        var fileName = Path.GetFileNameWithoutExtension(segments[^1]); // File name without extension
 
-        return $"{folder}/{fileName}"; // Example: "properties/photo"
+        return $"{parentFolder}/{folder}/{fileName}"; // Example: "Arrival/17/photo"
     }
 }

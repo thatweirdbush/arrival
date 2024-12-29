@@ -126,6 +126,7 @@ public partial class App : Application
             services.AddTransient<IRepository<Amenity>, AmenityRepository>();
             services.AddTransient<IRepository<BadReport>, BadReportRepository>();
             services.AddTransient<IRepository<Booking>, BookingRepository>();
+            services.AddTransient<IRepository<CountryInfo>, CountryInfoRepository>();
             services.AddTransient<IRepository<FAQ>, FAQRepository>();
             services.AddTransient<IRepository<Notification>, NotificationRepository>();
             services.AddTransient<IRepository<Payment>, PaymentRepository>();

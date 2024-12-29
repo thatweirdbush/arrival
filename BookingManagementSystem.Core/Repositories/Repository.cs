@@ -60,6 +60,16 @@ public class Repository<T> : IRepository<T> where T : class
         return await _dbSet.FindAsync(id);
     }
 
+    public async virtual Task<T?> GetByIdWithIncludeAsync(int id, params Expression<Func<T, object>>[] includeProperties)
+    {
+        var query = _dbSet.AsQueryable();
+        foreach (var includeProperty in includeProperties)
+        {
+            query = query.Include(includeProperty);
+        }
+        return await query.FirstOrDefaultAsync(e => e.GetHashCode() == id);
+    }
+
     /// <summary>
     /// Add an entity
     /// </summary>
@@ -96,7 +106,7 @@ public class Repository<T> : IRepository<T> where T : class
     /// </summary>
     /// <param name="entities"></param>
     /// <returns></returns>
-    public async Task UpdateRangeAsync(IEnumerable<T> entities)
+    public async virtual Task UpdateRangeAsync(IEnumerable<T> entities)
     {
         _dbSet.UpdateRange(entities);
         await Task.CompletedTask;
@@ -121,12 +131,11 @@ public class Repository<T> : IRepository<T> where T : class
     /// </summary>
     /// <param name="ids"></param>
     /// <returns></returns>
-    public async Task DeleteRangeAsync(IEnumerable<int> ids)
+    public async virtual Task DeleteRangeAsync(IEnumerable<int> ids)
     {
-        var entities = await _dbSet.Where(e => ids.Contains(e.GetHashCode())).ToListAsync();
-        if (entities != null)
+        foreach (var id in ids)
         {
-            _dbSet.RemoveRange(entities);
+            await DeleteAsync(id);
         }
     }
 

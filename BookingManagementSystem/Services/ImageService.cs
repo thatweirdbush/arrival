@@ -10,6 +10,8 @@ public class ImageService : IImageService
     private readonly Cloudinary _cloudinary;
     private readonly ILogger<ImageService> _logger;
 
+    private const string ParentFolder = "Arrival";
+
     public ImageService(IConfiguration configuration, ILogger<ImageService> logger)
     {
         _logger = logger;
@@ -25,7 +27,7 @@ public class ImageService : IImageService
         _cloudinary = new Cloudinary(account) { Api = { Secure = true } };
     }
 
-    public async Task<string> UploadImageAsync(Stream imageStream, string fileName)
+    public async Task<string> UploadImageAsync(Stream imageStream, string fileName, string folderName = ParentFolder)
     {
         if (imageStream == null || imageStream.Length == 0)
             throw new ArgumentException("Image stream cannot be null or empty.");
@@ -38,7 +40,7 @@ public class ImageService : IImageService
             var uploadParams = new ImageUploadParams
             {
                 File = new FileDescription(fileName, imageStream),
-                Folder = "properties", // Folder on Cloudinary
+                Folder = $"{ParentFolder}/{folderName}", // Folder on Cloudinary, eg: Arrival/17
                 UseFilename = true,
                 UniqueFilename = false, // Use the original file name, no random prefix
                 Overwrite = true

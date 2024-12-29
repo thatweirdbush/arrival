@@ -10,7 +10,7 @@ public partial class PlaceLocationViewModel : BaseStepViewModel
 {
     private readonly IPropertyService _propertyService;
     private readonly GeographicNameService _geographicNamesService;
-    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
+    public Property PropertyOnCreating => _propertyService.PropertyOnCreating!;
     public ObservableCollection<CountryInfo> CountryList { get; private set; } = [];
     public double CurrentLatitude { get; set; }
     public double CurrentLongitude { get; set; }
@@ -46,19 +46,34 @@ public partial class PlaceLocationViewModel : BaseStepViewModel
         }
     }
 
-    public async Task<GeographicName> FindNearbyPlaceAsync() => await _geographicNamesService.FindNearbyPlaceAsync(CurrentLatitude, CurrentLongitude);
-    public async Task<List<string>> SearchLocationsAsync(string query) => await _geographicNamesService.GeographicNameToStringListAsync(query);
-    public async Task<List<WikipediaSearchResult>> SearchWikipediaAsync(string query, int maxRows) => await _geographicNamesService.SearchWikipediaAsync(query, maxRows);
+    public Task<GeographicName> FindNearbyPlaceAsync()
+        => _geographicNamesService.FindNearbyPlaceAsync(CurrentLatitude, CurrentLongitude);
 
-    public override void SaveProcess()
+    public Task<List<string>> SearchLocationsAsync(string query)
+        => _geographicNamesService.GeographicNameToStringListAsync(query);
+
+    public Task<List<WikipediaSearchResult>> SearchWikipediaAsync(string query, int maxRows)
+        => _geographicNamesService.SearchWikipediaAsync(query, maxRows);
+
+    public async override void SaveProcess()
     {
         PropertyOnCreating.Latitude = CurrentLatitude;
         PropertyOnCreating.Longitude = CurrentLongitude;
-        PropertyOnCreating.Country = SelectedCountry;
+        PropertyOnCreating.CountryId = SelectedCountry.Id;
         PropertyOnCreating.StreetAddress = SelectedStreetAddress;
         PropertyOnCreating.CityOrDistrict = SelectedCityOrDistrict;
         PropertyOnCreating.StateOrProvince = SelectedStateOrProvince;
         PropertyOnCreating.PostalCode = SelectedPostalCode;
+
+        // Check if there is CountryInfo in the database
+        var existingCountry = await _propertyService.GetCountryAsync(SelectedCountry.Id);
+        if (existingCountry == null)
+        {
+            await _propertyService.AddCountryAsync(SelectedCountry);
+        }
+        else {
+            await _propertyService.UpdateCountryAsync(SelectedCountry);
+        }
     }
 
     public override void ValidateProcess()

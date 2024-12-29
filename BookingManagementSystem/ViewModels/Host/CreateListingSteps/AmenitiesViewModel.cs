@@ -9,7 +9,7 @@ public partial class AmenitiesViewModel : BaseStepViewModel
 {
     private readonly IRepository<Amenity> _amenityRepository;
     private readonly IPropertyService _propertyService;
-    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
+    public Property PropertyOnCreating => _propertyService.PropertyOnCreating!;
 
     // List of content items for UI
     public IEnumerable<Amenity> GuestFavoriteAmenities { get; set; } = [];
@@ -49,15 +49,21 @@ public partial class AmenitiesViewModel : BaseStepViewModel
     public void TryLoadSelectedAmenities()
     {
         // Load selected amenities
+        // Must cast to List, or else null reference exception
+        // would be thrown when there's no selected amenities
+        // due to IEnumerable's lazy evaluation that we didn't add item using the iterator
         SelectedGuestFavoriteAmenities = PropertyOnCreating.PropertyAmenities
             .Where(x => x.Amenity.Type == AmenityType.GuestFavorite)
-            .Select(x => x.Amenity);
+            .Select(x => x.Amenity)
+            .ToList();
         SelectedStandoutAmenities = PropertyOnCreating.PropertyAmenities
             .Where(x => x.Amenity.Type == AmenityType.Standout)
-            .Select(x => x.Amenity);
+            .Select(x => x.Amenity)
+            .ToList();
         SelectedSafetyAmenities = PropertyOnCreating.PropertyAmenities
             .Where(x => x.Amenity.Type == AmenityType.Safety)
-            .Select(x => x.Amenity);
+            .Select(x => x.Amenity)
+            .ToList();
     }
 
     public void ResetPropertyAmenities()
@@ -91,17 +97,17 @@ public partial class AmenitiesViewModel : BaseStepViewModel
         foreach (var amenity in SelectedGuestFavoriteAmenities)
         {
             PropertyOnCreating.PropertyAmenities
-                .Add(new PropertyAmenity { Property = PropertyOnCreating, Amenity = amenity });
+                .Add(new PropertyAmenity { PropertyId = PropertyOnCreating.Id, AmenityId = amenity.Id });
         }
         foreach (var amenity in SelectedStandoutAmenities)
         {
             PropertyOnCreating.PropertyAmenities
-                .Add(new PropertyAmenity { Property = PropertyOnCreating, Amenity = amenity });
+                .Add(new PropertyAmenity { PropertyId = PropertyOnCreating.Id, AmenityId = amenity.Id });
         }
         foreach (var amenity in SelectedSafetyAmenities)
         {
             PropertyOnCreating.PropertyAmenities
-                .Add(new PropertyAmenity { Property = PropertyOnCreating, Amenity = amenity });
+                .Add(new PropertyAmenity { PropertyId = PropertyOnCreating.Id, AmenityId = amenity.Id });
         }
     }
 

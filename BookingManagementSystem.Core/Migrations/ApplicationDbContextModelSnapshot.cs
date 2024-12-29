@@ -49,7 +49,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Amenities", (string)null);
+                    b.ToTable("Amenities");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.BadReport", b =>
@@ -96,7 +96,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BadReports", (string)null);
+                    b.ToTable("BadReports");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.Booking", b =>
@@ -139,7 +139,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookings", (string)null);
+                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.FAQ", b =>
@@ -198,7 +198,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.Payment", b =>
@@ -235,7 +235,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Payments", (string)null);
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.Property", b =>
@@ -340,7 +340,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex(new[] { "CountryId" }, "IX_Properties_CountryId");
 
-                    b.ToTable("Properties", (string)null);
+                    b.ToTable("Properties");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.PropertyAmenity", b =>
@@ -361,7 +361,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex("AmenityId");
 
-                    b.ToTable("PropertyAmenities", (string)null);
+                    b.ToTable("PropertyAmenities");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.PropertyPolicy", b =>
@@ -388,7 +388,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex(new[] { "PropertyId" }, "IX_PropertyPolicies_PropertyId");
 
-                    b.ToTable("PropertyPolicies", (string)null);
+                    b.ToTable("PropertyPolicies");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.QnA", b =>
@@ -428,7 +428,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("QnAs", (string)null);
+                    b.ToTable("QnAs");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.Review", b =>
@@ -463,7 +463,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.User", b =>
@@ -523,7 +523,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.Voucher", b =>
@@ -563,7 +563,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Vouchers", (string)null);
+                    b.ToTable("Vouchers");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Services.CountryInfo", b =>
@@ -734,6 +734,7 @@ namespace BookingManagementSystem.Core.Migrations
                     b.HasOne("BookingManagementSystem.Core.Models.Property", "Property")
                         .WithMany("PropertyAmenities")
                         .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Amenity");

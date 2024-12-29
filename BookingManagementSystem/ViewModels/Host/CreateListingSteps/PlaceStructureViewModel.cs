@@ -11,12 +11,12 @@ public partial class PlaceStructureViewModel : BaseStepViewModel
     private readonly PropertyTypeIconRepository _propertyTypeIconRepository;
     private readonly IPropertyService _propertyService;
 
-    // List of content items
-    public IEnumerable<PropertyTypeIcon> PropertyTypeIcons { get; set; } = [];
-
     [ObservableProperty]
     private PropertyTypeIcon? selectedTypeIcon;
-    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
+
+    // List of content items
+    public IEnumerable<PropertyTypeIcon> PropertyTypeIcons { get; set; } = [];
+    public Property PropertyOnCreating => _propertyService.PropertyOnCreating!;
 
     public PlaceStructureViewModel(IPropertyService propertyService, PropertyTypeIconRepository propertyTypeIconRepository)
     {

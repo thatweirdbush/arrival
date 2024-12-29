@@ -33,7 +33,7 @@
                         IsItemClickEnabled="True"
                         SelectionMode="Extended"
                         SelectionChanged="GuestFavoriteAmenitiesGridView_SelectionChanged"
-                        Padding="-8 0 0 0"
+                        Padding="-8 0 0 0" Loaded="GuestFavoriteAmenitiesGridView_Loaded"
                         ScrollViewer.VerticalScrollBarVisibility="Hidden">
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -72,7 +72,7 @@
                         IsItemClickEnabled="True"
                         SelectionMode="Extended"
                         SelectionChanged="StandoutAmenitiesGridView_SelectionChanged"                        
-                        Padding="-8 0 0 0"
+                        Padding="-8 0 0 0" Loaded="StandoutAmenitiesGridView_Loaded"
                         ScrollViewer.VerticalScrollBarVisibility="Hidden">
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -111,7 +111,7 @@
                         IsItemClickEnabled="True"
                         SelectionMode="Extended"
                         SelectionChanged="SafetyAmenitiesGridView_SelectionChanged"
-                        Padding="-8 0 0 0"
+                        Padding="-8 0 0 0" Loaded="SafetyAmenitiesGridView_Loaded"
                         ScrollViewer.VerticalScrollBarVisibility="Hidden">
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>

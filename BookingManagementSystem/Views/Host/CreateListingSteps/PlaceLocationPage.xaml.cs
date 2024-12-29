@@ -1,6 +1,4 @@
-﻿using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.Core.Services;
-using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
+﻿using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -27,6 +25,13 @@ public sealed partial class PlaceLocationPage : Page
             ViewModel = viewModel!;
         }
         base.OnNavigatedTo(e);
+    }
+
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        // Unregister the event handler
+        MapWebView2.CoreWebView2.SourceChanged -= CoreWebView2_SourceChanged;
+        base.OnNavigatedFrom(e);
     }
 
     private async Task InitializeWebView2Async()

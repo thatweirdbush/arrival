@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookingManagementSystem.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241208105444_InitialCreate3")]
-    partial class InitialCreate3
+    [Migration("20241229163410_ScaffoldedMigration")]
+    partial class ScaffoldedMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,7 +31,7 @@ namespace BookingManagementSystem.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -42,18 +42,15 @@ namespace BookingManagementSystem.Core.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int?>("PropertyId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
                     b.Property<int>("Type")
-                        .HasColumnType("integer");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(5);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PropertyId");
 
                     b.ToTable("Amenities");
                 });
@@ -64,7 +61,7 @@ namespace BookingManagementSystem.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AdminNotes")
                         .HasColumnType("text");
@@ -98,6 +95,10 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("HandledByAdminId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("BadReports");
                 });
 
@@ -107,7 +108,7 @@ namespace BookingManagementSystem.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CheckInDate")
                         .HasColumnType("timestamp with time zone");
@@ -122,7 +123,9 @@ namespace BookingManagementSystem.Core.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("numeric");
@@ -135,6 +138,10 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PropertyId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("Bookings");
                 });
 
@@ -144,20 +151,21 @@ namespace BookingManagementSystem.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Answer")
                         .HasColumnType("text");
 
                     b.Property<int>("FAQCategory")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("FAQCategory");
 
                     b.Property<string>("Question")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("FAQs");
+                    b.ToTable("FAQs", (string)null);
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.Notification", b =>
@@ -166,7 +174,7 @@ namespace BookingManagementSystem.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DateSent")
                         .HasColumnType("timestamp with time zone");
@@ -191,6 +199,8 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Notifications");
                 });
 
@@ -200,7 +210,7 @@ namespace BookingManagementSystem.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
@@ -214,13 +224,19 @@ namespace BookingManagementSystem.Core.Migrations
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("text");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Payments");
                 });
@@ -231,12 +247,12 @@ namespace BookingManagementSystem.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CityOrDistrict")
                         .HasColumnType("text");
 
-                    b.Property<int?>("CountryGeoNameId")
+                    b.Property<int?>("CountryId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -255,22 +271,34 @@ namespace BookingManagementSystem.Core.Migrations
                         .HasColumnType("text[]");
 
                     b.Property<bool>("IsAvailable")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
 
                     b.Property<bool>("IsFavourite")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.Property<bool>("IsPetFriendly")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.Property<bool>("IsPriority")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.Property<bool>("IsRequested")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.Property<int>("LastEditedStep")
-                        .HasColumnType("integer");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValueSql("'-1'::integer");
 
                     b.Property<double>("Latitude")
                         .HasColumnType("double precision");
@@ -279,7 +307,9 @@ namespace BookingManagementSystem.Core.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<int>("MaxGuests")
-                        .HasColumnType("integer");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -294,7 +324,9 @@ namespace BookingManagementSystem.Core.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("StreetAddress")
                         .HasColumnType("text");
@@ -307,9 +339,32 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryGeoNameId");
+                    b.HasIndex("HostId");
+
+                    b.HasIndex(new[] { "CountryId" }, "IX_Properties_CountryId");
 
                     b.ToTable("Properties");
+                });
+
+            modelBuilder.Entity("BookingManagementSystem.Core.Models.PropertyAmenity", b =>
+                {
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("AmenityId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
+
+                    b.HasKey("PropertyId", "AmenityId")
+                        .HasName("PropertyAmenities_pkey");
+
+                    b.HasIndex("AmenityId");
+
+                    b.ToTable("PropertyAmenities");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.PropertyPolicy", b =>
@@ -318,7 +373,7 @@ namespace BookingManagementSystem.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -334,7 +389,7 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PropertyId");
+                    b.HasIndex(new[] { "PropertyId" }, "IX_PropertyPolicies_PropertyId");
 
                     b.ToTable("PropertyPolicies");
                 });
@@ -345,7 +400,7 @@ namespace BookingManagementSystem.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Answer")
                         .HasColumnType("text");
@@ -370,6 +425,12 @@ namespace BookingManagementSystem.Core.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("HostId");
+
+                    b.HasIndex("PropertyId");
+
                     b.ToTable("QnAs");
                 });
 
@@ -379,7 +440,7 @@ namespace BookingManagementSystem.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Comment")
                         .HasColumnType("text");
@@ -393,13 +454,17 @@ namespace BookingManagementSystem.Core.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("double precision");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PropertyId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
                 });
@@ -410,7 +475,7 @@ namespace BookingManagementSystem.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .HasColumnType("text");
@@ -427,8 +492,13 @@ namespace BookingManagementSystem.Core.Migrations
                     b.Property<string>("GovernmentId")
                         .HasColumnType("text");
 
-                    b.PrimitiveCollection<int[]>("Languages")
-                        .HasColumnType("integer[]");
+                    b.Property<bool>("IsEliteHost")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.PrimitiveCollection<string[]>("Languages")
+                        .HasColumnType("text[]");
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");
@@ -465,7 +535,7 @@ namespace BookingManagementSystem.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .HasColumnType("text");
@@ -501,12 +571,12 @@ namespace BookingManagementSystem.Core.Migrations
 
             modelBuilder.Entity("BookingManagementSystem.Core.Services.CountryInfo", b =>
                 {
-                    b.Property<int>("GeoNameId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Relational:JsonPropertyName", "geonameId");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("GeoNameId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AreaInSqKm")
                         .HasColumnType("text")
@@ -576,39 +646,201 @@ namespace BookingManagementSystem.Core.Migrations
                         .HasColumnType("double precision")
                         .HasAnnotation("Relational:JsonPropertyName", "west");
 
-                    b.HasKey("GeoNameId");
+                    b.HasKey("Id");
 
-                    b.ToTable("CountryInfo");
+                    b.ToTable("CountryInfo", (string)null);
                 });
 
-            modelBuilder.Entity("BookingManagementSystem.Core.Models.Amenity", b =>
+            modelBuilder.Entity("BookingManagementSystem.Core.Models.BadReport", b =>
                 {
-                    b.HasOne("BookingManagementSystem.Core.Models.Property", null)
-                        .WithMany("Amenities")
-                        .HasForeignKey("PropertyId");
+                    b.HasOne("BookingManagementSystem.Core.Models.User", "HandledByAdmin")
+                        .WithMany("BadReportHandledByAdmins")
+                        .HasForeignKey("HandledByAdminId");
+
+                    b.HasOne("BookingManagementSystem.Core.Models.User", "User")
+                        .WithMany("BadReportUsers")
+                        .HasForeignKey("UserId")
+                        .IsRequired();
+
+                    b.Navigation("HandledByAdmin");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BookingManagementSystem.Core.Models.Booking", b =>
+                {
+                    b.HasOne("BookingManagementSystem.Core.Models.Property", "Property")
+                        .WithMany("Bookings")
+                        .HasForeignKey("PropertyId")
+                        .IsRequired();
+
+                    b.HasOne("BookingManagementSystem.Core.Models.User", "User")
+                        .WithMany("Bookings")
+                        .HasForeignKey("UserId")
+                        .IsRequired();
+
+                    b.Navigation("Property");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BookingManagementSystem.Core.Models.Notification", b =>
+                {
+                    b.HasOne("BookingManagementSystem.Core.Models.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BookingManagementSystem.Core.Models.Payment", b =>
+                {
+                    b.HasOne("BookingManagementSystem.Core.Models.Booking", "Booking")
+                        .WithMany("Payments")
+                        .HasForeignKey("BookingId")
+                        .IsRequired();
+
+                    b.HasOne("BookingManagementSystem.Core.Models.User", "User")
+                        .WithMany("Payments")
+                        .HasForeignKey("UserId")
+                        .IsRequired();
+
+                    b.Navigation("Booking");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.Property", b =>
                 {
                     b.HasOne("BookingManagementSystem.Core.Services.CountryInfo", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryGeoNameId");
+                        .WithMany("Properties")
+                        .HasForeignKey("CountryId");
+
+                    b.HasOne("BookingManagementSystem.Core.Models.User", "Host")
+                        .WithMany("Properties")
+                        .HasForeignKey("HostId")
+                        .IsRequired();
 
                     b.Navigation("Country");
+
+                    b.Navigation("Host");
+                });
+
+            modelBuilder.Entity("BookingManagementSystem.Core.Models.PropertyAmenity", b =>
+                {
+                    b.HasOne("BookingManagementSystem.Core.Models.Amenity", "Amenity")
+                        .WithMany("PropertyAmenities")
+                        .HasForeignKey("AmenityId")
+                        .IsRequired();
+
+                    b.HasOne("BookingManagementSystem.Core.Models.Property", "Property")
+                        .WithMany("PropertyAmenities")
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Amenity");
+
+                    b.Navigation("Property");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.PropertyPolicy", b =>
                 {
-                    b.HasOne("BookingManagementSystem.Core.Models.Property", null)
-                        .WithMany("Policies")
+                    b.HasOne("BookingManagementSystem.Core.Models.Property", "Property")
+                        .WithMany("PropertyPolicies")
                         .HasForeignKey("PropertyId");
+
+                    b.Navigation("Property");
+                });
+
+            modelBuilder.Entity("BookingManagementSystem.Core.Models.QnA", b =>
+                {
+                    b.HasOne("BookingManagementSystem.Core.Models.User", "Customer")
+                        .WithMany("QnACustomers")
+                        .HasForeignKey("CustomerId")
+                        .IsRequired();
+
+                    b.HasOne("BookingManagementSystem.Core.Models.User", "Host")
+                        .WithMany("QnAHosts")
+                        .HasForeignKey("HostId");
+
+                    b.HasOne("BookingManagementSystem.Core.Models.Property", "Property")
+                        .WithMany("QnAs")
+                        .HasForeignKey("PropertyId")
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Host");
+
+                    b.Navigation("Property");
+                });
+
+            modelBuilder.Entity("BookingManagementSystem.Core.Models.Review", b =>
+                {
+                    b.HasOne("BookingManagementSystem.Core.Models.Property", "Property")
+                        .WithMany("Reviews")
+                        .HasForeignKey("PropertyId")
+                        .IsRequired();
+
+                    b.HasOne("BookingManagementSystem.Core.Models.User", "User")
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId")
+                        .IsRequired();
+
+                    b.Navigation("Property");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BookingManagementSystem.Core.Models.Amenity", b =>
+                {
+                    b.Navigation("PropertyAmenities");
+                });
+
+            modelBuilder.Entity("BookingManagementSystem.Core.Models.Booking", b =>
+                {
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.Property", b =>
                 {
-                    b.Navigation("Amenities");
+                    b.Navigation("Bookings");
 
-                    b.Navigation("Policies");
+                    b.Navigation("PropertyAmenities");
+
+                    b.Navigation("PropertyPolicies");
+
+                    b.Navigation("QnAs");
+
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("BookingManagementSystem.Core.Models.User", b =>
+                {
+                    b.Navigation("BadReportHandledByAdmins");
+
+                    b.Navigation("BadReportUsers");
+
+                    b.Navigation("Bookings");
+
+                    b.Navigation("Notifications");
+
+                    b.Navigation("Payments");
+
+                    b.Navigation("Properties");
+
+                    b.Navigation("QnACustomers");
+
+                    b.Navigation("QnAHosts");
+
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("BookingManagementSystem.Core.Services.CountryInfo", b =>
+                {
+                    b.Navigation("Properties");
                 });
 #pragma warning restore 612, 618
         }

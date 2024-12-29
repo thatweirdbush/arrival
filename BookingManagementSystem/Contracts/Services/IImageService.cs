@@ -13,7 +13,7 @@ public interface IImageService
     /// <param name="imageStream">The stream of the image to upload.</param>
     /// <param name="fileName">The name of the file.</param>
     /// <returns>The URL of the uploaded image.</returns>
-    Task<string> UploadImageAsync(Stream imageStream, string fileName);
+    Task<string> UploadImageAsync(Stream imageStream, string fileName, string folderName);
 
     /// <summary>
     /// Deletes an image from the cloud by its public ID.

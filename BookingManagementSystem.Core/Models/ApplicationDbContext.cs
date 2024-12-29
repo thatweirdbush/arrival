@@ -127,8 +127,7 @@ public partial class ApplicationDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
             entity.HasOne(d => d.Property).WithMany(p => p.PropertyAmenities)
-                .HasForeignKey(d => d.PropertyId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .HasForeignKey(d => d.PropertyId);
         });
 
         modelBuilder.Entity<PropertyPolicy>(entity =>

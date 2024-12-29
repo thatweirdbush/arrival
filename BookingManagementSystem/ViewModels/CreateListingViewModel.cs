@@ -39,7 +39,7 @@ public partial class CreateListingViewModel : ObservableRecipient, INavigationAw
 
     public Dictionary<string, Type> ViewModelToPageDictionary = [];
 
-    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;    
+    public Property PropertyOnCreating => _propertyService.PropertyOnCreating!;    
 
     public ICommand GoForwardCommand { get; }
 
@@ -91,7 +91,7 @@ public partial class CreateListingViewModel : ObservableRecipient, INavigationAw
             // So new Property instance must be created in this ViewModel, which is Transient
             _propertyService.PropertyOnCreating = new()
             {
-                Status = PropertyStatus.InProgress,
+                Status = PropertyStatus.InProgress
             };
 
             // Initialize steps' ViewModel
