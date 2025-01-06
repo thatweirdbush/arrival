@@ -260,4 +260,7 @@
   <data name="Shell_Notification.Content" xml:space="preserve">
     <value>Notifications</value>
   </data>
+  <data name="Shell_Chat.Content" xml:space="preserve">
+    <value>Chat</value>
+  </data>
 </root>

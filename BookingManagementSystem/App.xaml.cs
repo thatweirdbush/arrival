@@ -24,6 +24,7 @@ using BookingManagementSystem.Views.Client;
 using BookingManagementSystem.Views.Host;
 using BookingManagementSystem.Views.Host.CreateListingSteps;
 using BookingManagementSystem.Views.Payment;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -140,6 +141,8 @@ public partial class App : Application
             services.AddTransient<PropertyTypeIconRepository>();
 
             // Views and ViewModels
+            services.AddTransient<ChatViewModel>();
+            services.AddTransient<ChatPage>();
             services.AddTransient<NotificationViewModel>();
             services.AddTransient<NotificationPage>();
             services.AddTransient<FloorPlanViewModel>();

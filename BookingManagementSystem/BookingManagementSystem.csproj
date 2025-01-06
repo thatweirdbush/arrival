@@ -456,7 +456,6 @@
 	<ItemGroup>
 		<Folder Include="Views\Administrator\" />
 		<Folder Include="Views\Account\" />
-		<Folder Include="Views\Client\" />
 		<Folder Include="Views\Host\CreateListingSteps\" />
 		<Folder Include="Views\Payment\" />
 	</ItemGroup>

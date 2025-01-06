@@ -58,6 +58,7 @@ public class PageService : IPageService
         Configure<PlaceLocationViewModel, PlaceLocationPage>();
         Configure<FloorPlanViewModel, FloorPlanPage>();
         Configure<NotificationViewModel, NotificationPage>();
+        Configure<ChatViewModel, ChatPage>();
     }
 
     public Type GetPageType(string key)
