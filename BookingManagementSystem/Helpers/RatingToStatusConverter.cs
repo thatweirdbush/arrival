@@ -15,13 +15,9 @@ public class RatingToStatusConverter : IValueConverter
 
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is float rating)
+        if (value is double rating)
         {
-            if (rating == 0)
-            {
-                return PropertyRatingStatus.NotRated.ToString();
-            }
-            else if (rating > 0 && rating <= 1)
+            if (rating > 0 && rating <= 1)
             {
                 return PropertyRatingStatus.Poor.ToString();
             }
@@ -35,7 +31,7 @@ public class RatingToStatusConverter : IValueConverter
             }
             else if (rating > 3 && rating <= 4)
             {
-                return PropertyRatingStatus.VeryGood.ToString();
+                return "Very Good";
             }
             else if (rating > 4 && rating <= 5)
             {
@@ -43,10 +39,10 @@ public class RatingToStatusConverter : IValueConverter
             }
             else
             {
-                return PropertyRatingStatus.NotRated.ToString();
+                return "Not Rated";
             }
         }
-        return PropertyRatingStatus.NotRated.ToString(); // Ensure a return value for non-float inputs
+        return "Not Rated"; // Ensure a return value for non-double inputs
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

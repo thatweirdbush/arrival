@@ -9,7 +9,7 @@ public partial class AmenitiesViewModel : BaseStepViewModel
 {
     private readonly IRepository<Amenity> _amenityRepository;
     private readonly IPropertyService _propertyService;
-    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
+    public Property PropertyOnCreating => _propertyService.PropertyOnCreating!;
 
     // List of content items for UI
     public IEnumerable<Amenity> GuestFavoriteAmenities { get; set; } = [];
@@ -49,24 +49,42 @@ public partial class AmenitiesViewModel : BaseStepViewModel
     public void TryLoadSelectedAmenities()
     {
         // Load selected amenities
-        SelectedGuestFavoriteAmenities = PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.GuestFavorite);
-        SelectedStandoutAmenities = PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.Standout);
-        SelectedSafetyAmenities = PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.Safety);
+        // Must cast to List, or else null reference exception
+        // would be thrown when there's no selected amenities
+        // due to IEnumerable's lazy evaluation that we didn't add item using the iterator
+        SelectedGuestFavoriteAmenities = PropertyOnCreating.PropertyAmenities
+            .Where(x => x.Amenity.Type == AmenityType.GuestFavorite)
+            .Select(x => x.Amenity)
+            .ToList();
+        SelectedStandoutAmenities = PropertyOnCreating.PropertyAmenities
+            .Where(x => x.Amenity.Type == AmenityType.Standout)
+            .Select(x => x.Amenity)
+            .ToList();
+        SelectedSafetyAmenities = PropertyOnCreating.PropertyAmenities
+            .Where(x => x.Amenity.Type == AmenityType.Safety)
+            .Select(x => x.Amenity)
+            .ToList();
     }
 
     public void ResetPropertyAmenities()
     {
-        foreach (var amenity in PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.GuestFavorite).ToList())
+        foreach (var amenity in PropertyOnCreating.PropertyAmenities
+            .Where(x => x.Amenity.Type == AmenityType.GuestFavorite)
+            .ToList())
         {
-            PropertyOnCreating.Amenities.Remove(amenity);
+            PropertyOnCreating.PropertyAmenities.Remove(amenity);
         }
-        foreach (var amenity in PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.Standout).ToList())
+        foreach (var amenity in PropertyOnCreating.PropertyAmenities
+            .Where(x => x.Amenity.Type == AmenityType.Standout)
+            .ToList())
         {
-            PropertyOnCreating.Amenities.Remove(amenity);
+            PropertyOnCreating.PropertyAmenities.Remove(amenity);
         }
-        foreach (var amenity in PropertyOnCreating.Amenities.Where(x => x.Type == AmenityType.Safety).ToList())
+        foreach (var amenity in PropertyOnCreating.PropertyAmenities
+            .Where(x => x.Amenity.Type == AmenityType.Safety)
+            .ToList())
         {
-            PropertyOnCreating.Amenities.Remove(amenity);
+            PropertyOnCreating.PropertyAmenities.Remove(amenity);
         }
     }
 
@@ -78,15 +96,18 @@ public partial class AmenitiesViewModel : BaseStepViewModel
         // Add selected amenities to the property
         foreach (var amenity in SelectedGuestFavoriteAmenities)
         {
-            PropertyOnCreating.Amenities.Add(amenity);
+            PropertyOnCreating.PropertyAmenities
+                .Add(new PropertyAmenity { PropertyId = PropertyOnCreating.Id, AmenityId = amenity.Id });
         }
         foreach (var amenity in SelectedStandoutAmenities)
         {
-            PropertyOnCreating.Amenities.Add(amenity);
+            PropertyOnCreating.PropertyAmenities
+                .Add(new PropertyAmenity { PropertyId = PropertyOnCreating.Id, AmenityId = amenity.Id });
         }
         foreach (var amenity in SelectedSafetyAmenities)
         {
-            PropertyOnCreating.Amenities.Add(amenity);
+            PropertyOnCreating.PropertyAmenities
+                .Add(new PropertyAmenity { PropertyId = PropertyOnCreating.Id, AmenityId = amenity.Id });
         }
     }
 

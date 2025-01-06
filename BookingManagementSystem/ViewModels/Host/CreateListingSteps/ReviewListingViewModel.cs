@@ -8,7 +8,7 @@ namespace BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 public partial class ReviewListingViewModel : BaseStepViewModel
 {
     private readonly IPropertyService _propertyService;
-    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
+    public Property PropertyOnCreating => _propertyService.PropertyOnCreating!;
     public ReviewListingViewModel(IPropertyService propertyService)
     {
         _propertyService = propertyService;

@@ -3,13 +3,14 @@ using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.ComponentModel;
 using BookingManagementSystem.ViewModels.Account;
 using CommunityToolkit.Mvvm.Input;
+using BookingManagementSystem.Contracts.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
-public partial class WishlistViewModel : ObservableRecipient 
+public partial class WishlistViewModel : ObservableRecipient, INavigationAware
 {
     private readonly INavigationService _navigationService;
     private readonly IRepository<Property> _propertyRepository;
@@ -19,35 +20,18 @@ public partial class WishlistViewModel : ObservableRecipient
 
     [ObservableProperty]
     private bool isPropertyListEmpty;
+
+    [ObservableProperty]
+    private bool isLoading;
+
     public int CurrentUserID = LoginViewModel.CurrentUser?.Id ?? 0;
+    private int _currentPage = 1;
+    private const int PageSize = 5;
 
     public WishlistViewModel(INavigationService navigationService, IRepository<Property> propertyRepository)
     {
         _navigationService = navigationService;
         _propertyRepository = propertyRepository;
-        CheckPropertyListCount();
-
-        // Subscribe to CollectionChanged event
-        Properties.CollectionChanged += (s, e) => {
-            if (e.NewItems != null)
-            {
-                foreach (Property property in e.NewItems)
-                {
-                    property.PropertyChanged += Property_PropertyChanged;
-                }
-            }
-            if (e.OldItems != null)
-            {
-                foreach (Property property in e.OldItems)
-                {
-                    property.PropertyChanged -= Property_PropertyChanged;
-                }
-            }
-            CheckPropertyListCount();
-        };
-
-        // Initial check
-        LoadPropertyList();
     }
 
     [RelayCommand]
@@ -60,48 +44,105 @@ public partial class WishlistViewModel : ObservableRecipient
         }
     }
 
-    private void Property_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    public async void OnNavigatedTo(object parameter)
     {
-        if (e.PropertyName == nameof(Property.IsFavourite) && sender is Property property)
-        {
-            if (!property.IsFavourite)
-            {
-                Properties.Remove(property);
-            }
-        }
-    }
+        // Initialize data list with pagination
+        await LoadNextPageAsync();
 
-    public async void LoadPropertyList()
-    {
-        // Load Property data list filtered by User/Host Id
-        var properties = await _propertyRepository.GetAllAsync();
-        foreach (var item in properties.Where(p => p.IsFavourite))
-        {
-            Properties.Add(item);
-        }
+        // Initial check
+        CheckPropertyListCount();
     }
 
     public void OnNavigatedFrom()
     {
     }
 
-    private void CheckPropertyListCount()
+    public async Task LoadNextPageAsync()
     {
-        IsPropertyListEmpty = Properties.Count == 0;
+        if (IsLoading) return;
+
+        try
+        {
+            // Begin loading
+            IsLoading = true;
+
+            // Load next page
+            var result = await _propertyRepository.GetPagedFilteredAndSortedAsync(
+                queryBuilder: q => q.Include(p => p.Country)
+                                    .Where(p => p.Status.Equals(PropertyStatus.Listed) && p.IsFavourite),
+                keySelector: p => p.CreatedAt,
+                sortDescending: true,
+                pageNumber: _currentPage,
+                pageSize: PageSize);
+
+            foreach (var property in result.Items)
+            {
+                Properties.Add(property);
+            }
+
+            _currentPage++;
+        }
+        finally
+        {
+            // End loading
+            IsLoading = false;
+        }
     }
 
-    public void RemoveWishlistAsync(Property property)
+    private void CheckPropertyListCount()
     {
-        _propertyRepository.DeleteAsync(property.Id);
-        Properties.Remove(property);
+        IsPropertyListEmpty = !Properties.Any();
+    }
+
+    public async Task RemoveRangeAsync(IEnumerable<Property> properties)
+    {
+        foreach (var property in properties)
+        {
+            property.IsFavourite = false;
+            property.UpdatedAt = DateTime.Now.ToUniversalTime();
+        }
+
+        await _propertyRepository.UpdateRangeAsync(properties);
+        await _propertyRepository.SaveChangesAsync();
+
+        foreach (var property in properties)
+        {
+            Properties.Remove(property);
+        }
     }
 
     public void RemoveAllWishlistAsync()
     {
         foreach (var property in Properties)
         {
-            _propertyRepository.DeleteAsync(property.Id);
+            property.IsFavourite = false;
+            property.UpdatedAt = DateTime.Now.ToUniversalTime();
         }
+
+        _propertyRepository.UpdateRangeAsync(Properties);
+        _propertyRepository.SaveChangesAsync();
+
         Properties.Clear();
+    }
+
+    public async Task UpdateAsync(Property property)
+    {
+        await _propertyRepository.UpdateAsync(property);
+        await _propertyRepository.SaveChangesAsync();
+    }
+
+    public async Task UpdateRangeAsync(IEnumerable<Property> properties)
+    {
+        await _propertyRepository.UpdateRangeAsync(properties);
+        await _propertyRepository.SaveChangesAsync();
+    }
+
+    public async Task RefreshAsync()
+    {
+        _currentPage = 1;
+
+        Properties.Clear();
+        await LoadNextPageAsync();
+        CheckPropertyListCount();
     }
 }

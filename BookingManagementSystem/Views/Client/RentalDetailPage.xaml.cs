@@ -1,34 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.Contracts.Services;
 using CommunityToolkit.WinUI.UI.Animations;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Views.Forms;
-using BookingManagementSystem.Views.Payment;
-using BookingManagementSystem.Services;
-using BookingManagementSystem.ViewModels.Payment;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using BookingManagementSystem.ViewModels.Account;
 
 namespace BookingManagementSystem.Views.Client;
-
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class RentalDetailPage : Page
 {
     public RentalDetailViewModel ViewModel
@@ -39,7 +19,7 @@ public sealed partial class RentalDetailPage : Page
     public RentalDetailPage()
     {
         ViewModel = App.GetService<RentalDetailViewModel>();
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -47,21 +27,30 @@ public sealed partial class RentalDetailPage : Page
         base.OnNavigatedTo(e);
         this.RegisterElementForConnectedAnimation("animationKeyContentGrid", itemHero);
 
-        // Scroll to top when navigating to this page
-        ContentScrollView.ScrollTo(0, 0);
-
-        // Always show the Smartphone even if the InfoBar is closed
-        infSmartphone.IsOpen = true;
-        infSmartphone.Message = ViewModel.Item?.ToString() ?? "No item available";
-
-        if (ViewModel.Item != null)
+        // Observe the ViewModel's Item and update the UI
+        ViewModel.PropertyChanged += (s, args) =>
         {
-            // Set up initial map location            
-            var query = $"{ViewModel.Item.Latitude}+{ViewModel.Item.Longitude}";
+            if (args.PropertyName == nameof(ViewModel.Item) && ViewModel.Item != null)
+            {
+                var query = $"{ViewModel.Item.Latitude}+{ViewModel.Item.Longitude}";
+                MapWebView2.Source = new Uri($"https://www.google.com/maps/place/{query}");
 
-            // Set the source of the WebView to the Pinned Google Maps URL
-            MapWebView2.Source = new Uri($"https://www.google.com/maps/place/{query}");
-        }
+                RentalDetailInfoBar.IsOpen = true;
+                RentalDetailInfoBar.Message = ViewModel.Item.ToString();
+
+                // Use the CheckinDate & CheckoutDate from ViewModel.ScheduleInformation to update the selected dates in the CalendarView
+                if (ViewModel.ScheduleInformation != null)
+                {
+                    var checkInDate = ViewModel.ScheduleInformation.CheckInDate;
+                    var checkOutDate = ViewModel.ScheduleInformation.CheckOutDate;
+
+                    if (checkInDate.HasValue && checkOutDate.HasValue)
+                    {
+                        UpdateSelectedDateRange(CalendarView, checkInDate.Value, checkOutDate.Value);
+                    }
+                }
+            }
+        };
     }
 
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -83,24 +72,40 @@ public sealed partial class RentalDetailPage : Page
         CalendarView.SelectedDates.Clear();
     }
 
-    private void btnFavourite_Click(object sender, RoutedEventArgs e)
+    private async void btnFavourite_Click(object sender, RoutedEventArgs e)
     {
+        // Check if the user is logged in
+        if (LoginViewModel.CurrentUser == null)
+        {
+            await ShowContentDialogAsync("Login required", "Please login to submit this question!");
+            return;
+        }
+
         // Toggle the favourite button
         // Change the image source to the filled heart icon
         if (sender is FrameworkElement frameworkElement
             && frameworkElement.DataContext is Property property)
         {
             property.IsFavourite = !property.IsFavourite;
+            await ViewModel.UpdateAsync(property);
         }
     }
 
     private async void PropertyRatingControl_ValueChanged(RatingControl sender, object args)
     {
-        // Create an instance of ReviewDialog with the current rating value
-        var dialog = new ReviewDialog(PropertyRatingControl.Value);
+        // Check if the user is logged in
+        if (LoginViewModel.CurrentUser == null)
+        {
+            await ShowContentDialogAsync("Login required", "Please login to submit this question!");
+            return;
+        }
 
-        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
-        dialog.XamlRoot = XamlRoot;
+        // Create an instance of ReviewDialog with the current rating value
+        var dialog = new ReviewDialog(PropertyRatingControl.Value)
+        {
+            // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
+            XamlRoot = XamlRoot
+        };
 
         // Show the form as a dialog box
         if (await dialog.ShowAsync() == ContentDialogResult.Primary)
@@ -111,46 +116,38 @@ public sealed partial class RentalDetailPage : Page
             // Create a new Review object
             var review = new Review
             {
-                UserId = 1,  // Hardcoded user id for now
+                UserId = LoginViewModel.CurrentUser?.Id ?? 0,
                 Rating = rating,
                 Comment = comment,
                 PropertyId = ViewModel.Item?.Id ?? 0,
             };
-
-            // Show the successful dialog
-            _ = new ContentDialog
-            {
-                XamlRoot = XamlRoot,
-                Title = "Review submission result",
-                Content = $"Your review has been submitted successfully!\n\n" +
-                $"Rating: {review.Rating} star(s)\n" +
-                $"Comment: {review.Comment}\n" +
-                $"Property Id: {review.PropertyId}\n",
-                CloseButtonText = "Ok"
-            }.ShowAsync();
 
             // Update real value for the RatingControl
             PropertyRatingControl.Value = rating;
 
             // Add to database
             await ViewModel.AddReviewAsync(review);
-
-            // Add the review to the Reviews list
-            ViewModel.Reviews.Insert(0, review);
         }
     }
 
     private async void btnReport_Click(object sender, RoutedEventArgs e)
     {
-        // Create an instance of BadReportDialog
-        var reportDialog = new BadReportDialog();
+        // Check if the user is logged in
+        if (LoginViewModel.CurrentUser == null)
+        {
+            await ShowContentDialogAsync("Login required", "Please login to submit this question!");
+            return;
+        }
 
-        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
-        reportDialog.XamlRoot = XamlRoot;
-        var result = await reportDialog.ShowAsync();
+        // Create an instance of BadReportDialog
+        var reportDialog = new BadReportDialog
+        {
+            // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
+            XamlRoot = XamlRoot
+        };
 
         // Display the form as a dialog box
-        if (result == ContentDialogResult.Primary)
+        if (await reportDialog.ShowAsync() == ContentDialogResult.Primary)
         {
             // Get data from BadReportDialog and process the report
             var reportReason = reportDialog.ReportReason;
@@ -160,73 +157,167 @@ public sealed partial class RentalDetailPage : Page
             // Create a new BadReport object
             var badReport = new BadReport
             {
-                UserId = 1,  // Hardcoded user id for now
+                UserId = LoginViewModel.CurrentUser?.Id ?? 0,
                 ReportReason = reportReason,
                 Description = description,
                 EntityType = entityType,
                 EntityId = ViewModel.Item?.Id ?? 0,
             };
 
-            // Add to database
+            // Add to database and update the UI
             await ViewModel.AddBadReportAsync(badReport);
 
             // Show confirmation after sending report
-            _ = new ContentDialog
-            {
-                XamlRoot = XamlRoot,
-                Title = "Report result",
-                Content = $"Thank you for reporting this item.\n" +
-                $"We will review this and inform you as soon as possible!\n\n" +
-                $"Reason: {badReport.ReportReason} \n" +
-                $"Description: {badReport.Description} \n" +
-                $"Entity Type: {badReport.EntityType} \n" +
-                $"Entity Id: {badReport.EntityId} \n" +
-                $"Report Date: {badReport.ReportDate}",
-                CloseButtonText = "Ok"
-            }.ShowAsync();
+            await ShowContentDialogAsync("Report result", "We will review this and inform you as soon as possible!");
         }
     }
 
     private async void btnSubmitQuestion_Click(object sender, RoutedEventArgs e)
     {
-        if (string.IsNullOrWhiteSpace(tbAskPropertyQuestion.Text))
+        // Check if the question is empty
+        if (string.IsNullOrWhiteSpace(AskQuestionTextBox.Text))
         {
-            _ = new ContentDialog
-            {
-                XamlRoot = XamlRoot,
-                Title = "Field is required",
-                Content = "Please enter a question before submitting!",
-                CloseButtonText = "Ok"
-            }.ShowAsync();
+            await ShowContentDialogAsync("Field is required", "Please enter a question before submitting!");
             return;
         }
 
-        if (ViewModel.Item != null)
+        // Check if the user is logged in
+        if (LoginViewModel.CurrentUser == null)
         {
-            // Create a new QnA object
-            var qna = new QnA
-            {
-                Question = tbAskPropertyQuestion.Text,
-                PropertyId = ViewModel.Item.Id
-            };
-
-            // Add to database
-            await ViewModel.AddQnAAsync(qna);
-
-            // Add the question to the QnA list
-            ViewModel.QnAs.Insert(0, qna);
-
-            // Show the successful dialog
-            _ = new ContentDialog
-            {
-                XamlRoot = XamlRoot,
-                Title = "Question submission result",
-                Content = "Your question has been submitted successfully!",
-                CloseButtonText = "Ok"
-            }.ShowAsync();
+            await ShowContentDialogAsync("Login required", "Please login to submit this question!");
+            return;
         }
 
+        // Check if the property is fully loaded
+        if (ViewModel.Item == null)
+        {
+            await ShowContentDialogAsync("Submit Error", "The property is not loaded yet!");
+            return;
+        }
+
+        // Create a new QnA object
+        var qna = new QnA
+        {
+            Question = AskQuestionTextBox.Text,
+            PropertyId = ViewModel.Item.Id,
+            CustomerId = LoginViewModel.CurrentUser.Id,
+            HostId = ViewModel.Item.HostId,
+        };
+
+        // Add to database and update the UI
+        await ViewModel.AddQnAAsync(qna);
+
         // Clear the question text box
-        tbAskPropertyQuestion.Text = "";
+        AskQuestionTextBox.Text = string.Empty;
+    }
+
+    private async Task ShowContentDialogAsync(string title, string content)
+    {
+        var dialog = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = title,
+            Content = content,
+            CloseButtonText = "Ok",
+            DefaultButton = ContentDialogButton.Close
+        };
+
+        await dialog.ShowAsync();
+    }
+
+    private void AskQuestionTextBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter)
+        {
+            btnSubmitQuestion_Click(sender, e);
+            e.Handled = true;
+        }
+    }
+
+    private bool _isUpdatingDates; // Flag to prevent logic processing when updating dates
+
+    private void CalendarView_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
+    {
+        // Prevent logic processing when updating
+        if (_isUpdatingDates) return;
+
+        try
+        {
+            _isUpdatingDates = true;
+
+            // Get the list of currently selected days
+            var selectedDates = sender.SelectedDates.Select(d => d.Date).ToList();
+
+            // If no date is selected, do nothing
+            if (!selectedDates.Any()) return;
+
+            // Handle adding days logic
+            if (args.AddedDates.Any())
+            {
+                // Newly selected date
+                var newlySelectedDate = args.AddedDates[0].Date;
+
+                // Update the selected date range based on the current list
+                UpdateSelectedDateRange(sender, selectedDates.Min(), newlySelectedDate);
+                UpdateSchedule(selectedDates.Min(), newlySelectedDate);
+            }
+            // Handle removing days logic
+            else if (args.RemovedDates.Any())
+            {
+                // Removed date
+                var removedDate = args.RemovedDates[0].Date;
+
+                // Update the selected date range based on the current list
+                UpdateSelectedDateRange(sender, selectedDates.Min(), removedDate);
+                UpdateSchedule(selectedDates.Min(), removedDate);
+            }
+        }
+        finally
+        {
+            _isUpdatingDates = false;
+        }
+    }
+
+    // Update the selected date range in the CalendarView
+    private void UpdateSelectedDateRange(CalendarView sender, DateTimeOffset startDate, DateTimeOffset endDate)
+    {
+        // Clear all selected dates
+        sender.SelectedDates.Clear();
+
+        // Add the selected date range to the CalendarView
+        for (var date = startDate; date <= endDate; date = date.AddDays(1))
+        {
+            sender.SelectedDates.Add(date);
+        }
+    }
+
+    // Update the schedule based on the selected dates to ViewModel and UI
+    private void UpdateSchedule(DateTimeOffset checkInDate, DateTimeOffset checkOutDate)
+    {
+        // Update the schedule based on the selected dates
+        ViewModel.CheckInDate = checkInDate.UtcDateTime;
+        ViewModel.CheckOutDate = checkOutDate.UtcDateTime;
+
+        // Handle ambiguous bug when remove the min date
+        if (ViewModel.CheckInDate > ViewModel.CheckOutDate)
+        {
+            ViewModel.CheckInDate = ViewModel.CheckOutDate;
+        }
+    }
+
+    private void CalendarView_CalendarViewDayItemChanging(CalendarView sender, CalendarViewDayItemChangingEventArgs args)
+    {
+        // Must explicitly handle state for both branches (past and future)
+        // As the CalendarView reuses items, leading to unwanted state if not handled properly
+        if (args.Item.Date < DateTimeOffset.Now.Date)
+        {
+            // Disable past dates
+            args.Item.IsEnabled = false;
+        }
+        else
+        {
+            // Enable future dates
+            args.Item.IsEnabled = true;
+        }
     }
 }

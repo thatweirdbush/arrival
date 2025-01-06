@@ -9,10 +9,10 @@ public partial class FloorPlanViewModel : BaseStepViewModel
 {
     private readonly IRepository<Amenity> _amenitiesRepository;
     private readonly IPropertyService _propertyService;
-    public Amenity? BedroomPlan;
-    public Amenity? BathoomPlan;
-    public Amenity? BedPlan;
-    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
+    public PropertyAmenity? BedroomPlan { get; set; }
+    public PropertyAmenity? BathroomPlan { get; set; }
+    public PropertyAmenity? BedPlan { get; set; }
+    public Property PropertyOnCreating => _propertyService.PropertyOnCreating!;
 
     public FloorPlanViewModel(IPropertyService propertyService, IRepository<Amenity> amenitiesRepository)
     {
@@ -28,38 +28,46 @@ public partial class FloorPlanViewModel : BaseStepViewModel
 
     private async void LoadFloorPlans()
     {
-        if (PropertyOnCreating.Amenities.Count == 0)
+        if (PropertyOnCreating.PropertyAmenities.Count == 0)
         {
             var data = await _amenitiesRepository.GetAllAsync();
 
-            BedroomPlan = data.FirstOrDefault(x => x.Name == "Bedroom");
-            BathoomPlan = data.FirstOrDefault(x => x.Name == "Bathroom");
-            BedPlan = data.FirstOrDefault(x => x.Name == "Bed");
+            // Initialize the amenity objects
+            BedroomPlan = new PropertyAmenity()
+            {
+                PropertyId = PropertyOnCreating.Id,
+                AmenityId = data.FirstOrDefault(x => x.Name == "Bedroom")!.Id
+            };
+            BathroomPlan = new PropertyAmenity()
+            {
+                PropertyId = PropertyOnCreating.Id,
+                AmenityId = data.FirstOrDefault(x => x.Name == "Bathroom")!.Id
+            };
+            BedPlan = new PropertyAmenity()
+            {
+                PropertyId = PropertyOnCreating.Id,
+                AmenityId = data.FirstOrDefault(x => x.Name == "Bed")!.Id
+            };
+
+            // Add the amenity objects to the property
+            PropertyOnCreating.PropertyAmenities.Add(BedroomPlan);
+            PropertyOnCreating.PropertyAmenities.Add(BathroomPlan);
+            PropertyOnCreating.PropertyAmenities.Add(BedPlan);
         }
         else
         {
-            BedroomPlan = PropertyOnCreating.Amenities.FirstOrDefault(x => x.Name == "Bedroom");
-            BathoomPlan = PropertyOnCreating.Amenities.FirstOrDefault(x => x.Name == "Bathroom");
-            BedPlan = PropertyOnCreating.Amenities.FirstOrDefault(x => x.Name == "Bed");
+            // Assign the amenity objects to the corresponding amenity
+            BedroomPlan = PropertyOnCreating.PropertyAmenities.FirstOrDefault(x => x.Amenity.Name == "Bedroom");
+            BathroomPlan = PropertyOnCreating.PropertyAmenities.FirstOrDefault(x => x.Amenity.Name == "Bathroom");
+            BedPlan = PropertyOnCreating.PropertyAmenities.FirstOrDefault(x => x.Amenity.Name == "Bed");
         }
     }
 
     public override void SaveProcess()
     {
-        // Add amenities to the property if the quantity is greater than 0
-        if (BedroomPlan?.Quantity > 0)
-        {
-            PropertyOnCreating.Amenities.Add(BedroomPlan);
-        }
-        if (BathoomPlan?.Quantity > 0)
-        {
-            PropertyOnCreating.Amenities.Add(BathoomPlan);
-        }
-        if (BedPlan?.Quantity > 0)
-        {
-            PropertyOnCreating.Amenities.Add(BedPlan);
-        }
+        // No need to do save process here
     }
+
 
     public override void ValidateProcess()
     {

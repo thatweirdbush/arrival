@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using BookingManagementSystem.Core.Models;
 
 namespace BookingManagementSystem.Core.Services;
 public class GeographicNameService
@@ -222,7 +218,7 @@ public class WikipediaSearchResult
     }
 }
 
-public class CountryInfo
+public partial class CountryInfo
 {
     [JsonPropertyName("continent")]
     public string Continent
@@ -243,7 +239,7 @@ public class CountryInfo
     }
 
     [JsonPropertyName("geonameId")]
-    public int GeoNameId
+    public int Id
     {
         get; set;
     }
@@ -331,4 +327,6 @@ public class CountryInfo
     {
         get; set;
     }
+
+    public virtual ICollection<Property> Properties { get; set; } = [];
 }

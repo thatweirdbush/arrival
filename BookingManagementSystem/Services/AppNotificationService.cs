@@ -26,7 +26,6 @@ public class AppNotificationService : IAppNotificationService
     public void Initialize()
     {
         AppNotificationManager.Default.NotificationInvoked += OnNotificationInvoked;
-
         AppNotificationManager.Default.Register();
     }
 
@@ -34,25 +33,37 @@ public class AppNotificationService : IAppNotificationService
     {
         var arguments = ParseArguments(args.Argument);
 
-        if (arguments["action"] == "mark-as-read")
+        switch (arguments["action"])
         {
-            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                // Show a message dialog based on the notification arguments.
-                App.MainWindow.ShowMessageDialogAsync(
-                    "You can always find more recent notifications in the Notification page",
-                    "Notification marked as read");
-                App.MainWindow.BringToFront();
-            });
-        }
-        else if (arguments["id"] is string Id)
-        {
-            var IntegerId = int.TryParse(Id, out var result) ? result : 0;
-            App.MainWindow.DispatcherQueue.TryEnqueue(() =>
-            {
-                // Navigate to a specific page based on the notification arguments.
-                _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, IntegerId);
-            });
+            case "see-details":
+                App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                {
+                    // Navigate to a specific page based on the notification arguments.
+                    _navigationService.NavigateTo(typeof(NotificationViewModel).FullName!);
+
+                    // Show a message dialog based on the notification arguments.
+                    App.MainWindow.ShowMessageDialogAsync(
+                        "You can always find more recent notifications in the Notification page",
+                        "Quick Tips");
+
+                    App.MainWindow.BringToFront();
+                });
+                break;
+
+            case "dismiss":
+                // Do nothing
+                break;
+
+            default:
+                if (arguments["id"] is string Id && int.TryParse(Id, out var IntegerId))
+                {
+                    App.MainWindow.DispatcherQueue.TryEnqueue(() =>
+                    {
+                        // Navigate to a specific page based on the notification arguments.
+                        _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, IntegerId);
+                    });
+                }
+                break;
         }
     }
 

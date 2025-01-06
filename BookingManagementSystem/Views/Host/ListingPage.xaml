@@ -13,15 +13,13 @@
 
     <Page.Resources>
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
-        <helper:IsFavouriteToImagePathConverter x:Key="IsFavouriteToImagePathConverter"/>
-        <helper:DateToShortDateFormatConverter x:Key="DateToShortDateFormatConverter"/>
         <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
         <helper:PropertyStatusToStringConverter x:Key="PropertyStatusToStringConverter"/>
         <helper:PropertyStatusToStyleConverter x:Key="PropertyStatusToStyleConverter"/>
     </Page.Resources>
 
-    <ScrollViewer x:Name="MainScrollViewer">
+    <ScrollViewer x:Name="MainScrollViewer" ViewChanged="ScrollViewer_ViewChanged">
         <Grid x:Name="MainGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="240"/>
@@ -45,50 +43,58 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Your listing" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
-                    <Grid x:Name="SearchBoxContent" Grid.Column="1" Visibility="Collapsed" >
-                        <AutoSuggestBox x:Name="SearchBox" Height="36" Margin="60 0 12 0" Padding="0 0 24 0" CornerRadius="18"
-                                        PlaceholderText="Search listings by name or location" VerticalContentAlignment="Center"
-                                        Background="Transparent" BorderBrush="{ThemeResource AcrylicInAppFillColorDefaultInverseBrush}"
-                                        Visibility="Visible" TextChanged="SearchBox_TextChanged"
-                                        SuggestionChosen="SearchBox_SuggestionChosen"/>
-                        <Button CornerRadius="100" Margin="0 0 24 0" Background="LightGray" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                Height="20" Width="20" Padding="0" BorderThickness="0"
-                                Click="CloseSearchBoxButton_Click">
-                            <FontIcon x:Name="SearchBoxIcon" Glyph="&#xE711;" FontSize="9" FontWeight="SemiBold"/>
-                        </Button>
+                    <Grid x:Name="CommandBarGrid" Grid.Column="1" Visibility="{x:Bind ViewModel.IsUserLoggedIn, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid x:Name="SearchBoxContent" Visibility="Collapsed" >
+                            <AutoSuggestBox x:Name="SearchBox" Height="36" Margin="60 0 12 0" Padding="0 0 24 0" CornerRadius="18"
+                                            PlaceholderText="Search listings by name or location" VerticalContentAlignment="Center"
+                                            Background="Transparent" BorderBrush="{ThemeResource AcrylicInAppFillColorDefaultInverseBrush}"
+                                            Visibility="Visible" TextChanged="SearchBox_TextChanged"
+                                            SuggestionChosen="SearchBox_SuggestionChosen"/>
+                            <Button CornerRadius="100" Margin="0 0 24 0" Background="LightGray" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                    Height="20" Width="20" Padding="0" BorderThickness="0"
+                                    Click="CloseSearchBoxButton_Click">
+                                <FontIcon x:Name="SearchBoxIcon" Glyph="&#xE711;" FontSize="9" FontWeight="SemiBold"/>
+                            </Button>
+                        </Grid>
+                        <CommandBar x:Name="CollectionCommandBar" Grid.Column="1" DefaultLabelPosition="Right" HorizontalAlignment="Right">
+                            <AppBarButton x:Name="btnSearch" Icon="Find" Label="Search" Tag="search" Click="OnCommandBarElementClicked"/>
+                            <AppBarButton x:Name="btnAdd" Icon="Add" Label="Add" Tag="add" Click="OnCommandBarElementClicked"/>
+                            <AppBarButton x:Name="btnEdit" Icon="Edit" Label="Edit" Tag="edit" Click="OnCommandBarElementClicked"/>
+                            <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Tag="remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
+                                <AppBarButton.KeyboardAccelerators>
+                                    <KeyboardAccelerator Key="Delete"/>
+                                </AppBarButton.KeyboardAccelerators>
+                            </AppBarButton>
+                            <AppBarButton x:Name="btnCancel" Icon="Cancel" Label="Cancel" Tag="cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
+                            <CommandBar.SecondaryCommands>
+                                <AppBarButton x:Name="btnRemoveAll" Icon="ViewAll" Label="Remove all" Tag="remove-all" Click="OnCommandBarElementClicked"/>
+                                <AppBarButton x:Name="btnRefresh" Icon="Refresh" Label="Refresh" Tag="refresh" Click="OnCommandBarElementClicked"/>
+                            </CommandBar.SecondaryCommands>
+                        </CommandBar>
                     </Grid>
-                    <CommandBar x:Name="CollectionCommandBar" Grid.Column="2" DefaultLabelPosition="Right" HorizontalAlignment="Right">
-                        <AppBarButton x:Name="btnSearch" Icon="Find" Label="Search" Click="OnCommandBarElementClicked"/>
-                        <AppBarButton x:Name="btnAdd" Icon="Add" Label="Add" Click="OnCommandBarElementClicked"/>
-                        <AppBarButton x:Name="btnEdit" Icon="Edit" Label="Edit" Click="OnCommandBarElementClicked"/>
-                        <AppBarButton x:Name="btnRemove" Icon="Delete" Label="Remove" Visibility="Collapsed" Click="OnCommandBarElementClicked">
-                            <AppBarButton.KeyboardAccelerators>
-                                <KeyboardAccelerator Key="Delete"/>
-                            </AppBarButton.KeyboardAccelerators>
-                        </AppBarButton>
-                        <AppBarButton x:Name="btnCancel" Icon="Cancel" Label="Cancel" Visibility="Collapsed" Click="OnCommandBarElementClicked"/>
-                        <CommandBar.SecondaryCommands>
-                            <AppBarButton x:Name="btnRemoveAll" Icon="ViewAll" Label="Remove all" Click="OnCommandBarElementClicked"/>
-                        </CommandBar.SecondaryCommands>
-                    </CommandBar>
                 </Grid>
+
                 <StackPanel x:Name="BodyGridAllListEmpty" Spacing="18" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Image Source="/Assets/modern-european-house.png" Width="240" Height="240" Stretch="Fill" Margin="0 -18 0 -24"/>
                     <TextBlock Text="You don’t have any listings yet" Style="{ThemeResource SubtitleTextBlockStyle}" FontFamily="Arial" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <TextBlock Text="Create a listing with Arrival Setup and start getting booked." Style="{ThemeResource BodyTextBlockStyle}" FontFamily="Arial" FontSize="18" Foreground="Gray" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 -12 0 0"/>
-                    <Button x:Name="btnGetStarted" Content="Get started" FontWeight="SemiBold" FontSize="18" Height="48" Width="180" CornerRadius="12" BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" Click="btnGetStarted_Click" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Button x:Name="btnGetStarted" Content="Get started" FontWeight="SemiBold" FontSize="18" Height="48" Width="180" CornerRadius="12" BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" Command="{x:Bind ViewModel.GetStartedCommand}" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
-                <StackPanel x:Name="BodyGrid" Spacing="40" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
+
+                <StackPanel x:Name="BodyGrid" Spacing="40" Visibility="{x:Bind ViewModel.IsPropertyListEmpty, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}">
                     <controls:AdaptiveGridView
                         animations:Connected.ListItemElementName="itemThumbnail"
                         animations:Connected.ListItemKey="animationKeyContentGrid"
                         DesiredWidth="500"
                         ItemHeight="400"                
                         x:Name="ListingsGridView"
-                        ItemsSource="{x:Bind ViewModel.Properties}"
+                        ItemsSource="{x:Bind ViewModel.Properties, Mode=OneWay}"
                         ItemClick="ListingsGridView_ItemClick"
                         IsItemClickEnabled="True"
                         FlowDirection="LeftToRight"
@@ -110,14 +116,14 @@
                                     <Grid>
                                         <Image Stretch = "UniformToFill" VerticalAlignment="Center">
                                             <Image.Source>
-                                                <BitmapImage UriSource="{x:Bind ImageThumbnail}" DecodePixelWidth="900"/>
+                                                <BitmapImage UriSource="{x:Bind ImageThumbnail, Mode=OneWay}" DecodePixelWidth="900"/>
                                             </Image.Source>
                                         </Image>
                                         <StackPanel Orientation="Horizontal" Spacing="6" CornerRadius="20" HorizontalAlignment="Left" VerticalAlignment="Top" 
                                                     Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}" Margin="12" Padding="12">
                                             <InfoBadge x:Name="ListingStatusInfoBadge" Width="8" Height="8"
                                                        Style="{Binding Status, Converter={StaticResource PropertyStatusToStyleConverter}, Mode=OneWay}"/>
-                                            <TextBlock Text="{x:Bind Status, Converter={StaticResource PropertyStatusToStringConverter}}"
+                                            <TextBlock Text="{x:Bind Status, Mode=OneWay, Converter={StaticResource PropertyStatusToStringConverter}}"
                                                        Style="{ThemeResource BaseTextBlockStyle}" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </Grid>
@@ -130,13 +136,17 @@
                                                 <Run Text="{x:Bind CreatedAt.ToShortDateString()}"/>
                                             </TextBlock>
                                         </StackPanel>
-                                        <TextBlock Text="{x:Bind PricePerNight, Mode=OneWay, Converter={StaticResource NumberToCurencyConverter}}"
+                                        <TextBlock Text="{x:Bind PricePerNight, Converter={StaticResource NumberToCurencyConverter}}"
                                                    Style="{ThemeResource ListTitleStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="20"/>
                                     </Grid>
                                 </Grid>
                             </DataTemplate>
                         </controls:AdaptiveGridView.ItemTemplate>
                     </controls:AdaptiveGridView>
+
+                    <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="60" Height="60"
+                                  IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                                  Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </StackPanel>
             </StackPanel>
         </Grid>

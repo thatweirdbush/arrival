@@ -7,7 +7,7 @@ namespace BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 public partial class PlaceDescriptionViewModel : BaseStepViewModel
 {
     private readonly IPropertyService _propertyService;
-    public Property PropertyOnCreating => _propertyService.PropertyOnCreating;
+    public Property PropertyOnCreating => _propertyService.PropertyOnCreating!;
     public string SelectedTitle { get; set; }
     public string SelectedDescription { get; set; }
 
@@ -18,13 +18,8 @@ public partial class PlaceDescriptionViewModel : BaseStepViewModel
         // Initialize core properties
         SelectedTitle = PropertyOnCreating.Name;
         SelectedDescription = PropertyOnCreating.Description;
+        ValidateProcess();
     }
-
-    //public void TryInitializeStrings()
-    //{
-    //    SelectedTitle = PropertyOnCreating.Name.ToString();
-    //    SelectedDescription = PropertyOnCreating.Description.ToString();
-    //}
 
     public override void ValidateProcess()
     {

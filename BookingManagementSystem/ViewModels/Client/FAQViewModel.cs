@@ -1,4 +1,5 @@
-﻿using BookingManagementSystem.Contracts.Services;
+﻿using System.Collections.ObjectModel;
+using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
@@ -9,46 +10,54 @@ namespace BookingManagementSystem.ViewModels.Client;
 
 public partial class FAQViewModel : ObservableRecipient, INavigationAware
 {
-    private readonly INavigationService _navigationService;
     private readonly IRepository<FAQ> _faqRepository;
 
     // List of content items
-    public IEnumerable<FAQ> GeneralFAQs { get; set; } = Enumerable.Empty<FAQ>();   // General
-    public IEnumerable<FAQ> BookingFAQs { get; set; } = Enumerable.Empty<FAQ>();    // Booking
-    public IEnumerable<FAQ> PaymentFAQs { get; set; } = Enumerable.Empty<FAQ>();    // Payment
-    public IEnumerable<FAQ> PricingFAQs { get; set; } = Enumerable.Empty<FAQ>();    // Pricing
-    public IEnumerable<FAQ> CancellationsFAQs { get; set; } = Enumerable.Empty<FAQ>();  // Cancellations
-    public IEnumerable<FAQ> PropertyPoliciesFAQs { get; set; } = Enumerable.Empty<FAQ>();   // PropertyPolicies
+    public ObservableCollection<FAQ> GeneralFAQs { get; set; } = [];   // General
+    public ObservableCollection<FAQ> BookingFAQs { get; set; } = [];    // Booking
+    public ObservableCollection<FAQ> PaymentFAQs { get; set; } = [];    // Payment
+    public ObservableCollection<FAQ> PricingFAQs { get; set; } = [];    // Pricing
+    public ObservableCollection<FAQ> CancellationsFAQs { get; set; } = [];  // Cancellations
+    public ObservableCollection<FAQ> PropertyPoliciesFAQs { get; set; } = [];   // PropertyPolicies
 
-    public FAQViewModel(INavigationService navigationService, IRepository<FAQ> faqRepository)
+    public FAQViewModel(IRepository<FAQ> faqRepository)
     {
-        _navigationService = navigationService;
         _faqRepository = faqRepository;
-        OnNavigatedTo(0);
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public void OnNavigatedTo(object parameter)
+    {
+        _ = LoadFAQDataLists();
+    }
+
+    public async Task LoadFAQDataLists()
     {
         // Load FAQs data - All
         var faqs = await _faqRepository.GetAllAsync();
-
-        // Load FAQs data - General
-        GeneralFAQs = faqs.Where(f => f.FAQCategory == FAQCategory.General);
-
-        // Load FAQs data - Booking
-        BookingFAQs = faqs.Where(f => f.FAQCategory == FAQCategory.Booking);
-
-        // Load FAQs data - Payment
-        PaymentFAQs = faqs.Where(f => f.FAQCategory == FAQCategory.Payment);
-
-        // Load FAQs data - Pricing
-        PricingFAQs = faqs.Where(f => f.FAQCategory == FAQCategory.Pricing);
-
-        // Load FAQs data - Cancellations
-        CancellationsFAQs = faqs.Where(f => f.FAQCategory == FAQCategory.Cancellations);
-
-        // Load FAQs data - PropertyPolicies
-        PropertyPoliciesFAQs = faqs.Where(f => f.FAQCategory == FAQCategory.PropertyPolicies);
+        foreach (var faq in faqs.Where(f => f.FAQCategory == FAQCategory.General))
+        {
+            GeneralFAQs.Add(faq);
+        }
+        foreach (var faq in faqs.Where(f => f.FAQCategory == FAQCategory.Booking))
+        {
+            BookingFAQs.Add(faq);
+        }
+        foreach (var faq in faqs.Where(f => f.FAQCategory == FAQCategory.Payment))
+        {
+            PaymentFAQs.Add(faq);
+        }
+        foreach (var faq in faqs.Where(f => f.FAQCategory == FAQCategory.Pricing))
+        {
+            PricingFAQs.Add(faq);
+        }
+        foreach (var faq in faqs.Where(f => f.FAQCategory == FAQCategory.Cancellations))
+        {
+            CancellationsFAQs.Add(faq);
+        }
+        foreach (var faq in faqs.Where(f => f.FAQCategory == FAQCategory.PropertyPolicies))
+        {
+            PropertyPoliciesFAQs.Add(faq);
+        }
     }
 
     public void OnNavigatedFrom()

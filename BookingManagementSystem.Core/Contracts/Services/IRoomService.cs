@@ -1,13 +1,17 @@
-﻿using BookingManagementSystem.Core.Models;
+﻿using System.Linq.Expressions;
+using BookingManagementSystem.Core.Commons.Filters;
+using BookingManagementSystem.Core.Commons.Paginations;
+using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Services;
 
 namespace BookingManagementSystem.Core.Contracts.Services;
+#nullable enable
 public interface IRoomService
 {
-#nullable enable
     Task<IEnumerable<DestinationTypeSymbol>> GetAllDestinationTypeSymbolsAsync();
-    Task<IEnumerable<Property>> GetAllPropertiesAsync();
-    Task<IEnumerable<Property>> GetAvailableRoomsAsync(DateTimeOffset? checkIn, DateTimeOffset? checkOut, string? destination = null, int? guests = null, int? pets = null);
+    Task<IEnumerable<Property>> GetAllPropertiesAsync(Expression<Func<Property, bool>>? filter = null);
+    Task<PaginatedResult<Property>> GetAvailableRoomsAsync(PropertyFilter filter);
     Task<List<string>> SearchLocationsToStringAsync(string query, int maxRows = 10);
     Task<GeographicName?> SearchSingleLocationAsync(string locationName);
+    Task ToggleFavoriteAsync(Property property);
 }

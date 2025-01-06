@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingManagementSystem.Core.Models;
 
@@ -17,44 +18,29 @@ public enum AmenityType
     Other
 }
 
-public class Amenity : INotifyPropertyChanged
+public partial class Amenity
 {
-    public event PropertyChangedEventHandler PropertyChanged;
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
 
-    // Define XAML Image's Path Declaration
-    public static string MS_APPX = "ms-appx:///Assets/amenity-icons/";
+    public string Name { get; set; }
+
+    public AmenityType Type { get; set; } = AmenityType.Other;
+
+    public string Description { get; set; }
+
+    public int Quantity { get; set; } = 1;
+
     private string _imagePath;
-    public override string ToString() => $"{Name} - {Description}";
-    public int Id
-    {
-        get; set;
-    }
-    public string Name
-    {
-        get; set;
-    }
-    public AmenityType Type
-    {
-        get; set;
-    } = AmenityType.Other;
-    public string Description
-    {
-        get; set;
-    }
-    public int Quantity
-    {
-        get; set;
-    } = 1;
+
     public string ImagePath
     {
-        get
-        {   // Default image path is "default-icon.svg"
-            if (string.IsNullOrEmpty(_imagePath))
-            {
-                return $"{MS_APPX}cube.svg";
-            }
-            return $"{MS_APPX}{_imagePath}";
-        }
+        get => $"{MS_APPX}{_imagePath ?? DEFAULT_IMAGE}";
         set => _imagePath = value;
     }
+    public virtual ICollection<PropertyAmenity> PropertyAmenities { get; set; } = [];
+
+    // XAML Image's Path Declaration
+    public const string MS_APPX = "ms-appx:///Assets/amenity-icons/";
+    public const string DEFAULT_IMAGE = "cube.svg";
 }

@@ -18,7 +18,7 @@ public sealed partial class WishlistPage : Page
         InitializeComponent();
     }
 
-    private void EditListing_Click(object sender, RoutedEventArgs e)
+    private void Edit_Click(object sender, RoutedEventArgs e)
     {
         WishlistGridView.IsItemClickEnabled = false;
         WishlistGridView.SelectionMode = ListViewSelectionMode.Multiple;
@@ -36,18 +36,16 @@ public sealed partial class WishlistPage : Page
         btnSelect.Visibility = Visibility.Visible;
     }
 
-    private async void RemoveListing_Click(object sender, RoutedEventArgs e)
+    private async void Remove_Click(object sender, RoutedEventArgs e)
     {
         // Get selected items and remove them from the list
-        var selectedItems = WishlistGridView.SelectedItems.ToList();
+        var selectedItems = WishlistGridView.SelectedItems.Cast<Property>().ToList();
 
         // Check if there are selected items
-        if (selectedItems.Count == 0)
-        {
-            return;
-        }
+        if (selectedItems.Count == 0) return;
+
         // Show confirmation dialog
-        var confirm = new ContentDialog
+        var result = await new ContentDialog
         {
             XamlRoot = XamlRoot,
             Title = "Remove wishlist",
@@ -55,27 +53,19 @@ public sealed partial class WishlistPage : Page
             PrimaryButtonText = "Remove",
             CloseButtonText = "Cancel",
             DefaultButton = ContentDialogButton.Primary
-        };
-        var result = await confirm.ShowAsync();
+        }.ShowAsync();
 
-        // Check if the user clicked the delete button
+        // If clicked Remove button
         if (result == ContentDialogResult.Primary)
         {
-            // Remove the selected items from the list
-            foreach (var item in selectedItems)
-            {
-                if (item is Property property)
-                {
-                    ViewModel.RemoveWishlistAsync(property);
-                }
-            }
+            await ViewModel.RemoveRangeAsync(selectedItems);
         }
     }
 
-    private async void RemoveAllLissting_Click(object sender, RoutedEventArgs e)
+    private async void RemoveAll_Click(object sender, RoutedEventArgs e)
     {
         // Show confirmation dialog
-        var confirm = new ContentDialog
+        var result = await new ContentDialog
         {
             XamlRoot = XamlRoot,
             Title = "Remove all wishlists?",
@@ -83,45 +73,49 @@ public sealed partial class WishlistPage : Page
             PrimaryButtonText = "Remove all",
             CloseButtonText = "Cancel",
             DefaultButton = ContentDialogButton.Primary
-        };
+        }.ShowAsync();
 
-        var result = await confirm.ShowAsync();
-
-        // Check if the user clicked the delete button
+        // If clicked Remove all button
         if (result == ContentDialogResult.Primary)
         {
-            // Remove all listings
             ViewModel.RemoveAllWishlistAsync();
+        }
+    }
+
+    private Task Refresh_Click(object sender, RoutedEventArgs e)
+    {
+        return ViewModel.RefreshAsync();
+    }
+
+    private async void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
+    {
+        var element = (sender as AppBarButton)!.Tag;
+        switch (element)
+        {
+            case "select":
+                Edit_Click(sender, e);
+                break;
+            case "cancel":
+                CancelEditing_Click(sender, e);
+                break;
+            case "remove":
+                Remove_Click(sender, e);
+                break;
+            case "remove all":
+                RemoveAll_Click(sender, e);
+                break;
+            case "refresh":
+                await Refresh_Click(sender, e);
+                break;
         }
     }
 
     private void btnGetStarted_Click(object sender, RoutedEventArgs e)
     {
-        // Navigate to Home page
         Frame.Navigate(typeof(HomePage));
     }
 
-    private void OnCommandBarElementClicked(object sender, RoutedEventArgs e)
-    {
-        var element = (sender as AppBarButton)!.Label;
-        switch (element)
-        {
-            case "Select":
-                EditListing_Click(sender, e);
-                break;
-            case "Cancel":
-                CancelEditing_Click(sender, e);
-                break;
-            case "Remove":
-                RemoveListing_Click(sender, e);
-                break;
-            case "Remove all":
-                RemoveAllLissting_Click(sender, e);
-                break;
-        }
-    } 
-    
-    private void btnFavourite_Click(object sender, RoutedEventArgs e)
+    private async void btnFavourite_Click(object sender, RoutedEventArgs e)
     {
         // Toggle the favourite button  
         // Change the image source to the filled heart icon  
@@ -129,6 +123,19 @@ public sealed partial class WishlistPage : Page
             && frameworkElement.DataContext is Property property)
         {
             property.IsFavourite = !property.IsFavourite;
+            await ViewModel.UpdateAsync(property);
+        }
+    }
+
+    private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+    {
+        var scrollViewer = sender as ScrollViewer;
+        if (scrollViewer == null) return;
+
+        // Detect when scroll is near the end
+        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight) // 0px from end of list
+        {
+            await ViewModel.LoadNextPageAsync();
         }
     }
 }

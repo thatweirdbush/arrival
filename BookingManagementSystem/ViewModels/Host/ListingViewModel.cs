@@ -1,95 +1,241 @@
-﻿using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.Core.Contracts.Repositories;
-using BookingManagementSystem.Core.DTOs;
+﻿using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
-using System.Collections.ObjectModel;
+using BookingManagementSystem.Contracts.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Windows.ApplicationModel.Contacts;
-using BookingManagementSystem.ViewModels.Client;
+using System.Collections.ObjectModel;
+using BookingManagementSystem.Core.Commons.Enums;
+using Microsoft.EntityFrameworkCore;
+using BookingManagementSystem.ViewModels.Account;
+using System.Windows.Input;
+using BookingManagementSystem.Contracts.Services;
 using CommunityToolkit.Mvvm.Input;
 
 namespace BookingManagementSystem.ViewModels.Host;
 
-public partial class ListingViewModel : ObservableRecipient
+public partial class ListingViewModel : ObservableRecipient, INavigationAware
 {
-    private readonly INavigationService _navigationService;
     private readonly IRepository<Property> _propertyRepository;
+    private readonly INavigationService _navigationService;
+    public ObservableCollection<Property> Properties { get; set; } = new();
+    public List<Property> CachedProperties { get; set; } = new();
 
-    // List of content items
-    public ObservableCollection<Property> Properties { get; set; } = [];
+    // List of Property's Name & Location for searching
+    public List<string> PropertyNameAndLocationList { get; set; } = new();
 
     [ObservableProperty]
     private bool isPropertyListEmpty;
 
-    public int PropertyCountTotal;
+    [ObservableProperty]
+    private bool isLoading;
 
-    // List of Property's Name & Location
-    public List<string> PropertyNameAndLocationList
-    {
-        get;
-        set;
-    } = [];
+    [ObservableProperty]
+    private LoadingState currentLoadingState;
 
-    public ListingViewModel(INavigationService navigationService, IRepository<Property> propertyRepository)
+    [ObservableProperty]
+    private bool isUserLoggedIn;
+
+    private int CurrentUserId;
+
+    private int _currentPage = 1;
+    private const int PageSize = 5;
+
+    public ICommand GetStartedCommand { get; }
+
+    public ListingViewModel(IRepository<Property> propertyRepository, INavigationService navigationService)
     {
-        _navigationService = navigationService;
         _propertyRepository = propertyRepository;
-        CheckPropertyListCount();
-
-        // Subscribe to CollectionChanged event
-        Properties.CollectionChanged += (s, e) => CheckPropertyListCount();
-
-        // Initial check
-        _ = LoadPropertyList();
-
-        // Load Property Name and Location string data list
-        PropertyNameAndLocationList = Properties.Select(p => p.Name)
-                                                .Concat(Properties.Select(p => p.Location))
-                                                .ToList();
-        PropertyCountTotal = Properties.Count;
+        _navigationService = navigationService;
+        GetStartedCommand = new RelayCommand(GetStarted);
     }
 
-    public async Task LoadPropertyList()
+    public async void OnNavigatedTo(object parameter)
     {
-        // Load Property data list filtered by User/Host Id
-        var properties = await _propertyRepository.GetAllAsync();
-        foreach (var item in properties)
+        if (LoginViewModel.CurrentUser == null)
         {
-            Properties.Add(item);
+            CheckListCount();
+            CheckUserLoggedIn();
+            return;
         }
+
+        // Get the current user id
+        CurrentUserId = LoginViewModel.CurrentUser.Id;
+
+        // Set the default loading state
+        CurrentLoadingState = LoadingState.Default;
+
+        // Initialize data list with pagination & search data
+        await LoadNextPageAsync();
+        await InitializeSearchDataAsync();
+
+        // Initial check
+        CheckListCount();
+        CheckUserLoggedIn();
     }
 
     public void OnNavigatedFrom()
     {
     }
 
-    public async Task RemoveBookingAsync(Property property)
+    public async Task InitializeSearchDataAsync()
+    {
+        // Load Property Name and Location string data list
+        var data = await _propertyRepository.GetAllAsync(p => p.HostId == CurrentUserId);
+        CachedProperties = data.ToList();
+        PropertyNameAndLocationList = CachedProperties.Select(p => p.Name)
+                                                        .Concat(CachedProperties.Select(p => p.Location))
+                                                        .ToList();
+    }
+
+    public async Task LoadNextPageAsync()
+    {
+        if (LoginViewModel.CurrentUser == null) return;
+
+        if (IsLoading) return;
+
+        try
+        {
+            // Begin loading
+            IsLoading = true;
+
+            // Load next page, including Listed, Unlisted, and InProgress properties
+            var result = await _propertyRepository.GetPagedFilteredAndSortedAsync(
+                queryBuilder: q => q.Include(p => p.Country) // Also include with one that has no country yet
+                                    .Where(p => p.CountryId == null || p.Country != null)
+                                    .Where(p => p.HostId == CurrentUserId),
+                keySelector: p => p.CreatedAt,
+                sortDescending: true,
+                pageNumber: _currentPage,
+                pageSize: PageSize);
+
+            foreach (var property in result.Items)
+            {
+                Properties.Add(property);
+            }
+
+            _currentPage++;
+        }
+        finally
+        {
+            // End loading
+            IsLoading = false;
+        }
+    }
+
+    public async Task RemoveAsync(Property property)
     {
         await _propertyRepository.DeleteAsync(property.Id);
+        await _propertyRepository.SaveChangesAsync();
+
         Properties.Remove(property);
+        CheckListCount();
     }
 
-    public async Task RemoveAllBookingsAsync()
+    public async Task RemoveRangeAsync(IEnumerable<Property> properties)
     {
-        foreach (var property in Properties)
+        await _propertyRepository.DeleteRangeAsync(properties.Select(p => p.Id));
+        await _propertyRepository.SaveChangesAsync();
+
+        foreach (var property in properties)
         {
-            await _propertyRepository.DeleteAsync(property.Id);
+            Properties.Remove(property);
         }
-        Properties.Clear();
+        CheckListCount();
     }
 
-    private void CheckPropertyListCount()
+    public async Task RemoveAllAsync()
+    {
+        // No need to call SaveChangesAsync() here because it's a raw SQL query execution
+        await _propertyRepository.DeleteAllAsync();
+
+        Properties.Clear();
+        CheckListCount();
+    }
+
+    private void CheckListCount()
     {
         IsPropertyListEmpty = Properties.Count == 0;
     }
 
-    public async void AddFilterProperties(string query)
+    private void CheckUserLoggedIn()
     {
-        var data = await _propertyRepository.GetAllAsync();
-        var filteredProperties = data.Where(p => p.Name.Contains(query) || p.Location.Contains(query)).ToList();
-        foreach (var item in filteredProperties)
+        IsUserLoggedIn = LoginViewModel.CurrentUser != null;
+    }
+
+    public void Search(string query)
+    {
+        if (LoginViewModel.CurrentUser == null) return;
+
+        // Set the current loading state
+        CurrentLoadingState = LoadingState.Search;
+
+        // Start loading the search data
+        LoadSearchedData(query);
+        CheckListCount();
+    }
+
+    public void LoadSearchedData(string query)
+    {
+        try
         {
-            Properties.Add(item);
+            // Begin loading
+            IsLoading = true;
+
+            // Load next page, including Listed, Unlisted, and InProgress properties
+            var pagedItems = CachedProperties.Where(p => p.Name.Equals(query) || p.Location.Equals(query));
+
+            foreach (var property in pagedItems)
+            {
+                Properties.Add(property);
+            }
+        }
+        finally
+        {
+            // End loading
+            IsLoading = false;
+        }
+    }
+
+    public async Task<int> GetSingleSearchedItemId(string query)
+    {
+        var result = await _propertyRepository.GetPagedFilteredAndSortedAsync(
+            queryBuilder: q => q.Where(p => p.Name.Equals(query) || p.Location.Equals(query)),
+            keySelector: p => p.CreatedAt,
+            sortDescending: true,
+            pageNumber: 1,
+            pageSize: 1);
+        return result.Items.FirstOrDefault()!.Id;
+    }
+
+    public void ResetPaginationIndex()
+    {
+        _currentPage = 1;
+    }
+
+    public async Task RefreshAsync()
+    {
+        if (LoginViewModel.CurrentUser == null) return;
+
+        CurrentLoadingState = LoadingState.Default;
+
+        ResetPaginationIndex();
+        Properties.Clear();
+
+        await LoadNextPageAsync();
+        await InitializeSearchDataAsync();
+        CheckListCount();
+    }
+
+    public void GetStarted()
+    {
+        if (LoginViewModel.CurrentUser == null)
+        {
+            // Navigate to Login Page
+            _navigationService.NavigateTo(typeof(LoginViewModel).FullName!);
+        }
+        else
+        {
+            // Navigate to Create Listing Page
+            _navigationService.NavigateTo(typeof(CreateListingViewModel).FullName!);
         }
     }
 }

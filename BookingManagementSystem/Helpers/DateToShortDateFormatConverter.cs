@@ -10,11 +10,14 @@ public class DateToShortDateFormatConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is DateTime date)
+        var format = parameter as string ?? "MMM dd";
+        var localTimeZone = TimeZoneInfo.Local;
+        return value switch
         {
-            return date.ToString("MMM dd").ToUpper();
-        }
-        return string.Empty;
+            DateTime date => date.ToString(format),
+            DateTimeOffset dateTimeOffset => TimeZoneInfo.ConvertTime(dateTimeOffset, localTimeZone).ToString(format),
+            _ => string.Empty
+        };
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

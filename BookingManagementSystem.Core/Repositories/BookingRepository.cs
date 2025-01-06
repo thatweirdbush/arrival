@@ -1,62 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using BookingManagementSystem.Core.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.Core.Repositories;
 public class BookingRepository : Repository<Booking>
 {
-    public BookingRepository()
+    public BookingRepository(DbContext context) : base(context)
     {
-        _entities.AddRange(
-        [
-            new()
-            {
-                Id = 1,
-                PropertyId = 1,
-                UserId = 1,
-                CheckInDate = DateTime.Now,
-                CheckOutDate = DateTime.Now.AddDays(3),
-                TotalPrice = 299.9M
-            },
-            new()
-            {
-                Id = 2,
-                PropertyId = 2,
-                UserId = 2,
-                CheckInDate = DateTime.Now,
-                CheckOutDate = DateTime.Now.AddDays(2),
-                TotalPrice = 199.9M
-            },
-            new()
-            {
-                Id = 3,
-                PropertyId = 3,
-                UserId = 3,
-                CheckInDate = DateTime.Now,
-                CheckOutDate = DateTime.Now.AddDays(1),
-                TotalPrice = 49.9M
-            },
-            new()
-            {
-                Id = 4,
-                PropertyId = 4,
-                UserId = 4,
-                CheckInDate = DateTime.Now,
-                CheckOutDate = DateTime.Now.AddDays(4),
-                TotalPrice = 99.9M
-            },
-            new()
-            {
-                Id = 5,
-                PropertyId = 5,
-                UserId = 5,
-                CheckInDate = DateTime.Now,
-                CheckOutDate = DateTime.Now.AddDays(5),
-                TotalPrice = 69.9M
-            }
-        ]);
+    }
+
+    public async override Task<IEnumerable<Booking>> GetFilteredAndSortedAsync<TKey>(
+    Expression<Func<Booking, bool>> filter,
+    Expression<Func<Booking, TKey>> keySelector,
+    bool sortDescending = false)
+    {
+        var query = _dbSet.AsQueryable()
+            .Include(b => b.Property)
+            .ThenInclude(p => p.Country)
+            .Where(filter);
+        return await (sortDescending
+            ? query.OrderByDescending(keySelector)
+            : query.OrderBy(keySelector)).ToListAsync();
     }
 }

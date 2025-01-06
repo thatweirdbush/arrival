@@ -24,32 +24,34 @@ public sealed partial class AmenitiesPage : Page
         {
             ViewModel = viewModel;
         }
-        // Initialize the selected amenities
-        TryInitializeSelectedAmenities();
 
         base.OnNavigatedTo(e);
     }
 
-    private async void TryInitializeSelectedAmenities()
+    private void SetSelectedItems(GridView gridView, IEnumerable<Amenity> selectedItems)
     {
-        // Wait for UI to finish rendering the GridViews
-        // Considering replace with GridView's Loaded/LayoutUpdated events
-        await Task.Delay(50);
-
-        foreach (var amenity in ViewModel!.SelectedGuestFavoriteAmenities)
+        var amenities = gridView.Items.Cast<Amenity>();
+        foreach (var amenity in selectedItems)
         {
-            GuestFavoriteAmenitiesGridView.SelectedItems.Add(amenity);
-        }
-        foreach (var amenity in ViewModel.SelectedStandoutAmenities)
-        {
-            StandoutAmenitiesGridView.SelectedItems.Add(amenity);
-        }
-        foreach (var amenity in ViewModel.SelectedSafetyAmenities)
-        {
-            SafetyAmenitiesGridView.SelectedItems.Add(amenity);
+            var officialAmenity = amenities.FirstOrDefault(x => x.Id == amenity.Id);
+            gridView.SelectedItems.Add(officialAmenity);
         }
     }
 
+    private void GuestFavoriteAmenitiesGridView_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        SetSelectedItems(GuestFavoriteAmenitiesGridView, ViewModel!.SelectedGuestFavoriteAmenities);
+    }
+
+    private void StandoutAmenitiesGridView_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        SetSelectedItems(StandoutAmenitiesGridView, ViewModel!.SelectedStandoutAmenities);
+    }
+
+    private void SafetyAmenitiesGridView_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        SetSelectedItems(SafetyAmenitiesGridView, ViewModel!.SelectedSafetyAmenities);
+    }
 
     private void GuestFavoriteAmenitiesGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -65,7 +67,7 @@ public sealed partial class AmenitiesPage : Page
 
     private void SafetyAmenitiesGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        // Update the selected Safety amenities
+        // Update the selected Standout amenities
         ViewModel!.SelectedSafetyAmenities = SafetyAmenitiesGridView.SelectedItems.Cast<Amenity>();
     }
 }

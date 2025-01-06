@@ -1,13 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-
 using Microsoft.UI.Xaml.Navigation;
-
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Views;
-using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
 using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.Input;
+using BookingManagementSystem.ViewModels.Account;
 
 namespace BookingManagementSystem.ViewModels;
 
@@ -27,20 +24,41 @@ public partial class ShellViewModel : ObservableRecipient
 
     [ObservableProperty]
     private bool isUnreadNotificationListEmpty;
+
+    [ObservableProperty]
+    private bool isSelectedUnreadFilter;
+
+    [ObservableProperty]
+    private bool isUserLoggedIn;
+
+    [ObservableProperty]
+    private bool isLoading;
+
     public INavigationService NavigationService { get; }
     public INavigationViewService NavigationViewService { get; }
-    public IRepository<Notification> NotificationRepository { get; }
-    public ObservableCollection<Notification> Notifications { get; } = [];
+    public INotificationService NotificationService { get; }
+    public ObservableCollection<Notification> Notifications { get; set; } = new();
 
-    public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService, IRepository<Notification> notificationRepository)
+    private int _currentPage = 1;
+    private const int PageSize = 5;
+
+    public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService, INotificationService notificationService)
     {
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;
-        NotificationRepository = notificationRepository;
+        NotificationService = notificationService;
+
+        IsBackEnabled = NavigationService.CanGoBack;
+
+        // Initialize filter
+        IsSelectedUnreadFilter = false;
+
+        // Subscribe to the OnNotificationListChanged event
+        NotificationService.NotificationListChanged += OnNotificationListChanged;
     }
 
-    private async void OnNavigated(object sender, NavigationEventArgs e)
+    private void OnNavigated(object sender, NavigationEventArgs e)
     {
         IsBackEnabled = NavigationService.CanGoBack;
 
@@ -56,40 +74,90 @@ public partial class ShellViewModel : ObservableRecipient
             Selected = selectedItem;
         }
 
-        // Get notification data list
-        await LoadNotificationData();
-        UpdateObservableProperties();
+        OnNotificationListChanged();
+        CheckUserLoggedIn();
     }
 
-    public void UpdateObservableProperties()
+    private void CheckUserLoggedIn()
     {
-        UnreadNotificationCount = Notifications.Count(n => !n.IsRead);
+        IsUserLoggedIn = LoginViewModel.CurrentUser != null;
+    }
+
+    // Do nothing if the filter is not changed
+    partial void OnIsSelectedUnreadFilterChanged(bool oldValue, bool newValue)
+    {
+        if (oldValue == newValue) return;
+        _ = RefreshNotificationsAsync();
+    }
+
+    public void OnNotificationListChanged(int eventParameter = -1)
+    {
         IsNotificationListEmpty = Notifications.Count == 0;
-        IsUnreadNotificationListEmpty = !Notifications.Any(n => !n.IsRead);
+
+        if (eventParameter == -1)
+        {
+            IsUnreadNotificationListEmpty = NotificationService.UnreadNotificationCount == 0;
+            UnreadNotificationCount = NotificationService.UnreadNotificationCount;
+        }
+        else
+        {
+            IsUnreadNotificationListEmpty = eventParameter == 0;
+            UnreadNotificationCount = eventParameter;
+        }
     }
 
-    public async Task LoadNotificationData(bool isUnreadFilter = false)
+    public async Task LoadNotificationsAsync()
     {
-        // Clear notification data list first
+        await NotificationService.InitializeCacheAsync();
+        await GetNextNotificationDataPage();
+        OnNotificationListChanged();
+    }
+
+    public async Task GetNextNotificationDataPage()
+    {
+        if (IsLoading) return;
+
+        try
+        {
+            // Begin loading
+            IsLoading = true;
+
+            // Load next page
+            var pagedItems = await NotificationService.GetPagedNotificationsAsync(_currentPage, PageSize, unreadOnly: IsSelectedUnreadFilter);
+
+            foreach (var notification in pagedItems)
+            {
+                Notifications.Add(notification);
+            }
+
+            _currentPage++;
+        }
+        finally
+        {
+            // End loading
+            IsLoading = false;
+        }
+    }
+
+    public async Task MarkAsRead(Notification notification)
+    {
+        await NotificationService.MarkAsReadAsync(notification);
+        OnNotificationListChanged();
+    }
+
+    public async Task RefreshNotificationsAsync()
+    {
+        _currentPage = 1;
+
         Notifications.Clear();
-
-        // Get notification data list
-        var notifications = await NotificationRepository.GetAllAsync();
-
-        if (isUnreadFilter)
-        {
-            notifications = notifications.Where(n => !n.IsRead).ToList();
-        }
-        foreach (var notification in notifications)
-        {
-            Notifications.Add(notification);
-        }
-        UpdateObservableProperties();
+        await GetNextNotificationDataPage();
+        OnNotificationListChanged();
     }
 
-    public void MarkAsReadSingleItem(Notification notification)
+    public async Task ResetUserNotificationsAsync()
     {
-        notification.IsRead = true;
-        UpdateObservableProperties();
+        await NotificationService.ResetUserNotificationsAsync();
+        Notifications.Clear();
+        OnNotificationListChanged();
     }
 }

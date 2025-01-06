@@ -1,17 +1,12 @@
 ﻿using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.Core.Contracts.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using BookingManagementSystem.Core.Models;
-using Windows.System;
-using System.Security.Cryptography.X509Certificates;
-using System.Collections.ObjectModel;
 using BookingManagementSystem.Core.Contracts.Facades;
-using BookingManagementSystem.Core.Facades;
 using BookingManagementSystem.Contracts.ViewModels;
 using CommunityToolkit.Mvvm.Input;
-using BookingManagementSystem.Core.Contracts.Messengers;
-using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
+using BookingManagementSystem.Core.Commons.Filters;
+using BookingManagementSystem.ViewModels.Account;
 
 namespace BookingManagementSystem.ViewModels.Payment;
 
@@ -19,16 +14,20 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IPaymentFacade _paymentFacade;
     private readonly INavigationService _navigationService;
-    public IEnumerable<Voucher> Vouchers { get; private set; } = [];
 
     [ObservableProperty]
     public Voucher? voucher;
 
     [ObservableProperty]
     private Property? item;
-    
+
     [ObservableProperty]
     public int totalNights;
+
+    [ObservableProperty]
+    public int totalGuests;
+
+    public PropertyFilter? ScheduleInformation { get; private set; }
     public decimal TotalAmount { get; set; }
     public decimal TotalAmountBeforeFees { get; set; }
     public decimal TotalAmountAfterFees { get; set; }
@@ -37,6 +36,7 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
     public decimal Tax = 9.90m;
     public decimal PayPartLaterPrice => TotalAmount / 2;
     public DateTime PayLaterDate => DateTime.Now.AddDays(2);
+    public DateTime? CancelBeforeDate => ScheduleInformation?.CheckInDate?.AddDays(-1).DateTime;
     public bool IsVoucherApplied => Voucher != null;
     public AsyncRelayCommand ConfirmAndPayCommand { get; }
 
@@ -49,13 +49,16 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
 
     public async void OnNavigatedTo(object parameter)
     {
-        if (parameter is int Id)
+        if (parameter is IDictionary<string, object> paramDict &&
+            paramDict.TryGetValue("PropertyId", out var idObj) && idObj is int id &&
+            paramDict.TryGetValue("Filter", out var filterObj) && filterObj is PropertyFilter filter)
         {
-            Item = await _paymentFacade.GetPropertyByIdAsync(Id);
-            Vouchers = await _paymentFacade.GetVouchersAsync();
+            ScheduleInformation = filter;
+            Item = await _paymentFacade.GetPropertyByIdAsync(id);
 
             // Initialize core properties
-            TotalNights = 5;
+            TotalGuests = ScheduleInformation.MinGuests ?? 1;
+            TotalNights = (int)(ScheduleInformation.CheckOutDate?.Subtract(ScheduleInformation.CheckInDate ?? DateTimeOffset.MinValue).TotalDays ?? 0);
             TotalAmountBeforeFees = Item?.PricePerNight * TotalNights ?? 0.0m;
             TotalAmountAfterFees = TotalAmountBeforeFees + Tax;
             TotalAmount = TotalAmountAfterFees;
@@ -71,6 +74,7 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
         TotalAmountBeforeFees = Item?.PricePerNight * TotalNights ?? 0.0m;
         TotalAmountAfterFees = TotalAmountBeforeFees + Tax;
         TotalAmount = TotalAmountAfterFees;
+
         if (Voucher?.DiscountPercentage.HasValue == true)
         {
             DiscountAmount = Voucher.DiscountPercentage.Value * TotalAmount / 100;
@@ -91,30 +95,53 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
     {
         if (Item == null)
         {
-            await ShowErrorDialogAsync("Error", "No property selected for booking.");
+            await ShowErrorDialogAsync("Property Not Found", "No property selected for booking.");
             return;
         }
+        if (LoginViewModel.CurrentUser == null)
+        {
+            await ShowErrorDialogAsync("Login Required", "Please log in to continue.");
+            return;
+        }
+
+        // Create new booking object
         var booking = new Booking
         {
-            Id = new Random().Next(1000, 9999),
             PropertyId = Item.Id,
+            UserId = LoginViewModel.CurrentUser.Id,
+            CheckInDate = ScheduleInformation?.CheckInDate?.DateTime.ToUniversalTime() ?? DateTime.MinValue.ToUniversalTime(),
+            CheckOutDate = ScheduleInformation?.CheckOutDate?.DateTime.ToUniversalTime() ?? DateTime.MinValue.ToUniversalTime(),
             TotalPrice = TotalAmount,
             Status = BookingStatus.Confirmed
         };
 
-        // Voucher availability has been checked before
-        UpdateVoucherUsage();
-
         // Add the booking to the database
-        await AddBookingAsync(booking);
+        await _paymentFacade.AddBookingAsync(booking);
 
-        // Add a notification to the user
+        // Add the payment to the database
+        await _paymentFacade.AddPaymentAsync(new Core.Models.Payment
+        {
+            UserId = LoginViewModel.CurrentUser.Id,
+            BookingId = booking.Id,
+            Amount = TotalAmount,
+            PaymentDate = DateTime.Now.ToUniversalTime(),
+            Status = PaymentStatus.Paid
+        });
+
+        // Add confirmed notification to the database
         await _paymentFacade.AddNotificationAsync(new Notification
         {
+            UserId = LoginViewModel.CurrentUser.Id,
             Title = "Booking Confirmed",
             Message = $"Your booking to {Item.Name} has been confirmed, we are looking forward to welcoming you!",
-            ImagePath= Item.ImageThumbnail
+            ImagePath = Item.ImageThumbnail
         });
+
+        // Update voucher since it's availability has been checked before
+        if (Voucher != null)
+        {
+            await UpdateVoucherAsync(Voucher);
+        }
 
         // Simulate network delay
         await Task.Delay(400);
@@ -150,6 +177,20 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
         await dialog.ShowAsync();
     }
 
+    private async Task ShowErrorDialogAsync(string title, string content)
+    {
+        var dialog = new ContentDialog
+        {
+            XamlRoot = App.MainWindow.Content.XamlRoot,
+            Title = title,
+            Content = content,
+            CloseButtonText = "OK",
+            DefaultButton = ContentDialogButton.Close
+        };
+
+        await dialog.ShowAsync();
+    }
+
     private void ShowSystemNotification(Property property)
     {
         // Create parameters for the notification
@@ -168,35 +209,19 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
         );
     }
 
-    private async Task ShowErrorDialogAsync(string title, string content)
-    {
-        var dialog = new ContentDialog
-        {
-            XamlRoot = App.MainWindow.Content.XamlRoot,
-            Title = title,
-            Content = content,
-            CloseButtonText = "OK",
-            DefaultButton = ContentDialogButton.Close
-        };
-
-        await dialog.ShowAsync();
-    }
-
     partial void OnVoucherChanged(Voucher? value)
     {
         CalculateTotalAmount();
     }
 
-    public void UpdateVoucherUsage()
+    public async Task GetVoucherByCodeAsync(string code)
     {
-        if (Voucher != null)
-        {
-            Voucher.Quantity -= 1;
-        }
+        Voucher = await _paymentFacade.GetVoucherByCodeAsync(code);
     }
 
-    public async Task AddBookingAsync(Booking booking)
+    public async Task UpdateVoucherAsync(Voucher voucher)
     {
-        await _paymentFacade.AddBookingAsync(booking);
+        voucher.Quantity -= 1;
+        await _paymentFacade.UpdateVoucherAsync(voucher);
     }
 }

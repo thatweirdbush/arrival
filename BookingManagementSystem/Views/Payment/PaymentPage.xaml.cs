@@ -1,14 +1,7 @@
-using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels.Payment;
-using CommunityToolkit.WinUI.UI.Animations;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
-using BookingManagementSystem.ViewModels.Client;
 using Microsoft.UI.Xaml.Controls.Primitives;
-using BookingManagementSystem.Core.Contracts.Messengers;
-using CommunityToolkit.Mvvm.Messaging;
 
 namespace BookingManagementSystem.Views.Payment;
 
@@ -25,61 +18,38 @@ public sealed partial class PaymentPage : Page
         InitializeComponent();
     }
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
+    private async void ApplyVoucherButton_click(object sender, RoutedEventArgs e)
     {
-        base.OnNavigatedTo(e);
-
-        // Scroll to top when navigating to this page
-        ContentScrollView.ScrollTo(0, 0);
-    }
-
-    protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-    {
-        base.OnNavigatingFrom(e);
-        if (e.NavigationMode == NavigationMode.Back)
-        {
-            var navigationService = App.GetService<INavigationService>();
-
-            if (ViewModel.Item != null)
-            {
-                navigationService.SetListDataItemForNextConnectedAnimation(ViewModel.Item);
-            }
-        }
-    }
-
-    private void ApplyVoucherButton_click(object sender, RoutedEventArgs e)
-    {
-        var pricePerNight = ViewModel.Item?.PricePerNight;
-        var tax = ViewModel.Tax;
-
-        // Try to find the voucher with the given code
         var voucherCode = VoucherInputTextBox.Text.Trim();
-        ViewModel.Voucher = ViewModel.Vouchers.FirstOrDefault(v => v.Code == voucherCode);
 
-        if (string.IsNullOrWhiteSpace(VoucherInputTextBox.Text))
+        if (string.IsNullOrWhiteSpace(voucherCode))
         {
-            VoucherWarning.Text = "Please enter the voucher code.";
-            VoucherWarning.Visibility = Visibility.Visible;
+            ShowVoucherWarning("Please enter the voucher code.");
+            return;
         }
-        else if (ViewModel.Voucher == null)
+
+        await ViewModel.GetVoucherByCodeAsync(voucherCode);
+
+        if (ViewModel.Voucher == null)
         {
-            VoucherWarning.Text = "This voucher does not exist.";
-            VoucherWarning.Visibility = Visibility.Visible;
+            ShowVoucherWarning("This voucher does not exist.");
         }
         else if (ViewModel.Voucher.Quantity <= 0)
         {
-            VoucherWarning.Text = "The number of voucher uses has exceeded the limit.";
-            VoucherWarning.Visibility = Visibility.Visible;
+            ShowVoucherWarning("The number of voucher uses has exceeded the limit.");
         }
         else
         {
-            // All checks passed, hide the warning
             VoucherWarning.Visibility = Visibility.Collapsed;
-
-            // Update the discount text blocks
             DiscountPercentageTextBlock.Visibility = Visibility.Visible;
             DiscountAmountTextBlock.Visibility = Visibility.Visible;
         }
+    }
+
+    private void ShowVoucherWarning(string message)
+    {
+        VoucherWarning.Text = message;
+        VoucherWarning.Visibility = Visibility.Visible;
     }
 
     private void DiscountPercentageTextBlock_Click(Microsoft.UI.Xaml.Documents.Hyperlink sender, Microsoft.UI.Xaml.Documents.HyperlinkClickEventArgs args)

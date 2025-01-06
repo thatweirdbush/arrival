@@ -29,19 +29,18 @@ public class ActivationService : IActivationService
         await InitializeAsync();
 
         // Initialize the MainWindow content.
-        await InitializeMainWindowContent();
+        await InitializeMainWindowContentAsync();
 
         // Handle activation via ActivationHandlers.
         await HandleActivationAsync(activationArgs);
 
-        // Activate the MainWindow.
-        App.MainWindow.Activate();
-
         // Execute tasks after activation.
         await StartupAsync();
+        
+        App.MainWindow.Activate();
     }
 
-    private async Task InitializeMainWindowContent()
+    private async Task InitializeMainWindowContentAsync()
     {
         // Initialize ViewModels from DI container
         var shellViewModel = App.GetService<ShellViewModel>();

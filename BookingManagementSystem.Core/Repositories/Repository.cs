@@ -4,110 +4,319 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using BookingManagementSystem.Core.Commons.Paginations;
 using BookingManagementSystem.Core.Contracts.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.Core.Repositories;
 public class Repository<T> : IRepository<T> where T : class
 {
-    protected readonly List<T> _entities = [];
+#nullable enable
+    protected readonly DbContext _context;
+    protected readonly DbSet<T> _dbSet;
 
-    // Basic CRUD operations
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public Repository(DbContext context)
     {
-        return await Task.FromResult(_entities);
+        _context = context;
+        _dbSet = _context.Set<T>();
     }
 
-    public async Task<T> GetByIdAsync(int id)
+    /// <summary>
+    /// Get the queryable DbSet
+    /// High flexibility but violating the Single Responsibility Principle (SRP).
+    /// The Repository will no longer be fully responsible for managing data queries.
+    /// But will simply provide a flexible object for the upper layer to handle.
+    /// </summary>
+    /// <returns>IQueryable<T></returns>
+    public IQueryable<T> GetQueryable()
     {
-        var entity = _entities.FirstOrDefault(e => GetEntityId(e) == id);
-        return await Task.FromResult(entity);
+        return _dbSet.AsQueryable();
     }
 
-    public async Task AddAsync(T entity)
+    /// Basic CRUD operations
+    /// <summary>
+    /// Get all entities, support filtering
+    /// </summary>
+    /// <param name="filter"></param>
+    /// <returns></returns>
+    public async virtual Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null)
     {
-        _entities.Insert(0, entity);
-        await Task.CompletedTask;
-    }
+        var query = _dbSet.AsQueryable();
 
-    public async Task UpdateAsync(T entity)
-    {
-        var existingEntity = _entities.FirstOrDefault(e => GetEntityId(e) == GetEntityId(entity));
-        if (existingEntity != null)
+        if (filter != null)
         {
-            _entities.Remove(existingEntity);
-            _entities.Insert(0, entity);
+            query = query.Where(filter);
         }
+        return await query.ToListAsync();
+    }
+
+    /// <summary>
+    /// Get an entity by its ID, return null if not found
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async virtual Task<T?> GetByIdAsync(int id)
+    {
+        return await _dbSet.FindAsync(id);
+    }
+
+    public async virtual Task<T?> GetByIdWithIncludeAsync(int id, params Expression<Func<T, object>>[] includeProperties)
+    {
+        var query = _dbSet.AsQueryable();
+        foreach (var includeProperty in includeProperties)
+        {
+            query = query.Include(includeProperty);
+        }
+        return await query.FirstOrDefaultAsync(e => e.GetHashCode() == id);
+    }
+
+    /// <summary>
+    /// Add an entity
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    public async virtual Task AddAsync(T entity)
+    {
+        await _dbSet.AddAsync(entity);
+    }
+
+    /// <summary>
+    /// Add a range of entities
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
+    public async virtual Task AddRangeAsync(IEnumerable<T> entities)
+    {
+        await _dbSet.AddRangeAsync(entities);
+    }
+
+    /// <summary>
+    /// Update an entity
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    public async virtual Task UpdateAsync(T entity)
+    {
+        _dbSet.Update(entity);
         await Task.CompletedTask;
     }
 
-    public async Task DeleteAsync(int id)
+    /// <summary>
+    /// Update a range of entities
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <returns></returns>
+    public async virtual Task UpdateRangeAsync(IEnumerable<T> entities)
     {
-        var entity = _entities.FirstOrDefault(e => GetEntityId(e) == id);
+        _dbSet.UpdateRange(entities);
+        await Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Delete an entity by its ID
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async virtual Task DeleteAsync(int id)
+    {
+        var entity = await _dbSet.FindAsync(id);
         if (entity != null)
         {
-            _entities.Remove(entity);
+            _dbSet.Remove(entity);
         }
-        await Task.CompletedTask;
     }
 
-    private static int GetEntityId(T entity)
+    /// <summary>
+    /// Delete a range of entities by their IDs
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns></returns>
+    public async virtual Task DeleteRangeAsync(IEnumerable<int> ids)
     {
-        var property = typeof(T).GetProperty("Id");
-        return property != null ? (int)property.GetValue(entity) : 0;
+        foreach (var id in ids)
+        {
+            await DeleteAsync(id);
+        }
     }
 
-    // Pagination
-    public async Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize)
+    /// <summary>
+    /// Delete all entities
+    /// Use raw yet enhanced SQL query to delete all records from table without loading data into memory
+    /// This prevents SQL Injection
+    /// </summary>
+    /// <returns></returns>
+    public async virtual Task DeleteAllAsync()
     {
-        var pagedData = _entities.Skip((pageNumber - 1) * pageSize).Take(pageSize);
-        return await Task.FromResult(pagedData);
+        await _context.Database.ExecuteSqlAsync($"DELETE FROM [{typeof(T).Name}]");
     }
 
-    // Filtering
-    public async Task<IEnumerable<T>> GetFilteredAsync(Expression<Func<T, bool>> filter)
+    /// <summary>
+    /// Save changes to the database
+    /// </summary>
+    /// <returns></returns>
+    public async virtual Task SaveChangesAsync()
     {
-        var filteredData = _entities.AsQueryable().Where(filter);
-        return await Task.FromResult(filteredData);
+        await _context.SaveChangesAsync();
     }
 
-    // Sorting, default ascending
-    public async Task<IEnumerable<T>> GetSortedAsync<TKey>(
+    /// <summary>
+    /// Support pagination
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    public async virtual Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize)
+    {
+        return await _dbSet.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+    }
+
+    /// <summary>
+    /// Support filtering
+    /// </summary>
+    /// <param name="filter"></param>
+    /// <returns></returns>
+    public async virtual Task<IEnumerable<T>> GetFilteredAsync(Expression<Func<T, bool>> filter)
+    {
+        return await _dbSet.AsQueryable().Where(filter).ToListAsync();
+    }
+
+    /// <summary>
+    /// Support sorting, default ascending
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <param name="keySelector"></param>
+    /// <param name="sortDescending"></param>
+    /// <returns></returns>
+    public async virtual Task<IEnumerable<T>> GetSortedAsync<TKey>(
         Expression<Func<T, TKey>> keySelector,
         bool sortDescending = false)
     {
         var sortedData = sortDescending
-            ? _entities.AsQueryable().OrderByDescending(keySelector)
-            : _entities.AsQueryable().OrderBy(keySelector);
+            ? _dbSet.OrderByDescending(keySelector)
+            : _dbSet.OrderBy(keySelector);
 
-        return await Task.FromResult(sortedData);
+        return await sortedData.ToListAsync();
     }
 
-    // Filtering & Sorting
-    public async Task<IEnumerable<T>> GetFilteredAndSortedAsync<TKey>(
+    /// <summary>
+    /// Support filtering and sorting
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <param name="filter"></param>
+    /// <param name="keySelector"></param>
+    /// <param name="sortDescending"></param>
+    /// <returns></returns>
+    public async virtual Task<IEnumerable<T>> GetFilteredAndSortedAsync<TKey>(
         Expression<Func<T, bool>> filter,
         Expression<Func<T, TKey>> keySelector,
         bool sortDescending = false)
     {
-        var filteredData = _entities.AsQueryable().Where(filter);
-        var sortedData = sortDescending
-            ? filteredData.OrderByDescending(keySelector)
-            : filteredData.OrderBy(keySelector);
-
-        return await Task.FromResult(sortedData);
+        var query = _dbSet.AsQueryable().Where(filter);
+        return await (sortDescending
+            ? query.OrderByDescending(keySelector)
+            : query.OrderBy(keySelector)).ToListAsync();
     }
 
-    // Searching by name, using Fuzzy Search
-    // TODO: Implement Fuzzy Search
-    public async Task<IEnumerable<T>> GetSearchedAsync(Expression<Func<T, bool>> search)
+    /// <summary>
+    /// Support pagination and sorting, default ascending
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <param name="keySelector"></param>
+    /// <param name="sortDescending"></param>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    public async virtual Task<IEnumerable<T>> GetPagedSortedAsync<TKey>(
+        Expression<Func<T, TKey>> keySelector,
+        bool sortDescending,
+        int pageNumber,
+        int pageSize)
     {
-        var searchedData = _entities.AsQueryable().Where(search);
-        return await Task.FromResult(searchedData);
+        var query = _dbSet.AsQueryable();
+
+        query = sortDescending
+            ? query.OrderByDescending(keySelector)
+            : query.OrderBy(keySelector);
+
+        return await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
     }
 
-    // Count total results when searching
-    public async Task<int> CountAsync(Expression<Func<T, bool>> filter)
+    /// <summary>
+    /// Support pagination, filtering and sorting
+    /// </summary>
+    /// <param name="queryBuilder"></param>
+    /// <param name="keySelector"></param>
+    /// <param name="sortDescending"></param>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    public async virtual Task<PaginatedResult<T>> GetPagedFilteredAndSortedAsync(
+        Func<IQueryable<T>, IQueryable<T>> queryBuilder,
+        Expression<Func<T, object>> keySelector,
+        bool sortDescending,
+        int pageNumber,
+        int pageSize)
     {
-        var count = _entities.AsQueryable().Count(filter);
-        return await Task.FromResult(count);
+        var query = _context.Set<T>().AsQueryable();
+        query = queryBuilder(query);
+
+        var totalCount = await query.CountAsync();
+
+        query = sortDescending
+            ? query.OrderByDescending(keySelector)
+            : query.OrderBy(keySelector);
+
+        var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PaginatedResult<T>
+        {
+            TotalCount = totalCount,
+            CurrentPage = pageNumber,
+            PageSize = pageSize,
+            Items = items
+        };
+    }
+
+    /// <summary>
+    /// Support returning DTO or ViewModel data types
+    /// Instead of returning entities directly, the repository can support returning DTO data types when needed.
+    /// This is useful to offload unnecessary data when only certain fields are needed.
+    /// </summary>
+    /// <typeparam name="TResult"></typeparam>
+    /// <param name="filter"></param>
+    /// <param name="selector"></param>
+    /// <returns></returns>
+    public async virtual Task<IEnumerable<TResult>> GetMappedAsync<TResult>(
+        Expression<Func<T, bool>> filter,
+        Expression<Func<T, TResult>> selector)
+    {
+        return await _dbSet.AsQueryable()
+            .Where(filter)
+            .Select(selector)
+            .ToListAsync();
+    }
+
+    /// <summary>
+    /// Support Fuzzy Search
+    /// TODO: Implement Fuzzy Search
+    /// </summary>
+    /// <param name="search"></param>
+    /// <returns></returns>
+    public async virtual Task<IEnumerable<T>> GetSearchedAsync(Expression<Func<T, bool>> search)
+    {
+        return await _dbSet.AsQueryable().Where(search).ToListAsync();
+    }
+
+    /// <summary>
+    /// Count the number of entities that satisfy the filter
+    /// </summary>
+    /// <param name="filter"></param>
+    /// <returns></returns>
+    public async virtual Task<int> CountAsync(Expression<Func<T, bool>> filter)
+    {
+        return await _dbSet.AsQueryable().CountAsync(filter);
     }
 }

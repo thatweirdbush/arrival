@@ -17,6 +17,8 @@
         <helper:NumberToCurencyConverter x:Key="NumberToCurencyConverter"/>
         <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <helper:BooleanToVisibilityInverseConverter x:Key="BooleanToVisibilityInverseConverter"/>
+        <helper:DecimalPlacesConverter x:Key="DecimalPlacesConverter" DecimalPlaces="1"/>
+        <helper:DateToShortDateFormatConverter x:Key="DateToShortDateFormatConverter"/>
         <!--Flyout Template-->
         <Flyout x:Key="PricingDetailsFlyout">
             <StackPanel Spacing="16">
@@ -115,16 +117,14 @@
                                     <StackPanel Spacing="8">
                                         <TextBlock Text="Dates" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                                         <TextBlock Style="{ThemeResource BodyTextStyle}">
-                                    <Run Text="Nov 26"/>
-                                    <Run Text="-"/>
-                                    <Run Text="Dec 1"/>
+                                            <Run Text="{x:Bind ViewModel.ScheduleInformation.CheckInDate, Converter={StaticResource DateToShortDateFormatConverter}, ConverterParameter='MMM d', Mode=OneWay}"/> -
+                                            <Run Text="{x:Bind ViewModel.ScheduleInformation.CheckOutDate, Converter={StaticResource DateToShortDateFormatConverter}, ConverterParameter='MMM d', Mode=OneWay}"/>
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Spacing="8">
                                         <TextBlock Text="Guests" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                                         <TextBlock Style="{ThemeResource BodyTextStyle}">
-                                    <Run Text="1"/>
-                                    <Run Text=" guests"/>
+                                    <Run Text="{x:Bind ViewModel.TotalGuests, Mode=OneWay}"/> guests
                                         </TextBlock>
                                     </StackPanel>
                                     <Line Stroke="LightGray" X1="0" Y1="0" X2="1000" Y2="0" StrokeThickness="1" Margin="0 8 0 0"/>
@@ -137,11 +137,10 @@
                                     <StackPanel x:Name="ButtonPaymentTypeGrid">
                                         <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                                             Background="Transparent" CornerRadius="12 12 0 0" Padding="12">
-                                            <RadioButton x:Name="btnPayNow"
+                                            <RadioButton x:Name="btnPayNow" IsChecked="True"
                                                      HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                                                      VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                     FlowDirection="RightToLeft" Background="Transparent"
-                                                     GroupName="PaymentOptions">
+                                                     FlowDirection="RightToLeft" GroupName="PaymentOptions">
                                                 <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap">
                                                     <Run Text="Pay"/>
                                                     <Run Text="{x:Bind ViewModel.TotalAmount, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}"/>
@@ -154,8 +153,7 @@
                                             <RadioButton x:Name="btnPayLater"
                                                      HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                                                      VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                     FlowDirection="RightToLeft" Background="Transparent"
-                                                     GroupName="PaymentOptions">
+                                                     FlowDirection="RightToLeft" GroupName="PaymentOptions">
                                                 <StackPanel Spacing="6">
                                                     <TextBlock Text="Pay part now, part later" Style="{ThemeResource BodyStrongTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap"/>
                                                     <TextBlock Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap" FlowDirection="LeftToRight">
@@ -163,7 +161,7 @@
                                                     <Run Text="due today,"/>
                                                     <Run Text="{x:Bind ViewModel.PayPartLaterPrice, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}"/>
                                                     <Run Text="on"/>
-                                                    <Run Text="{x:Bind ViewModel.PayLaterDate.ToShortDateString(), Mode=OneWay}"/>.
+                                                    <Run Text="{x:Bind ViewModel.PayLaterDate, Converter={StaticResource DateToShortDateFormatConverter}, ConverterParameter='MMM d', Mode=OneWay}"/>.
                                                     <Run Text="No extra fees."/>
                                                     <Hyperlink NavigateUri="https://www.example.com">
                                                         <Run Text="More info" FontWeight="SemiBold"/>
@@ -200,9 +198,9 @@
                                     <Grid>
                                         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" FontSize="15">
                                         <Run Text="Free cancellation before" FontWeight="SemiBold"/>
-                                        <Run Text="Nov 25. " FontWeight="SemiBold"/>
+                                        <Run Text="{x:Bind ViewModel.CancelBeforeDate, Converter={StaticResource DateToShortDateFormatConverter}, ConverterParameter='MMM d', Mode=OneWay}" FontWeight="SemiBold"/>.
                                         <Run Text="Cancel before check-in on"/>
-                                        <Run Text="Nov 26"/>
+                                        <Run Text="{x:Bind ViewModel.ScheduleInformation.CheckInDate, Converter={StaticResource DateToShortDateFormatConverter}, ConverterParameter='MMM d', Mode=OneWay}"/>
                                         <Run Text="for a partial refund."/>
                                         <Hyperlink NavigateUri="https://www.example.com">
                                             <Run Text="Learn more" FontWeight="SemiBold"/>
@@ -258,7 +256,6 @@
                                         <TextBlock Text="Confirm and pay" Visibility="{x:Bind ViewModel.ConfirmAndPayCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityInverseConverter}}"/>
                                         <ProgressRing x:Name="ButtonProgressRing" IsActive="True"
                                                       Visibility="{x:Bind ViewModel.ConfirmAndPayCommand.IsRunning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
                                     </Grid>
                                 </Button>
                             </Grid>
@@ -272,18 +269,22 @@
                                     <Grid Height="110" Width="116" CornerRadius="12">
                                         <Image Stretch="UniformToFill" HorizontalAlignment="Center">
                                             <Image.Source>
-                                                <BitmapImage UriSource="{x:Bind ViewModel.Item.ImageThumbnail, Mode=OneWay}" DecodePixelHeight="110"/>
+                                                <BitmapImage UriSource="{x:Bind ViewModel.Item.ImageThumbnail, Mode=OneWay}" DecodePixelHeight="180"/>
                                             </Image.Source>
                                         </Image>
                                     </Grid>
                                     <Grid>
                                         <StackPanel x:Name="PropertyInfoPanel" Orientation="Vertical" Spacing="8" MaxWidth="250">
-                                            <TextBlock x:Name="txtPropertyName" Text="{x:Bind ViewModel.Item.Name, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" MaxLines="2"/>
-                                            <TextBlock x:Name="txtPropertyType" Text="{x:Bind ViewModel.Item.Type, Mode=OneWay}" Style="{ThemeResource DetailBodyStyle}" TextWrapping="Wrap"/>
-                                            <TextBlock x:Name="txtPropertyRateAndReview" Style="{ThemeResource DetailBodyStyle}" TextWrapping="Wrap">
-                                            <Run FontWeight="SemiBold" Text="4.89"/> (
-                                            <Run Text="232"/> reviews)
-                                            </TextBlock>
+                                            <TextBlock x:Name="txtPropertyName" Text="{x:Bind ViewModel.Item.Name, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" MaxLines="2"/>
+                                            <TextBlock x:Name="txtPropertyType" Text="{x:Bind ViewModel.Item.Type, Mode=OneWay}" Style="{ThemeResource DetailBodyStyle}"/>
+                                            <StackPanel Orientation="Horizontal" Spacing="4">
+                                                <FontIcon Glyph="&#xE735;" FontSize="12" VerticalAlignment="Center" Margin="0 -1 0 0"/>
+                                                <TextBlock x:Name="txtPropertyRate" Style="{ThemeResource DetailBodyStyle}" FontWeight="SemiBold"
+                                                           Text="{x:Bind ViewModel.Item.AverageRating, Mode=OneWay, Converter={StaticResource DecimalPlacesConverter}}"/>
+                                                <TextBlock x:Name="txtPropertyReview" Style="{ThemeResource DetailBodyStyle}">
+                                                    (<Run Text="{x:Bind ViewModel.Item.ReviewsCount, Mode=OneWay}"/> reviews)
+                                                </TextBlock>
+                                            </StackPanel>
                                         </StackPanel>
                                     </Grid>
                                 </StackPanel>
@@ -301,15 +302,17 @@
                                             </Button>
                                         </Grid>
                                         <Grid>
-                                            <TextBlock Text="5 nights" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
-                                            <TextBlock x:Name="AmountTextBox" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right">
+                                            <TextBlock Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal">
+                                                <Run Text="{x:Bind ViewModel.TotalNights, Mode=OneWay}"/> nights
+                                            </TextBlock>
+                                            <TextBlock x:Name="AmountTextBlock" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right">
                                                 <Run Text="{x:Bind ViewModel.Item.PricePerNight, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}"/>
-                                                <Run>x5</Run>
+                                                x<Run Text="{x:Bind ViewModel.TotalNights, Mode=OneWay}"/>
                                             </TextBlock>
                                         </Grid>
                                         <Grid>
                                             <TextBlock Text="Taxes" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal"/>
-                                            <TextBlock x:Name="TaxTextBox" Text="{x:Bind ViewModel.Tax, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
+                                            <TextBlock x:Name="TaxTextBlock" Text="{x:Bind ViewModel.Tax, Converter={StaticResource NumberToCurencyConverter}, Mode=OneWay}" Style="{ThemeResource DetailSubTitleStyle}" FontWeight="Normal" HorizontalAlignment="Right"/>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>

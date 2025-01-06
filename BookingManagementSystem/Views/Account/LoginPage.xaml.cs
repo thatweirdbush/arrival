@@ -2,12 +2,9 @@
 using System.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Windows.Security.Cryptography;
-using Windows.Security.Cryptography.DataProtection;
 using Windows.Storage;
 using BookingManagementSystem.ViewModels.Account;
 using Microsoft.UI.Xaml.Documents;
-using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Views.Client;
 
 namespace BookingManagementSystem.Views.Account;
@@ -44,7 +41,7 @@ public sealed partial class LoginPage : Page
         }
     }
 
-    public void SaveCredentials(string username, string password)
+    private void SaveCredentials(string username, string password)
     {
         // Save username
         localSettings.Values["Username"] = username;
@@ -73,7 +70,7 @@ public sealed partial class LoginPage : Page
     }
 
     // Method to load saved credentials
-    public void LoadCredentials()
+    private void LoadCredentials()
     {
         if (localSettings.Values.ContainsKey("Username") && localSettings.Values.ContainsKey("PasswordInBase64"))
         {
@@ -106,46 +103,51 @@ public sealed partial class LoginPage : Page
         }
     }
 
-    private async void btnSignIn_Click(object sender, RoutedEventArgs e)
+    private void ClearCredentials()
     {
-        // Default ContentDialog
-        ContentDialog contentDialog = new ContentDialog
-        {
-            XamlRoot = Content.XamlRoot,
-            Title = "Result",
-            Content = "Signed in successfully!",
-            CloseButtonText = "Ok"
-        };
+        localSettings.Values.Remove("Username");
+        localSettings.Values.Remove("PasswordInBase64");
+        localSettings.Values.Remove("EntropyInBase64");
+    }
 
+    private async void btnSignIn_Click(object sender, RoutedEventArgs? e)
+    {
         // Get username & password
         var username = txtUsername.Text;
         var password = passworBoxWithRevealmode.Password;
 
         // Check if the user is valid
-        if (ViewModel.LoginAuthentication(username, password))
+        var user = await ViewModel.LoginAuthentication(username, password);
+        if (user != null)
         {
             if (chkRememberMe.IsChecked == true)
             {
                 SaveCredentials(username, password);
-                contentDialog.Content = "Signed in successfully! Credentials saved.";
             }
             else
             {
-                localSettings.Values.Remove("Username");
-                localSettings.Values.Remove("PasswordInBase64");
-                localSettings.Values.Remove("EntropyInBase64");
+                ClearCredentials();
             }
 
-            var result = await contentDialog.ShowAsync();
-            if (result == ContentDialogResult.None)
+            // Navigate to the previous page if available
+            if (Frame.BackStackDepth > 0)
             {
-                Frame.Navigate(typeof(HomePage));
+                // Since the LoginAuthentication's been called, the BackStack has been added with the LoginPage
+                // Remove last page from back stack to prevent user from going back to login page
+                Frame.BackStack.Remove(Frame.BackStack.Last());
+                Frame.GoBack();
             }
         }
         else
         {
-            contentDialog.Content = "Login failed! Incorrect username or password.";
-            await contentDialog.ShowAsync();
+            _ = new ContentDialog
+            {
+                XamlRoot = Content.XamlRoot,
+                Title = "Login failed",
+                Content = "Incorrect username or password. Please try again!",
+                CloseButtonText = "Ok",
+                DefaultButton = ContentDialogButton.Close
+            }.ShowAsync();
         }
     }
 
@@ -167,5 +169,13 @@ public sealed partial class LoginPage : Page
     private void Hyperlink_Recover_Click(Hyperlink sender, HyperlinkClickEventArgs e)
     {
         Frame.Navigate(typeof(RecoverPasswordPage));
+    }
+
+    private void Page_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter)
+        {
+            btnSignIn_Click(btnSignIn, null);
+        }
     }
 }

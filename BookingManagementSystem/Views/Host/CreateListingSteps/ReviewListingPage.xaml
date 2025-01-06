@@ -27,12 +27,12 @@
                 <TextBlock Text="Here's what we'll show to guests. Before you publish, make sure to review the details."
                            Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="DimGray" FontWeight="Normal"/>
             </StackPanel>
-            <Border x:Name="ShadowTarget" Grid.Row="1"/>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="4*"/>
                 </Grid.ColumnDefinitions>
+                <Border x:Name="ShadowTarget"/>
                 <Grid CornerRadius="18" Padding="16" Background="{ThemeResource LayerFillColorAltBrush}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -42,7 +42,7 @@
                         <ui:AttachedDropShadow CastTo="{x:Bind ShadowTarget}" 
                                                CornerRadius="18" Offset="4" 
                                                BlurRadius="20" Color="{ThemeResource SmokeFillColorDefault}"/>
-                        </ui:Effects.Shadow>
+                    </ui:Effects.Shadow>
                     <Grid CornerRadius="10">
                         <Image Source="{x:Bind ViewModel.PropertyOnCreating.ImageThumbnail, Mode=OneWay}" Stretch="UniformToFill"/>
                     </Grid>

@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.ViewModels.Account;
 
 namespace BookingManagementSystem.Views.Client;
 public sealed partial class HomePage : Page
@@ -26,10 +27,10 @@ public sealed partial class HomePage : Page
         ToggleSwitchDisplayTax.IsOn = !ToggleSwitchDisplayTax.IsOn;
     }
 
-    private void HiddenMultiDatePicker_Click(object sender, RoutedEventArgs e)
+    private void HiddenCalendarView_Click(object sender, RoutedEventArgs e)
     {
-        // Open the HiddenMultiDatePicker Flyout
-        HiddenMultiDatePicker.Flyout.ShowAt(HiddenMultiDatePicker);
+        // Open the HiddenCalendarViewFlyout
+        HiddenCalendarView.Flyout.ShowAt(HiddenCalendarView);
     }
 
     private void btnSearchDestinationWrapper_Click(object sender, RoutedEventArgs e)
@@ -38,14 +39,21 @@ public sealed partial class HomePage : Page
         DestinationAutoSuggestBox.Focus(FocusState.Programmatic);
     }
 
-    private void btnFavourite_Click(object sender, RoutedEventArgs e)
+    private async void btnFavourite_Click(object sender, RoutedEventArgs e)
     {
+        // Check if the user is logged in
+        if (LoginViewModel.CurrentUser == null)
+        {
+            await ShowContentDialogAsync("Login required", "Please login to submit this question!");
+            return;
+        }
+
         // Toggle the favourite button  
         // That change the image source to the filled heart icon  
         if (sender is FrameworkElement frameworkElement
             && frameworkElement.DataContext is Property property)
         {
-            property.IsFavourite = !property.IsFavourite;
+            await ViewModel.ToggleFavoriteAsync(property);
         }
     }
 
@@ -109,18 +117,19 @@ public sealed partial class HomePage : Page
     // Update the schedule based on the selected dates to ViewModel and UI
     private void UpdateSchedule(DateTimeOffset checkInDate, DateTimeOffset checkOutDate)
     {
+        // Update the UI first to avoid misleading UTC time vs local time
+        btnCheckInCalendar.Content = checkInDate.ToString("MMMM d");
+        btnCheckOutCalendar.Content = checkOutDate.ToString("MMMM d");
+
         // Update the schedule based on the selected dates
-        ViewModel.CheckInDate = checkInDate;
-        ViewModel.CheckOutDate = checkOutDate;
+        ViewModel.CheckInDate = checkInDate.UtcDateTime;
+        ViewModel.CheckOutDate = checkOutDate.UtcDateTime;
 
         // Handle ambiguous bug when remove the min date
         if (ViewModel.CheckInDate > ViewModel.CheckOutDate)
         {
             ViewModel.CheckInDate = ViewModel.CheckOutDate;
         }
-        // Update the UI
-        btnCheckInCalendar.Content = ViewModel.CheckInDate?.ToString("MMMM d");
-        btnCheckOutCalendar.Content = ViewModel.CheckOutDate?.ToString("MMMM d");
     }
 
     private async void DestinationAutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -130,11 +139,15 @@ public sealed partial class HomePage : Page
             // Cancel previous token if any (if user continues typing)
             _debounceTokenSource?.Cancel();
             _debounceTokenSource = new CancellationTokenSource();
+            var token = _debounceTokenSource.Token;
 
             try
             {
                 // Wait 400ms to debounce
-                await Task.Delay(400, _debounceTokenSource.Token);
+                await Task.Delay(400, token);
+
+                // Check if token is destroyed before continuing
+                token.ThrowIfCancellationRequested();
 
                 // After 400ms, call search API
                 var query = sender.Text;
@@ -143,24 +156,72 @@ public sealed partial class HomePage : Page
                 // Display list of suggestions
                 sender.ItemsSource = suggestions;
             }
-            catch (Exception)
+            catch (OperationCanceledException)
             {
+                // Ignore the exception
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
             }
         }
     }
 
-    private void btnFilterDestination_Click(object sender, RoutedEventArgs e)
+    private async void btnFilterDestination_Click(object sender, RoutedEventArgs e)
     {
-        // Filter Properties based on DestinationType  
+        // Filter Properties based on Destination Type - Preset Filter
         if (sender is FrameworkElement frameworkElement
             && frameworkElement.DataContext is DestinationTypeSymbol destinationTypeSymbol)
         {
-            ViewModel.FilterProperties(destinationTypeSymbol);
+            ViewModel.SelectedPresetFilter = destinationTypeSymbol.DestinationType;
+            await ViewModel.RefreshAsync();
         }
     }
 
     private void ToggleSwitchDisplayTax_Toggled(object sender, RoutedEventArgs e)
     {
         ViewModel.ToggleDisplayPropertiesPriceWithTax(ToggleSwitchDisplayTax.IsOn);
+    }
+
+    private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+    {
+        var scrollViewer = sender as ScrollViewer;
+        if (scrollViewer == null) return;
+
+        // Detect when scroll is near the end
+        if (scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight) // 0px from end of list
+        {
+            await ViewModel.LoadPropertiesAsync();
+        }
+    }
+
+    private async Task ShowContentDialogAsync(string title, string content)
+    {
+        var dialog = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = title,
+            Content = content,
+            CloseButtonText = "Ok",
+            DefaultButton = ContentDialogButton.Close
+        };
+
+        await dialog.ShowAsync();
+    }
+
+    private void CalendarView_CalendarViewDayItemChanging(CalendarView sender, CalendarViewDayItemChangingEventArgs args)
+    {
+        // Must explicitly handle state for both branches (past and future)
+        // As the CalendarView reuses items, leading to unwanted state if not handled properly
+        if (args.Item.Date < DateTimeOffset.Now.Date)
+        {
+            // Disable past dates
+            args.Item.IsEnabled = false;
+        }
+        else
+        {
+            // Enable future dates
+            args.Item.IsEnabled = true;
+        }
     }
 }

@@ -36,7 +36,7 @@
                         <NumberBox x:Name="BedroomsNumberBox" HorizontalAlignment="Right" 
                                    PreviewKeyDown="BedroomsNumberBox_PreviewKeyDown"
                                    Value="{x:Bind ViewModel.BedroomPlan.Quantity, Mode=TwoWay}"
-                                   Minimum="0" SpinButtonPlacementMode="Inline"/>
+                                   Minimum="1" SpinButtonPlacementMode="Inline"/>
                     </Grid>
                     <Line Stroke="Gray" X1="0" Y1="0" X2="1000" Y2="0"/>
                     <Grid>
@@ -44,15 +44,15 @@
                         <NumberBox x:Name="BedsNumberBox" HorizontalAlignment="Right" 
                                    PreviewKeyDown="BedsNumberBox_PreviewKeyDown"
                                    Value="{x:Bind ViewModel.BedPlan.Quantity, Mode=TwoWay}"
-                                   Minimum="0" SpinButtonPlacementMode="Inline"/>
+                                   Minimum="1" SpinButtonPlacementMode="Inline"/>
                     </Grid>
                     <Line Stroke="Gray" X1="0" Y1="0" X2="1000" Y2="0"/>
                     <Grid>
                         <TextBlock Text="Bathrooms" Style="{ThemeResource SubtitleTextBlockStyle}" FontWeight="Normal" VerticalAlignment="Center"/>
                         <NumberBox x:Name="BathroomsNumberBox" HorizontalAlignment="Right" 
                                    PreviewKeyDown="BathroomsNumberBox_PreviewKeyDown" 
-                                   Value="{x:Bind ViewModel.BathoomPlan.Quantity, Mode=TwoWay}" 
-                                   Minimum="0" SpinButtonPlacementMode="Inline"/>
+                                   Value="{x:Bind ViewModel.BathroomPlan.Quantity, Mode=TwoWay}" 
+                                   Minimum="1" SpinButtonPlacementMode="Inline"/>
                     </Grid>
                 </StackPanel>
             </Grid>

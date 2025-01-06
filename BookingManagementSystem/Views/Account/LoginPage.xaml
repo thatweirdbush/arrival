@@ -5,8 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    NavigationCacheMode="Enabled"
-    CacheMode="BitmapCache">
+    CacheMode="BitmapCache"
+    KeyDown="Page_KeyDown">
     <Page.Background>
         <ImageBrush ImageSource="/Assets/homescreen.jpg" Stretch="Fill"/>
     </Page.Background>

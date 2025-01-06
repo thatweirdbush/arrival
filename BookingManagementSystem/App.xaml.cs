@@ -7,7 +7,6 @@ using BookingManagementSystem.Core.Facades;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Repositories;
 using BookingManagementSystem.Core.Services;
-using BookingManagementSystem.Helpers;
 using BookingManagementSystem.Models;
 using BookingManagementSystem.Notifications;
 using BookingManagementSystem.Services;
@@ -25,9 +24,11 @@ using BookingManagementSystem.Views.Client;
 using BookingManagementSystem.Views.Host;
 using BookingManagementSystem.Views.Host.CreateListingSteps;
 using BookingManagementSystem.Views.Payment;
-
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
 
 using WinUIEx.Messaging;
@@ -72,8 +73,28 @@ public partial class App : Application
         Host = Microsoft.Extensions.Hosting.Host.
         CreateDefaultBuilder().
         UseContentRoot(AppContext.BaseDirectory).
+        ConfigureAppConfiguration((context, config) =>
+        {
+            // Integrate User Secrets
+            config.AddUserSecrets<App>();
+        }).
         ConfigureServices((context, services) =>
         {
+            // App Hosted Services
+            services.AddSingleton<IConfiguration>(context.Configuration);
+
+            // Add logging
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddDebug(); // Log to Debug Output
+                loggingBuilder.AddConsole(); // Log to Console
+            });
+
+            // This allows the application to use the ApplicationDbContext at runtime via DI.
+            services.AddTransient<DbContext, ApplicationDbContext>();
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(context.Configuration.GetConnectionString("DefaultConnection")));
+
             // Default Activation Handler
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
@@ -84,41 +105,39 @@ public partial class App : Application
             services.AddSingleton<IAppNotificationService, AppNotificationService>();
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
-            services.AddTransient<INavigationViewService, NavigationViewService>();
-            services.AddTransient<GeographicNameService>();
-
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
-
-            // Core Services
+            services.AddTransient<INavigationViewService, NavigationViewService>();
             services.AddSingleton<IFileService, FileService>();
-            services.AddSingleton<PropertyImagesActivationHandler>();
 
             // Bussiness Services
+            services.AddSingleton<BookingManagementSystem.Contracts.Services.INotificationService, BookingManagementSystem.Services.NotificationService>();
             services.AddSingleton<IPropertyService, PropertyService>();
             services.AddTransient<IRoomService, RoomService>();
+            services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<GeographicNameService>();
 
             // Data Services
             // TODO: Change to AddScoped when using a real data service
-            services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
-            services.AddSingleton<IRentalDetailFacade, RentalDetailFacade>();
-            services.AddSingleton<IPaymentFacade, PaymentFacade>();
-            services.AddSingleton<IHomeFacade, HomeFacade>();
-            services.AddSingleton<IRepository<Amenity>, AmenityRepository>();
-            services.AddSingleton<IRepository<BadReport>, BadReportRepository>();
-            services.AddSingleton<IRepository<Booking>, BookingRepository>();
-            services.AddSingleton<IRepository<DestinationTypeSymbol>, DestinationTypeSymbolRepository>();
-            services.AddSingleton<IRepository<FAQ>, FAQRepository>();
-            services.AddSingleton<IRepository<Notification>, NotificationRepository>();
-            services.AddSingleton<IRepository<Payment>, PaymentRepository>();
-            services.AddSingleton<IRepository<PropertyPolicy>, PropertyPolicyRepository>();
-            services.AddSingleton<IRepository<Property>, PropertyRepository>();
-            services.AddSingleton<IRepository<QnA>, QnARepository>();
-            services.AddSingleton<IRepository<User>, UserRepository>();
-            services.AddSingleton<IRepository<Review>, ReviewRepository>();
-            services.AddSingleton<IRepository<Voucher>, VoucherRepository>();
-            services.AddSingleton<IRepository<PropertyTypeIcon>, PropertyTypeIconRepository>();
+            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient<IRentalDetailFacade, RentalDetailFacade>();
+            services.AddTransient<IPaymentFacade, PaymentFacade>();
+            services.AddTransient<IRepository<Amenity>, AmenityRepository>();
+            services.AddTransient<IRepository<BadReport>, BadReportRepository>();
+            services.AddTransient<IRepository<Booking>, BookingRepository>();
+            services.AddTransient<IRepository<CountryInfo>, CountryInfoRepository>();
+            services.AddTransient<IRepository<FAQ>, FAQRepository>();
+            services.AddTransient<IRepository<Notification>, NotificationRepository>();
+            services.AddTransient<IRepository<Payment>, PaymentRepository>();
+            services.AddTransient<IRepository<PropertyPolicy>, PropertyPolicyRepository>();
+            services.AddTransient<IRepository<Property>, PropertyRepository>();
+            services.AddTransient<IRepository<QnA>, QnARepository>();
+            services.AddTransient<IRepository<User>, UserRepository>();
+            services.AddTransient<IRepository<Review>, ReviewRepository>();
+            services.AddTransient<IRepository<Voucher>, VoucherRepository>();
+            services.AddTransient<DestinationTypeSymbolRepository>();
+            services.AddTransient<PropertyTypeIconRepository>();
 
             // Views and ViewModels
             services.AddTransient<NotificationViewModel>();
@@ -199,9 +218,7 @@ public partial class App : Application
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
         }).
         Build();
-
         App.GetService<IAppNotificationService>().Initialize();
-
         UnhandledException += App_UnhandledException;
     }
 
@@ -219,7 +236,7 @@ public partial class App : Application
         MainWindow.Content = new SplashScreenPage();
         MainWindow.Activate();
 
-        // Run heavy load functions on background threads
+        //Run heavy load functions on background threads
         await Task.Run(async () =>
         {
             await RunLongRunningTasksAsync();
@@ -231,8 +248,7 @@ public partial class App : Application
 
     private async Task RunLongRunningTasksAsync()
     {
-        await PropertyImagesActivationHandler.CopyPropertyImagesToLocalFolderAsync();
-        await PropertyImagesActivationHandler.BindingPropertyImagesWithLocalFolderAsync();
+        await Task.Delay(100);
 
         // Create notification channel
         App.GetService<IAppNotificationService>().ShowNotification(
@@ -241,8 +257,8 @@ public partial class App : Application
             imageUri: "https://letsenhance.io/static/a31ab775f44858f1d1b80ee51738f4f3/11499/EnhanceAfter.jpg",
             buttons:
             [
-                ("Mark as read", "action=mark-as-read"),
-                ("See details", "action=see-details")
+                ("See details", "action=see-details"),
+                ("Dismiss", "action=dismiss")
             ]
         );
     }

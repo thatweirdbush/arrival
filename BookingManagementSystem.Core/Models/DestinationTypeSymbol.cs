@@ -30,23 +30,18 @@ public enum DestinationType
 
 public class DestinationTypeSymbol
 {
-    // Define XAML Image's Path Declaration
-    public static string MS_APPX = "ms-appx:///Assets/destination-type-symbol-icons/";
+    public string Name { get; set; }
+
+    public DestinationType DestinationType { get; set; }
+
     private string _imagePath;
-
-    public string Name
-    {
-        get; set;
-    }
-
-    public DestinationType DestinationType
-    {
-        get; set;
-    }
 
     public string ImagePath
     {
         get => $"{MS_APPX}{_imagePath}";
         set => _imagePath = value;
     }
+
+    // XAML Image's Path Declaration
+    public const string MS_APPX = "ms-appx:///Assets/destination-type-symbol-icons/";
 }

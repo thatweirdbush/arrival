@@ -1,11 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Dispatching;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Models;
-using CommunityToolkit.Mvvm.Input;
-using BookingManagementSystem.Core.Contracts.Facades;
 using BookingManagementSystem.Core.Contracts.Services;
+using BookingManagementSystem.Core.Commons.Filters;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -14,8 +15,17 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     private readonly INavigationService _navigationService;
     private readonly IRoomService _roomService;
 
+    // List of items for the AdaptiveGridView
+    public ObservableCollection<Property> Properties { get; set; } = [];
+
+    // Preset filter options for UI components
+    public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = [];
+
     [ObservableProperty]
     private bool isPropertyListEmpty;
+
+    [ObservableProperty]
+    private bool isLoading;
 
     [ObservableProperty]
     private string? destination;
@@ -28,56 +38,21 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
 
     [ObservableProperty]
     private int numberOfPets;
-    public DateTimeOffset? CheckInDate { get; set; }
-    public DateTimeOffset? CheckOutDate { get; set; }
 
-    // List of items for the AdaptiveGridView
-    public ObservableCollection<Property> Properties { get; set; } = [];
-
-    // Filtered destination data
-    public IEnumerable<DestinationTypeSymbol> DestinationTypeSymbols { get; set; } = [];
-
-    public IAsyncRelayCommand SearchAvailableRoomsCommand
-    {
-        get;
-    }
+    private int _currentPage = 1;
+    private const int PageSize = 10; // Default page size
+    public DateTimeOffset? CheckInDate { get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset? CheckOutDate { get; set; } = DateTimeOffset.UtcNow.AddDays(5);
+    public DestinationType SelectedPresetFilter { get; set; } = DestinationType.All;    
+    public IAsyncRelayCommand SearchAvailableRoomsCommand { get; }
 
     public HomeViewModel(INavigationService navigationService, IRoomService roomService)
     {
         _navigationService = navigationService;
         _roomService = roomService;
 
-        // Subscribe to CollectionChanged event
-        Properties.CollectionChanged += (s, e) => CheckPropertyListCount();
-
-        // Initial check
-        CheckPropertyListCount();
-
         // Async relay command for searching available rooms
-        SearchAvailableRoomsCommand = new AsyncRelayCommand(SearchRoomsAsync);
-    }
-
-    public async void OnNavigatedTo(object parameter)
-    {
-        // Load DestinationTypeSymbols data
-        DestinationTypeSymbols = await _roomService.GetAllDestinationTypeSymbolsAsync();
-
-        // Load Properties data
-        LoadAllProperties();
-
-        // Initialize observable properties
-        NumberOfAdults = 0;
-        NumberOfChildren = 0;
-        NumberOfPets = 0;
-    }
-
-    public void OnNavigatedFrom()
-    {
-    }
-
-    private void CheckPropertyListCount()
-    {
-        IsPropertyListEmpty = Properties.Count == 0;
+        SearchAvailableRoomsCommand = new AsyncRelayCommand(RefreshAsync);
     }
 
     [RelayCommand]
@@ -85,20 +60,90 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
     {
         if (clickedItem != null)
         {
+            var filterInformation = BuildPropertyFilter();
+
+            // Wrap both Id and PropertyFilter into an object to pass
+            IDictionary<string, object> navigationParameters = new Dictionary<string, object>
+            {
+                { "PropertyId", clickedItem.Id },
+                { "Filter", filterInformation }
+            };
+
             _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
-            _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, clickedItem.Id);
+            _navigationService.NavigateTo(typeof(RentalDetailViewModel).FullName!, navigationParameters);
         }
     }
 
-    public async void LoadAllProperties()
+    public async void OnNavigatedTo(object parameter)
     {
-        Properties.Clear();
-        var data = await _roomService.GetAllPropertiesAsync();
-        var listedProperties = data.Where(x => x.Status == PropertyStatus.Listed);
+        // Load DestinationTypeSymbols data
+        DestinationTypeSymbols = await _roomService.GetAllDestinationTypeSymbolsAsync();
 
-        foreach (var item in listedProperties)
+        // Initialize observable input fields
+        NumberOfAdults = 1;
+        NumberOfChildren = 0;
+        NumberOfPets = 0;
+
+        // Load Properties data
+        await LoadPropertiesAsync();
+    }
+
+    public void OnNavigatedFrom()
+    {
+    }
+
+    private void CheckListCount()
+    {
+        IsPropertyListEmpty = !Properties.Any();
+    }
+
+    // General methods for loading properties data
+    private PropertyFilter BuildPropertyFilter()
+    {
+        return new PropertyFilter
         {
-            Properties.Add(item);
+            CheckInDate = CheckInDate,
+            CheckOutDate = CheckOutDate,
+            DestinationType = SelectedPresetFilter,
+            Destination = Destination,
+            MinGuests = NumberOfAdults + NumberOfChildren,
+            PetsAllowed = NumberOfPets,
+            PageNumber = _currentPage,
+            PageSize = PageSize
+        };
+    }
+
+    public async Task LoadPropertiesAsync()
+    {
+        // Avoid calling multiple times at the same time
+        if (IsLoading) return;
+
+        try
+        {
+            // Begin loading
+            IsLoading = true;
+
+            // Build the filter based on the current state
+            var filter = BuildPropertyFilter();
+
+            // Fetch paginated result
+            var result = await _roomService.GetAvailableRoomsAsync(filter);
+
+            DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
+            {
+                foreach (var property in result.Items)
+                {
+                    Properties.Add(property);
+                }
+                CheckListCount();
+            });
+
+            _currentPage++;
+        }
+        finally
+        {
+            // End loading
+            IsLoading = false;
         }
     }
 
@@ -111,54 +156,22 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware
         }
     }
 
-    public async void FilterProperties(DestinationTypeSymbol destinationTypeSymbol)
-    {
-        if (destinationTypeSymbol.DestinationType.Equals(DestinationType.All))
-        {
-            LoadAllProperties();
-            return;
-        }
-        // Reload all properties before filtering
-        Properties.Clear();
-        var data = await _roomService.GetAllPropertiesAsync();
-
-        // Prepare Trending properties data by filtering based on IsPriority or IsFavourtie
-        if (destinationTypeSymbol.DestinationType.Equals(DestinationType.Trending))
-        {
-            data = data.Where(p => p.IsPriority || p.IsFavourite).ToList();
-        }
-        else
-        {
-            data = data.Where(p => p.DestinationTypes.Contains(destinationTypeSymbol.DestinationType)).ToList();
-        }
-        foreach (var item in data)
-        {
-            Properties.Add(item);
-        }
-    }
-
-    public async Task SearchRoomsAsync()
-    {
-        if (CheckInDate == null || CheckOutDate == null)
-        {
-            return; // Check-in and check-out dates are required
-        }
-
-        var results = await _roomService.GetAvailableRoomsAsync(CheckInDate, CheckOutDate, Destination, NumberOfAdults + NumberOfChildren, NumberOfPets);
-        var listedProperties = results.Where(x => x.Status == PropertyStatus.Listed);
-
-        // Simulate network delay
-        await Task.Delay(500);
-
-        Properties.Clear();
-        foreach (var room in listedProperties)
-        {
-            Properties.Add((Property)room);
-        }
-    }
-
     public Task<List<string>> SearchLocationsToStringAsync(string query)
     {
         return _roomService.SearchLocationsToStringAsync(query);
+    }
+
+    public Task ToggleFavoriteAsync(Property property)
+    {
+        return _roomService.ToggleFavoriteAsync(property);
+    }
+
+    public async Task RefreshAsync()
+    {
+        _currentPage = 1;
+
+        Properties.Clear();
+        await LoadPropertiesAsync();
+        CheckListCount();
     }
 }
