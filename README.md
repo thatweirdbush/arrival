@@ -320,6 +320,10 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
 - **System Notification & Activation Handling**
   - Implements **Windows** notifications and activation handling for user alerts.
   - Ensures proper lifecycle management when users interact with notifications (e.g., booking confirmations or reminders).
+- **Chat Bot**
+  - Integrated an AI chatbot using the Gemini API from Google AI Studio for natural language processing.
+  - Handles user queries by sending them to the Gemini API and retrieving responses.
+  - Utilizes an API key for authentication and secure communication.
  
 > [!NOTE]
 > ### Self-Assessment: 30/30 (%)
