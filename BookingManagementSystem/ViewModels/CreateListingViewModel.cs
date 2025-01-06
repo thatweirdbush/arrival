@@ -11,6 +11,7 @@ using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 using BookingManagementSystem.Views.Host.CreateListingSteps;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Controls;
+using BookingManagementSystem.ViewModels.Account;
 
 namespace BookingManagementSystem.ViewModels;
 
@@ -91,7 +92,8 @@ public partial class CreateListingViewModel : ObservableRecipient, INavigationAw
             // So new Property instance must be created in this ViewModel, which is Transient
             _propertyService.PropertyOnCreating = new()
             {
-                Status = PropertyStatus.InProgress
+                Status = PropertyStatus.InProgress,
+                HostId = LoginViewModel.CurrentUser!.Id
             };
 
             // Initialize steps' ViewModel

@@ -43,7 +43,7 @@
                                                CornerRadius="18" Offset="4" 
                                                BlurRadius="20" Color="{ThemeResource SmokeFillColorDefault}"/>
                     </ui:Effects.Shadow>
-                    <Grid CornerRadius="10">
+                    <Grid CornerRadius="10" MaxHeight="330">
                         <Image Source="{x:Bind ViewModel.PropertyOnCreating.ImageThumbnail, Mode=OneWay}" Stretch="UniformToFill"/>
                     </Grid>
                     <Grid Grid.Row="1" Padding="0 16 0 0">

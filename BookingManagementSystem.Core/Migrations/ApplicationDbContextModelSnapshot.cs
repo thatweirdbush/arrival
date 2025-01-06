@@ -740,6 +740,8 @@ namespace BookingManagementSystem.Core.Migrations
                     b.Navigation("Amenity");
 
                     b.Navigation("Property");
+
+                    b.ToTable("PropertyAmenities");
                 });
 
             modelBuilder.Entity("BookingManagementSystem.Core.Models.PropertyPolicy", b =>

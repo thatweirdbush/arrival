@@ -57,7 +57,7 @@
                                 Background="{Binding IsUserMessage, Converter={StaticResource BoolToBrushConverter}}"
                                 CornerRadius="10" 
                                 Padding="10" 
-                                MaxWidth="350"
+                                MaxWidth="500"
                                 HorizontalAlignment="{Binding IsUserMessage, Converter={StaticResource HorizontalAlignmentConverter}}"
                                 VerticalAlignment="Top">
                             <TextBlock Text="{Binding Content}" TextWrapping="Wrap"/>
@@ -84,15 +84,8 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Background="#E0E0E0" CornerRadius="10" Padding="10" Margin="5">
-                        <TextBlock Text="{Binding}" 
-                                   Tapped="OnSuggestedQuestionTapped"
-                                   TextWrapping="Wrap"
-                                   FontSize="14"
-                                   Foreground="Black"
-                                   TextTrimming="WordEllipsis"
-                                   Width="200"/> 
-                    </Border>
+                    <Button Content="{Binding}" BorderBrush="Transparent" CornerRadius="10" Padding="18" Margin="10 0 10 0" FontWeight="SemiBold"
+                            Click="SuggestedQuestion_Click"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -100,7 +93,7 @@
         <Grid Grid.Row="3" Background="#FFFFFF" Padding="10" Margin="10,0,10,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
 
             <!-- TextBox nhập tin nhắn -->
@@ -108,26 +101,30 @@
             <TextBox Text="{Binding UserInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      PlaceholderText="Nhập câu hỏi..." 
                      VerticalAlignment="Center" 
-                     HorizontalAlignment="Stretch" 
-                     Margin="0,0,50,0"  
-                     IsSpellCheckEnabled="False"
+                     HorizontalAlignment="Stretch"
+                     Padding="10" Height="50"
+                     IsSpellCheckEnabled="False" FontSize="16"
                      IsEnabled="{Binding IsSendingMessage, Converter={StaticResource InvertedBoolConverter}}"/>
-            
-            <!-- Button gửi tin nhắn -->
-            <Button Content="Gửi" 
-                    Command="{Binding SendMessageAsyncCommand}" 
-                    VerticalAlignment="Center" 
-                    HorizontalAlignment="Right"
-                    Visibility="{Binding IsSendingMessage, Converter={StaticResource InvertedBoolConverter}}"
-                    IsEnabled="{Binding UserInput, Converter={StaticResource StringToBoolConverter}}"/>
 
-            <!-- Spinner hiển thị khi đang xử lý -->
-            <ProgressRing IsActive="{Binding IsSendingMessage}" 
-                  VerticalAlignment="Center" 
-                  HorizontalAlignment="Right" 
-                  Margin="0,5,10,0"
-                  Width="20" 
-                  Height="20"/>
+            <Grid Grid.Column="1" Margin="4 0 0 0">
+                <!-- Button gửi tin nhắn -->
+                <Button Content="Gửi" Height="50"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        FontWeight="SemiBold"
+                        Command="{Binding SendMessageAsyncCommand}" 
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Stretch"
+                        Visibility="{Binding IsSendingMessage, Converter={StaticResource InvertedBoolConverter}}"
+                        IsEnabled="{Binding UserInput, Converter={StaticResource StringToBoolConverter}}"/>
+
+                <!-- Spinner hiển thị khi đang xử lý -->
+                <ProgressRing IsActive="{Binding IsSendingMessage}" 
+                              VerticalAlignment="Center" 
+                              HorizontalAlignment="Stretch" 
+                              Margin="0,5,10,0"
+                              Width="20" 
+                              Height="20"/>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

@@ -1,15 +1,12 @@
-﻿using BookingManagementSystem.Core.Services;
-using BookingManagementSystem.ViewModels.Client;
+﻿using BookingManagementSystem.ViewModels.Client;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 
 namespace BookingManagementSystem.Views.Client;
 
 public sealed partial class ChatPage : Page
 {
-
     public ChatViewModel ViewModel
     {
         get;
@@ -26,12 +23,11 @@ public sealed partial class ChatPage : Page
         ViewModel.ScrollToBottomRequested += ChatViewModel_ScrollToBottomRequested;
     }
 
-
-    private void OnSuggestedQuestionTapped(object sender, TappedRoutedEventArgs e)
+    private void SuggestedQuestion_Click(object sender, RoutedEventArgs e)
     {
-        if (sender is TextBlock textBlock)
+        if (sender is Button button)
         {
-            var question = textBlock.Text;
+            var question = button.Content;
             var viewModel = DataContext as ChatViewModel;
             viewModel?.SelectSuggestedQuestionCommand.Execute(question);
         }

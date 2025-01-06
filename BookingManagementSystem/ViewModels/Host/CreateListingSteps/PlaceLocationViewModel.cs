@@ -71,9 +71,6 @@ public partial class PlaceLocationViewModel : BaseStepViewModel
         {
             await _propertyService.AddCountryAsync(SelectedCountry);
         }
-        else {
-            await _propertyService.UpdateCountryAsync(SelectedCountry);
-        }
     }
 
     public override void ValidateProcess()

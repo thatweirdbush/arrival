@@ -189,7 +189,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Chat" helpers:NavigationHelper.NavigateTo="BookingManagementSystem.ViewModels.Client.ChatViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe8F2;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>

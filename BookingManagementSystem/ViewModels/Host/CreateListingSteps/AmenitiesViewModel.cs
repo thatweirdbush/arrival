@@ -68,6 +68,13 @@ public partial class AmenitiesViewModel : BaseStepViewModel
 
     public void ResetPropertyAmenities()
     {
+        // If there're just 3 amenities, which are Bed, Bedroom, Bathroom above
+        // We don't need to reset
+        if (PropertyOnCreating.PropertyAmenities.Count == 3)
+        {
+            return;
+        }
+
         foreach (var amenity in PropertyOnCreating.PropertyAmenities
             .Where(x => x.Amenity.Type == AmenityType.GuestFavorite)
             .ToList())

@@ -107,6 +107,9 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
     public async Task AddReviewAsync(Review review)
     {
         await _rentalDetailFacade.AddReviewAsync(review);
+
+        // Set the current user as the customer for immediate UI update
+        review.User = LoginViewModel.CurrentUser;
         Reviews.Insert(0, review);
 
         UpdateObservableProperties();

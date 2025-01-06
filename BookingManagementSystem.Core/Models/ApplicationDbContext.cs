@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BookingManagementSystem.Core.Repositories;
 using BookingManagementSystem.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -30,22 +24,6 @@ public partial class ApplicationDbContext : DbContext
     public ApplicationDbContext() { }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
     : base(options) { }
-
-    // Core Models
-    public virtual DbSet<Amenity> Amenities { get; set; }
-    public virtual DbSet<BadReport> BadReports { get; set; }
-    public virtual DbSet<Booking> Bookings { get; set; }
-    public virtual DbSet<CountryInfo> CountryInfo { get; set; }
-    public virtual DbSet<FAQ> FAQs { get; set; }
-    public virtual DbSet<Notification> Notifications { get; set; }
-    public virtual DbSet<Payment> Payments { get; set; }
-    public virtual DbSet<Property> Properties { get; set; }
-    public virtual DbSet<PropertyAmenity> PropertyAmenities { get; set; }
-    public virtual DbSet<PropertyPolicy> PropertyPolicies { get; set; }
-    public virtual DbSet<QnA> QnAs { get; set; }
-    public virtual DbSet<Review> Reviews { get; set; }
-    public virtual DbSet<User> Users { get; set; }
-    public virtual DbSet<Voucher> Vouchers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -139,6 +117,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<PropertyAmenity>(entity =>
         {
+            entity.ToTable("PropertyAmenities");
             entity.HasKey(e => new { e.PropertyId, e.AmenityId }).HasName("PropertyAmenities_pkey");
 
             entity.Property(e => e.Quantity).HasDefaultValue(1);
