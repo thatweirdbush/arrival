@@ -149,7 +149,7 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
       <br>You can make a report in <strong>Rental Details Page</strong>.
       <br>The <strong>Management</strong> feature is integrated in <strong>Administrator Page > Subscriptions</strong>.</td>
       <td style="text-align: center;">1h</td>
-      <td style="text-align: center;">Phan Quoc Huy<br>21120082</td>
+      <td style="text-align: center;">Nguyen Long Giang<br>21120060</td>
       <td style="text-align: center;">✅</td>
     </tr>
     <tr>
