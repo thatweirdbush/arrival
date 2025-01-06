@@ -216,8 +216,8 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
       <td><strong>Live Chat with Host/Staff/Bot</strong></td>
       <td>Chat system supports live chat with host, hotel staff or bot before booking.</td>
       <td style="text-align: center;">1h</td>
-      <td></td>
-      <td></td>
+      <td style="text-align: center;">Nguyen Long Giang<br>21120060</td>
+      <td style="text-align: center;">✅</td>
     </tr>
     <tr>
       <td><strong>Travel Suggestions</strong></td>
@@ -238,11 +238,11 @@ We use all of your favourite material: Acrylic. We use Microsoft's icons and con
 </table>
 
 > [!IMPORTANT]
-> ## Milestone II
-> ### Total Works Need To Be Done: **12h (for 2 members)**
-> ### Total Works Completed: **21h**
+> ## Milestone III
+> ### Total Works Need To Be Done: **20h (for 2 members)**
+> ### Total Works Completed: **23h**
 > ### Total By Assignment Per Member:
-> - **[21120060] Nguyen Long Giang: 8h**
+> - **[21120060] Nguyen Long Giang: 10h**
 > - **[21120082] Phan Quoc Huy: 13h**
 
 
