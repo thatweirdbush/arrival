@@ -9,6 +9,8 @@ using BookingManagementSystem.ViewModels.Account;
 using System.Windows.Input;
 using BookingManagementSystem.Contracts.Services;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml;
 
 namespace BookingManagementSystem.ViewModels.Host;
 
@@ -144,11 +146,29 @@ public partial class ListingViewModel : ObservableRecipient, INavigationAware
 
     public async Task RemoveAllAsync()
     {
-        // No need to call SaveChangesAsync() here because it's a raw SQL query execution
-        await _propertyRepository.DeleteAllAsync();
+        if (LoginViewModel.CurrentUser == null) return;
+        if (Properties.Count == 0) return;
 
-        Properties.Clear();
-        CheckListCount();
+        // Show confirmation dialog
+        var result = await new ContentDialog
+        {
+            XamlRoot = App.MainWindow.Content.XamlRoot,
+            Title = "Remove all items?",
+            Content = "Once you remove all, you can't get them back.",
+            PrimaryButtonText = "Remove all",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary
+        }.ShowAsync();
+
+        // If clicked the Remove all button
+        if (result == ContentDialogResult.Primary)
+        {
+            // No need to call SaveChangesAsync() here because it's a raw SQL query execution
+            await _propertyRepository.DeleteAllAsync(LoginViewModel.CurrentUser!.Id);
+
+            Properties.Clear();
+            CheckListCount();
+        }
     }
 
     private void CheckListCount()

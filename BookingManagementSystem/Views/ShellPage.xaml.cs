@@ -36,11 +36,12 @@ public partial class ShellPage : Page
     } =
     [
         "Home - Hotels & Apartments",
-        "Rental Details",
         "Map Services",
         "Hosting",
         "Notifications",
-        "FAQs"
+        "FAQs",
+        "Chat Services",
+        "Settings"
     ];
 
     public ShellPage(ShellViewModel viewModel, LoginViewModel loginViewModel)
@@ -138,19 +139,34 @@ public partial class ShellPage : Page
     }
 
     // Handle user selecting an item, not implemented yet
-    private async void MenuAutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+    private void MenuAutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
     {
-        // Show ContentDialog with the selected item
-        var dialog = new ContentDialog
+        switch (args.SelectedItem)
         {
-            XamlRoot = Content.XamlRoot,
-            Title = "Selected item",
-            Content = args.SelectedItem,
-            PrimaryButtonText = "Ok",
-            CloseButtonText = "Close"
-        };
-
-        await dialog.ShowAsync();
+            case "Home - Hotels & Apartments":
+                NavigationFrame.Navigate(typeof(HomePage));
+                break;
+            case "Map Services":
+                NavigationFrame.Navigate(typeof(MapPage));
+                break;
+            case "Hosting":
+                NavigationFrame.Navigate(typeof(ListingPage));
+                break;
+            case "Notifications":
+                NavigationFrame.Navigate(typeof(NotificationPage));
+                break;
+            case "FAQs":
+                NavigationFrame.Navigate(typeof(FAQPage));
+                break;
+            case "Chat Services":
+                NavigationFrame.Navigate(typeof(ChatPage));
+                break;
+            case "Settings":
+                NavigationFrame.Navigate(typeof(SettingsPage));
+                break;
+            default:
+                break;
+        }
     }
 
     private void UserMenuFlyoutItem_Click(object sender, RoutedEventArgs e)

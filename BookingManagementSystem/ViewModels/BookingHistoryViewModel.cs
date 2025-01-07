@@ -3,6 +3,7 @@ using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.Core.Repositories;
 using BookingManagementSystem.ViewModels.Account;
 using BookingManagementSystem.ViewModels.Client;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -14,6 +15,7 @@ public partial class BookingHistoryViewModel : ObservableRecipient, INavigationA
 {
     private readonly INavigationService _navigationService;
     private readonly IRepository<Booking> _bookingRepository;
+    private readonly IRepository<Property> _propertyRepository;
 
     [ObservableProperty]
     private bool isUpcomingBookingListEmpty;
@@ -27,10 +29,12 @@ public partial class BookingHistoryViewModel : ObservableRecipient, INavigationA
 
     public BookingHistoryViewModel(
         INavigationService navigationService,
-        IRepository<Booking> bookingRepository)
+        IRepository<Booking> bookingRepository,
+        IRepository<Property> propertyRepository)
     {
         _navigationService = navigationService;
         _bookingRepository = bookingRepository;
+        _propertyRepository = propertyRepository;
     }
 
     [RelayCommand]
@@ -80,6 +84,12 @@ public partial class BookingHistoryViewModel : ObservableRecipient, INavigationA
             PastBookings.Remove(booking);
         }
         _bookingRepository.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Property property)
+    {
+        await _propertyRepository.UpdateAsync(property);
+        await _propertyRepository.SaveChangesAsync();
     }
 
     private void CheckBookingListCount()

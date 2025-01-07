@@ -72,7 +72,7 @@ public sealed partial class BookingHistoryPage : Page
         App.GetService<INavigationService>().NavigateTo(typeof(HomeViewModel).FullName!);
     }
 
-    private void btnFavourite_Click(object sender, RoutedEventArgs e)
+    private async void btnFavourite_Click(object sender, RoutedEventArgs e)
     {
         // Toggle the favourite button  
         // Change the image source to the filled heart icon  
@@ -80,6 +80,7 @@ public sealed partial class BookingHistoryPage : Page
             && frameworkElement.DataContext is Booking booking)
         {
             booking.Property.IsFavourite = !booking.Property.IsFavourite;
+            await ViewModel.UpdateAsync(booking.Property);
         }
     }
 }

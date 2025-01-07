@@ -70,26 +70,9 @@ public sealed partial class ListingPage : Page
         }
     }
 
-    private async Task RemoveAll_Click(object sender, RoutedEventArgs e)
+    private Task RemoveAll_Click(object sender, RoutedEventArgs e)
     {
-        if (ViewModel.Properties.Count == 0) return;
-
-        // Show confirmation dialog
-        var result = await new ContentDialog
-        {
-            XamlRoot = XamlRoot,
-            Title = "Remove all items?",
-            Content = "Once you remove all, you can't get them back.",
-            PrimaryButtonText = "Remove all",
-            CloseButtonText = "Cancel",
-            DefaultButton = ContentDialogButton.Primary
-        }.ShowAsync();
-
-        // If clicked the Remove all button
-        if (result == ContentDialogResult.Primary)
-        {
-            await ViewModel.RemoveAllAsync();
-        }
+        return ViewModel.RemoveAllAsync();
     }
 
     private void AddNew_Click(object sender, RoutedEventArgs e)

@@ -168,7 +168,7 @@ public partial class PaymentViewModel : ObservableRecipient, INavigationAware
             $"Voucher: {Voucher?.Code}\n" +
             $"Total Price: ${booking.TotalPrice}\n" +
             $"Status: {booking.Status}\n" +
-            $"Booking Date: {booking.CreatedAt}\n\n" +
+            $"Booking Date: {TimeZoneInfo.ConvertTimeFromUtc(booking.CreatedAt, TimeZoneInfo.Local):f}\n\n" +
             "We will review your booking and keep you updated. Thank you for choosing our service!",
             CloseButtonText = "OK",
             DefaultButton = ContentDialogButton.Close
