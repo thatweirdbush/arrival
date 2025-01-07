@@ -124,6 +124,8 @@ public class NotificationService : INotificationService
 
     public async Task RemoveAllNotificationsAsync()
     {
+        if (LoginViewModel.CurrentUser == null) return;
+
         // Clear the cached unread list
         _cachedUnreadNotifications.Clear();
 
@@ -132,7 +134,7 @@ public class NotificationService : INotificationService
 
         // Delete all notifications from the database
         // No need to call SaveChangesAsync() since it's a raw SQL query execution
-        await _notificationRepository.DeleteAllAsync();
+        await _notificationRepository.DeleteAllAsync(LoginViewModel.CurrentUser!.Id);
     }
 
     public async Task MarkAsReadAsync(Notification notification)
@@ -212,7 +214,8 @@ public class NotificationService : INotificationService
 
     public async Task MarkAllAsReadAsync()
     {
-        var unreadNotifications = await _notificationRepository.GetAllAsync(n => !n.IsRead);
+        if (LoginViewModel.CurrentUser == null) return;
+        var unreadNotifications = await _notificationRepository.GetAllAsync(n => !n.IsRead && n.UserId == LoginViewModel.CurrentUser!.Id);
 
         foreach (var notification in unreadNotifications)
         {

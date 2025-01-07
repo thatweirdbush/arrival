@@ -127,15 +127,14 @@ public partial class ChatViewModel : ObservableRecipient
             var currentInput = UserInput;
 
             // Nếu có tin nhắn người dùng, gửi nó và thêm vào danh sách
-            if (!string.IsNullOrEmpty(currentInput))
+            if (string.IsNullOrEmpty(currentInput)) return;
+
+            Messages.Add(new Message
             {
-                Messages.Add(new Message
-                {
-                    Content = currentInput,
-                    IsUserMessage = true,
-                    Timestamp = DateTime.Now
-                });
-            }
+                Content = currentInput,
+                IsUserMessage = true,
+                Timestamp = DateTime.Now
+            });
 
             UserInput = string.Empty; // Xóa nội dung TextBox sau khi gửi
 

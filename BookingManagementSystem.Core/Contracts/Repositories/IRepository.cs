@@ -20,7 +20,7 @@ public interface IRepository<T>
     Task UpdateRangeAsync(IEnumerable<T> entities);
     Task DeleteAsync(int id);
     Task DeleteRangeAsync(IEnumerable<int> ids);
-    Task DeleteAllAsync();
+    Task DeleteAllAsync(int idParam = -1);
     Task SaveChangesAsync();
     Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize);
     Task<IEnumerable<T>> GetFilteredAsync(Expression<Func<T, bool>> predicate);

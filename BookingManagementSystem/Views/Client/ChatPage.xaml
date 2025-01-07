@@ -98,12 +98,15 @@
 
             <!-- TextBox nhập tin nhắn -->
 
-            <TextBox Text="{Binding UserInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBox Name="PromptTextBox"
+                     Text="{Binding UserInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      PlaceholderText="Nhập câu hỏi..." 
                      VerticalAlignment="Center" 
                      HorizontalAlignment="Stretch"
                      Padding="10" Height="50"
                      IsSpellCheckEnabled="False" FontSize="16"
+                     KeyDown="PromptTextBox_KeyDown"
+                     Loaded="PromptTextBox_Loaded"
                      IsEnabled="{Binding IsSendingMessage, Converter={StaticResource InvertedBoolConverter}}"/>
 
             <Grid Grid.Column="1" Margin="4 0 0 0">

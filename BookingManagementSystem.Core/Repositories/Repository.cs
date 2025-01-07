@@ -145,9 +145,12 @@ public class Repository<T> : IRepository<T> where T : class
     /// This prevents SQL Injection
     /// </summary>
     /// <returns></returns>
-    public async virtual Task DeleteAllAsync()
+    public async virtual Task DeleteAllAsync(int idParam = -1)
     {
-        await _context.Database.ExecuteSqlAsync($"DELETE FROM [{typeof(T).Name}]");
+        if (idParam > -1)
+        {
+            await _context.Database.ExecuteSqlAsync($"DELETE FROM [{typeof(T).Name}] WHERE Id = {idParam}");
+        }
     }
 
     /// <summary>

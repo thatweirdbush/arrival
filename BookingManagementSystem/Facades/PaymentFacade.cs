@@ -48,11 +48,10 @@ public class PaymentFacade : IPaymentFacade
     {
         Expression<Func<Voucher, bool>> IsVoucherValid = v
             => DateTime.Now.ToUniversalTime() >= v.ValidFrom.ToUniversalTime()
-            && (!v.ValidUntil.HasValue || DateTime.Now.ToUniversalTime() <= v.ValidUntil.Value.ToUniversalTime())
-            && !v.IsUsed;
+            && (!v.ValidUntil.HasValue || DateTime.Now.ToUniversalTime() <= v.ValidUntil.Value.ToUniversalTime());
 
         var vouchers = await _voucherRepository.GetAllAsync(IsVoucherValid);
-        return vouchers.FirstOrDefault(v => v.Code == code);
+        return vouchers.FirstOrDefault(v => v.Code.ToLower() == code.ToLower());
     }
 
     public async Task UpdateVoucherAsync(Voucher voucher)

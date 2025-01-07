@@ -25,6 +25,7 @@ public sealed partial class PaymentPage : Page
         if (string.IsNullOrWhiteSpace(voucherCode))
         {
             ShowVoucherWarning("Please enter the voucher code.");
+            ViewModel.Voucher = null;
             return;
         }
 
@@ -32,11 +33,12 @@ public sealed partial class PaymentPage : Page
 
         if (ViewModel.Voucher == null)
         {
-            ShowVoucherWarning("This voucher does not exist.");
+            ShowVoucherWarning("This voucher does not exist or has been used.");
         }
         else if (ViewModel.Voucher.Quantity <= 0)
         {
             ShowVoucherWarning("The number of voucher uses has exceeded the limit.");
+            ViewModel.Voucher = null;
         }
         else
         {
@@ -60,5 +62,14 @@ public sealed partial class PaymentPage : Page
     private void QuestionButton_Click(object sender, RoutedEventArgs e)
     {
         FlyoutBase.ShowAttachedFlyout(QuestionButton);
+    }
+
+    private void VoucherInputTextBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter)
+        {
+            ApplyVoucherButton_click(sender, e);
+            e.Handled = true;
+        }
     }
 }

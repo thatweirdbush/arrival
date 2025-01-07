@@ -63,4 +63,19 @@ public sealed partial class ChatPage : Page
     {
         ScrollToBottom();
     }
+
+    private void PromptTextBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter)
+        {
+            ViewModel.SendMessageAsyncCommand.Execute(null);
+            PromptTextBox.Focus(FocusState.Programmatic);
+            e.Handled = true;
+        }
+    }
+
+    private void PromptTextBox_Loaded(object sender, RoutedEventArgs e)
+    {
+        PromptTextBox.Focus(FocusState.Programmatic);
+    }
 }

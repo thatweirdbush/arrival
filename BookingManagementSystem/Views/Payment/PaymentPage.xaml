@@ -344,7 +344,7 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox x:Name="VoucherInputTextBox" PlaceholderText="Enter Voucher" BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" Margin="0 0 -1 0" Padding="12" CornerRadius="0" Height="43" VerticalAlignment="Top"/>
+                                    <TextBox x:Name="VoucherInputTextBox" PlaceholderText="Enter Voucher" BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}" Margin="0 0 -1 0" Padding="12" CornerRadius="0" Height="43" VerticalAlignment="Top" KeyDown="VoucherInputTextBox_KeyDown"/>
                                     <Button x:Name="ApplyVoucherButton" Grid.Column="1" Content="Apply" HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="ApplyVoucherButton_click"
                                             BorderBrush="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
                                             Background="{ThemeResource AcrylicBackgroundFillColorDefaultInverseBrush}"
