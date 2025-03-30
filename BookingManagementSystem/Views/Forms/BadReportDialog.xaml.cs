@@ -1,6 +1,7 @@
-﻿using Microsoft.UI.Xaml;
+﻿using BookingManagementSystem.Core.Models;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using BookingManagementSystem.Core.Models;
 
 namespace BookingManagementSystem.Views.Forms;
 

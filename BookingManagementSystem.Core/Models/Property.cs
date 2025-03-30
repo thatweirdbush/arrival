@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using BookingManagementSystem.Core.Services;
+﻿using BookingManagementSystem.Core.Services;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingManagementSystem.Core.Models;

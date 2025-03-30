@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-using BookingManagementSystem.Core.Commons.Paginations;
+﻿using BookingManagementSystem.Core.Commons.Paginations;
+using System.Linq.Expressions;
 
 namespace BookingManagementSystem.Core.Contracts.Repositories;
 public interface IRepository<T>

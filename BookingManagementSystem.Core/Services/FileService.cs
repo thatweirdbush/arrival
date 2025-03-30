@@ -1,6 +1,7 @@
-﻿using System.Text;
+﻿using BookingManagementSystem.Core.Contracts.Services;
+
 using Newtonsoft.Json;
-using BookingManagementSystem.Core.Contracts.Services;
+using System.Text;
 
 namespace BookingManagementSystem.Core.Services;
 

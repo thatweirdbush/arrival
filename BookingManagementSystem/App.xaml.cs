@@ -1,14 +1,13 @@
 ﻿using BookingManagementSystem.Activation;
+using BookingManagementSystem.Contracts.Facades;
 using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.Core.Contracts.Facades;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
-using BookingManagementSystem.Core.Facades;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Repositories;
 using BookingManagementSystem.Core.Services;
+using BookingManagementSystem.Facades;
 using BookingManagementSystem.Models;
-using BookingManagementSystem.Notifications;
 using BookingManagementSystem.Services;
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.ViewModels.Account;

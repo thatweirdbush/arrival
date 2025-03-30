@@ -1,13 +1,13 @@
-﻿using System.Collections.Specialized;
+﻿using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.ViewModels;
+using BookingManagementSystem.ViewModels.Client;
+
+using System.Collections.Specialized;
 using System.Web;
 
 using Microsoft.Windows.AppNotifications;
 
-using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.ViewModels;
-using BookingManagementSystem.ViewModels.Client;
-
-namespace BookingManagementSystem.Notifications;
+namespace BookingManagementSystem.Services;
 
 public class AppNotificationService : IAppNotificationService
 {

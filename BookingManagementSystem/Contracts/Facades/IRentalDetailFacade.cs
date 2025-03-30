@@ -1,7 +1,7 @@
 ﻿using BookingManagementSystem.Core.Models;
 
-namespace BookingManagementSystem.Core.Contracts.Facades;
-#nullable enable
+namespace BookingManagementSystem.Contracts.Facades;
+
 public interface IRentalDetailFacade
 {
     Task<Property?> GetPropertyByIdAsync(int id);

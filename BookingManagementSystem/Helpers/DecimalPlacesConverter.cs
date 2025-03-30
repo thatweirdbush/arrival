@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Data;
 
 namespace BookingManagementSystem.Helpers;
+
 public class DecimalPlacesConverter : IValueConverter
 {
     public int DecimalPlaces { get; set; } = 2; // Default is 2 decimal places

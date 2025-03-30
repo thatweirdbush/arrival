@@ -1,7 +1,6 @@
 ﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Commons.Filters;
-using BookingManagementSystem.Core.Contracts.Facades;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels.Payment;
 using BookingManagementSystem.ViewModels.Account;
@@ -11,6 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
+using BookingManagementSystem.Contracts.Facades;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -111,7 +111,7 @@ public partial class RentalDetailViewModel : ObservableRecipient, INavigationAwa
         await _rentalDetailFacade.AddReviewAsync(review);
 
         // Set the current user as the customer for immediate UI update
-        review.User = LoginViewModel.CurrentUser;
+        review.User = LoginViewModel.CurrentUser ?? new User { Name = "Anonymous" };
         Reviews.Insert(0, review);
 
         UpdateObservableProperties();

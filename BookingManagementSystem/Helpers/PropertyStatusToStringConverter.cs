@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Data;
 
 namespace BookingManagementSystem.Helpers;
+
 public class PropertyStatusToStringConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)

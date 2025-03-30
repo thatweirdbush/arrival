@@ -1,6 +1,7 @@
 ﻿using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.Core.Services;

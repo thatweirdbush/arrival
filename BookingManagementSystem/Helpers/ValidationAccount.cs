@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 
 namespace BookingManagementSystem.Helpers;
+
 public class ValidationAccount
 {
     public ValidationAccount() { }

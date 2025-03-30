@@ -1,9 +1,4 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Windows.System;
-using BookingManagementSystem.Contracts.Services;
+﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Helpers;
 using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.Views.Host;
@@ -11,6 +6,13 @@ using BookingManagementSystem.Views.Account;
 using BookingManagementSystem.Views.Client;
 using BookingManagementSystem.ViewModels.Account;
 using BookingManagementSystem.Core.Models;
+
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Controls.Primitives;
+
+using Windows.System;
 
 namespace BookingManagementSystem.Views;
 

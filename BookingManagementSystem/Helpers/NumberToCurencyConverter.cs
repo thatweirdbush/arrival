@@ -1,5 +1,6 @@
-﻿using System.Globalization;
-using BookingManagementSystem.Core.Models;
+﻿using BookingManagementSystem.Core.Models;
+
+using System.Globalization;
 using Microsoft.UI.Xaml.Data;
 
 namespace BookingManagementSystem.Helpers;

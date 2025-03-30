@@ -1,10 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-using Microsoft.UI.Xaml.Controls;
-
-using BookingManagementSystem.Contracts.Services;
+﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Helpers;
 using BookingManagementSystem.ViewModels;
+
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.UI.Xaml.Controls;
 
 namespace BookingManagementSystem.Services;
 

@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.Options;
-
-using BookingManagementSystem.Contracts.Services;
+﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Helpers;
 using BookingManagementSystem.Helpers;
 using BookingManagementSystem.Models;
 
+using Microsoft.Extensions.Options;
 using Windows.Storage;
 
 namespace BookingManagementSystem.Services;

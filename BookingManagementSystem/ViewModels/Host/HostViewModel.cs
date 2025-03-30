@@ -1,5 +1,6 @@
 ﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BookingManagementSystem.ViewModels.Host;

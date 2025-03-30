@@ -1,10 +1,12 @@
-﻿using System.Security.Cryptography;
+﻿using BookingManagementSystem.ViewModels.Account;
+
+using System.Security.Cryptography;
 using System.Text;
+
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Windows.Storage;
-using BookingManagementSystem.ViewModels.Account;
 using Microsoft.UI.Xaml.Documents;
+using Windows.Storage;
 
 namespace BookingManagementSystem.Views.Account;
 

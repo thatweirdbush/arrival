@@ -1,7 +1,9 @@
 ﻿using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
+
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Navigation;
+
 using Windows.System;
 using Windows.UI.Core;
 

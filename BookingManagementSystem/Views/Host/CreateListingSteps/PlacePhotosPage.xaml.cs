@@ -1,8 +1,9 @@
-﻿using Windows.Storage.Pickers;
+﻿using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
+
+using Windows.Storage.Pickers;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml;
-using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
 namespace BookingManagementSystem.Views.Host.CreateListingSteps;
 

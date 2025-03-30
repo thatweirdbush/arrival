@@ -1,8 +1,9 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using BookingManagementSystem.ViewModels.Client;
-using BookingManagementSystem.Core.Models;
+﻿using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels.Account;
+using BookingManagementSystem.ViewModels.Client;
+
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace BookingManagementSystem.Views.Client;
 public sealed partial class HomePage : Page

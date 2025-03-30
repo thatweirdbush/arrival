@@ -2,6 +2,7 @@
 using BookingManagementSystem.Core.Models;
 
 namespace BookingManagementSystem.Helpers;
+
 public class RatingToStatusConverter : IValueConverter
 {
     public RatingToStatusConverter()

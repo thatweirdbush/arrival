@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 
 namespace BookingManagementSystem.Contracts.Services;
+
 public interface IThemeSelectorService
 {
     ElementTheme Theme { get; }

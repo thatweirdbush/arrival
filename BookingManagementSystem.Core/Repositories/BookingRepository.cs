@@ -1,5 +1,6 @@
-﻿using System.Linq.Expressions;
-using BookingManagementSystem.Core.Models;
+﻿using BookingManagementSystem.Core.Models;
+
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingManagementSystem.Core.Repositories;

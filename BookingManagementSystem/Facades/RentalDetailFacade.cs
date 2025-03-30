@@ -1,10 +1,11 @@
-﻿using BookingManagementSystem.Core.Contracts.Facades;
+﻿using BookingManagementSystem.Contracts.Facades;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
+
 using Microsoft.EntityFrameworkCore;
 
-namespace BookingManagementSystem.Core.Facades;
-#nullable enable
+namespace BookingManagementSystem.Facades;
+
 public class RentalDetailFacade : IRentalDetailFacade
 {
     private readonly IRepository<Property> _propertyRepository;

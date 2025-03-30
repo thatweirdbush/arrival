@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.UI.Xaml.Data;
+﻿using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media;
 
 namespace BookingManagementSystem.Helpers;
+
 public class BoolToBrushConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)

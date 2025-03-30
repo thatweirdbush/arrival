@@ -1,6 +1,5 @@
 ﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
-using BookingManagementSystem.Core.Contracts.Facades;
 using BookingManagementSystem.Core.Commons.Filters;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels.Account;
@@ -9,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Microsoft.UI.Xaml.Controls;
+using BookingManagementSystem.Contracts.Facades;
 
 namespace BookingManagementSystem.ViewModels.Payment;
 

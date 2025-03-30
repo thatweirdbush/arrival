@@ -1,12 +1,11 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
-using BookingManagementSystem.Core.Models;
+﻿using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Services;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml;
+
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace BookingManagementSystem.ViewModels.Client;
 
@@ -17,8 +16,8 @@ public partial class ChatViewModel : ObservableRecipient
     // Sự kiện thông báo cần cuộn xuống cuối
     public event Action? ScrollToBottomRequested;
 
-    private string _userInput = string.Empty;
-    public string UserInput
+    private string? _userInput = string.Empty;
+    public string? UserInput
     {
         get => _userInput;
         set
@@ -78,7 +77,7 @@ public partial class ChatViewModel : ObservableRecipient
         StartNewConversationCommand = new RelayCommand(StartNewConversation);
     }
 
-    private void OnSelectSuggestedQuestion(string question)
+    private void OnSelectSuggestedQuestion(string? question)
     {
         // Kiểm tra nếu có tin nhắn nhập tay, nếu có thì lưu vào Messages
         if (!string.IsNullOrEmpty(UserInput))

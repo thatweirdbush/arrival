@@ -1,7 +1,7 @@
-﻿using Microsoft.UI.Xaml;
-
-using BookingManagementSystem.Contracts.Services;
+﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Helpers;
+
+using Microsoft.UI.Xaml;
 
 namespace BookingManagementSystem.Services;
 

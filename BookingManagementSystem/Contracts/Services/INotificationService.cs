@@ -1,6 +1,7 @@
 ﻿using BookingManagementSystem.Core.Models;
 
 namespace BookingManagementSystem.Contracts.Services;
+
 public interface INotificationService
 {
     int UnreadNotificationCount { get; }

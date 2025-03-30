@@ -2,7 +2,6 @@
 using BookingManagementSystem.Core.Services;
 
 namespace BookingManagementSystem.Core.Contracts.Services;
-#nullable enable
 public interface IPropertyService
 {
     Property? PropertyOnCreating { get; set; }

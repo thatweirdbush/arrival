@@ -5,6 +5,7 @@ using BookingManagementSystem.ViewModels;
 using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.ViewModels.Host;
 using BookingManagementSystem.Views.Forms;
+
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BookingManagementSystem.Contracts.ViewModels;
+
 public abstract partial class BaseStepViewModel : ObservableObject
 {
     [ObservableProperty]

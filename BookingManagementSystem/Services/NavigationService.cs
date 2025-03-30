@@ -1,10 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-using BookingManagementSystem.Contracts.Services;
+﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Helpers;
 
 using CommunityToolkit.WinUI.UI.Animations;
+using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;

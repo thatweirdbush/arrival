@@ -1,7 +1,6 @@
 ﻿using BookingManagementSystem.Core.Models;
 
 namespace BookingManagementSystem.Core.Commons.Filters;
-#nullable enable
 public class PropertyFilter
 {
     public DateTimeOffset? CheckInDate { get; set; } = DateTimeOffset.UtcNow;

@@ -1,10 +1,10 @@
-﻿using Microsoft.UI.Dispatching;
+﻿using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.ViewModels;
+
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using Microsoft.Windows.AppNotifications;
-
-using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.ViewModels;
 
 namespace BookingManagementSystem.Activation;
 

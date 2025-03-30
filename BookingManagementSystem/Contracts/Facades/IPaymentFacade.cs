@@ -1,6 +1,7 @@
 ﻿using BookingManagementSystem.Core.Models;
 
-namespace BookingManagementSystem.Core.Contracts.Facades;
+namespace BookingManagementSystem.Contracts.Facades;
+
 public interface IPaymentFacade
 {
     Task<Property?> GetPropertyByIdAsync(int id);

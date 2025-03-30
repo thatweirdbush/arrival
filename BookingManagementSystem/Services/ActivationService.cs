@@ -1,11 +1,11 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-
-using BookingManagementSystem.Activation;
+﻿using BookingManagementSystem.Activation;
 using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Views;
 using BookingManagementSystem.ViewModels.Account;
 using BookingManagementSystem.ViewModels;
+
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace BookingManagementSystem.Services;
 

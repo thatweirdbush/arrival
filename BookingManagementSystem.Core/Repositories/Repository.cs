@@ -1,7 +1,8 @@
-﻿using System.Linq.Expressions;
-using BookingManagementSystem.Core.Commons.Paginations;
+﻿using BookingManagementSystem.Core.Commons.Paginations;
 using BookingManagementSystem.Core.Contracts.Repositories;
+
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace BookingManagementSystem.Core.Repositories;
 public class Repository<T> : IRepository<T> where T : class

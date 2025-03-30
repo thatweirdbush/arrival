@@ -2,7 +2,6 @@
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.Core.Repositories;
 using BookingManagementSystem.ViewModels.Account;
 using BookingManagementSystem.ViewModels.Client;
 

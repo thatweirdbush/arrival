@@ -1,9 +1,9 @@
-﻿using Microsoft.UI.Xaml;
+﻿using BookingManagementSystem.Contracts.Services;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.Xaml.Interactivity;
-
-using BookingManagementSystem.Contracts.Services;
 
 namespace BookingManagementSystem.Behaviors;
 

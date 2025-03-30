@@ -1,10 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.UI.Xaml.Navigation;
-using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.Views;
+﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Models;
-using System.Collections.ObjectModel;
+using BookingManagementSystem.Views;
 using BookingManagementSystem.ViewModels.Account;
+
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
+using Microsoft.UI.Xaml.Navigation;
 
 namespace BookingManagementSystem.ViewModels;
 

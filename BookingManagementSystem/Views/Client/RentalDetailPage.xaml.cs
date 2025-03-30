@@ -3,10 +3,11 @@ using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Views.Forms;
 using BookingManagementSystem.ViewModels.Account;
+
+using CommunityToolkit.WinUI.UI.Animations;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-using CommunityToolkit.WinUI.UI.Animations;
 
 namespace BookingManagementSystem.Views.Client;
 public sealed partial class RentalDetailPage : Page

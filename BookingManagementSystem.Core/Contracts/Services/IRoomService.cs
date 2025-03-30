@@ -1,11 +1,11 @@
-﻿using System.Linq.Expressions;
-using BookingManagementSystem.Core.Commons.Filters;
+﻿using BookingManagementSystem.Core.Commons.Filters;
 using BookingManagementSystem.Core.Commons.Paginations;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Services;
 
+using System.Linq.Expressions;
+
 namespace BookingManagementSystem.Core.Contracts.Services;
-#nullable enable
 public interface IRoomService
 {
     Task<IEnumerable<DestinationTypeSymbol>> GetAllDestinationTypeSymbolsAsync();

@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-using BookingManagementSystem.Core.Models;
+﻿using BookingManagementSystem.Core.Models;
+using System.Linq.Expressions;
 
 namespace BookingManagementSystem.Core.Repositories;
 #nullable enable

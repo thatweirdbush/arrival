@@ -1,5 +1,4 @@
 ﻿using BookingManagementSystem.ViewModels;
-
 using Microsoft.UI.Xaml.Controls;
 
 namespace BookingManagementSystem.Views.Client;

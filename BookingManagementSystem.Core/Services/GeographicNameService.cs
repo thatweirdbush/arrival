@@ -1,7 +1,8 @@
-﻿using System.Diagnostics;
+﻿using BookingManagementSystem.Core.Models;
+
+using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using BookingManagementSystem.Core.Models;
 
 namespace BookingManagementSystem.Core.Services;
 public class GeographicNameService

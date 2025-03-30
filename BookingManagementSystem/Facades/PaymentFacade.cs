@@ -1,12 +1,13 @@
-﻿using System.Linq.Expressions;
-using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.Core.Contracts.Facades;
+﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
-using Microsoft.EntityFrameworkCore;
 
-namespace BookingManagementSystem.Core.Facades;
-#nullable enable
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+using BookingManagementSystem.Contracts.Facades;
+
+namespace BookingManagementSystem.Facades;
+
 public class PaymentFacade : IPaymentFacade
 {
     private readonly IRepository<Property> _propertyRepository;
