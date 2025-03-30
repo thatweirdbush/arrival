@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 using Microsoft.UI.Xaml.Data;
 
 namespace BookingManagementSystem.Helpers;

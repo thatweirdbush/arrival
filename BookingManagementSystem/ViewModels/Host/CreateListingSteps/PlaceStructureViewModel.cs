@@ -2,6 +2,7 @@
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Repositories;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BookingManagementSystem.ViewModels.Host.CreateListingSteps;

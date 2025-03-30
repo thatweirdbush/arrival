@@ -1,6 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using BookingManagementSystem.Core.Models;
+﻿using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Contracts.Repositories;
+
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BookingManagementSystem.ViewModels.Account;
 

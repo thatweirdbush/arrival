@@ -1,12 +1,12 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
-using BookingManagementSystem.ViewModels.Client;
+﻿using BookingManagementSystem.ViewModels.Client;
 using BookingManagementSystem.Contracts.Services;
-using CommunityToolkit.WinUI.UI.Animations;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Views.Forms;
 using BookingManagementSystem.ViewModels.Account;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
+using CommunityToolkit.WinUI.UI.Animations;
 
 namespace BookingManagementSystem.Views.Client;
 public sealed partial class RentalDetailPage : Page

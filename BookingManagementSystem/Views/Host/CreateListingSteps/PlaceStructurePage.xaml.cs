@@ -1,5 +1,4 @@
-﻿using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
+﻿using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;

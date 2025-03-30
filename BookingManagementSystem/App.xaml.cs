@@ -31,8 +31,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
 
-using WinUIEx.Messaging;
-
 namespace BookingManagementSystem;
 
 // To learn more about WinUI 3, see https://docs.microsoft.com/windows/apps/winui/winui3/.
@@ -112,7 +110,7 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Bussiness Services
-            services.AddSingleton<BookingManagementSystem.Contracts.Services.INotificationService, BookingManagementSystem.Services.NotificationService>();
+            services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IPropertyService, PropertyService>();
             services.AddTransient<IRoomService, RoomService>();
             services.AddTransient<IImageService, ImageService>();
@@ -246,7 +244,7 @@ public partial class App : Application
         await App.GetService<IActivationService>().ActivateAsync(args);
     }
 
-    private async Task RunLongRunningTasksAsync()
+    private static async Task RunLongRunningTasksAsync()
     {
         await Task.Delay(100);
 

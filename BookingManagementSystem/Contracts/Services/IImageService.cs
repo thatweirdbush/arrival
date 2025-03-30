@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BookingManagementSystem.Contracts.Services;
 
-namespace BookingManagementSystem.Contracts.Services;
 public interface IImageService
 {
     /// <summary>

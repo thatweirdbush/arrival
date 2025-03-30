@@ -1,14 +1,16 @@
-﻿using BookingManagementSystem.Contracts.ViewModels;
-using BookingManagementSystem.Core.Models;
-using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.ViewModels.Payment;
-using BookingManagementSystem.ViewModels.Account;
+﻿using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Commons.Filters;
 using BookingManagementSystem.Core.Contracts.Facades;
+using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.ViewModels.Payment;
+using BookingManagementSystem.ViewModels.Account;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
+
 using Microsoft.UI.Xaml.Controls;
+using System.Collections.ObjectModel;
 
 namespace BookingManagementSystem.ViewModels.Client;
 

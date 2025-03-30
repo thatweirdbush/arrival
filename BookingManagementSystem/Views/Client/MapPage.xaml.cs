@@ -1,7 +1,6 @@
 ﻿using BookingManagementSystem.ViewModels.Client;
 
 using Microsoft.UI.Xaml.Controls;
-using Windows.Devices.Geolocation;
 
 namespace BookingManagementSystem.Views.Client;
 

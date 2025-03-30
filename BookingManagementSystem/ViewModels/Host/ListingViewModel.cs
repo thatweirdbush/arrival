@@ -1,14 +1,17 @@
-﻿using BookingManagementSystem.Core.Contracts.Repositories;
-using BookingManagementSystem.Core.Models;
+﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
 using BookingManagementSystem.Core.Commons.Enums;
-using Microsoft.EntityFrameworkCore;
+using BookingManagementSystem.Core.Contracts.Repositories;
+using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels.Account;
-using System.Windows.Input;
-using BookingManagementSystem.Contracts.Services;
+
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
+using Microsoft.EntityFrameworkCore;
+
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace BookingManagementSystem.ViewModels.Host;
 

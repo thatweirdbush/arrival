@@ -1,8 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using BookingManagementSystem.Contracts.ViewModels;
+﻿using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.Core.Services;
+
+using System.Collections.ObjectModel;
 
 namespace BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 
