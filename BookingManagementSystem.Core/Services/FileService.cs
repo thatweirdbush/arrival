@@ -1,7 +1,5 @@
 ﻿using System.Text;
-
 using Newtonsoft.Json;
-
 using BookingManagementSystem.Core.Contracts.Services;
 
 namespace BookingManagementSystem.Core.Services;

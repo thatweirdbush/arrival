@@ -1,9 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
-using BookingManagementSystem.Core.Models;
+﻿using BookingManagementSystem.Core.Models;
+using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.ViewModels.Account;
-using BookingManagementSystem.Contracts.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace BookingManagementSystem.ViewModels;
 

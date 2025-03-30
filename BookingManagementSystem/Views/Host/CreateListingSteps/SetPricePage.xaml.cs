@@ -1,11 +1,8 @@
-﻿using System.Globalization;
-using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
-using Microsoft.UI.Xaml;
+﻿using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
-using Windows.System;
-using BookingManagementSystem.Helpers;
 using Microsoft.UI.Xaml.Navigation;
+using Windows.System;
 using Windows.UI.Core;
 
 namespace BookingManagementSystem.Views.Host.CreateListingSteps;

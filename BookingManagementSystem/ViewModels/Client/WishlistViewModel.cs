@@ -1,12 +1,14 @@
 ﻿using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Repositories;
 using BookingManagementSystem.Core.Models;
-using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
 using BookingManagementSystem.ViewModels.Account;
+
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using BookingManagementSystem.Contracts.ViewModels;
+
 using Microsoft.EntityFrameworkCore;
+using System.Collections.ObjectModel;
 
 namespace BookingManagementSystem.ViewModels.Client;
 

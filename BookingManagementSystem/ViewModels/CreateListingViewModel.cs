@@ -1,17 +1,19 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using BookingManagementSystem.Contracts.Services;
+﻿using BookingManagementSystem.Contracts.Services;
 using BookingManagementSystem.Contracts.ViewModels;
 using BookingManagementSystem.Core.Contracts.Services;
 using BookingManagementSystem.Core.Models;
 using BookingManagementSystem.ViewModels.Host;
 using BookingManagementSystem.ViewModels.Host.CreateListingSteps;
 using BookingManagementSystem.Views.Host.CreateListingSteps;
-using Microsoft.UI.Xaml.Media.Animation;
+
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+
 using Microsoft.UI.Xaml.Controls;
-using BookingManagementSystem.ViewModels.Account;
+using Microsoft.UI.Xaml.Media.Animation;
 
 namespace BookingManagementSystem.ViewModels;
 

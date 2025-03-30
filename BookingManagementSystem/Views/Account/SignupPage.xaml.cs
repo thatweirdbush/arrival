@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
+using BookingManagementSystem.Helpers;
+using BookingManagementSystem.ViewModels.Account;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Documents;
 using Windows.Storage;
-using BookingManagementSystem.ViewModels.Account;
-using BookingManagementSystem.Helpers;
 
 namespace BookingManagementSystem.Views.Account;
 

@@ -5,7 +5,6 @@ using Microsoft.UI.Xaml.Controls;
 using Windows.Storage;
 using BookingManagementSystem.ViewModels.Account;
 using Microsoft.UI.Xaml.Documents;
-using BookingManagementSystem.Views.Client;
 
 namespace BookingManagementSystem.Views.Account;
 

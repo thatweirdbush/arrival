@@ -1,14 +1,13 @@
-﻿using System.Reflection;
-using System.Windows.Input;
+﻿using BookingManagementSystem.Contracts.Services;
+using BookingManagementSystem.Helpers;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+using System.Reflection;
+using System.Windows.Input;
+
 using Microsoft.UI.Xaml;
-
-using BookingManagementSystem.Contracts.Services;
-using BookingManagementSystem.Helpers;
-
 using Windows.ApplicationModel;
 
 namespace BookingManagementSystem.ViewModels;
